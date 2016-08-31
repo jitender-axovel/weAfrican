@@ -1,0 +1,29 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@yield('scripts')
+
+<footer>
+	<div class="row">
+		<div class="container">
+			<div class="col-md-6 text-left col-sm-6 col-xs-12">
+				<ul class="footer-linkss list-inline">
+					<li> <a href="{{url('/')}}">home</a> </li>
+					<li> <a href="#">about</a> </li>
+					<li> <a href="#">feature</a> </li>
+					<li> <a href="#">product video</a> </li>
+			 	</ul>
+			</div>
+			<div class="col-md-6 text-right col-sm-6 col-xs-12">
+				<p>2015 - 2016 © Copyright your company</p>
+				<p>All Rights Reserved</p>
+				<div class="available">
+					<p>available on</p>
+					<ul class="list-inline">
+						<li> <a href="#"><img src="{{asset('images/apple-store.png')}}"></a> </li>
+					    <li> <a href="#"><img src="{{asset('images/play-store.png')}}"></a> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>	
+</footer>
