@@ -26,8 +26,11 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::post('login', 'AdminController@postLogin');
 		Route::group(['middleware' => ['admin']], function () {
 			Route::get('dashboard', 'AdminController@index');
-			Route::resource('category', 'AdminCategoriesController');
 			Route::get('user/blocked/{id}','AdminUsersController@getBlocked');
 			Route::resource('users', 'AdminUsersController');
+			Route::resource('category', 'AdminCategoriesController');
+			Route::get('subscription/plan/activated/{id}','AdminSubscriptionPlansController@isActivated');
+			Route::resource('subscription/plan', 'AdminSubscriptionPlansController');
+			Route::resource('advertisement/plan', 'AdminAdvertisementPlansController');
 		});	
 });

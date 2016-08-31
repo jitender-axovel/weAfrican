@@ -26,7 +26,18 @@
             </ul>
         </li>
         <li>
-            <a href="{{url('admin/medias')}}">Media Management</a>
+            <a href="javascript:;" data-toggle="collapse" data-target="#subscription" class="collapsed" aria-expanded="false">Subscription Plans<i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="subscription" class="collapse" aria-expanded="false">
+                <li>
+                    <a href="{{url('admin/subscription/plan/create')}}">Create New Subscription</a>
+                </li>
+                <li>
+                    <a href="{{url('admin/subscription/plan')}}">List Subscription Plans</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href=""> Advertisement Plans</a>
         </li>
     </ul>
 </div>
