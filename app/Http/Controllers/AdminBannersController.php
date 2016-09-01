@@ -5,21 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\AdvertisementPlan;
+use App\Banner;
 use Validator;
 
-class AdminAdvertisementPlansController extends Controller
+class AdminBannersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     public function index()
+    public function index()
     {
-        $page = 'Advertisement Plan- Admin';
-        $advertisements = AdvertisementPlan::get();
-        return view('admin.advertisements.index', compact('page', 'advertisements'));
+        $page = 'Banners- Admin';
+        $banners = Banner::get();
+        return view('admin.banners.index', compact('page', 'banners'));
     }
 
     /**
@@ -29,8 +29,8 @@ class AdminAdvertisementPlansController extends Controller
      */
     public function create()
     {
-        $page = "Create Advertisement Plan - Admin";
-        return view('admin.advertisements.create', compact('page'));
+        $page = "Create Banner - Admin";
+        return view('admin.banners.create', compact('page'));
     }
 
     /**
@@ -41,7 +41,7 @@ class AdminAdvertisementPlansController extends Controller
      */
     public function store(Request $request)
     {
-         $validator = Validator::make($request->input(), AdvertisementPlan::$validater 
+         $validator = Validator::make($request->input(), Banner::$validater 
         );
 
         if ($validator->fails()) {
@@ -52,14 +52,14 @@ class AdminAdvertisementPlansController extends Controller
 
         $input = $request->input();
   
-            $input = array_intersect_key($input,AdvertisementPlan::$updatable);
-            $advertisement = new AdvertisementPlan();
-            $advertisement->name = $input['name'];
-            $advertisement->city_id = $input['city_id'];
-            $advertisement->save();
+            $input = array_intersect_key($input,Banner::$updatable);
+            $banner = new Banner();
+            $banner->name = $input['name'];
+            $banner->city_id = $input['city_id'];
+            $banner->save();
 
             if($request->ajax()) {
-                return json_encode(['status' => 'success','url' => url('admin/advertisement/plan')]);
+                return json_encode(['status' => 'success','url' => url('admin/banner')]);
             } else {
                 return back();
             }
@@ -85,9 +85,9 @@ class AdminAdvertisementPlansController extends Controller
      */
     public function edit($id)
     {
-        $page = "Edit Advertisement Plan - Admin";
-        $advertisement = AdvertisementPlan::find($id);
-        return view('admin.advertisements.edit',compact('advertisement','page'));
+        $page = "Edit Banner - Admin";
+        $banner = Banner::find($id);
+        return view('admin.banners.edit',compact('banner','page'));
     }
 
     /**
@@ -104,22 +104,22 @@ class AdminAdvertisementPlansController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('admin/advertisement/plan/'.$id.'/edit')
+            return redirect('admin/banner'.$id.'/edit')
                         ->withErrors($validator)
                         ->withInput();
         }
         $input = $request->input();
 
         
-            $input = array_intersect_key($input, AdvertisementPlan::$updatable);
-            $advertisements = AdvertisementPlan::where('id',$id)->update($input);
+            $input = array_intersect_key($input, Banner::$updatable);
+            $banners = Banner::where('id',$id)->update($input);
         
-            if($advertisements > 0 ){
+            if($banners > 0 ){
                 
-                return redirect('admin/advertisement/plan')->with('success', 'Advertisement Updated successfully');
+                return redirect('admin/banner')->with('success', 'Banner Updated successfully');
             } else {
 
-                return back()->with('error', 'Advertisement could not be updated. Please try again.');
+                return back()->with('error', 'Banner could not be updated. Please try again.');
             }
     }
 
@@ -131,17 +131,17 @@ class AdminAdvertisementPlansController extends Controller
      */
     public function destroy($id)
     {
-        $advertisement = AdvertisementPlan::findOrFail($id);
-        if($advertisement->delete()){
+        $banner = Banner::findOrFail($id);
+        if($banner->delete()){
             $response = array(
                 'status' => 'success',
-                'message' => ' Advertisement Plan deleted  successfully',
+                'message' => ' Banner Plan deleted  successfully',
             );
              return json_encode($response);
         } else {
             $response = array(
                 'status' => 'error',
-                'message' => ' Advertisement
+                'message' => ' Banner
                 Plan can not be deleted.Please try again',
             );
              return json_encode($response);
@@ -151,15 +151,15 @@ class AdminAdvertisementPlansController extends Controller
 
     public function isActivated($id)
     {
-        $advertisement=AdvertisementPlan::find($id);
+        $banner=Banner::find($id);
        
-        if($advertisement->is_activated == 0){ 
-            $advertisement=AdvertisementPlan::where('id', $id)->update(['is_activated' => '1']);
-            return redirect('admin/advertisement/plan')->with('success', 'Advertisement Plan activated successfully');
+        if($banner->is_activated == 0){ 
+            $banner=Banner::where('id', $id)->update(['is_activated' => '1']);
+            return redirect('admin/banner')->with('success', 'Banner activated successfully');
 
-        } else if($advertisement->is_activated == 1){ 
-           $advertisement=AdvertisementPlan::where('id', $id)->update(['is_activated' => '0']);
-            return redirect('admin/advertisement/plan')->with('success', 'Advertisement Plan deactivated successfully');
+        } else if($banner->is_activated == 1){ 
+           $banner=Banner::where('id', $id)->update(['is_activated' => '0']);
+            return redirect('admin/banner')->with('success', ' Banner deactivated successfully');
         }   
     }
 }

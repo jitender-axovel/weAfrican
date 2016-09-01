@@ -89,7 +89,9 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function edit($id)
     {
-        //
+        $page = "Edit Subscription Plan - Admin";
+        $subscription = SubscriptionPlan::find($id);
+        return view('admin.subscriptions.edit',compact('subscription','page'));
     }
 
     /**
@@ -101,7 +103,28 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',    
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/subscription/plan/'.$id.'/edit')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $input = $request->input();
+
+        
+            $input = array_intersect_key($input, SubscriptionPlan::$updatable);
+            $subscriptions = SubscriptionPlan::where('id',$id)->update($input);
+        
+            if($subscriptions > 0 ){
+                
+                return redirect('admin/subscription/plan')->with('success', 'Subscription Updated successfully');
+            } else {
+
+                return back()->with('error', 'Subscription could not be updated. Please try again.');
+            }
     }
 
     /**

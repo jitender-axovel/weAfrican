@@ -11,12 +11,12 @@ class AdvertisementPlan extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'city_id'];
 
-    public static $updatable = ['name' => "", 'slug' => "",'created_at' => ""];
+    public static $updatable = ['name' => "", 'city_id' => "",'created_at' => ""];
 
     public static $validater = array(
-    	'name' => 'required|unique:categories|max:255',
+    	'name' => 'required|unique:advertisement_plans|max:255',
     	);
 
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.adminapp')
 @section('title', $page)
 @section('content')
-	<h2>Categories</h2>
+	<h2>Advertisement Plans</h2>
 	<hr>
 	@if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -15,27 +15,23 @@
 	<table id="subscription_list" class="display">
 		<thead>
 			<tr>
+				<th>City</th>
 				<th>Name</th>
-				<th>Product Limit</th>
-				<th>Service Limit</th>
-				<th>Price (per month)</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($subscriptions as $subscription)
+			@foreach($advertisements as $advertisement)
 			<tr>
-				<td>{{ $subscription->name}}</td>
-				<td>{{ $subscription->product_limit}}</td>
-                <td>{{ $subscription->service_limit}}</td>
-                <td>{{ $subscription->price}}</td>
-				<td>{{ date_format(date_create($subscription->created_at), 'F d, Y') }}</td>
+				<td>{{ $advertisement->city_id}}</td>
+				<td>{{ $advertisement->name}}</td>
+				<td>{{ date_format(date_create($advertisement->created_at), 'F d, Y') }}</td>
 				<td>
-				<a class="btn btn-info" href="{{ url('admin/subscription/plan/'.$subscription->id.'/edit/') }}">Edit</a>
-				<a href="{{ URL::to('admin/subscription/plan/activated/'.$subscription->id) }}">
-                    @if ($subscription->is_activated) <button type="button" class="btn btn-danger">Inactive</button> @else <button type="button" class="btn btn-success">Active</button> @endif </a>
-				<form action="{{ url('admin/subscription/plan/'.$subscription->id) }}" method="POST" class="form-horizontal" onsubmit="deleteSubscription('{{$subscription->id}}', '{{$subscription->name}}', event,this)">
+				<a class="btn btn-info" href="{{ url('admin/advertisement/plan/'.$advertisement->id.'/edit/') }}">Edit</a>
+				<a href="{{ URL::to('admin/advertisement/plan/activated/'.$advertisement->id) }}">
+                    @if ($advertisement->is_activated) <button type="button" class="btn btn-danger">Inactive</button> @else <button type="button" class="btn btn-success">Active</button> @endif </a>
+				<form action="{{ url('admin/advertisement/plan/'.$advertisement->id) }}" method="POST" class="form-horizontal" onsubmit="deleteAdvertisement('{{$advertisement->id}}', '{{$advertisement->name}}', event,this)">
 						{{csrf_field()}}
 						<input type="hidden" name="method" value="DELETE">
 						<button type="submit" class="btn btn-danger">Delete</button>
@@ -52,7 +48,7 @@
 @endsection
 @section('scripts')
 	<script type="text/javascript">
-		function deleteSubscription(id, name, event,form)
+		function deleteAdvertisement(id, name, event,form)
 		{   
 
 			event.preventDefault();

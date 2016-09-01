@@ -1,9 +1,8 @@
 @extends('admin.layouts.adminapp')
 @section('title', $page)
 @section('content')
-	<h2>Edit User</h2>
+	<h2>Edit Subscription Plan</h2>
 	<hr>
-	@include('notification')
 	@if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>
@@ -15,70 +14,59 @@
 	@endif
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<p class="bold">Edit User</p>
+			<p class="bold">Edit Subscription Plan</p>
 		</div>
 		<div class="panel-body">
-			<form action="{{ url('admin/users/'.$users->id) }}" method="POST" class="form-horizontal">
+			<form action="{{ url('admin/subscription/plan/'.$subscription->id) }}" method="POST" class="form-horizontal">
 				{{csrf_field()}}
 				<input type="hidden" name="_method" value="put" />
-				<div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-					<label class="control-label col-md-2">First Name</label>
+				<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+					<label class="control-label col-md-2">Subscription Plan Name</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" name="first_name" value="{{ $users->first_name }}" >
-						@if($errors->has('first_name'))
+						<input type="text" class="form-control" name="name" value="{{ $subscription->name }}" >
+						@if($errors->has('name'))
 							<span class="help-block">
-								<strong>{{ $errors->first('first_name') }}</strong>
+								<strong>{{ $errors->first('name') }}</strong>
 							</span>
 						@endif
 					</div>
 				</div>
-				<div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-					<label class="control-label col-md-2">Last Name</label>
+				<div class="form-group{{ $errors->has('product_limit') ? ' has-error' : '' }}">
+					<label class="control-label col-md-2">Product Limit</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" name="last_name" value="{{ $users->last_name }}" >
-						@if($errors->has('last_name'))
+						<input type="text" class="form-control" name="product_limit" value="{{ $subscription->product_limit}}" >
+						@if($errors->has('product_limit'))
 							<span class="help-block">
-								<strong>{{ $errors->first('last_name') }}</strong>
+								<strong>{{ $errors->first('product_limit') }}</strong>
 							</span>
 						@endif
 					</div>
 				</div>
-				<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-					<label class="control-label col-md-2">Email</label>
+				<div class="form-group{{ $errors->has('service_limit') ? ' has-error' : '' }}">
+					<label class="control-label col-md-2">Service Limit</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" name="email" value="{{ $users->email }}" >
-						@if($errors->has('email'))
+						<input type="text" class="form-control" name="service_limit" value="{{ $subscription->service_limit }}" >
+						@if($errors->has('service_limit'))
 							<span class="help-block">
-								<strong>{{ $errors->first('email') }}</strong>
+								<strong>{{ $errors->first('service_limit') }}</strong>
 							</span>
 						@endif
 					</div>
 				</div>
-				<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-					<label class="control-label col-md-2">Password</label>
+				<div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
+					<label class="control-label col-md-2">Price(per month)</label>
 					<div class="col-md-10">
-						<input type="password" class="form-control" name="password" value="{{ old('password') }}" >
-						@if($errors->has('password'))
+						<input type="text" class="form-control" name="price" value="{{ $subscription->price }}" >
+						@if($errors->has('price'))
 							<span class="help-block">
-								<strong>{{ $errors->first('password') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div>
-				<div class="form-group{{ $errors->has('confirm_password') ? ' has-error' : '' }}">
-					<label class="control-label col-md-2">Confirm Password</label>
-					<div class="col-md-10">
-						<input type="password" class="form-control" name="confirm_password" value="{{ old('confirm_passowrd') }}" >
-						@if($errors->has('confirm_password'))
-							<span class="help-block">
-								<strong>{{ $errors->first('confirm_password') }}</strong>
+								<strong>{{ $errors->first('price') }}</strong>
 							</span>
 						@endif
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-12">
-						<button type="submit" class="btn btn-default col-md-offset-2" id="btn-login">Update User</button>
+						<button type="submit" class="btn btn-default col-md-offset-2" id="btn-login">Update Subscription</button>
 					</div>
 				</div>
 			</form>
