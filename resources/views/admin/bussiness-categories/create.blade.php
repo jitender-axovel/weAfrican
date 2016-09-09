@@ -3,7 +3,7 @@
 @section('content')
 	<h2>Add New Category</h2>
 	<hr>
-	
+	@include('notification')
 	@if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>
@@ -19,7 +19,7 @@
 			<p class="bold">Create New Category</p>
 		</div>
 		<div class="panel-body">
-			<form  id="category-form" action="{{ url('admin/category') }}" method="POST" class="form-horizontal">
+			<form  id="category-form" action="{{ url('admin/bussiness/category') }}" method="POST" class="form-horizontal" enctype='multipart/form-data'>
 				{{csrf_field()}}
 				<div class="form-group">
 					<label class="control-label col-md-2">Category Name</label>
@@ -42,6 +42,29 @@
 							</span>
 						@endif
 					</div>
+				</div>	
+				<div class="form-group">
+					<label class="control-label col-md-2">Description</label>
+					<div class="col-md-10">
+						<textarea required class="form-control" name="description" ></textarea>
+						@if($errors->has('description'))
+							<span class="help-block">
+								<strong>{{ $errors->first('description') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Image</label>
+					<div class="col-md-10">
+						 <input type="file" name="category_image" id="category_image" required>
+                         <img src="#" alt="Category Image Preview"  id="preview">
+						@if($errors->has('category_image'))
+							<span class="help-block">
+								<strong>{{ $errors->first('category_image') }}</strong>
+							</span>
+						@endif
+					</div>
 				</div>							
 				<div class="form-group">
 					<div class="col-md-12">
@@ -53,53 +76,20 @@
 	</div>
 @endsection
 @section('scripts')
-	<script type="text/javascript" src="{{ asset('js/fine-uploader/jquery.fine-uploader.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/fine-uploader/category.js') }}"></script>
-
 	<script type="text/javascript">
-        $(document).ready(function() {
-			$('#category-form').submit(function(event) {
-				event.preventDefault();
-				var actionUrl = $(this).attr('action');
-				$.ajax({
-					type: 'POST',
-					url: actionUrl,
-					data: $(this).serialize(),
-					success: function(data) {
-						var data = JSON.parse(data);
-						if(data.status == 'success') {
-							swal({
-									title: "Done",
-									text: "The category data has been saved. Press ok to continue",
-									type: "success",
-									showCancelButton: false,
-									confirmButtonColor: "#DD6B55",
-									confirmButtonText: "Ok",
-									closeOnConfirm: false,
-									allowEscapeKey: false,
-								},
-								function(isConfirm){
-									if(isConfirm) {
-										window.location = data.url;
-									}
-							});
-						} else {
-							swal({
-									title: "Opppsss",
-									text: data.response,
-									type: "error",
-									showCancelButton: false,
-									confirmButtonColor: "#DD6B55",
-									confirmButtonText: "Ok",
-									closeOnConfirm: false,
-								},
-								function() {
-									window.location.reload();
-							});
-						}
-					}
-				});
-			});
-        });
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#category_image").change(function(){
+        readURL(this);
+    });
 	</script>
 @endsection

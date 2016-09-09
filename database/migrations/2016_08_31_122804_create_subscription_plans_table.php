@@ -15,11 +15,12 @@ class CreateSubscriptionPlansTable extends Migration
     {
         Schema::create('subscription_plans', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('title')->unique();
+            $table->string('slug');
             $table->integer('product_limit');
             $table->integer('service_limit');
             $table->integer('price');
-            $table->boolean('is_activated')->default(0);
+            $table->boolean('is_blocked');
             $table->timestamps();
             $table->softDeletes();
         });

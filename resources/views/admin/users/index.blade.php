@@ -25,13 +25,13 @@
 		<tbody>
 			@foreach($users as $user)
 			<tr>
-				<td>{{ $user->first_name}}{{$user->last_name}}</td>
+				<td>{{ $user->full_name}}</td>
 				<td>{{ $user->email }}</td>
 				<td>{{ $user->mobile_no}}</td>
 				<td>{{ date_format(date_create($user->created_at), 'F d, Y') }}</td>
 				<td>
 				<a href="{{ URL::to('admin/user/blocked/'.$user->id) }}">
-                    @if ($user->is_blocked) <button type="button" class="btn btn-danger">Block</button> @else <button type="button" class="btn btn-success">Unblock</button> @endif </a>
+                    @if($user->is_blocked) <button type="button" class="btn btn-danger">Unblock</button> @else <button type="button" class="btn btn-success">Block</button> @endif </a>
 				<form action="{{ url('admin/users/'.$user->id) }}" method="POST" class="form-horizontal" onsubmit="deleteUser('{{$user->id}}', '{{$user->first_name}}', event,this)">
 						{{csrf_field()}}
 						<input type="hidden" name="method" value="DELETE">

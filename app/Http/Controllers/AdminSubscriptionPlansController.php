@@ -20,7 +20,7 @@ class AdminSubscriptionPlansController extends Controller
    public function index()
     {
         $page = 'Subscription Plan- Admin';
-        $subscriptions = SubscriptionPlan::get();
+        $subscriptions = SubscriptionPlan::orderBy('id','asc')->get();
         return view('admin.subscriptions.index', compact('page', 'subscriptions'));
     }
 
@@ -47,9 +47,9 @@ class AdminSubscriptionPlansController extends Controller
         );
 
         if ($validator->fails()) {
-            if($request->ajax()) {
-                return json_encode($validator->errors()->all());
-            } 
+            return redirect('admin/subscription/plan')
+                        ->withErrors($validator)
+                        ->withInput();
         }
 
         $input = $request->input();
@@ -62,11 +62,7 @@ class AdminSubscriptionPlansController extends Controller
             $subscription->price = $input['price'];
             $subscription->save();
 
-            if($request->ajax()) {
-                return json_encode(['status' => 'success','url' => url('admin/subscription/plan')]);
-            } else {
-                return back();
-            }
+             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan updated successfully');
             
     }   
 
@@ -103,9 +99,8 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',    
-        ]);
+        $validator = Validator::make($request->all(), SubscriptionPlan::$validater 
+        );
 
         if ($validator->fails()) {
             return redirect('admin/subscription/plan/'.$id.'/edit')
@@ -133,36 +128,18 @@ class AdminSubscriptionPlansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $subscription = SubscriptionPlan::findOrFail($id);
-        if($subscription->delete()){
-            $response = array(
-                'status' => 'success',
-                'message' => ' Subscription Plan deleted  successfully',
-            );
-             return json_encode($response);
-        } else {
-            $response = array(
-                'status' => 'error',
-                'message' => ' Subscription
-                Plan can not be deleted.Please try again',
-            );
-             return json_encode($response);
 
-        }
-    }
 
-    public function isActivated($id)
+    public function getBlocked($id)
     {
         $subscription=SubscriptionPlan::find($id);
        
-        if($subscription->is_activated == 0){ 
-            $subscription=SubscriptionPlan::where('id', $id)->update(['is_activated' => '1']);
+        if($subscription->is_blocked == 0){ 
+            $subscription=SubscriptionPlan::where('id', $id)->update(['is_blocked' => '1']);
             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan activated successfully');
 
-        } else if($subscription->is_activated == 1){ 
-           $subscription=SubscriptionPlan::where('id', $id)->update(['is_activated' => '0']);
+        } else if($subscription->is_blocked == 1){ 
+           $subscription=SubscriptionPlan::where('id', $id)->update(['is_blocked' => '0']);
             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan deactivated successfully');
         }   
     }

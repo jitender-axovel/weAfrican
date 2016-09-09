@@ -16,9 +16,10 @@ class UserRolesTableSeeder extends Seeder
 	$dt = $dt->format('Y-m-d H:i:s');
         DB::table('user_roles')->delete();
         DB::table('user_roles')->insert([
-            ['name' => 'admin', 'created_at' => $dt, 'updated_at' => $dt],
-            ['name' => 'regular', 'created_at' => $dt, 'updated_at' => $dt],
-            ['name' => 'bussiness', 'created_at' => $dt, 'updated_at' => $dt],
+            ['name' => 'SuperAdmin', 'created_at' => $dt, 'updated_at' => $dt],
+            ['name' => 'Admin', 'created_at' => $dt, 'updated_at' => $dt],
+            ['name' => 'BussinessUser', 'created_at' => $dt, 'updated_at' => $dt],
+            ['name' => 'EndUser', 'created_at' => $dt, 'updated_at' => $dt],
         ]);
     }
 }

@@ -19,7 +19,7 @@
 						<li><a href="#">About</a></li>
 						<li><a href="#">Features</a></li>
 						<li><a href="#">product video</a></li>
-						<li><a href="#" class="download-link">download</a></li>
+						<li><a href="{{ url('logout')}}" class="download-link">download</a></li>
 					  </ul>				  
 					</div>
 				</div>

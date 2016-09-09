@@ -3,6 +3,7 @@
 @section('content')
 	<h2>Edit Subscription Plan</h2>
 	<hr>
+	@include('notification')
 	@if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>
@@ -20,15 +21,10 @@
 			<form action="{{ url('admin/subscription/plan/'.$subscription->id) }}" method="POST" class="form-horizontal">
 				{{csrf_field()}}
 				<input type="hidden" name="_method" value="put" />
-				<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+				<div class="form-group">
 					<label class="control-label col-md-2">Subscription Plan Name</label>
 					<div class="col-md-10">
-						<input type="text" class="form-control" name="name" value="{{ $subscription->name }}" >
-						@if($errors->has('name'))
-							<span class="help-block">
-								<strong>{{ $errors->first('name') }}</strong>
-							</span>
-						@endif
+						{{ $subscription->title }}
 					</div>
 				</div>
 				<div class="form-group{{ $errors->has('product_limit') ? ' has-error' : '' }}">
