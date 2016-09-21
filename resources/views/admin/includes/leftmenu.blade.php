@@ -4,15 +4,7 @@
             <a href="{{url('admin/dashboard')}}">Dashboard</a>
         </li>   
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#users" class="collapsed" aria-expanded="false">User Management <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="users" class="collapse" aria-expanded="false">
-                <li>
-                    <a href="{{url('admin/users/create')}}">Create New User</a>
-                </li>
-                <li>
-                    <a href="{{url('admin/users')}}">List Users</a>
-                </li>
-            </ul>
+            <a href="{{url('admin/users')}}">User Management</a>
         </li>     
         <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#category" class="collapsed" aria-expanded="false">Category Management <i class="fa fa-fw fa-caret-down"></i></a>
@@ -26,7 +18,7 @@
             </ul>
         </li>
         <li>
-                    <a href="{{url('admin/subscription/plan')}}">Subscription Plans</a>
+            <a href="{{url('admin/subscription/plan')}}">Subscription Plans</a>
         </li>
         <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#advertisement" class="collapsed" aria-expanded="false">Advertisement Plans<i class="fa fa-fw fa-caret-down"></i></a>
