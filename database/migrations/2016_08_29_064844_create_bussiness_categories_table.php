@@ -19,7 +19,7 @@ class CreateBussinessCategoriesTable extends Migration
             $table->string('slug');
             $table->text('description');
             $table->string('image')->nullable();
-            $table->boolean('is_blocked');
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
