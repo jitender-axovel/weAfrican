@@ -17,10 +17,10 @@ class CreateSubscriptionPlansTable extends Migration
             $table->increments('id');
             $table->string('title')->unique();
             $table->string('slug');
-            $table->integer('product_limit');
-            $table->integer('service_limit');
-            $table->integer('price');
-            $table->boolean('is_blocked');
+            $table->integer('product_limit')->unsigned();
+            $table->integer('service_limit')->unsigned();
+            $table->integer('price')->unsigned();
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
