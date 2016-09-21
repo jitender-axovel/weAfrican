@@ -18,9 +18,9 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        $page = 'User - Admin';
+        $pageTitle = 'Admin - Users';
         $users = User::get();
-        return view('admin.users.index', compact('page', 'users'));
+        return view('admin.users.index', compact('pageTitle', 'users'));
     }
 
     /**
@@ -63,7 +63,9 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pageTitle = 'Admin - Edit User';
+        $user = User::find($id);
+        return view('admin.users.edit', compact('pageTitle', 'user'));
     }
 
     /**
@@ -75,7 +77,15 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        $input = array_intersect_key($request->input(), User::$updatable);
+
+        if ($user->update($input)) {
+            return redirect('admin/users')->with('success', 'Information has been updated.');
+        } else {
+            return redirect('admin/users')->with('error', 'Information has not been updated.');
+        }
     }
 
     /**
