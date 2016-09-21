@@ -21,9 +21,9 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function index()
     {
-        $page = 'Category - Admin';
+        $pageTitle = 'Admin - Category';
         $categories = BussinessCategory::get();
-        return view('admin.bussiness-categories.index', compact('page', 'categories'));
+        return view('admin.categories.index', compact('pageTitle', 'categories'));
     }
 
     /**
@@ -33,8 +33,8 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function create()
     {
-        $page = "Create Category - Admin";
-        return view('admin.bussiness-categories.create', compact('page'));
+        $pageTitle = "Admin - Create Category";
+        return view('admin.categories.create', compact('pageTitle'));
     }
 
     /**
@@ -106,9 +106,9 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $page = "Edit Bussiness Category - Admin";
+        $pageTitle = "Admin - Edit Bussiness Category";
         $category = BussinessCategory::find($id);
-        return view('admin.bussiness-categories.edit',compact('page','category'));
+        return view('admin.categories.edit',compact('pageTitle','category'));
     }
 
     /**
