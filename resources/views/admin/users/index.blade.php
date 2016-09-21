@@ -1,23 +1,15 @@
 @extends('admin.layouts.adminapp')
-@section('title', $page)
+@section('title', $pageTitle)
 @section('content')
 	<h2>Users</h2>
 	<hr>
-	@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-	@endif
+	@include('notification')
 	<table id="users_list" class="display">
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Email</th>
-				<th>Mobile No.</th>
+				<th>Phone No.</th>
+				<th>Role</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -26,17 +18,31 @@
 			@foreach($users as $user)
 			<tr>
 				<td>{{ $user->full_name}}</td>
-				<td>{{ $user->email }}</td>
-				<td>{{ $user->mobile_no}}</td>
+				<td>{{ '+' . $user->country_code . '-' . $user->phone_number }}</td>
+				<td>{{ $user->role->name }}</td>
 				<td>{{ date_format(date_create($user->created_at), 'F d, Y') }}</td>
 				<td>
-				<a href="{{ URL::to('admin/user/blocked/'.$user->id) }}">
-                    @if($user->is_blocked) <button type="button" class="btn btn-danger">Unblock</button> @else <button type="button" class="btn btn-success">Block</button> @endif </a>
-				<form action="{{ url('admin/users/'.$user->id) }}" method="POST" class="form-horizontal" onsubmit="deleteUser('{{$user->id}}', '{{$user->first_name}}', event,this)">
-						{{csrf_field()}}
-						<input type="hidden" name="method" value="DELETE">
-						<button type="submit" class="btn btn-danger">Delete</button>
-					</form>
+					<ul class="list-inline">
+						<li>
+							<a href="{{ url('admin/user/blocked/'.$user->id) }}">
+			                    @if($user->is_blocked)
+			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
+			                	@else
+			                		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+			            		@endif
+			        		</a>
+						</li>
+						<li>
+							<a class="btn btn-warning" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
+						</li>
+						<li>
+							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" class="form-horizontal" onsubmit="deleteUser('{{$user->id}}', '{{$user->first_name}}', event,this)">
+								{{csrf_field()}}
+								<input type="hidden" name="method" value="DELETE">
+								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+							</form>
+						</li>
+					</ul>
 				</td>
 			</tr>
 			@endforeach
