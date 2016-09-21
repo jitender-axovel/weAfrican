@@ -13,12 +13,12 @@
             <div class="row">
                 <div class="main-content">
                 @if(Auth::check())
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         @include('admin.includes.leftmenu')
                     </div>
                 @endif
                 
-                <div class="col-md-9">
+                <div class="col-md-10">
                     @yield('content')
                 </div>
                 @yield('scripts')
