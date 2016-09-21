@@ -16,34 +16,48 @@ class User extends Authenticatable
     use SoftDeletes;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    * The attributes that are mass assignable.
+    *
+    * @var array
+    */
     protected $fillable = [
-        'full_name', 'email', 'password','mobile_no' , 'user_role_id', 'slug','otp'
+        'full_name', 'country_code', 'phone_number', 'password', 'user_role_id', 'slug', 'otp'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
+    * The attributes that are updatable.
+    *
+    * @var array
+    */
+    public static $updatable = [
+        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => ""
     ];
 
-   public function apiRegister($input)
+    /**
+    * The attributes that should be hidden for arrays.
+    *
+    * @var array
+    */
+    protected $hidden = [
+    'password', 'remember_token',
+    ];
+
+    public function role()
+    {
+        return $this->belongsTo('App\UserRole', 'user_role_id');
+    }
+
+    public function apiRegister($input)
     {
         $validator = Validator::make($input, [
             'full_name' => 'required',
             'mobile_no' => 'numeric|required|unique:users',
             'password' => 'required|min:6',
-        ]);
+            ]);
 
         if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);
-            
+            return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);
+
         }
 
         $input['full_name']=ucfirst($input['full_name']);
@@ -52,7 +66,7 @@ class User extends Authenticatable
         $input['user_role_id']= 4;
 
         $user = User::create($input);
-            
+
         $user['slug'] = Helper::slug($input['full_name'], $user->id);
 
         if($user->save()){
