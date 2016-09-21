@@ -15,30 +15,32 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
-    public function login(){ 
-    	if(Auth::check() && (Auth::user()->user_role_id == 1)) {
+    public function login(){
+        $pageTitle = 'Admin-login';
+
+    	if (Auth::check() && (Auth::user()->user_role_id == 1)) {
             return redirect('admin/dashboard');
         }
         elseif(Auth::check()) {
             return redirect('/');
         }
         
-    	return view('admin.login');
+    	return view('admin.login', compact('pageTitle'));
     }
 
     public function postLogin(Request $request)
-    { 
-    	if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password'), 'user_role_id' => 1])) {
+    {
+    	if (Auth::attempt(['phone_number' => $request->input('phone_number'), 'password' => $request->input('password'), 'user_role_id' => 1])) {
             // Authentication passed...
             return redirect()->intended('admin/dashboard');
         } else {
-            $errors = new MessageBag(['email' => ['These credentials do not match our records.']]);
+            $errors = new MessageBag(['phone_number' => ['These credentials do not match our records.']]);
             return back()->withErrors($errors)->withInput(Input::except('password'));
         }
     }
 
     public function logout()
     {
-    
+
     }
 }
