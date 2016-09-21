@@ -20,7 +20,7 @@ class AdminSubscriptionPlansController extends Controller
    public function index()
     {
         $page = 'Subscription Plan- Admin';
-        $subscriptions = SubscriptionPlan::orderBy('id','asc')->get();
+        $subscriptions = SubscriptionPlan::orderBy('id','DESC')->get();
         return view('admin.subscriptions.index', compact('page', 'subscriptions'));
     }
 
@@ -31,8 +31,7 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function create()
     {
-        $page = "Create Subscription Plan - Admin";
-        return view('admin.subscriptions.create', compact('page'));
+        //
     }
 
     /**
@@ -43,27 +42,7 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function store(Request $request)
     {
-         $validator = Validator::make($request->input(), SubscriptionPlan::$validater 
-        );
-
-        if ($validator->fails()) {
-            return redirect('admin/subscription/plan')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-
-        $input = $request->input();
-  
-            $input = array_intersect_key($input,SubscriptionPlan::$updatable);
-            $subscription = new SubscriptionPlan();
-            $subscription->name = $input['name'];
-            $subscription->product_limit = $input['product_limit'];
-            $subscription->service_limit = $input['service_limit'];
-            $subscription->price = $input['price'];
-            $subscription->save();
-
-             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan updated successfully');
-            
+        //
     }   
 
     /**
@@ -109,17 +88,16 @@ class AdminSubscriptionPlansController extends Controller
         }
         $input = $request->input();
 
-        
-            $input = array_intersect_key($input, SubscriptionPlan::$updatable);
-            $subscriptions = SubscriptionPlan::where('id',$id)->update($input);
-        
-            if($subscriptions > 0 ){
-                
-                return redirect('admin/subscription/plan')->with('success', 'Subscription Updated successfully');
-            } else {
+        $input = array_intersect_key($input, SubscriptionPlan::$updatable);
+        $subscriptions = SubscriptionPlan::where('id',$id)->update($input);
+    
+        if($subscriptions > 0 ){
+            
+            return redirect('admin/subscription/plan')->with('success', 'Subscription Updated successfully');
+        } else {
 
-                return back()->with('error', 'Subscription could not be updated. Please try again.');
-            }
+            return back()->with('error', 'Subscription could not be updated. Please try again.');
+        }
     }
 
     /**
@@ -139,7 +117,7 @@ class AdminSubscriptionPlansController extends Controller
             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan activated successfully');
 
         } else if($subscription->is_blocked == 1){ 
-           $subscription=SubscriptionPlan::where('id', $id)->update(['is_blocked' => '0']);
+            $subscription=SubscriptionPlan::where('id', $id)->update(['is_blocked' => '0']);
             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan deactivated successfully');
         }   
     }
