@@ -7,8 +7,8 @@
         </div>
         <div class="col-md-6 right-side">
             <ul class="list-inline">
-                {{--<li class="login"><a class="btn btn-success" href="{{url('/')}}">Visit Site</a></li>--}}
-                <li><a class="btn btn-danger" href="{{ url('logout') }}"><i class="fa fa-power-off"></i>Logout</a></li>
+                <li class="login"><a class="btn btn-success" href="{{url('/')}}" target="_blank">Visit Site</a></li>
+                <li><a class="btn btn-danger" href="{{ url('logout') }}"><i class="fa fa-power-off"></i> Logout</a></li>
             </ul>
         </div>
     </div>
