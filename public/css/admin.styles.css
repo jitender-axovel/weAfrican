@@ -3,9 +3,17 @@ body {
     padding: 0px;
 }
 
+body .page-wrapper {
+    overflow: hidden;
+}
+
 header.admin-header {
     background: #2d3e50 none repeat scroll 0 0;
+    margin: 0 auto;
     padding-top: 11px;
+    position: fixed;
+    width: 100%;
+    z-index: 999;
 }
 
 .admin-header .left-side {
@@ -18,6 +26,12 @@ header.admin-header {
 
 .site-logo {
     color: #fff;
+}
+
+/* Main Content */
+
+.page-wrapper .main-content {
+    padding-top: 55px;
 }
 
 /* Sidebar Styles */
