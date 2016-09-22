@@ -18,7 +18,7 @@
 			<tr>
 				<td>{{ $category->title}}</td>
 				<td>
-					<img width="100px" height="100px" src="{{ asset(config('image.upload_image_url').$category->image) }}" class="responsive">
+					<img width="100px" height="100px" src="{{ asset(config('image.category_image_url').$category->image) }}" class="responsive">
 				</td>
 				<td>{{ date_format(date_create($category->created_at), 'F d, Y') }}</td>
 				<td>

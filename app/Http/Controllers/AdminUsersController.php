@@ -8,7 +8,6 @@ use App\Http\Requests;
 
 use App\User;
 
-
 class AdminUsersController extends Controller
 {
     /**
@@ -102,27 +101,24 @@ class AdminUsersController extends Controller
                 'status' => 'success',
                 'message' => ' User deleted  successfully',
             );
-             return json_encode($response);
         } else {
             $response = array(
                 'status' => 'error',
                 'message' => ' User can not be deleted.Please try again',
             );
-             return json_encode($response);
-
         }
+        return json_encode($response);
     }
 
-    public function getBlocked($id)
+    public function block($id)
     {
-        $user=User::find($id);
+        $user = User::find($id);
+        $user->is_blocked = !$user->is_blocked;
+        $user->save();
        
-        if($user->is_blocked == 0){ 
-            $user=user::where('id', $id)->update(['is_blocked' => '1']);
+        if($user->is_blocked){ 
             return redirect('admin/users')->with('success', 'User blocked successfully');
-
-        } else if($user->is_blocked == 1){ 
-            $user=user::where('id', $id)->update(['is_blocked' => '0']);
+        } else { 
             return redirect('admin/users')->with('success', 'User unblocked successfully');
         }   
     }

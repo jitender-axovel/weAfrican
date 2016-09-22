@@ -43,7 +43,7 @@ class AdminSubscriptionPlansController extends Controller
     public function store(Request $request)
     {
         //
-    }   
+    }
 
     /**
      * Display the specified resource.
@@ -78,47 +78,43 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), SubscriptionPlan::$validater 
-        );
+        $subscription = SubscriptionPlan::find($id);
+
+        if(!$subscription) {
+            return back()->with('error', 'Sorry, the plan you requested is not found');
+        }
+
+        $validator = Validator::make($request->all(), SubscriptionPlan::$validater);
 
         if ($validator->fails()) {
-            return redirect('admin/subscription/plan/'.$id.'/edit')
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect('admin/subscription/plan/'.$id.'/edit')->withErrors($validator)->withInput();
         }
-        $input = $request->input();
 
-        $input = array_intersect_key($input, SubscriptionPlan::$updatable);
-        $subscriptions = SubscriptionPlan::where('id',$id)->update($input);
-    
-        if($subscriptions > 0 ){
-            
+        $input = array_intersect_key($request->input(), SubscriptionPlan::$updatable);
+
+        if ($subscription->update($input)) {
             return redirect('admin/subscription/plan')->with('success', 'Subscription Updated successfully');
         } else {
-
             return back()->with('error', 'Subscription could not be updated. Please try again.');
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Block the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-
-    public function getBlocked($id)
+    public function block($id)
     {
-        $subscription=SubscriptionPlan::find($id);
-       
-        if($subscription->is_blocked == 0){ 
-            $subscription=SubscriptionPlan::where('id', $id)->update(['is_blocked' => '1']);
-            return redirect('admin/subscription/plan')->with('success', 'Subscription Plan activated successfully');
+        $subscription = SubscriptionPlan::find($id);
+        $subscription->is_blocked = !$subscription->is_blocked;
+        $subscription->save();
 
-        } else if($subscription->is_blocked == 1){ 
-            $subscription=SubscriptionPlan::where('id', $id)->update(['is_blocked' => '0']);
-            return redirect('admin/subscription/plan')->with('success', 'Subscription Plan deactivated successfully');
+        if ($subscription->is_blocked) { 
+            return redirect('admin/subscription/plan')->with('success', 'Subscription Plan blocked successfully');
+        } else {
+            return redirect('admin/subscription/plan')->with('success', 'Subscription Plan unblocked successfully');
         }   
     }
 }

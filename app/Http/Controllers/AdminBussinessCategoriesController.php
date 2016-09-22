@@ -45,46 +45,40 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-
-        $validator = Validator::make($request->all(), BussinessCategory::$validater 
-        );
+        $validator = Validator::make($request->all(), BussinessCategory::$validater );
 
         if ($validator->fails()) {
-            return redirect('admin/bussiness/category/create')
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect('admin/bussiness/category/create')->withErrors($validator)->withInput();
         }
-        
+
         if($request->file('category_image')->isValid()) {
-            $file=$key=md5(uniqid(rand(), true));
-            $ext=$request->file('category_image')->getClientOriginalExtension();
-            $image =  $file.'.'.$ext;
-            $fileName=$request->file('category_image')->move(config('image.image_path'),$image );
-            $command = 'ffmpeg -i '.config('image.image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.image_path').'thumbnails/small/'.$image;
+            $file = $key = md5(uniqid(rand(), true));
+            $ext = $request->file('category_image')->getClientOriginalExtension();
+            $image = $file.'.'.$ext;
+            $fileName=$request->file('category_image')->move(config('image.category_image_path'), $image);
+
+            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
-        }
-        else{
-              return redirect('admin/bussiness/category/create')->with('Error', 'Category image is not uploaded.Please try again');
+        } else {
+            return redirect('admin/bussiness/category/create')->with('Error', 'Category image is not uploaded. Please try again');
         }
 
         $input = $request->input();
 
         if($input['title'] == $input['confirm_title']) {
-           
             $category = new BussinessCategory();
+
             $category->title = $input['title'];
             $category->description = $input['description'];
             $category->image = $image;
             $category->slug = Helper::slug($input['title'], $category->id);
+
             $category->save();
 
             return redirect('admin/bussiness/category')->with('success', 'New Bussiness category created successfully');
-            
         } else {
-
             return redirect('admin/bussiness/category/create')->with('error', 'Title and confirm title should be same');
         }
-
     }
 
     /**
@@ -95,7 +89,7 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function show($id)
     {
-    
+        //
     }
 
     /**
@@ -120,28 +114,26 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BussinessCategory::$updateValidater 
-        );
+        $validator = Validator::make($request->all(),BussinessCategory::$updateValidater);
 
         if ($validator->fails()) {
-            return redirect('admin/bussiness/category/'.$id.'/edit')
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect('admin/bussiness/category/'.$id.'/edit')->withErrors($validator)->withInput();
         }
-        if($request->file('category_image'))
-        {   
-            if ($request->file('category_image')->isValid()) {
-                $file=$key=md5(uniqid(rand(), true));
-                $ext=$request->file('category_image')->getClientOriginalExtension();
-                $image =  $file.'.'.$ext;
-                $fileName=$request->file('category_image')->move(config('image.image_path'),$image );
-                $command = 'ffmpeg -i '.config('image.image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.image_path').'thumbnails/small/'.$image;
-                shell_exec($command);
-            }else{
-              return redirect('admin/bussiness/category')->with('Error', 'Category image is not uploaded.Please try again');
-            }
-        }    
+
+        if ($request->file('category_image') && $request->file('category_image')->isValid()) {
+            $file = $key = md5(uniqid(rand(), true));
+            $ext = $request->file('category_image')->getClientOriginalExtension();
+            $image = $file.'.'.$ext;
+            $fileName = $request->file('category_image')->move(config('image.category_image_path'),$image );
+            
+            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
+            shell_exec($command);
+        } else {
+            return redirect('admin/bussiness/category')->with('Error', 'Category image is not uploaded.Please try again');
+        }
+
         $input = $request->input();
+
         if($input['title'] == $input['confirm_title'])
         {
             $input = array_intersect_key($input, BussinessCategory::$updatable);
@@ -152,12 +144,11 @@ class AdminBussinessCategoriesController extends Controller
             } else {
                 $category = BussinessCategory::where('id',$id)->update($input);
             }
-           
-            
-           return redirect('admin/bussiness/category')->with('success', 'Category updated successfully');
-        }else{
+
+            return redirect('admin/bussiness/category')->with('success', 'Category updated successfully');
+        } else {
             return back()->with('error', 'Title and confirm title should be same');
-        } 
+        }
     }
 
     /**
@@ -169,34 +160,32 @@ class AdminBussinessCategoriesController extends Controller
     public function destroy($id)
     {
         $category = BussinessCategory::findOrFail($id);
+
         if($category->delete()){
             $response = array(
                 'status' => 'success',
-                'message' => ' Category deleted  successfully',
+                'message' => 'Category deleted  successfully',
             );
-             return json_encode($response);
         } else {
             $response = array(
                 'status' => 'error',
-                'message' => ' Category can not be deleted.Please try again',
+                'message' => 'Category can not be deleted.Please try again',
             );
-             return json_encode($response);
-
         }
+
+        return json_encode($response);
     }
 
-    public function getBlocked($id)
+    public function block($id)
     {
-        $category=BussinessCategory::find($id);
-       
-        if($category->is_blocked == 0){ 
-            $category=BussinessCategory::where('id', $id)->update(['is_blocked' => '1']);
-            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category blocked successfully');
+        $category = BussinessCategory::find($id);
+        $category->is_blocked = !$category->is_blocked;
+        $category->save();
 
-        } else if($category->is_blocked == 1){ 
-            $category=BussinessCategory::where('id', $id)->update(['is_blocked' => '0']);
-            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category Unblocked successfully');
-
-        }   
+        if ($category->is_blocked) {
+            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been blocked successfully');
+        } else {
+            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been unblocked');
+        }
     }
 }
