@@ -14,7 +14,8 @@ return array(
      |.....................................................................
      |
      */
-    'image_path' => str_replace('\\','/',public_path()). '/uploads/images/',
+    'category_image_path' => str_replace('\\','/',public_path()). '/uploads/images/categories/',
+    'banner_image_path' => str_replace('\\','/',public_path()). '/uploads/images/banners/',
     /*
      |.....................................................................
      |  images urls
@@ -22,7 +23,8 @@ return array(
      |
      */
 
-    'upload_image_url' => '/uploads/images/',
+    'category_image_url' => '/uploads/images/categories/',
+    'banner_image_url' => '/uploads/images/banners/',
 
     /*
      |.....................................................................
