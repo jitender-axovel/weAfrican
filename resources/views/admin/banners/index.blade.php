@@ -3,20 +3,14 @@
 @section('content')
 	<h2>Banners</h2>
 	<hr>
-	@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-	@endif
+	@include('notification')
 	<table id="subscription_list" class="display">
 		<thead>
 			<tr>
+				<th>Title</th>
+				<th>Business</th>
 				<th>City</th>
-				<th>Name</th>
+				<th>Banner</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -24,18 +18,33 @@
 		<tbody>
 			@foreach($banners as $banner)
 			<tr>
-				<td>{{ $banner->city_id}}</td>
 				<td>{{ $banner->name}}</td>
+				<td>{{ $banner->business->title }}</td>
+				<td>{{ $banner->city }}</td>
+				<td>{{ asset(config('image.banner_image_url').$banner->url) }}</td>
 				<td>{{ date_format(date_create($banner->created_at), 'F d, Y') }}</td>
 				<td>
-				<a class="btn btn-info" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}">Edit</a>
-				<a href="{{ URL::to('admin/banner/activated/'.$banner->id) }}">
-                    @if ($banner->is_activated) <button type="button" class="btn btn-danger">Inactive</button> @else <button type="button" class="btn btn-success">Active</button> @endif </a>
-				<form action="{{ url('admin/banner/'.$banner->id) }}" method="POST" class="form-horizontal" onsubmit="deleteBanner('{{$banner->id}}', '{{$banner->name}}', event,this)">
-						{{csrf_field()}}
-						<input type="hidden" name="method" value="DELETE">
-						<button type="submit" class="btn btn-danger">Delete</button>
-					</form></td>
+					<ul class="list-inline">
+						<li>
+							<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+						</li>
+						<li>
+							<a href="{{ URL::to('admin/banner/block/'.$banner->id) }}">
+			                    @if ($banner->is_blocked)
+			                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
+		                    	@else
+		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+	                    		@endif
+			                </a>
+						</li>
+						<li>
+							<form action="{{ url('admin/banner/'.$banner->id) }}" method="POST" onsubmit="deleteBanner('{{$banner->id}}', '{{$banner->name}}', event,this)">
+								{{csrf_field()}}
+								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+							</form>
+						</li>
+					</ul>
+				</td>
 			</tr>
 			@endforeach
 		</tbody>
@@ -49,8 +58,7 @@
 @section('scripts')
 	<script type="text/javascript">
 		function deleteBanner(id, name, event,form)
-		{   
-
+		{
 			event.preventDefault();
 			swal({
 				title: "Are you sure?",
@@ -100,4 +108,3 @@
 		}
 	</script>
 @endsection
-						
