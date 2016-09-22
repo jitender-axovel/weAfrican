@@ -105,3 +105,7 @@ header.admin-header {
     padding-left: 75px;
     padding-right: 40px;
 }
+
+/* Category Section */
+
+#category-form img {height: auto; width: 100%;}
