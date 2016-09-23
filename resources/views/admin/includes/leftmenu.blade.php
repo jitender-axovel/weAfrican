@@ -23,5 +23,8 @@
         <li>
             <a href="{{url('admin/banner')}}">Banner Management</a>
         </li>
+        <li>
+            <a href="{{ url('admin/cms') }}">Manage CMS Pages</a>
+        </li>
     </ul>
 </div>
