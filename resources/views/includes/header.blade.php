@@ -1,5 +1,5 @@
 <header>
-	<div class="container">
+	<div class="col-md-10 col-md-offset-1">
 		<div class="col-md-2 col-sm-2 col-xs-12 logo">
 			<a href="{{url('/')}}"><img src="{{asset('images/logo.png')}}"></a>
 		</div>
@@ -19,6 +19,13 @@
 						<li><a href="#">About</a></li>
 						<li><a href="#">Features</a></li>
 						<li><a href="#">product video</a></li>
+						<li>
+							@if(Auth::check())
+								<a href="{{ url('logout') }}">Logout</a>
+							@else
+								<a href="{{ url('login') }}">Login/Register</a>
+							@endif
+						</li>
 						<li><a href="{{ url('logout')}}" class="download-link">download</a></li>
 					  </ul>				  
 					</div>
