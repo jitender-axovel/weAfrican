@@ -16,18 +16,18 @@ img {max-height: 100% !important; max-width: 100% !important;}
 .top-container.container-fluid {padding-left: 0; padding-right: 0;}
 
 /* Header */
-header {left: 0; margin: 0 auto; position: absolute; right: 0; top: 60px;}
+header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; overflow: hidden; padding: 35px 0 0; width: 100%;}
 .navbar .navbar-nav > li > a {color: #ffffff; padding: 4px 15px; text-transform: uppercase; border-radius: 4px;}
 .navbar .navbar-nav li .download-link, .download-link {background: #05c2f9; border: 1px solid #05c2f9; border-radius: 4px; color: #ffffff;}
 .btn{text-transform:uppercase; padding: 8px 15px;}
 .navbar-nav > li.active {border-bottom: 2px solid #05c2f9;}
 .navbar-nav > li {margin-left: 15px;}
 .nav > li > a:focus, .nav > li > a:hover {background-color: #05c2f9; text-decoration: none;}
-.app-image > img {height: 480px; width: auto; bottom: -175px; position: relative;}
+.app-image > img {height: 480px; width: auto; bottom: -100px; position: relative;}
 
 /* Home Page Main Content */
-.first-section {background: #2d3e50; padding-top: 120px;}
-.first-section .download-weafrican h2 {color: #ffffff; font-weight: bold; font-size:62px; margin: 160px 0 30px;}
+.first-section {background: #2d3e50; padding-top: 35px;}
+.first-section .download-weafrican h2 {color: #ffffff; font-weight: bold; font-size:62px; margin: 115px 0 30px;}
 .first-section .download-weafrican p {color: #ffffff; font-family: raleway; font-size: 14px; font-weight: bold; margin: 0 0 30px;}
 .bottom-links {bottom: -70px; position: relative; text-align: center;}
 .bottom-links .list-inline > li {margin-left: 50px;}
@@ -63,6 +63,9 @@ header {left: 0; margin: 0 auto; position: absolute; right: 0; top: 60px;}
 
 .video-section p {margin: 30px 0;}
 .video-section {padding: 50px 0;}
+
+/* Login Page */
+.top-container .main-content .main-container.row { padding:50px 0;}
 
 /* Footer */
 footer{background: #2d3e50; padding: 50px 0;}
