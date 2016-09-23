@@ -16,10 +16,18 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (!Auth::guard($guard)->check())
-        {
+        if (Auth::guard($guard)->guest()) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response('Unauthorized.', 401);
+            } else {
+                return redirect()->guest('login');
+            }
+        }
+
+        if(Auth::user()->user_role_id !== 1 && Auth::user()->user_role_id !== 2) {
             return redirect('/');
         }
+
         return $next($request);
     }
 }
