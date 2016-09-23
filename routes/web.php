@@ -15,6 +15,8 @@ Route::get('/', ['uses' => 'HomeController@index', 'as' => 'home']);
 
 Auth::routes();
 
+Route::get('logout', 'Auth\LoginController@logout');
+
 Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
 
 Route::group(['prefix' => 'admin'], function() {
