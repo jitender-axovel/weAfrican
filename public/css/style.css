@@ -25,6 +25,9 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; overflow: h
 .nav > li > a:focus, .nav > li > a:hover {background-color: #05c2f9; text-decoration: none;}
 .app-image > img {height: 480px; width: auto; bottom: -100px; position: relative;}
 
+/* Main Content */
+.top-container .main-content {min-height: 350px;}
+
 /* Home Page Main Content */
 .first-section {background: #2d3e50; padding-top: 35px;}
 .first-section .download-weafrican h2 {color: #ffffff; font-weight: bold; font-size:62px; margin: 115px 0 30px;}
