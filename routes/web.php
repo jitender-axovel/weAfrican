@@ -17,8 +17,6 @@ Auth::routes();
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
-Route::get('/home', 'HomeController@index');
-
 Route::group(['prefix' => 'admin'], function() {
 	Route::get('login', 'AdminController@login');
 	Route::post('login', 'AdminController@postLogin');
@@ -32,5 +30,6 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('subscription/plan', 'AdminSubscriptionPlansController');
 		Route::get('banner/block/{id}','AdminBusinessBannersController@block');
 		Route::resource('banner', 'AdminBusinessBannersController');
+		Route::resource('cms', 'AdminCmsPagesController');
 	});
 });
