@@ -19,13 +19,18 @@
 						<li><a href="#">About</a></li>
 						<li><a href="#">Features</a></li>
 						<li><a href="#">product video</a></li>
-						<li>
-							@if(Auth::check())
+						@if(!Auth::check())
+							<li>
+								<a href="{{ url('register') }}">Register</a>
+							</li>
+							<li>
+								<a href="{{ url('login') }}">Login</a>
+							</li>
+						@else
+							<li>
 								<a href="{{ url('logout') }}">Logout</a>
-							@else
-								<a href="{{ url('login') }}">Login/Register</a>
-							@endif
-						</li>
+							</li>
+						@endif
 						<li><a href="{{ url('logout')}}" class="download-link">download</a></li>
 					  </ul>				  
 					</div>
