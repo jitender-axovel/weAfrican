@@ -18,7 +18,6 @@
 						<li class="active"><a href="{{url('/')}}">Home</a></li>	
 						<li><a href="#">About</a></li>
 						<li><a href="#">Features</a></li>
-						<li><a href="#">product video</a></li>
 						@if(!Auth::check())
 							<li>
 								<a href="{{ url('register') }}">Register</a>
@@ -27,6 +26,9 @@
 								<a href="{{ url('login') }}">Login</a>
 							</li>
 						@else
+							<li>
+								<a href="{{ url('register-business/create') }}">Register Business</a>
+							</li>
 							<li>
 								<a href="{{ url('logout') }}">Logout</a>
 							</li>

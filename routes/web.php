@@ -19,6 +19,10 @@ Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
 
+Route::group(['middleware' => ['auth']], function() {
+	Route::resource('register-business', 'UserBusinessController');
+});
+
 Route::group(['prefix' => 'admin'], function() {
 	Route::get('login', 'AdminController@login');
 	Route::post('login', 'AdminController@postLogin');
