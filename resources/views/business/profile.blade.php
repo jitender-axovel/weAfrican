@@ -13,6 +13,7 @@
 	@endif
 	<div class="register-business">
 		<h3 class="text-center">Business Profile</h3>
+		@if($business)
 			<div class="row">
 				<label class="control-label col-sm-2" for="business_name">Business name:</label>
 				<div class="col-sm-10">
@@ -97,5 +98,8 @@
 					{{ $business->working_hours }}
 				</div>
 			</div>
+			@else
+			<p>No business is registered yet.</p>
+			@endif
 	</div>
 @endsection
