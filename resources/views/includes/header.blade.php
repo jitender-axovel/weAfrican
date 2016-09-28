@@ -16,8 +16,8 @@
 					<div class="collapse navbar-collapse" id="myNavbar">
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="active"><a href="{{url('/')}}">Home</a></li>	
-						<li><a href="#">About</a></li>
-						<li><a href="#">Features</a></li>
+						<li><a href="{{url('cms/about-us')}}">About</a></li>
+						<!-- <li> <a href="{{url('cms/privacy-policy')}}">Privacy Policy</a> </li> -->
 						@if(!Auth::check())
 							<li>
 								<a href="{{ url('register') }}">Register</a>
@@ -30,10 +30,13 @@
 								<a href="{{ url('register-business/create') }}">Register Business</a>
 							</li>
 							<li>
+								<a href="{{ url('register-business/'.Auth::id()) }}"> Business Profile</a>
+							</li>
+							<li>
 								<a href="{{ url('logout') }}">Logout</a>
 							</li>
 						@endif
-						<li><a href="{{ url('logout')}}" class="download-link">download</a></li>
+						<li><a href="#" class="download-link">download</a></li>
 					  </ul>				  
 					</div>
 				</div>

@@ -19,6 +19,7 @@ class CmsPagesTableSeeder extends Seeder
         	['title' => 'Terms of Use', 'slug' => 'terms-of-use', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
         	['title' => 'Cookie Policy', 'slug' => 'cookie-policy', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
             ['title' => 'FAQ', 'slug' => 'faq', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+		['title' => 'Terms & Conditons', 'slug' => 'terms-and-conditions', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
     	]);
     }
 }

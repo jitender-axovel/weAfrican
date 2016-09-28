@@ -21,6 +21,8 @@ Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
 
 Route::group(['middleware' => ['auth']], function() {
 	Route::resource('register-business', 'UserBusinessController');
+	Route::get('upload', 'UserBusinessController@uploadForm');
+	Route::post('upload-document', 'UserBusinessController@uploadDocument');
 });
 
 Route::group(['prefix' => 'admin'], function() {
@@ -30,6 +32,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('dashboard', 'AdminController@index');
 		Route::get('user/blocked/{id}','AdminUsersController@block');
 		Route::resource('users', 'AdminUsersController');
+		Route::get('business/block/{id}','AdminUserBusinessesController@block');
+		Route::resource('business', 'AdminUserBusinessesController');
 		Route::get('bussiness/category/block/{id}', 'AdminBussinessCategoriesController@block');
 		Route::resource('bussiness/category', 'AdminBussinessCategoriesController');
 		Route::get('subscription/plan/block/{id}','AdminSubscriptionPlansController@block');

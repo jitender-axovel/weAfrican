@@ -5,7 +5,10 @@
         </li>   
         <li>
             <a href="{{url('admin/users')}}">User Management</a>
-        </li>     
+        </li> 
+        <li>
+            <a href="{{url('admin/business')}}">User Business Management</a>
+        </li>    
         <li>
             <a href="javascript:;" data-toggle="collapse" data-target="#category" class="collapsed" aria-expanded="false">Category Management <i class="fa fa-fw fa-caret-down"></i></a>
             <ul id="category" class="collapse" aria-expanded="false">
