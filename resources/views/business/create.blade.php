@@ -131,7 +131,7 @@
 					@if($term->content)
 			<p>{!! $term->content !!}</p>
 			@else
-				<p class="text-center">{{ $cmsPage->title }}'s page content is still being prepared.</p>
+				<p class="text-center">{{ $term->title }}'s page content is still being prepared.</p>
 			@endif
 				</div>
 				<div class="modal-footer">
