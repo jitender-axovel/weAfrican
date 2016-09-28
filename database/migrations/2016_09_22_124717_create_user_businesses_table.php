@@ -32,6 +32,10 @@ class CreateUserBusinessesTable extends Migration
             $table->string('email');
             $table->string('website');
             $table->string('working_hours');
+            $table->string('identity_proof');
+            $table->string('business_proof');
+            $table->boolean('is_identity')->default(false);
+            $tabel->boolean('is_business')->default(false);
             $table->boolean('is_agree_to_terms');
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();

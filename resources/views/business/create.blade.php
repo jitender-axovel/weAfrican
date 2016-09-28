@@ -127,7 +127,12 @@
 					<h4 class="modal-title">Terms & Conditions</h4>
 				</div>
 				<div class="modal-body">
-					<p>{!! $term->content !!}</p>
+					
+					@if($term->content)
+			<p>{!! $term->content !!}</p>
+			@else
+				<p class="text-center">{{ $cmsPage->title }}'s page content is still being prepared.</p>
+			@endif
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
