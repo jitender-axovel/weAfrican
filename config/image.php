@@ -16,6 +16,7 @@ return array(
      */
     'category_image_path' => str_replace('\\','/',public_path()). '/uploads/images/categories/',
     'banner_image_path' => str_replace('\\','/',public_path()). '/uploads/images/banners/',
+    'product_image_path' => str_replace('\\','/',public_path()). '/uploads/images/products/',
     'document_path' => str_replace('\\','/',public_path()). '/uploads/documents/',
     /*
      |.....................................................................
@@ -26,6 +27,7 @@ return array(
 
     'category_image_url' => '/uploads/images/categories/',
     'banner_image_url' => '/uploads/images/banners/',
+    'product_image_url' => '/uploads/images/products/',
     'document_url' => '/uploads/documents/',
 
     /*
@@ -44,6 +46,8 @@ return array(
      
     'media_small_thumbnail_height' => '200',
     'media_small_thumbnail_width' => '100',
+    'product_small_thumbnail_height' => '200',
+    'product_small_thumbnail_width' => '100',
     
 
 

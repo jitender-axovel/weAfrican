@@ -17,7 +17,7 @@
 		{{csrf_field()}}
 		 	<div class="row">
 		 	<h4>Please upload documents </h4>
-        		<div class="col-xs-6 form-group">
+        		<div class="col-md-6 form-group">
             		<label>Please upload identity Proof here</label>
             		<input required type="file" name="identity_proof" id="identity_proof" required>
 					@if($errors->has('identity_proof'))
@@ -26,7 +26,7 @@
 						</span>
 					@endif
 				</div>
-		        <div class="col-xs-6 form-group">
+		        <div class="col-md-6 form-group">
 		            <label>Please upload Business Proof here</label>
 		            <input required type="file" name="business_proof" id="business_proof" required>
 					@if($errors->has('business_proof'))
@@ -35,26 +35,27 @@
 						</span>
 					@endif
 		        </div>
-		        <div class="col-xs-6 form-group">
-		        	<label>Image Preview</label>
-					<div class="caption">
+		        <div class="col-md-6  form-group">
+		        	<label class="col-md-6">Image Preview</label>
+					<div class="caption col-md-6 col-md-offset-1">
 						<img src="#" alt=""  id="preview_identity">
 					</div>
 				</div>
-			  	<div class="col-xs-6 form-group">
-					<label>Image Preview</label>
-					<div class="caption">
+			  	<div class="col-md-6 form-group">
+					<label class="col-md-6">Image Preview</label>
+					<div class="caption col-md-6 col-md-offset-1">
 						<img src="#" alt=""  id="preview_business">
 					</div>
 				</div>
-		         <div class="col-xs-6 form-group">
+		         <div class="col-md-6 form-group">
 		            <button type="submit" class="btn btn-default">Submit</button>
 		        </div>
     		</div>
 		</form>
 		<div class="row">
-			<div class="col-xs-6 form-group">
-		 		<a href="{{ url('/') }}"><button class="btn btn-default">Later</button></a>
+			<div class="col-xs-6>
+		 		
+			<button class="btn btn-default"> <a href="{{ url('register-business/'.Auth::id()) }}">Later</a></button>
 			</div>
 		</div>
 	</div>

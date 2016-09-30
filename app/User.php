@@ -30,7 +30,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => ""
+        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'phone_number' => ""
     ];
 
     /**

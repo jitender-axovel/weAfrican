@@ -8,8 +8,7 @@
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Product Limit</th>
-				<th>Service Limit</th>
+				<th>Coverage</th>
 				<th>Price (per month)</th>
 				<th>Created On</th>
 				<th>Actions</th>
@@ -19,8 +18,7 @@
 			@foreach($subscriptions as $subscription)
 			<tr>
 				<td>{{ $subscription->title}}</td>
-				<td>{{ $subscription->product_limit}}</td>
-                <td>{{ $subscription->service_limit}}</td>
+				<td>{{ $subscription->coverage}}</td>
                 <td>{{ $subscription->price}}</td>
 				<td>{{ date_format(date_create($subscription->created_at), 'F d, Y') }}</td>
 				<td>

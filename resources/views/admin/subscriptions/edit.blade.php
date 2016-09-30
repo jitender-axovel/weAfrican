@@ -11,38 +11,32 @@
 				{{ method_field('PUT') }}
 				<div class="form-group">
 					<label class="control-label col-md-2">Product Limit</label>
-					<div class="col-md-4{{ $errors->has('product_limit') ? ' has-error' : '' }}">
-						<input type="text" class="form-control" name="product_limit" value="{{ $subscription->product_limit}}" >
-						@if($errors->has('product_limit'))
-							<span class="help-block">
-								<strong>{{ $errors->first('product_limit') }}</strong>
-							</span>
-						@endif
+					<div class="col-md-10">
+					{{$subscription->title}}
 					</div>
-					<label class="control-label col-md-2">Service Limit</label>
-					<div class="col-md-4{{ $errors->has('service_limit') ? ' has-error' : '' }}">
-						<input type="text" class="form-control" name="service_limit" value="{{ $subscription->service_limit }}" >
-						@if($errors->has('service_limit'))
-							<span class="help-block">
-								<strong>{{ $errors->first('service_limit') }}</strong>
-							</span>
-						@endif
+					</div>
+					<div class="form-group">
+					<label class="control-label col-md-2">Coverage</label>
+					<div class="col-md-6">
+					{{ $subscription->coverage }}
+						
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">Price(per month)</label>
-					<div class="col-md-4{{ $errors->has('price') ? ' has-error' : '' }}">
-						<input type="text" class="form-control" name="price" value="{{ $subscription->price }}" >
+					<div class="col-md-6{{ $errors->has('price') ? ' has-error' : '' }}">
+						<input required type="text" class="form-control" name="price" value="{{ $subscription->price }}" >
 						@if($errors->has('price'))
 							<span class="help-block">
 								<strong>{{ $errors->first('price') }}</strong>
 							</span>
 						@endif
 					</div>
-					<div class="col-md-6">
+					
+				</div>
+				<div class="col-md-6 col-md-offset-2">
 						<button type="submit" class="btn btn-success btn-block" id="btn-login">Update Subscription</button>
 					</div>
-				</div>
 			</form>
 		</div>
 	</div>

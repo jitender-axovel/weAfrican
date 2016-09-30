@@ -7,7 +7,7 @@
 	<table id="categories_list" class="display">
 		<thead>
 			<tr>
-				<th>Title</th>
+				<th>Business Name</th>
 				<th>Phone Number</th>
 				<th>Created On</th>
 				<th>Actions</th>
@@ -32,6 +32,10 @@
 						</li>
 						<li>
 							<a class="btn btn-warning" href="{{ url('admin/business/'.$business->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+						</li>
+						<li>
+							<a class="btn btn-default" href="{{ url('admin/business/'.$business->id) }}" title="View"><i class="fa fa-eye" aria-hidden="true"></i>
+</a>
 						</li>
 					</ul>
 				</td>

@@ -51,7 +51,9 @@ class AdminUserBusinessesController extends Controller
      */
     public function show($id)
     {
-        //
+        $pageTitle = "Admin - View Bussiness user";
+        $business = UserBusiness::find($id);
+        return view('admin.business.view',compact('pageTitle','business'));
     }
 
     /**
@@ -82,7 +84,7 @@ class AdminUserBusinessesController extends Controller
 
         $input = array_intersect_key($input, UserBusiness::$updatable);
 
-        $category = UserBusiness::where('id',$id)->update($input);
+        $user = UserBusiness::where('id',$id)->update($input);
             
         return redirect('admin/business')->with('success', 'User Business updated successfully');
         
@@ -96,7 +98,21 @@ class AdminUserBusinessesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = UserBusiness::findOrFail($id);
+
+        if($user->delete()){
+            $response = array(
+                'status' => 'success',
+                'message' => 'Business user deleted  successfully',
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'Business user can not be deleted.Please try again',
+            );
+        }
+
+        return json_encode($response);
     }
 
     public function block($id)
@@ -109,6 +125,32 @@ class AdminUserBusinessesController extends Controller
             return redirect('admin/business')->with('success', 'User Bussiness has been blocked successfully');
         } else {
             return redirect('admin/business')->with('success', 'User Bussiness has been unblocked');
+        }
+    }
+
+    public function identityProofVerfied($id)
+    {
+        $business = UserBusiness::find($id);
+        $business->is_identity_proof_validate = ! $business->is_identity_proof_validate;
+        $business->save();
+
+        if ( $business->is_identity_proof_validate) {
+            return redirect('admin/business/'.$id)->with('success', 'Identity  Proof verfied successfully');
+        } else {
+            return redirect('admin/business/'.$id)->with('success', 'Identity  Proof verfied successfully');
+        }
+    }
+
+    public function businessProofVerfied($id)
+    {
+        $business = UserBusiness::find($id);
+        $business->is_business_proof_validate = ! $business->is_business_proof_validate;
+        $business->save();
+
+        if ( $business->is_business_proof_validate) {
+            return redirect('admin/business/'.$id)->with('success', 'Business  Proof verfied successfully');
+        } else {
+            return redirect('admin/business/'.$id)->with('success', 'Business  Proof verfied successfully');
         }
     }
 }

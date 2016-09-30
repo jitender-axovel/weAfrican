@@ -19,10 +19,13 @@ Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
 
+Route::resource('register-business', 'UserBusinessController');
+
 Route::group(['middleware' => ['auth']], function() {
-	Route::resource('register-business', 'UserBusinessController');
+	
 	Route::get('upload', 'UserBusinessController@uploadForm');
 	Route::post('upload-document', 'UserBusinessController@uploadDocument');
+	Route::resource('business-product', 'BusinessProductsController');
 });
 
 Route::group(['prefix' => 'admin'], function() {
@@ -36,8 +39,12 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('business', 'AdminUserBusinessesController');
 		Route::get('bussiness/category/block/{id}', 'AdminBussinessCategoriesController@block');
 		Route::resource('bussiness/category', 'AdminBussinessCategoriesController');
+		Route::get('business/identity/proof/validate/{id}','AdminUserBusinessesController@identityProofVerfied');
+		Route::get('business/proof/validate/{id}','AdminUserBusinessesController@businessProofVerfied');
 		Route::get('subscription/plan/block/{id}','AdminSubscriptionPlansController@block');
 		Route::resource('subscription/plan', 'AdminSubscriptionPlansController');
+		Route::get('product/block/{id}','AdminBusinessProductsController@block');
+		Route::resource('product', 'AdminBusinessProductsController');
 		Route::get('banner/block/{id}','AdminBusinessBannersController@block');
 		Route::resource('banner', 'AdminBusinessBannersController');
 		Route::resource('cms', 'AdminCmsPagesController');

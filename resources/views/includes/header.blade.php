@@ -17,20 +17,19 @@
 					  <ul class="nav navbar-nav navbar-right">
 						<li class="active"><a href="{{url('/')}}">Home</a></li>	
 						<li><a href="{{url('cms/about-us')}}">About</a></li>
-						<!-- <li> <a href="{{url('cms/privacy-policy')}}">Privacy Policy</a> </li> -->
 						@if(!Auth::check())
 							<li>
-								<a href="{{ url('register') }}">Register</a>
+								<a href="{{ url('register-business/create') }}">Register Business </a>
 							</li>
 							<li>
 								<a href="{{ url('login') }}">Login</a>
 							</li>
 						@else
 							<li>
-								<a href="{{ url('register-business/create') }}">Register Business</a>
+								<a href="{{ url('register-business/'.Auth::id()) }}"> Business Profile</a>
 							</li>
 							<li>
-								<a href="{{ url('register-business/'.Auth::id()) }}"> Business Profile</a>
+								<a href="{{ url('business-product') }}"> Business Product</a>
 							</li>
 							<li>
 								<a href="{{ url('logout') }}">Logout</a>

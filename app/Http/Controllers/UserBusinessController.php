@@ -9,8 +9,10 @@ use App\Http\Requests;
 use App\BussinessCategory;
 use App\UserBusiness;
 use App\CmsPage;
+use App\User;
 use Auth;
 use Validator;
+use App\Helper;
 
 class UserBusinessController extends Controller
 {
@@ -34,7 +36,7 @@ class UserBusinessController extends Controller
         $pageTitle = "Register Business";
         $categories = BussinessCategory::where('is_blocked',0)->get();
         $term = CmsPage::where('slug', 'terms-and-conditions')->first();
-        return view('business.create', compact('categories','pageTitle', 'term'));
+        return view('business.register', compact('categories','pageTitle', 'term'));
     }
 
     /**
@@ -45,30 +47,23 @@ class UserBusinessController extends Controller
      */
     public function store(Request $request)
     {
-        
         $validator = Validator::make($request->all(), [
+            'full_name' => 'required|max:255',
+            'country_code' => 'required|min:0|max:99',
             'title' => 'required',
             'keywords' =>'required',
-            'about_us' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'pin_code' => 'required|numeric|min:6',
-            'email' => 'required',
-            'secondary_phone_number' => 'required|numeric|min:10',
-            'working_hours' => 'required',
-            'phone_number' => 'required|numeric|min:10'
+            'email' => 'required|max:255|unique:user_businesses',
+            'phone_number' => 'required|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
-            return redirect('register-business/create')
-                        ->withErrors($validator)
-                        ->withInput();
+            return back()->withErrors($validator)
+                         ->withInput();
         }
 
         $input = $request->input();
-             
+
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
@@ -76,31 +71,39 @@ class UserBusinessController extends Controller
  
         if($input['is_agree_to_terms'] == 1)
         { 
+            $user = array_intersect_key($request->input(), User::$updatable);
 
-            $input = array_intersect_key($input, UserBusiness::$updatable);
+            $user['user_role_id'] = 3;
+            $user['password'] = (bcrypt($input['password']));
 
-            $input['user_id'] = Auth::id();
-            $input['title'] = $input['title'];
-            $input['bussiness_category_id'] = $input['bussiness_category_id'];
-            $input['keywords'] = $input['keywords'];
-            $input['about_us'] = $input['about_us'];
-            $input['address'] = $input['address'];
-            $input['city'] = $input['city'];
-            $input['email'] = $input['email'];
-            $input['pin_code'] = $input['pin_code'];
-            $input['phone_number'] = $input['phone_number'];
-            $input['secondary_phone_number'] = $input['secondary_phone_number'];
-            $input['working_hours'] = $input['working_hours'];
-            
-            $business = UserBusiness::create($input);
+            $user = User::create($user);
+            $user->save();
+
+            $user->slug = Helper::slug($user->full_name, $user->id);
+            $user->save();
+
+            $business = array_intersect_key($input, UserBusiness::$updatable);
+
+            $business['user_id'] = $user->id;
+
+            $business = UserBusiness::create($business);
             $business->save();
 
-            return redirect('upload')->with('success', 'New Business created successfully');
-            
+            if($business)
+            {
+                if (Auth::attempt(['full_name' => $request->input('full_name'), 'phone_number' => $request->input('phone_number'), 'user_role_id' => 3 , 'password' => $request->input('password')])) {
+                // Authentication passed...
+                return redirect()->intended('upload');
+                } else {
+                    $errors = new MessageBag(['email' => ['These credentials do not match our records.']]);
+                    return back()->withErrors($errors)->withInput(Input::except('password'));
+                }
+            }else{
+                return back()->with('error', 'Business could not created successfully.Please try again'); 
+            }    
         } else {
-            return redirect('register-business/create')->with('error', 'Please select terms and conditions');
+            return back()->with('error', 'Please select terms and conditions');
         }
-
     }
 
     public function uploadForm()
@@ -141,7 +144,7 @@ class UserBusinessController extends Controller
            
         $business = UserBusiness::where('user_id',Auth::id())->update($input);
 
-        return back()->with('success', 'Document Uploaded successfully');
+        return redirect('register-business/'.Auth::id())->with('success', 'Document Uploaded successfully');
     }
 
     /**

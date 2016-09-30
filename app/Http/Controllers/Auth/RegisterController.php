@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'country_code' => $data['country_code'],
             'phone_number' => $data['phone_number'],
             'password' => bcrypt($data['password']),
-            'user_role_id' => 4,
+            'user_role_id' => 3,
         ]);
 
         $user->slug = Helper::slug($user->full_name, $user->id);
