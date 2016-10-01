@@ -10,7 +10,7 @@
 				{{csrf_field()}}
 				{{ method_field('PUT') }}
 				<div class="form-group">
-					<label class="control-label col-md-2">Business name:</label>
+					<label class="control-label col-md-2">Bussiness Title:</label>
 					<div class="col-md-4">
 					<input type="text" class="form-control" name="title" value="{{ $business->title or old('title') }}" required>
 						@if($errors->has('title'))
@@ -57,7 +57,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Address:</label>
 					<div class="col-md-4">
-					<input type="text" class="form-control" name="title" value="{{ $business->address or old('address') }}">
+					<input type="text" class="form-control" name="address" value="{{ $business->address or old('address') }}">
 						@if($errors->has('address'))
 						<span class="help-block">
 							<strong>{{ $errors->first('address') }}</strong>

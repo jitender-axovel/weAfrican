@@ -9,6 +9,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Coverage</th>
+				<th>Keywords limit</th>
 				<th>Price (per month)</th>
 				<th>Created On</th>
 				<th>Actions</th>
@@ -19,6 +20,7 @@
 			<tr>
 				<td>{{ $subscription->title}}</td>
 				<td>{{ $subscription->coverage}}</td>
+				<td>{{ $subscription->keywords_limit}}</td>
                 <td>{{ $subscription->price}}</td>
 				<td>{{ date_format(date_create($subscription->created_at), 'F d, Y') }}</td>
 				<td>

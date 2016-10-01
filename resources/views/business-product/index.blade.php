@@ -13,7 +13,7 @@
     @endif
     <div class="container">
         <h3>Product Details</h3>
-        <p class="text-right"><a href="{{url('business-product/create')}}"><button type="button" class="btn btn-primary">Add Product</button></a></p>
+        <p class="text-right"><a href="{{url('business-product/create')}}"><button type="button" class="btn btn-info">Add Product</button></a></p>
         @if($products->count()) 
         @foreach($products as $product)
         <table class="table">
@@ -32,7 +32,8 @@
                     <td>{{$product->description}}</td>
                     <td>{{$product->price}}</td>
                     <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product->image)}}"/></td>
-                    <td><a href="{{url('business-product/'.$product->id.'/edit')}}"><button type="button" class="btn btn-default">Edit</button></a>
+                    <td><a href="{{url('business-product/'.$product->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+Edit</button></a>
                    <!--  <a href="{{url('business-product/'.$product->id)}}"><button type="button" class="btn btn-default">Delete</button></a> -->
                     </td>
                 </tr>

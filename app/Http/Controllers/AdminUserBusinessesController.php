@@ -83,7 +83,7 @@ class AdminUserBusinessesController extends Controller
         $input = $request->input();
 
         $input = array_intersect_key($input, UserBusiness::$updatable);
-
+         
         $user = UserBusiness::where('id',$id)->update($input);
             
         return redirect('admin/business')->with('success', 'User Business updated successfully');

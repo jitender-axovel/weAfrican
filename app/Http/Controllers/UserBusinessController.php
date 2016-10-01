@@ -168,7 +168,10 @@ class UserBusinessController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pageTitle = "Bussiness -Edit";
+        $business = UserBusiness::find($id);
+        $categories = BussinessCategory::where('is_blocked',0)->get();
+        return view('business.edit',compact('pageTitle','business','categories'));
     }
 
     /**
@@ -180,7 +183,14 @@ class UserBusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $input = $request->input();
+
+        $input = array_intersect_key($input, UserBusiness::$updatable);
+
+        $user = UserBusiness::where('id',$id)->update($input);
+            
+        return redirect('register-business/'.$id)->with('success', 'User Business updated successfully');
     }
 
     /**

@@ -3,7 +3,6 @@
 @section('content')
 	<h2>Add New Subscription Plan</h2>
 	<hr>
-	
 	@if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>
@@ -13,7 +12,6 @@
         </ul>
     </div>
 	@endif
-
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<p class="bold">Create New Subscription Plan</p>

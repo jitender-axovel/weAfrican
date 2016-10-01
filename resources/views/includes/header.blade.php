@@ -24,6 +24,7 @@
 							<li>
 								<a href="{{ url('login') }}">Login</a>
 							</li>
+							<li><a href="#" class="download-link">download</a></li>
 						@else
 							<li>
 								<a href="{{ url('register-business/'.Auth::id()) }}"> Business Profile</a>
@@ -31,11 +32,18 @@
 							<li>
 								<a href="{{ url('business-product') }}"> Business Product</a>
 							</li>
-							<li>
-								<a href="{{ url('logout') }}">Logout</a>
+							<li> <div class="dropdown">
+								  <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->full_name}}
+								  <span class="caret"></span></button>
+								  <ul class="dropdown-menu">
+								    <a href="{{ url('logout') }}">Logout</a>
+								    <li><a href="#">CSS</a></li>
+								    <li><a href="#">JavaScript</a></li>
+								  </ul>
+								</div>
 							</li>
 						@endif
-						<li><a href="#" class="download-link">download</a></li>
+						
 					  </ul>				  
 					</div>
 				</div>

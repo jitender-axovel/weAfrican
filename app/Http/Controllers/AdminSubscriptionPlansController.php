@@ -91,7 +91,7 @@ class AdminSubscriptionPlansController extends Controller
         }
 
         $input = array_intersect_key($request->input(), SubscriptionPlan::$updatable);
-         
+        
         if ($subscription->update($input)) {
             return redirect('admin/subscription/plan')->with('success', 'Subscription Updated successfully');
         } else {

@@ -15,6 +15,7 @@
 	@if($business)
 	<div class="register-business">
 		<h3 class="text-center">Business Profile</h3>
+		<p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button></a></p>
 		<dl class="dl-horizontal">
 			<dt>Business name</dt>
 			<dd>{{$business->title}}</dd>
@@ -51,11 +52,13 @@
 				<dd><img src="{{asset(config('image.document_url').$business->business_proof)}}" style="width:100px;height:100px"/></dd>
 				@if($business->is_identity_proof_validate && $business->is_business_proof_validate)
 					<dt>Document Status</dt>
-					<dd>Verfied</dd>
+					<dd><span class="verified btn-success label"><i class="fa fa-check" aria-hidden="true"></i>
+					Verified</span></dd>
 				@else
-
+					<dt>Edit Document</dt>
+					<dd><a href="{{url('upload')}}"><button>Upload Document</button></a></dd>
 					<dt>Document Status</dt>
-					<dd>Contact admin to verify your documents</dd>
+					<dd> <span class=" pending btn-danger label">Pending</span></dd>
 				@endif
 			@else
 					<dt>Please Upload document to verify your business</dt>
