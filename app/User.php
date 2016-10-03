@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Illuminate\Http\Request;
+
 use Auth;
 use Validator;
 use App\Helper;
@@ -47,39 +49,47 @@ class User extends Authenticatable
         return $this->belongsTo('App\UserRole', 'user_role_id');
     }
 
-    public function apiLogin($input)
-    {      
-        $matchThese = ['full_name' => $input['fullName'] , 'mobile_number' => $input['mobileNumber'] ];
-        $user = User::where($matchThese)->first();
+    public function apiLogin(Request $request)
+    {
+        $user = $this->where('mobile_number', $request->input('mobileNumber'))->first();
 
         if (!$user){
 
-            $validator = Validator::make($input, [
+            $validator = Validator::make($request->input(), [
                 'fullName' => 'required',
-                'mobileNumber' => 'required|numeric|unique:users',
+                'mobileNumber' => 'required|numeric|unique:users,mobile_number',
+                'countryCode' => 'required',
             ]);
 
             if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+               return json_encode(['status' =>'error','response'=>$validator->errors()->all()]);  
             }
            
-            $user = array_intersect_key($input, User::$updatable);
-            $user['full_name'] = $input['fullName'];
-            $user['mobile_number'] = $input['mobileNumber'];
-            $user['country_code'] = 91;
+            $user['full_name'] = $request->input('fullName');
+            $user['mobile_number'] = $request->input('mobileNumber');
+            $user['country_code'] = $request->input('countryCode');
             $user['user_role_id'] = 4;
 
-            $user = User::create($user);
+            $user = array_intersect_key($user, User::$updatable);
 
-            $user['slug'] = Helper::slug($input['fullName'], $user->id);
+            $user = $this->create($user);
+
+            $user['slug'] = Helper::slug($user->full_name, $user->id);
 
             if($user->save()){
-                return response()->json(['status' => 'success','response' => array($user)]);
+                return response()->json(['status' => 'success','response' => ($user)]);
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
             }
         } else{
+
+            $user = $this->whereFullName($request->input('fullName'))->where('mobile_number', $request->input('mobileNumber'))->first();
+
+            if($user){
                 return response()->json(['status' => 'success','response' => $user]);
+            } else {
+                return response()->json(['status' => 'exception','response' => 'Invalid Credentials']);
+            }
         }
     }
 }

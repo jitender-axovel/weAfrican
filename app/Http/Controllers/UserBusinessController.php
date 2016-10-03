@@ -48,7 +48,7 @@ class UserBusinessController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'full_name' => 'required|max:255',
+            'full_name' => 'required|max:255|alpha',
             'country_code' => 'required|numeric|min:0|max:99',
             'title' => 'required',
             'keywords' =>'required',
@@ -200,11 +200,16 @@ class UserBusinessController extends Controller
     {
          $validator = Validator::make($request->all(), [
             'title' => 'required',
+            'email' => 'required|email|max:255',
             'keywords' =>'required',
-            'pin_code' => 'regex:/\b\d{6}\b/',
+            'address' => 'string',
+            'pin_code' => 'regex:/\b\d{6}\b/|integer',
             'country' => 'alpha',
             'state' => 'alpha',
             'city' => 'alpha',
+            'secondary_mobile_number' => 'required|numeric|size:10',
+            'about_us' => 'string',
+            'working_hours' => 'string',
         ]);
 
         if ($validator->fails()) {

@@ -16,7 +16,7 @@ img {max-height: 100% !important; max-width: 100% !important;}
 .top-container.container-fluid {padding-left: 0; padding-right: 0;}
 
 /* Header */
-header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; overflow: hidden; padding: 35px 0 0; width: 100%;}
+header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110px; padding: 35px 0 0; width: 100%;}
 .navbar .navbar-nav > li > a {color: #ffffff; padding: 4px 15px; text-transform: uppercase; border-radius: 4px;}
 .navbar .navbar-nav li .download-link, .download-link {background: #05c2f9; border: 1px solid #05c2f9; border-radius: 4px; color: #ffffff;}
 .btn{text-transform:uppercase; padding: 8px 15px;}

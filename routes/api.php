@@ -19,6 +19,7 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['api']], function (){ 
 	Route::get('login', 'ApiController@login');
-	Route::get('bussiness-category', 'ApiController@getCategories');
-	Route::get('subscription-plan', 'ApiController@getSubscriptionPlans');
+	Route::get('get/bussiness-category', 'ApiController@getCategories');
+	Route::get('get/subscription-plan', 'ApiController@getSubscriptionPlans');
+	Route::get('get/business-products', 'ApiController@getBusinessProducts');
 });

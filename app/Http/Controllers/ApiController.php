@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\User;
 use App\BussinessCategory;
 use App\SubscriptionPlan;
+use App\BusinessProduct;
 
 
 class ApiController extends Controller
@@ -17,13 +18,13 @@ class ApiController extends Controller
     	$this->user = new User();
         $this->category = new BussinessCategory();
         $this->subscriptionPlan = new SubscriptionPlan();
+        $this->businessProduct = new BusinessProduct();
 
     }
 
     public function login(Request $request)
     {
-        $input = $request->input();
-        $response = $this->user->apiLogin($input);
+        $response = $this->user->apiLogin($request);
         return $response;
     }
 
@@ -39,9 +40,20 @@ class ApiController extends Controller
     public function getSubscriptionPlans()
     {
         $response = $this->subscriptionPlan->apiGetSubscriptionPlans();
-        if($response != NULL)
+        if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Subscription Plan ']);
+    }
+
+    public function getBusinessProducts(Request $request)
+    {   
+        $input = $request->input();
+
+        $response = $this->businessProduct->apiGetBusinessProducts($input);
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Products.']);
     }
 }

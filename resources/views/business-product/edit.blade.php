@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
-@include('notification')
+
+	<div class="main-container row">
+	    <div class="col-md-10 col-md-offset-1">
+	    @include('notification')
 	@if (count($errors) > 0)
 	<div class="alert alert-danger">
 	    <ul>
@@ -10,8 +13,6 @@
 	    </ul>
 	</div>
 	@endif
-	<div class="main-container row">
-	    <div class="col-md-10 col-md-offset-1">
 	        <h4>Edit Product</h4>
 	        <form id="register-form" class="form-horizontal" action="{{ url('business-product/'.$product->id) }}" method="POST" enctype='multipart/form-data'>
 	            {{csrf_field()}}

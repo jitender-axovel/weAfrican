@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-@include('notification')
+
+    <div class="container">
+   
+        <h3>Product Details</h3>
+         @include('notification')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
             <ul>
@@ -11,8 +15,6 @@
             </ul>
         </div>
     @endif
-    <div class="container">
-        <h3>Product Details</h3>
         <p class="text-right"><a href="{{url('business-product/create')}}"><button type="button" class="btn btn-info">Add Product</button></a></p>
         @if($products->count()) 
         @foreach($products as $product)

@@ -1,7 +1,12 @@
 @extends('layouts.app')
 @section('content')
+<div class="main-container row">
+    <div class="col-md-10 col-md-offset-1">
+    
+
 @include('notification')
-@if (count($errors) > 0)
+
+    @if (count($errors) > 0)
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -10,8 +15,6 @@
         </ul>
     </div>
 @endif
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
             <div class="panel-heading">Register Your Business for Free</div>
             <div class="panel-body">
@@ -157,7 +160,7 @@
                         <span>(format:99-99-999999)</span>
                         </label>
                         <div class="col-md-4">
-                            <input type="text" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}" required>
+                            <input type="text"  maxlength="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}" required>
                             @if ($errors->has('secondary_phone_number'))
                             <span class="help-block">
                             <strong>{{ $errors->first('secondary_phone_number') }}</strong>

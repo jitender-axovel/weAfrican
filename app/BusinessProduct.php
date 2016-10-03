@@ -20,12 +20,18 @@ class BusinessProduct extends Model
     	'title' => 'required|unique:business_products|max:255',
     	'description' => 'required',
     	'product_image' => 'required',
-        'price' => 'required'
+        'price' => 'required|integer'
     	);
 
     public static $updateValidater = array(
     	'title' => 'required',
     	'description' => 'required',
-        'price' => 'required'
+        'price' => 'required|integer'
     	);
+
+    public function apiGetBusinessProducts($input)
+    {
+        $product = BusinessProduct::where('id',$input['userId'])->where('is_blocked',0)->get();
+        return $product;
+    }
 }

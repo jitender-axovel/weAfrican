@@ -2,7 +2,9 @@
 @section('title', $pageTitle)
 @section('content')
 <div class="main-container row">
-	@include('notification')
+
+	<div class="register-business">
+		@include('notification')
 	@if (count($errors) > 0)
 		<div class="alert alert-danger">
 		    <ul>
@@ -13,7 +15,6 @@
 		</div>
 	@endif
 	@if($business)
-	<div class="register-business">
 		<h3 class="text-center">Business Profile</h3>
 		<p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button></a></p>
 		<dl class="dl-horizontal">
@@ -40,7 +41,7 @@
 			<dt>Email</dt>
 			<dd>{{ $business->email }}</dd>
 			<dt>Primary Mobile Number</dt>
-			<dd>{{ $business->phone_number }}</dd>
+			<dd>{{ $business->mobile_number }}</dd>
 			<dt>Secondary Mobile Number</dt>
 			<dd>{{ $business->secondary_phone_number }}</dd>
 			<dt>Website</dt>

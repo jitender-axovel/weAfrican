@@ -36,9 +36,7 @@
 								  <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->full_name}}
 								  <span class="caret"></span></button>
 								  <ul class="dropdown-menu">
-								    <a href="{{ url('logout') }}">Logout</a>
-								    <li><a href="#">CSS</a></li>
-								    <li><a href="#">JavaScript</a></li>
+								    <li><a href="{{ url('logout') }}">Logout</a></li>
 								  </ul>
 								</div>
 							</li>
