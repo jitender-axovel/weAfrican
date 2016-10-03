@@ -80,7 +80,7 @@ class UserBusinessController extends Controller
                 shell_exec($command);
             }
         }
-        
+
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
@@ -100,8 +100,10 @@ class UserBusinessController extends Controller
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $business['user_id'] = $user->id;
-            $business['business_logo'] = $image;
-
+            if($image != ""){
+                $business['business_logo'] = $image;
+            }
+           
             $business = UserBusiness::create($business);
             $business->save();
 
