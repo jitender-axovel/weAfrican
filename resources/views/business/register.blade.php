@@ -2,7 +2,7 @@
 @section('content')
 <div class="main-container row">
     <div class="col-md-10 col-md-offset-1">
-    
+
 
 @include('notification')
 
@@ -191,9 +191,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="business_logo" class="col-md-2 control-label">Business Logo:</label>
+                        <label for="business_logo" class="col-md-2 required control-label">Business Logo:</label>
                         <div class="col-md-4">
-                            <input type="file" name="business_logo" id="business_logo">
+                            <input type="file" name="business_logo" id="business_logo" required>
                             @if ($errors->has('business_logo'))
                             <span class="help-block">
                             <strong>{{ $errors->first('business_logo') }}</strong>
