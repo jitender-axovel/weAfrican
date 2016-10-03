@@ -21,7 +21,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'full_name', 'country_code', 'phone_number', 'password', 'user_role_id', 'slug', 'otp'
+        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp'
     ];
 
     /**
@@ -30,7 +30,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'phone_number' => ""
+        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => ""
     ];
 
     /**
@@ -47,43 +47,39 @@ class User extends Authenticatable
         return $this->belongsTo('App\UserRole', 'user_role_id');
     }
 
-    public function apiRegister($input)
-    {
-        $validator = Validator::make($input, [
-            'full_name' => 'required',
-            'mobile_no' => 'numeric|required|unique:users',
-            'password' => 'required|min:6',
+    public function apiLogin($input)
+    {      
+        $matchThese = ['full_name' => $input['fullName'] , 'mobile_number' => $input['mobileNumber'] ];
+        $user = User::where($matchThese)->first();
+
+        if (!$user){
+
+            $validator = Validator::make($input, [
+                'fullName' => 'required',
+                'mobileNumber' => 'required|numeric|unique:users',
             ]);
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);
+            if ($validator->fails()) {
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+           
+            $user = array_intersect_key($input, User::$updatable);
+            $user['full_name'] = $input['fullName'];
+            $user['mobile_number'] = $input['mobileNumber'];
+            $user['country_code'] = 91;
+            $user['user_role_id'] = 4;
 
+            $user = User::create($user);
+
+            $user['slug'] = Helper::slug($input['fullName'], $user->id);
+
+            if($user->save()){
+                return response()->json(['status' => 'success','response' => array($user)]);
+            } else {
+                return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
+            }
+        } else{
+                return response()->json(['status' => 'success','response' => $user]);
         }
-
-        $input['full_name']=ucfirst($input['full_name']);
-        $input['mobile_no']=ucfirst($input['mobile_no']);
-        $input['password']=bcrypt($input['password']);
-        $input['user_role_id']= 4;
-
-        $user = User::create($input);
-
-        $user['slug'] = Helper::slug($input['full_name'], $user->id);
-
-        if($user->save()){
-            return response()->json(['status' => 'success','response' => array($user)]);
-        } else {
-            return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
-        }
-    }
-
-    public function apiLogin($input)
-    {
-        if (Auth::attempt(['mobile_no' => $input['mobile_no'], 'password' => $input['password'],'is_blocked' => 0])) {
-            return response()->json(['status' => 'success','response' => Auth::user()]);
-        }
-        else {
-            return response()->json(['status' => 'exception','response' => 'Your account is Inactive or not verified']);
-        }
-
     }
 }

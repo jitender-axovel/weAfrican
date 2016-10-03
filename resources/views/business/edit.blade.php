@@ -13,7 +13,7 @@
 <div class="main-container row">
     <div class="col-md-10 col-md-offset-1">
         <h4>Edit Business Profile</h4>
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business/'.$business->id) }}">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business/'.$business->id) }}" enctype='multipart/form-data'>
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <div class="form-group ">
@@ -31,7 +31,7 @@
                     <select required name="bussiness_category_id" required>
                         <option value="" selected>Select Category</option>
                         @foreach($categories as $category)
-                        <option value="{{ $category->id }}" >{{ $category->title }}</option>
+                        <option value="{{ $category->id }}" @if($business->category->title == $category->title){{ 'selected'}} @else @endif  >{{ $category->title }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('bussiness_category_id'))
@@ -122,12 +122,12 @@
                 </div>
             </div>
             <div class="form-group ">
-                <label for="phone_number" class="col-md-2 required control-label">Primary Mobile Number:</label>
+                <label for="mobile_number" class="col-md-2 required control-label">Primary Mobile Number:</label>
                 <div class="col-md-4">
-                    <input required type="number" class="form-control" name="phone_number" value="{{ $business->phone_number }}" disabled>
-                    @if ($errors->has('phone_number'))
+                    <input required type="number" class="form-control" name="mobile_number" value="{{ $business->mobile_number }}" disabled>
+                    @if ($errors->has('mobile_number'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('phone_number') }}</strong>
+                    <strong>{{ $errors->first('mobile_number') }}</strong>
                     </span>
                     @endif
                 </div>
@@ -166,6 +166,29 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="about_us" class="col-md-2 control-label">Business Logo</label>
+                <div class="col-md-10">
+                    <img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/>
+                </div>
+            </div>
+              <div class="form-group">
+                    <label for="business_logo" class="col-md-2 control-label">Edit Business Logo:</label>
+                    <div class="col-md-4">
+                        <input type="file" name="business_logo" id="business_logo">
+                        @if ($errors->has('business_logo'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('business_logo') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <label for="logo_preview" class="col-md-2 control-label">
+                        Logo Preview:
+                        </label>
+                        <div class="col-md-4">
+                            <img src="#" alt=""  id="preview">
+                        </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-12 col-md-offset-2">
                     <button type="submit" class="btn btn-primary">
                     Submit
@@ -175,4 +198,21 @@
         </form>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    $("#business_logo").change(function(){
+        readURL(this);
+    });
+</script>
 @endsection

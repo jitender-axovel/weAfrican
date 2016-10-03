@@ -26,10 +26,20 @@ class BussinessCategory extends Model
     	'description' => 'required',
     	);
 
+    public function businesses()
+    {
+        return $this->hasMany('App\UserBusiness');
+    }
+
+    public function getBusinesses()
+    {
+        return $this->businesses()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
+    }
+
     public function apiGetCategory()
     {
     	$category = BussinessCategory::where('is_blocked',0)->get();
-    	return $category;
+       	return $category;
     }
 
 }

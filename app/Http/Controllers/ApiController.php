@@ -19,13 +19,6 @@ class ApiController extends Controller
         $this->subscriptionPlan = new SubscriptionPlan();
 
     }
-    
-    public function register(Request $request)
-    {
-    	$input = $request->input();
-    	$response = $this->user->apiRegister($input);
-   		return $response;
-    }
 
     public function login(Request $request)
     {
@@ -51,5 +44,4 @@ class ApiController extends Controller
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Subscription Plan ']);
     }
-
 }

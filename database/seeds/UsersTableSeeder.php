@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
             'slug' => 'jitender-singla-1',
             'user_role_id' => 1,
             'country_code' => 91,
-            'phone_number' => 9999999999,
+            'mobile_number' => 9999999999,
             'password' => Hash::make('admin123'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')

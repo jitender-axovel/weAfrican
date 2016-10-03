@@ -14,6 +14,7 @@ return array(
      |.....................................................................
      |
      */
+    'logo_image_path' => str_replace('\\','/',public_path()). '/uploads/images/logo/',
     'category_image_path' => str_replace('\\','/',public_path()). '/uploads/images/categories/',
     'banner_image_path' => str_replace('\\','/',public_path()). '/uploads/images/banners/',
     'product_image_path' => str_replace('\\','/',public_path()). '/uploads/images/products/',
@@ -25,6 +26,7 @@ return array(
      |
      */
 
+    'logo_image_url' => '/uploads/images/logo/',
     'category_image_url' => '/uploads/images/categories/',
     'banner_image_url' => '/uploads/images/banners/',
     'product_image_url' => '/uploads/images/products/',

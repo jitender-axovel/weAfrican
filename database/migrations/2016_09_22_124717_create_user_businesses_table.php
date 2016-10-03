@@ -27,11 +27,12 @@ class CreateUserBusinessesTable extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->integer('pin_code')->nullable();
-            $table->bigInteger('phone_number');
+            $table->bigInteger('mobile_number');
             $table->bigInteger('secondary_phone_number')->nullable();
             $table->string('email');
             $table->string('website')->nullable();
             $table->string('working_hours')->nullable();
+             $table->string('business_logo')->nullable();
             $table->string('identity_proof')->nullable();
             $table->string('business_proof')->nullable();
             $table->boolean('is_identity_proof_validate')->default(false);

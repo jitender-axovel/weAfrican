@@ -17,10 +17,12 @@
 		<h3 class="text-center">Business Profile</h3>
 		<p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button></a></p>
 		<dl class="dl-horizontal">
+			<dt>Business Logo</dt>
+			<dd><img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/></dd>
 			<dt>Business name</dt>
 			<dd>{{$business->title}}</dd>
 			<dt>Category:</dt>
-			<dd>{{ $business->bussiness_category_id}}</dd>
+			<dd>{{ $business->category->title}}</dd>
 			<dt>Bussiness keywords</dt>
 			<dd>{{ $business->keywords }}</dd>
 			<dt>About Us</dt>

@@ -49,12 +49,15 @@ class UserBusinessController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|max:255',
-            'country_code' => 'required|min:0|max:99',
+            'country_code' => 'required|numeric|min:0|max:99',
             'title' => 'required',
             'keywords' =>'required',
-            'email' => 'required|max:255|unique:user_businesses',
-            'phone_number' => 'required|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'email' => 'required|email|max:255|unique:user_businesses',
+            'mobile_number' => 'required|numeric|unique:users',
+            'pin_code' => 'regex:/\b\d{6}\b/',
+            'country' => 'alpha',
+            'state' => 'alpha',
+            'city' => 'alpha',
         ]);
 
         if ($validator->fails()) {
@@ -64,6 +67,19 @@ class UserBusinessController extends Controller
 
         $input = $request->input();
 
+        if ($request->file('business_logo')->isValid())
+        {
+            $file = $key = md5(uniqid(rand(), true));
+            $ext = $request->file('business_logo')->
+                getClientOriginalExtension();
+            $image = $file.'.'.$ext; 
+
+            $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
+
+            $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+            shell_exec($command);
+        }
+
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
@@ -72,10 +88,8 @@ class UserBusinessController extends Controller
         if($input['is_agree_to_terms'] == 1)
         { 
             $user = array_intersect_key($request->input(), User::$updatable);
-
             $user['user_role_id'] = 3;
-            $user['password'] = (bcrypt($input['password']));
-
+            
             $user = User::create($user);
             $user->save();
 
@@ -85,15 +99,16 @@ class UserBusinessController extends Controller
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $business['user_id'] = $user->id;
+            $business['business_logo'] = $image;
 
             $business = UserBusiness::create($business);
             $business->save();
 
             if($business)
             {
-                if (Auth::attempt(['full_name' => $request->input('full_name'), 'phone_number' => $request->input('phone_number'), 'user_role_id' => 3 , 'password' => $request->input('password')])) {
+                if (Auth::attempt(['full_name' => $request->input('full_name'), 'mobile_number' => $request->input('mobile_number'), 'user_role_id' => 3 ,'password' => 'admin123'])) {
                 // Authentication passed...
-                return redirect()->intended('upload');
+                    return redirect()->intended('upload');
                 } else {
                     $errors = new MessageBag(['email' => ['These credentials do not match our records.']]);
                     return back()->withErrors($errors)->withInput(Input::except('password'));
@@ -183,13 +198,43 @@ class UserBusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
+         $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'keywords' =>'required',
+            'pin_code' => 'regex:/\b\d{6}\b/',
+            'country' => 'alpha',
+            'state' => 'alpha',
+            'city' => 'alpha',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
 
         $input = $request->input();
+        if ($request->hasFile('business_logo') ){
+            if ($request->file('business_logo')->isValid())
+            {
+                $file = $key = md5(uniqid(rand(), true));
+                $ext = $request->file('business_logo')->
+                    getClientOriginalExtension();
+                $image = $file.'.'.$ext; 
 
+                $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+            }
+
+    }
         $input = array_intersect_key($input, UserBusiness::$updatable);
-
-        $user = UserBusiness::where('id',$id)->update($input);
-            
+         if(isset($fileName)) {
+            $input['business_logo'] =  $image;
+            $user = UserBusiness::where('id',$id)->update($input);
+        } else {
+            $user = UserBusiness::where('id',$id)->update($input);
+        }   
         return redirect('register-business/'.$id)->with('success', 'User Business updated successfully');
     }
 
