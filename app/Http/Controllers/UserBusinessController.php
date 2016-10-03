@@ -66,20 +66,21 @@ class UserBusinessController extends Controller
         }
 
         $input = $request->input();
+        if ($request->hasFile('business_logo') ){
+            if ($request->file('business_logo')->isValid())
+            {
+                $file = $key = md5(uniqid(rand(), true));
+                $ext = $request->file('business_logo')->
+                    getClientOriginalExtension();
+                $image = $file.'.'.$ext; 
 
-        if ($request->file('business_logo')->isValid())
-        {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('business_logo')->
-                getClientOriginalExtension();
-            $image = $file.'.'.$ext; 
+                $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
 
-            $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
-
-            $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+            }
         }
-
+        
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
