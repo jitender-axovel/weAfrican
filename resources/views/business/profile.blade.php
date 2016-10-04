@@ -19,7 +19,13 @@
 		<p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button></a></p>
 		<dl class="dl-horizontal">
 			<dt>Business Logo</dt>
-			<dd><img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/></dd>
+			<dd>
+				@if($business->business_logo != NULL)
+					<img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/>
+				@else
+					<img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
+				@endif
+			</dd>
 			<dt>Business name</dt>
 			<dd>{{$business->title}}</dd>
 			<dt>Category:</dt>

@@ -66,21 +66,7 @@ class UserBusinessController extends Controller
         }
 
         $input = $request->input();
-        if ($request->hasFile('business_logo') ){
-            if ($request->file('business_logo')->isValid())
-            {
-                $file = $key = md5(uniqid(rand(), true));
-                $ext = $request->file('business_logo')->
-                    getClientOriginalExtension();
-                $image = $file.'.'.$ext; 
-
-                $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
-
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                shell_exec($command);
-            }
-        }
-
+        
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
@@ -88,6 +74,20 @@ class UserBusinessController extends Controller
  
         if($input['is_agree_to_terms'] == 1)
         { 
+            if ($request->hasFile('business_logo') ){
+                if ($request->file('business_logo')->isValid())
+                {
+                    $file = $key = md5(uniqid(rand(), true));
+                    $ext = $request->file('business_logo')->
+                        getClientOriginalExtension();
+                    $image = $file.'.'.$ext; 
+
+                    $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                    shell_exec($command);
+                }
+            }
             $user = array_intersect_key($request->input(), User::$updatable);
             $user['user_role_id'] = 3;
             
@@ -100,7 +100,7 @@ class UserBusinessController extends Controller
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $business['user_id'] = $user->id;
-            if($image != ""){
+            if(isset($fileName)){
                 $business['business_logo'] = $image;
             }
            
@@ -126,14 +126,12 @@ class UserBusinessController extends Controller
 
     public function uploadForm()
     {
-
         $pageTitle = "Upload Document";
         return view('business.upload', compact('pageTitle'));
     }
 
-     public function uploadDocument(Request $request)
+    public function uploadDocument(Request $request)
     {
-
         if($request->file('identity_proof')->isValid() && $request->file('business_proof')->isValid())
         {
             $indentityFile = $key = md5(uniqid(rand(), true));
@@ -147,7 +145,6 @@ class UserBusinessController extends Controller
 
             $indentityFileName = $request->file('identity_proof')->move(config('image.document_path'), $image);
             $BusinessFileName = $request->file('business_proof')->move(config('image.document_path'), $businessImage);
-  
         } else {
 
             return back()->with('Error', 'Identity Proof and Bussiness Proof is not uploaded. Please try again');
@@ -201,7 +198,7 @@ class UserBusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'email' => 'required|email|max:255',
             'keywords' =>'required',
@@ -234,15 +231,17 @@ class UserBusinessController extends Controller
                 $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
                 shell_exec($command);
             }
+        }
 
-    }
         $input = array_intersect_key($input, UserBusiness::$updatable);
-         if(isset($fileName)) {
+
+        if(isset($fileName)) {
             $input['business_logo'] =  $image;
             $user = UserBusiness::where('id',$id)->update($input);
         } else {
             $user = UserBusiness::where('id',$id)->update($input);
-        }   
+        }
+
         return redirect('register-business/'.$id)->with('success', 'User Business updated successfully');
     }
 

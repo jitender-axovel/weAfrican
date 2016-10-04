@@ -169,7 +169,11 @@
             <div class="form-group">
                 <label for="about_us" class="col-md-2 control-label">Business Logo</label>
                 <div class="col-md-10">
-                    <img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/>
+                    @if($business->business_logo != NULL)
+                        <img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/>
+                    @else
+                        <img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
+                    @endif
                 </div>
             </div>
               <div class="form-group">

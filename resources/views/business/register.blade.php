@@ -193,7 +193,7 @@
                     <div class="form-group">
                         <label for="business_logo" class="col-md-2 required control-label">Business Logo:</label>
                         <div class="col-md-4">
-                            <input type="file" name="business_logo" id="business_logo" required>
+                            <input type="file" name="business_logo" id="business_logo">
                             @if ($errors->has('business_logo'))
                             <span class="help-block">
                             <strong>{{ $errors->first('business_logo') }}</strong>
@@ -210,7 +210,7 @@
                     <div class="form-group">
                         <label for="checkbox" class="col-md-2 control-label"></label>
                         <div class="col-md-10">
-                            <input name="is_agree_to_terms" value="" type="checkbox" required> I hereby declare, that I have read and accepted the <a href="" data-toggle="modal" data-target="#myModal">Terms &amp; Conditions.</a>
+                            <input name="is_agree_to_terms" value="" type="checkbox"> I hereby declare, that I have read and accepted the <a href="" data-toggle="modal" data-target="#myModal">Terms &amp; Conditions.</a>
                         </div>
                     </div>
                     <div class="form-group">
