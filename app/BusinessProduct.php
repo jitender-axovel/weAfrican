@@ -21,12 +21,14 @@ class BusinessProduct extends Model
     	'description' => 'required',
     	'product_image' => 'required',
         'price' => 'required|integer'
+        'product_image' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public static $updateValidater = array(
     	'title' => 'required',
     	'description' => 'required',
         'price' => 'required|integer'
+        'product_image' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public function apiGetBusinessProducts($input)

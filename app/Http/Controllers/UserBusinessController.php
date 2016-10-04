@@ -58,6 +58,7 @@ class UserBusinessController extends Controller
             'country' => 'alpha',
             'state' => 'alpha',
             'city' => 'alpha',
+            'business_logo' => 'image|mimes:jpg,png,jpeg',
         ]);
 
         if ($validator->fails()) {
@@ -210,6 +211,7 @@ class UserBusinessController extends Controller
             'secondary_mobile_number' => 'required|numeric',
             'about_us' => 'string',
             'working_hours' => 'string',
+            'business_logo' => 'image|mimes:jpg,png,jpeg',
         ]);
 
         if ($validator->fails()) {
