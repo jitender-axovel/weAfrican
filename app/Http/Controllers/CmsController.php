@@ -14,7 +14,7 @@ class CmsController extends Controller
     {
     	$cmsPage = CmsPage::where('slug', $slug)->first();
     	$page = $cmsPage->title;
-
-    	return view('cms.index', compact('cmsPage', 'page'));
+        $flag = 1;
+    	return view('cms.index', compact('cmsPage', 'page' , 'flag'));
     }
 }
