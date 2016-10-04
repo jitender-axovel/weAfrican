@@ -40,6 +40,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('business', 'AdminUserBusinessesController');
 		Route::get('bussiness/category/block/{id}', 'AdminBussinessCategoriesController@block');
 		Route::resource('bussiness/category', 'AdminBussinessCategoriesController');
+		Route::get('event/block/{id}', 'AdminBusinessEventsController@block');
+		Route::resource('event', 'AdminBusinessEventsController');
 		Route::get('business/identity/proof/validate/{id}','AdminUserBusinessesController@identityProofVerfied');
 		Route::get('business/proof/validate/{id}','AdminUserBusinessesController@businessProofVerfied');
 		Route::get('subscription/plan/block/{id}','AdminSubscriptionPlansController@block');

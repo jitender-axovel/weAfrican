@@ -20,7 +20,7 @@ class CreateBusinessEventsTable extends Migration
             $table->string('name');
             $table->string('title');
             $table->string('slug')->nullable();
-            $table->string('orgainzer_name');
+            $table->string('organizer_name');
             $table->string('address');
             $table->date('event_dt');
             $table->string('banner_image')->nullable();
