@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('upload', 'UserBusinessController@uploadForm');
 	Route::post('upload-document', 'UserBusinessController@uploadDocument');
 	Route::resource('business-product', 'BusinessProductsController');
+	Route::resource('business-event', 'BusinessEventsController');
 });
 
 Route::group(['prefix' => 'admin'], function() {

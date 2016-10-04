@@ -32,6 +32,7 @@
 								  <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->full_name}}
 								  <span class="caret"></span></button>
 								  <ul class="dropdown-menu">
+								  	<li><a href="{{ url('register-business/'.Auth::id()) }}">Manage Account</a></li>
 								    <li><a href="{{ url('logout') }}">Logout</a></li>
 								  </ul>
 								</div>

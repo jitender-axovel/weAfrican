@@ -32,7 +32,8 @@
                         </div>
                         <label for="country_code" class="col-md-2 control-label">Country Code:</label>
                         <div class="col-md-4">
-                            <input required type="number" class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
+                            <input required type="number" min="0"
+                            class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
                             @if ($errors->has('country_code'))
                             <span class="help-block">
                             <strong>{{ $errors->first('country_code') }}</strong>
@@ -77,7 +78,7 @@
                         </div>
                         <label for="email" class="col-md-2 control-label">Business Email:</label>
                         <div class="col-md-4">
-                            <input required type="email" class="form-control" name="email" value="{{ old('email') }}">
+                            <input required type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="email" value="{{ old('email') }}">
                             @if ($errors->has('email'))
                             <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
@@ -191,7 +192,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="business_logo" class="col-md-2 required control-label">Business Logo:</label>
+                        <label for="business_logo" class="col-md-2 control-label">Business Logo:</label>
                         <div class="col-md-4">
                             <input type="file" name="business_logo" id="business_logo">
                             @if ($errors->has('business_logo'))

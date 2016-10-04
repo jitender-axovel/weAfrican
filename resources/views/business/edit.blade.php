@@ -125,7 +125,7 @@
             <div class="form-group ">
                 <label for="mobile_number" class="col-md-2 required control-label">Primary Mobile Number:</label>
                 <div class="col-md-4">
-                    <input required type="number" class="form-control" name="mobile_number" value="{{ $business->mobile_number }}" disabled>
+                    <input type="text" class="form-control" name="mobile_number" value="{{ $business->mobile_number }}" disabled>
                     @if ($errors->has('mobile_number'))
                     <span class="help-block">
                     <strong>{{ $errors->first('mobile_number') }}</strong>
@@ -133,10 +133,10 @@
                     @endif
                 </div>
                 <label for="secondary_phone_number" class="col-md-2 control-label">
-                Secondary Mobile Number:
+                Secondary Mobile Number:(format:99-99-999999)
                 </label>
                 <div class="col-md-4">
-                    <input type="number" maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ $business->secondary_phone_number }}">
+                    <input type="text" maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ $business->secondary_phone_number }}">
                     @if ($errors->has('secondary_phone_number'))
                     <span class="help-block">
                     <strong>{{ $errors->first('secondary_phone_number') }}</strong>

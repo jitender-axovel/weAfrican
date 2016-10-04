@@ -5,7 +5,7 @@
 
     <div class="container">
    
-        <h5>Product Details</h5>
+        <h5>Event Details</h5>
          @include('notification')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -16,29 +16,30 @@
             </ul>
         </div>
     @endif
-        <p class="text-right"><a href="{{url('business-product/create')}}"><button type="button" class="btn btn-info">Add Product</button></a></p>
-        @if($products->count()) 
-        @foreach($products as $product)
+        <p class="text-right"><a href="{{url('business-event/create')}}"><button type="button" class="btn btn-info">Add Event</button></a></p>
+        @if($events->count()) 
+        @foreach($events as $event)
         <table class="table">
             <thead>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Image</th>
+                    <th>Event Name</th>
+                    <th>Event Title</th>
+                    <th>Orgainzer Name</th>
+                    <th>Date& time</th>
+                    <th>Address</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{$product->title}}</td>
-                    <td>{{$product->description}}</td>
-                    <td>{{$product->price}}</td>
-                    <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product->image)}}"/></td>
-                    <td><a href="{{url('business-product/'.$product->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <td>{{$event->name}}</td>
+                    <td>{{$event->title}}</td>
+                    <td>{{$event->organizer_name}}</td>
+                    <td>{{$event->event_dt}}</td>
+                    <td>{{$event->address}}</td>
+                    <td><a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 Edit</button></a>
-                    <!-- <a href="{{url('business-product/'.$product->id)}}"><button type="button" class="btn btn-default">Delete</button></a> -->
-                    <form action="{{url('business-product/'.$product->id)}}" method="POST" onsubmit="deleteProduct('{{$product->id}}', '{{$product->title}}', event,this)">
+                   <form action="{{url('business-event/'.$event->id)}}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->title}}', event,this)">
                                 {{csrf_field()}}
                                 <button type="submit" class="btn btn-danger" title="Delete">Delete</button>
                             </form>
@@ -48,14 +49,14 @@ Edit</button></a>
         </table>
         @endforeach
         @else
-        <p>No products found</p>
+        <p>No events found</p>
         @endif
     </div>
     </div>
 @endsection
 @section('scripts')
 <script type="text/javascript">
-        function deleteProduct(id, title, event,form)
+        function deleteEvent(id, title, event,form)
         {   
 
             event.preventDefault();
