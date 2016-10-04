@@ -30,11 +30,11 @@ class AdminController extends Controller
 
     public function postLogin(Request $request)
     {
-    	if (Auth::attempt(['phone_number' => $request->input('phone_number'), 'password' => $request->input('password'), 'user_role_id' => 1])) {
+    	if (Auth::attempt(['mobile_number' => $request->input('mobile_number'), 'password' => $request->input('password'), 'user_role_id' => 1])) {
             // Authentication passed...
             return redirect()->intended('admin/dashboard');
         } else {
-            $errors = new MessageBag(['phone_number' => ['These credentials do not match our records.']]);
+            $errors = new MessageBag(['mobile_number' => ['These credentials do not match our records.']]);
             return back()->withErrors($errors)->withInput(Input::except('password'));
         }
     }

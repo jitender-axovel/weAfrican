@@ -148,7 +148,7 @@
                     <div class="form-group required">
                         <label for="mobile_number" class="col-md-2 control-label">Primary Mobile Number:(format:99-99-999999)</label>
                         <div class="col-md-4">
-                            <input required type="text" maxlength="10"  pattern="[0-9]{10}" class="form-control" name="mobile_number" value="{{ old('mobile_number') }}">
+                            <input required type="text" maxlength="10" minlength="10" pattern="[0-9]{10}" class="form-control" name="mobile_number" value="{{ old('mobile_number') }}">
                             @if ($errors->has('mobile_number'))
                             <span class="help-block">
                             <strong>{{ $errors->first('mobile_number') }}</strong>
@@ -160,7 +160,7 @@
                         <span>(format:99-99-999999)</span>
                         </label>
                         <div class="col-md-4">
-                            <input type="text"  maxlength="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}" required>
+                            <input type="text"  maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}" required>
                             @if ($errors->has('secondary_phone_number'))
                             <span class="help-block">
                             <strong>{{ $errors->first('secondary_phone_number') }}</strong>
@@ -210,7 +210,7 @@
                     <div class="form-group">
                         <label for="checkbox" class="col-md-2 control-label"></label>
                         <div class="col-md-10">
-                            <input name="is_agree_to_terms" value="" type="checkbox"> I hereby declare, that I have read and accepted the <a href="" data-toggle="modal" data-target="#myModal">Terms &amp; Conditions.</a>
+                            <input required name="is_agree_to_terms" value="" type="checkbox"> I hereby declare, that I have read and accepted the <a href="" data-toggle="modal" data-target="#myModal">Terms &amp; Conditions.</a>
                         </div>
                     </div>
                     <div class="form-group">

@@ -1,10 +1,11 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
+<div class="main-container row">
 
     <div class="container">
    
-        <h3>Product Details</h3>
+        <h5>Product Details</h5>
          @include('notification')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -45,6 +46,7 @@ Edit</button></a>
         @else
         <p>No products found</p>
         @endif
+    </div>
     </div>
 @endsection
 @section('scripts')

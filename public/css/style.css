@@ -152,3 +152,11 @@ footer .available .list-inline > li {padding-right: 0;}
   font-size: 15px;
   padding: 8px 37px;
 }
+.top-business-menu {
+  margin: 0 auto;
+  width: 80%;
+}
+.top-business-menu .nav.nav-pills {
+  float: right;
+  margin-top: 16px;
+}

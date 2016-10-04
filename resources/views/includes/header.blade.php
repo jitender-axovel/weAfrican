@@ -26,12 +26,8 @@
 							</li>
 							<li><a href="#" class="download-link">download</a></li>
 						@else
-							<li>
-								<a href="{{ url('register-business/'.Auth::id()) }}"> Business Profile</a>
-							</li>
-							<li>
-								<a href="{{ url('business-product') }}"> Business Product</a>
-							</li>
+							<li> <a href="{{url('cms/privacy-policy')}}">Privacy Policy</a> </li>
+					<li> <a href="{{url('cms/terms-of-use')}}">Terms of Use</a> </li>
 							<li> <div class="dropdown">
 								  <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->full_name}}
 								  <span class="caret"></span></button>

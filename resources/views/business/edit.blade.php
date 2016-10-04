@@ -136,7 +136,7 @@
                 Secondary Mobile Number:
                 </label>
                 <div class="col-md-4">
-                    <input type="number" class="form-control" name="secondary_phone_number" value="{{ $business->secondary_phone_number }}" required>
+                    <input type="number" maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ $business->secondary_phone_number }}">
                     @if ($errors->has('secondary_phone_number'))
                     <span class="help-block">
                     <strong>{{ $errors->first('secondary_phone_number') }}</strong>

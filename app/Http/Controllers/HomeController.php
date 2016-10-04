@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         $pageTitle = "We African";
-        
-        return view('home', compact('pageTitle'));
+        $flag = 1;
+        return view('home', compact('pageTitle', 'flag'));
     }
 }

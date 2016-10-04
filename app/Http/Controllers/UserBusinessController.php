@@ -207,7 +207,7 @@ class UserBusinessController extends Controller
             'country' => 'alpha',
             'state' => 'alpha',
             'city' => 'alpha',
-            'secondary_mobile_number' => 'required|numeric|size:10',
+            'secondary_mobile_number' => 'required|numeric',
             'about_us' => 'string',
             'working_hours' => 'string',
         ]);

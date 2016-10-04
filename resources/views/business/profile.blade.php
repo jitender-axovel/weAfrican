@@ -15,7 +15,7 @@
 		</div>
 	@endif
 	@if($business)
-		<h3 class="text-center">Business Profile</h3>
+		<h5 class="text-left">Business Profile</h5>
 		<p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button></a></p>
 		<dl class="dl-horizontal">
 			<dt>Business Logo</dt>

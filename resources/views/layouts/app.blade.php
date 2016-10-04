@@ -6,7 +6,7 @@
 <body>
     <div class="top-container container-fluid">
 		@include('includes.header')
-
+		    @include('includes.top-menu')
     	<div class="main-content">
     		@yield('content')
     	</div>
