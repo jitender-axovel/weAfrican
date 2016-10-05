@@ -23,7 +23,7 @@
 					</div>
 					<label class="control-label col-md-2">Category</label>
 					<div class="col-md-4">
-					{{ $business->bussiness_category_id}}
+					{{ $business->category->title}}
 						
 					</div>
 				</div>
@@ -93,28 +93,33 @@
 				<div class="form-group">	
 					<label class="control-label col-md-2">Identity Proof</label>
 					<div class="col-md-4">
-					<a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	<img src="{{asset(config('image.document_url').$business->identity_proof)}}" style="width:100px;height:100px;"/></a>
-				<a href="{{ URL::to('admin/business/identity/proof/validate/'.$business->id) }}">
-				
-			                    @if($business->is_identity_proof_validate)
-			                    <button type="button" class="btn btn-success" title="Unverified"><i class="fa fa-ban"></i></button>
-			                    	
-		                    	@else
-		                    		<button type="button" class="btn btn-danger" title="Verified"><i class="fa fa-unlock"></i></button>
-		                		@endif
+						<a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	
+							<i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
+						</a>
+						<div class="verified">
+							<a href="{{ URL::to('admin/business/identity/proof/validate/'.$business->id) }}">
+							@if($business->is_identity_proof_validate)
+			                    <button type="button" class="btn btn-danger" title="Unverified">Unverified</button>
+	                    	@else
+	                    		<button type="button" class="btn btn-success" title="Verified">Verified</button>
+	                		@endif
 		                    </a>
+	                    </div>
 					</div>
 					<label class="control-label col-md-2">Business Proof</label>
 					<div class="col-md-4">
-					<a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	<img src="{{asset(config('image.document_url').$business->business_proof)}}" style="width:100px;height:100px;"/></a>
-				<a href="{{ URL::to('admin/business/proof/validate/'.$business->id) }}">
-			                    @if($business->is_business_proof_validate)
-			                    <button type="button" class="btn btn-success" title="Unverified"><i class="fa fa-ban"></i></button>
-			                    	
-		                    	@else
-		                    		<button type="button" class="btn btn-danger" title="Verified"><i class="fa fa-unlock"></i></button>
+						<a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	
+							<i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
+						</a>
+						<div class="verified">
+							<a href="{{ URL::to('admin/business/proof/validate/'.$business->id) }}">
+		                    @if($business->is_business_proof_validate)
+			                    <button type="button" class="btn btn-danger" title="Unverified">Unverified</button>
+	                    	@else
+	                    		<button type="button" class="btn btn-success" title="Verified">Verified</button>
 		                		@endif
 		                    </a>
+	                    </div>
 					</div>
 				</div>
 				@else

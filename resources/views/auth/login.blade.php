@@ -9,7 +9,7 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                     {{ csrf_field() }}
 
-                    <!--  <div class="form-group{{ $errors->has('full_name') ? ' has-error' : '' }}">
+                     <div class="form-group{{ $errors->has('full_name') ? ' has-error' : '' }}">
                         <label for="full_name" class="col-md-4 control-label">Name</label>
 
                         <div class="col-md-6">
@@ -22,8 +22,8 @@
                             @endif
                         </div>
                     </div>
- -->
-                    <div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
+
+                 <!--    <div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
                         <label for="mobile_number" class="col-md-4 control-label">Phone Number</label>
 
                         <div class="col-md-6">
@@ -35,13 +35,13 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label for="password" class="col-md-4 control-label">Password</label>
+                        <label for="password" class="col-md-4 control-label">Mobile Number</label>
 
                         <div class="col-md-6">
-                            <input id="password" type="password" class="form-control" name="password">
+                            <input id="password" type="text" class="form-control" name="password">
 
                             @if ($errors->has('password'))
                                 <span class="help-block">

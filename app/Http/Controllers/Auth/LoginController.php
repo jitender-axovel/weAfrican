@@ -41,7 +41,7 @@ class LoginController extends Controller
 
     public function username()
     {    
-        return 'mobile_number';
+        return 'full_name';
     }
 
     public function postLogin(Request $request)

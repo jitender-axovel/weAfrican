@@ -56,9 +56,17 @@
 			<dd>{{ $business->working_hours }}</dd>
 			@if($business->business_proof)
 				<dt>Identity Proof</dt>
-				<dd><img src="{{asset(config('image.document_url').$business->identity_proof)}}" style="width:100px;height:100px"/></dd>
+				<dd>
+					<a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	
+					<i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i></dd>
+					</a>
 				<dt>Business Proof</dt>
-				<dd><img src="{{asset(config('image.document_url').$business->business_proof)}}" style="width:100px;height:100px"/></dd>
+				<dd>
+					<a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	
+					<i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
+					</a>
+				</dd>
+
 				@if($business->is_identity_proof_validate && $business->is_business_proof_validate)
 					<dt>Document Status</dt>
 					<dd><span class="verified btn-success label"><i class="fa fa-check" aria-hidden="true"></i>
@@ -67,7 +75,7 @@
 					<dt>Edit Document</dt>
 					<dd><a href="{{url('upload')}}"><button>Upload Document</button></a></dd>
 					<dt>Document Status</dt>
-					<dd> <span class=" pending btn-danger label">Pending</span></dd>
+					<dd> <span class=" pending btn-danger label">Pending Verification</span></dd>
 				@endif
 			@else
 					<dt>Please Upload document to verify your business</dt>

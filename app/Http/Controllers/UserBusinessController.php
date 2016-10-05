@@ -91,6 +91,7 @@ class UserBusinessController extends Controller
             }
             $user = array_intersect_key($request->input(), User::$updatable);
             $user['user_role_id'] = 3;
+            $user['password'] = bcrypt($input['mobile_number']);
             
             $user = User::create($user);
             $user->save();
@@ -110,7 +111,7 @@ class UserBusinessController extends Controller
 
             if($business)
             {
-                if (Auth::attempt(['full_name' => $request->input('full_name'), 'mobile_number' => $request->input('mobile_number'), 'user_role_id' => 3 ,'password' => 'admin123'])) {
+                if (Auth::attempt(['full_name' => $request->input('full_name'), 'mobile_number' => $request->input('mobile_number'), 'user_role_id' => 3 ,'password' => $request->input('mobile_number')])) {
                 // Authentication passed...
                     return redirect()->intended('upload');
                 } else {
@@ -133,6 +134,16 @@ class UserBusinessController extends Controller
 
     public function uploadDocument(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'identity_proof' => 'mimes:jpeg,bmp,png,doc,docx,pdf',
+            'business_proof' => 'mimes:jpeg,bmp,png,doc,docx,pdf',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+                 
         if($request->file('identity_proof')->isValid() && $request->file('business_proof')->isValid())
         {
             $indentityFile = $key = md5(uniqid(rand(), true));

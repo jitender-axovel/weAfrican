@@ -8,7 +8,7 @@
 		<thead>
 			<tr>
 				<th>Business Name</th>
-				<th>Phone Number</th>
+				<th>Mobile Number</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -17,7 +17,7 @@
 			@foreach($businesses as $business)
 			<tr>
 				<td>{{ $business->title}}</td>
-				<td>{{ $business->phone_number}}</td>
+				<td>{{ $business->mobile_number}}</td>
 				<td>{{ date_format(date_create($business->created_at), 'F d, Y') }}</td>
 				<td>
 					<ul class="list-inline">

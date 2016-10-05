@@ -24,7 +24,7 @@
 						<select required name="bussiness_category_id" required>
 							<option value="" selected>Select category</option>
 							@foreach($categories as $category)
-								<option value="{{ $category->id }}" >{{ $category->title }}</option>
+								<option value="{{ $category->id }}" @if($business->category->title == $category->title){{ 'selected'}} @else @endif >{{ $category->title }}</option>
 							@endforeach
 						</select>
 						@if($errors->has('bussiness_category_id'))
@@ -117,10 +117,10 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Primary Mobile Number:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="phone_number" value="{{ $business->phone_number or old('phone_number') }}" required >
-						@if($errors->has('phone_number'))
+						<input type="text" class="form-control" name="mobile_number" value="{{ $business->mobile_number or old('mobile_number') }}" required >
+						@if($errors->has('mobile_number'))
 						<span class="help-block">
-							<strong>{{ $errors->first('phone_number') }}</strong>
+							<strong>{{ $errors->first('mobile_number') }}</strong>
 						</span>
 						@endif
 					</div>
