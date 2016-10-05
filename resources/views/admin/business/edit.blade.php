@@ -66,7 +66,7 @@
 					</div>
 					<label class="control-label col-md-2">City:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="city" value="{{ $business->address or old('address') }}" >
+						<input type="text" class="form-control" name="city" value="{{ $business->city or old('city') }}" >
 						@if($errors->has('city'))
 						<span class="help-block">
 							<strong>{{ $errors->first('city') }}</strong>

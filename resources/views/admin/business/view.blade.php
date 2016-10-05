@@ -46,7 +46,7 @@
 					</div>
 					<label class="control-label col-md-2">City:</label>
 					<div class="col-md-4">
-						{{ $business->address  }}
+						{{ $business->city  }}
 					</div>
 				</div>
 				<div class="form-group">
@@ -72,7 +72,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Primary Mobile Number:</label>
 					<div class="col-md-4">
-						{{ $business->phone_number or old('phone_number') }}
+						{{ $business->mobile_number or old('mobile_number') }}
 					</div>
 					<label class="control-label col-md-2">Secondary Mobile Number:</label>
 					<div class="col-md-4">
@@ -123,9 +123,14 @@
 					</div>
 				</div>
 				@else
-				<div class="form-group">	
-					<div class="col-md-6">
-						<p>User does not upload any document.</p>
+				<div class="form-group">
+					<label class="control-label col-md-2">Business Proof</label>	
+					<div class="col-md-4">
+						<p>User does not upload Identity Proof yet.</p>
+					</div>
+					<label class="control-label col-md-2">Identity Proof</label>	
+					<div class="col-md-4">
+						<p>User does not upload Business Proof yet.</p>
 					</div>
 				</div>
 				@endif
