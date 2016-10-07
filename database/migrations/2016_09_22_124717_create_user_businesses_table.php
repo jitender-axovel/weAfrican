@@ -32,13 +32,15 @@ class CreateUserBusinessesTable extends Migration
             $table->string('email');
             $table->string('website')->nullable();
             $table->string('working_hours')->nullable();
-             $table->string('business_logo')->nullable();
+            $table->string('business_logo')->nullable();
             $table->string('identity_proof')->nullable();
             $table->string('business_proof')->nullable();
             $table->boolean('is_identity_proof_validate')->default(false);
             $table->boolean('is_business_proof_validate')->default(false);
             $table->boolean('is_agree_to_terms');
             $table->boolean('is_blocked')->default(false);
+            $table->float('latitude', 8, 10)->nullable();
+            $table->float('longitude', 8, 10)->nullable();
             $table->timestamps();
         });
     }

@@ -30,7 +30,7 @@ class BussinessCategory extends Model
     {
         return $this->hasMany('App\UserBusiness');
     }
-
+    
     public function getBusinesses()
     {
         return $this->businesses()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
@@ -38,8 +38,8 @@ class BussinessCategory extends Model
 
     public function apiGetCategory()
     {
-    	$category = BussinessCategory::where('is_blocked',0)->get();
-       	return $category;
+    	$categories = $this->where('is_blocked',0)->get();
+       	return $categories;
     }
 
 }

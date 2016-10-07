@@ -31,4 +31,10 @@ class BusinessEvent extends Model
         'address' => 'required',
         'event_dt' => 'required',
     	);
+
+    public function apiGetBusinessEvents($input)
+    {
+        $events = $this->where('id',$input['userId'])->where('is_blocked',0)->get();
+        return $events;
+    }
 }

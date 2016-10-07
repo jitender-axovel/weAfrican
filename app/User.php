@@ -51,6 +51,12 @@ class User extends Authenticatable
 
     public function apiLogin(Request $request)
     {
+        $input = $request->input();
+        if($input == NULL)
+        {
+             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+        }
+
         $user = $this->where('mobile_number', $request->input('mobileNumber'))->first();
 
         if (!$user){
@@ -68,6 +74,7 @@ class User extends Authenticatable
             $user['full_name'] = $request->input('fullName');
             $user['mobile_number'] = $request->input('mobileNumber');
             $user['country_code'] = $request->input('countryCode');
+            $user['password'] = bcrypt($request->input('mobileNumber'));
             $user['user_role_id'] = 4;
 
             $user = array_intersect_key($user, User::$updatable);

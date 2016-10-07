@@ -17,6 +17,17 @@ use App\Helper;
 class UserBusinessController extends Controller
 {
     /**
+     * Instantiate a new new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->only('index','show', 'edit', 'update', 'destroy');
+
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

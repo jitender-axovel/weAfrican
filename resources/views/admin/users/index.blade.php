@@ -8,7 +8,7 @@
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Phone No.</th>
+				<th>Mobile No.</th>
 				<th>Role</th>
 				<th>Created On</th>
 				<th>Actions</th>
@@ -18,7 +18,7 @@
 			@foreach($users as $user)
 			<tr>
 				<td>{{ $user->full_name}}</td>
-				<td>{{ '+' . $user->country_code . '-' . $user->phone_number }}</td>
+				<td>{{ '+' . $user->country_code . '-' . $user->mobile_number }}</td>
 				<td>{{ $user->role->name }}</td>
 				<td>{{ date_format(date_create($user->created_at), 'F d, Y') }}</td>
 				<td>

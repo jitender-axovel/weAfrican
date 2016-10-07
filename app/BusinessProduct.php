@@ -33,7 +33,7 @@ class BusinessProduct extends Model
 
     public function apiGetBusinessProducts($input)
     {
-        $product = BusinessProduct::where('id',$input['userId'])->where('is_blocked',0)->get();
-        return $product;
+        $products = $this->where('id',$input['userId'])->where('is_blocked',0)->get();
+        return $products;
     }
 }

@@ -21,10 +21,11 @@
                     {{ $subscription->coverage }}
                 </div>
             </div>
+            @if($subscription->keywords_limit)
             <div class="form-group">
                 <label class=" required control-label col-md-2">keywords Limit</label>
                 <div class="col-md-6{{ $errors->has('keywords_limit') ? ' has-error' : '' }}">
-                    <input required type="text" class="form-control" name="keywords_limit" value="{{ $subscription->keywords_limit }}" >
+                    <input required type="text" min="1" class="form-control" name="keywords_limit" value="{{ $subscription->keywords_limit }}" >
                     @if($errors->has('keywords_limit'))
                     <span class="help-block">
                     <strong>{{ $errors->first('keywords_limit') }}</strong>
@@ -32,6 +33,7 @@
                     @endif
                 </div>
             </div>
+            @endif
             <div class="form-group">
                 <label class="control-label col-md-2">Price(per month)</label>
                 <div class="col-md-6{{ $errors->has('price') ? ' has-error' : '' }}">

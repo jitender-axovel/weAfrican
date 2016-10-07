@@ -16,11 +16,13 @@ class SubscriptionPlan extends Model
     public static $updatable = ['price' => "" ,'keywords_limit' => ""];
 
     public static $validater = array(
-    	'price' => 'required',   
+    	'price' => 'required|numeric',
+        'keywords_limit' => 'numeric|min:1',   
     	);
 
     public static $updateValidater = array(
-    	'price' => 'required',   
+    	'price' => 'required|numeric',  
+        'keywords_limit' => 'numeric|min:1',    
     	);
 
     public function apiGetSubscriptionPlans()
@@ -28,5 +30,4 @@ class SubscriptionPlan extends Model
         $plans = SubscriptionPlan::where('is_blocked',0)->orderBy('id','asc')->get();
         return $plans;
     }
-
 }
