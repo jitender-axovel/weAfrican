@@ -7,9 +7,9 @@
 	<table id="subscription_list" class="display">
 		<thead>
 			<tr>
-				<th>Title</th>
-				<th>Business</th>
-				<th>City</th>
+				<th>Business name</th>
+				<th>Subscription Plan</th>
+				<th>Coverage</th>
 				<th>Banner</th>
 				<th>Created On</th>
 				<th>Actions</th>
@@ -18,16 +18,17 @@
 		<tbody>
 			@foreach($banners as $banner)
 			<tr>
+				<td>{{ $banner->title}}</td>
 				<td>{{ $banner->name}}</td>
-				<td>{{ $banner->business->title }}</td>
-				<td>{{ $banner->city }}</td>
-				<td>{{ asset(config('image.banner_image_url').$banner->url) }}</td>
+				<td>@if($banner->country) Country: {{ $banner->country }} @elseif($banner->state) State: {{$banner->state}} @else  City: {{$banner->city}}  @endif
+				</td>
+				<td>{{ asset(config('image.banner_image_url').$banner->image) }}</td>
 				<td>{{ date_format(date_create($banner->created_at), 'F d, Y') }}</td>
 				<td>
 					<ul class="list-inline">
-						<li>
+						<!-- <li>
 							<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
-						</li>
+						</li> -->
 						<li>
 							<a href="{{ URL::to('admin/banner/block/'.$banner->id) }}">
 			                    @if ($banner->is_blocked)
@@ -38,7 +39,7 @@
 			                </a>
 						</li>
 						<li>
-							<form action="{{ url('admin/banner/'.$banner->id) }}" method="POST" onsubmit="deleteBanner('{{$banner->id}}', '{{$banner->name}}', event,this)">
+							<form action="{{ url('admin/banner/'.$banner->id) }}" method="POST" onsubmit="deleteBanner('{{$banner->id}}', '{{$banner->title}}', event,this)">
 								{{csrf_field()}}
 								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
 							</form>
@@ -57,7 +58,7 @@
 @endsection
 @section('scripts')
 	<script type="text/javascript">
-		function deleteBanner(id, name, event,form)
+		function deleteBanner(id, title, event,form)
 		{
 			event.preventDefault();
 			swal({

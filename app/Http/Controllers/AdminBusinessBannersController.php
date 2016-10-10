@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+
 use App\BusinessBanner;
+use App\UserBusiness;
+use App\SubscriptionPlan;
 use Validator;
+use DB;
 
 class AdminBusinessBannersController extends Controller
 {
@@ -18,7 +20,11 @@ class AdminBusinessBannersController extends Controller
     public function index()
     {
         $page = 'Banners- Admin';
-        $banners = BusinessBanner::get();
+        $banners = BusinessBanner::select('business_banners.*', DB::raw('user_businesses.title AS title , subscription_plans.title AS name'))->leftJoin('user_businesses', 'user_businesses.user_id', '=', 'business_banners.user_id')->leftJoin('subscription_plans', 'subscription_plans.id', '=', 'business_banners.subscription_plan_id')
+            ->get();
+
+          
+           
         return view('admin.banners.index', compact('page', 'banners'));
     }
 

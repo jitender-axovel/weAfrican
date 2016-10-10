@@ -1,11 +1,9 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 use Illuminate\Http\Request;
 
 use Auth;
@@ -23,8 +21,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp'
-    ];
+        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp'];
 
     /**
     * The attributes that are updatable.
@@ -32,8 +29,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => ""
-    ];
+        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => ""];
 
     /**
     * The attributes that should be hidden for arrays.
@@ -84,16 +80,15 @@ class User extends Authenticatable
             $user['slug'] = Helper::slug($user->full_name, $user->id);
 
             if($user->save()){
-                return response()->json(['status' => 'success','response' => ($user)]);
+                return response()->json(['status' => 'success','response' => $user]);
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
             }
         } else{
 
-            $user = $this->whereFullName($request->input('fullName'))->where('mobile_number', $request->input('mobileNumber'))->first();
-
-            if($user){
-                return response()->json(['status' => 'success','response' => $user]);
+            if (Auth::attempt(['full_name' => $request->input('fullName'), 'mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 0])) {
+                // Authentication passed...
+                return response()->json(['status' => 'success','response' => Auth::user()]);
             } else {
                 return response()->json(['status' => 'exception','response' => 'Invalid Credentials']);
             }

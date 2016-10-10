@@ -1,9 +1,7 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SubscriptionPlan extends Model
@@ -27,7 +25,7 @@ class SubscriptionPlan extends Model
 
     public function apiGetSubscriptionPlans()
     {
-        $plans = SubscriptionPlan::where('is_blocked',0)->orderBy('id','asc')->get();
+        $plans = SubscriptionPlan::where('is_blocked',0)->get();
         return $plans;
     }
 }

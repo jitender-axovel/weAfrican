@@ -19,10 +19,14 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['api']], function (){ 
 	Route::post('login', 'ApiController@login');
-	Route::get('get/bussiness-categories', 'ApiController@getCategories');
+	Route::get('get/business-categories', 'ApiController@getCategories');
 	Route::get('get/subscription-plans', 'ApiController@getSubscriptionPlans');
 	Route::post('get/business-products', 'ApiController@getBusinessProducts');
-	Route::get('get/business-events', 'ApiController@getBusinessEvents');
+	Route::post('get/business-events', 'ApiController@getBusinessEvents');
 	Route::get('get/category/businesses', 'ApiController@getBusinessesByCategory');
 	Route::post('post/user/business', 'ApiController@postUserBusiness');
+	Route::post('post/user/product', 'ApiController@postUserProduct');
+	Route::post('post/user/event', 'ApiController@postUserEvent');
+	Route::post('post/user/delete/product', 'ApiController@postDeleteProduct');
+	Route::post('post/user/delete/event', 'ApiController@postDeleteEvent');
 });
