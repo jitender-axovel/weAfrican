@@ -20,7 +20,7 @@
 			<tr>
 				<td>{{ $subscription->title}}</td>
 				<td>{{ $subscription->coverage}}</td>
-				<td>{{ $subscription->keywords_limit}}</td>
+				<td>@if($subscription->keywords_limit){{ $subscription->keywords_limit}} @endif</td>
                 <td>{{ $subscription->price}}</td>
 				<td>{{ date_format(date_create($subscription->created_at), 'F d, Y') }}</td>
 				<td>

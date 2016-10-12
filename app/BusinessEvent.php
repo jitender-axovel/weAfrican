@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Validator;
+use DB;
 
 class BusinessEvent extends Model
 {
@@ -99,6 +100,21 @@ class BusinessEvent extends Model
             $event = BusinessEvent::where('id', $input['id'])->where('user_id', $input['user_id'])->update($event);
 
             return response()->json(['status' => 'success','response' => "Event updated successfully."]);
+        }
+    }
+
+    public function apiPostEventAttendingUsers($input)
+    {
+        $check = DB::table('event_users')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->first();
+
+        if($check)
+        {
+            DB::table('event_users')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->delete();
+            return response()->json(['status' => 'success','response' => "User does not attending event."]);
+
+        } else{
+            $event = DB::table('event_users')->insert(['user_id' => $input['userId'], 'event_id' => $input['eventId'] ]);
+            return response()->json(['status' => 'success','response' => "User attending event"]);
         }
     }
 }

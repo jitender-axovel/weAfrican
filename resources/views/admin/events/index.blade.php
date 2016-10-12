@@ -12,6 +12,7 @@
 				<th>Organizer Name</th>
 				<th>Address</th>
 				<th>Date</th>
+				<th>Attending Users</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -23,6 +24,7 @@
 				<td>{{ $event->organizer_name }}</td>
 				<td>{{ $event->address }}</td>
 				<td>{{ $event->event_dt }}</td>
+				<td>{{ $event->attending }}</td>
 				<td>
 					<ul class="list-inline">
 						<li>

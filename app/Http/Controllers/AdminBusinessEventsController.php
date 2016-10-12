@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\BusinessEvent;
 use Auth;
+use DB;
 
 class AdminBusinessEventsController extends Controller
 {
@@ -18,7 +19,7 @@ class AdminBusinessEventsController extends Controller
      public function index()
     {
         $page = 'Business Event- Admin';
-        $events = BusinessEvent::orderBy('id','DESC')->get();
+        $events = BusinessEvent::select('business_events.*',DB::raw('count(event_users.user_id) AS attending'))->join('event_users','event_users.event_id', '=', 'business_events.id')->groupBy('event_users.event_id')->get();
         return view('admin.events.index', compact('page', 'events'));
     }
 

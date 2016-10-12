@@ -27,6 +27,7 @@
                     <th>Orgainzer Name</th>
                     <th>Date& time</th>
                     <th>Address</th>
+                    <th>Attending Users</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -37,6 +38,7 @@
                     <td>{{$event->organizer_name}}</td>
                     <td>{{$event->event_dt}}</td>
                     <td>{{$event->address}}</td>
+                    <td>{{$event->attending}}</td>
                     <td><a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 Edit</button></a>
                    <form action="{{url('business-event/'.$event->id)}}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->title}}', event,this)">

@@ -11,6 +11,7 @@ use App\BusinessProduct;
 use App\BusinessEvent;
 use App\UserBusiness;
 use Validator;
+use DB;
 
 class ApiController extends Controller
 {
@@ -249,5 +250,123 @@ class ApiController extends Controller
         } else {
             return response()->json(['status' => 'exception', 'response' => 'Event could not be deleted.Please try again.']);
         }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Post event attending users
+     * Url: api/post/event/attending/users
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postEventAttendingUsers(Request $request)
+    {   
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $response = $this->businessEvent->apiPostEventAttendingUsers($input);
+        return $response;
+    }
+
+    /**
+     * Author:Divya
+     * Function: Post business like and dislikes
+     * Url: api/post/business/likes
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postBusinessLikes(Request $request)
+    {   
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $check = DB::table('business_likes')->where('user_id',$input['userId'])->where('business_id',$input['businessId'])->pluck('id')->first();
+        if($check)
+        {
+            if(isset($input['like'])!= NULL){
+                DB::table('business_likes')->where('id',$check)->update(['likes' => $input['like'], 'dislikes' => 0 ]);
+                return response()->json(['status' => 'success','response' => 'User updated like status for business']);
+
+            } else {
+                DB::table('business_likes')->where('id',$check)->update(['likes' => 0, 'dislikes' => $input['dislike'] ]);
+                return response()->json(['status' => 'success','response' => 'User updated dislike status for business']);
+            }
+        } else{
+            if(isset($input['like'])!= NULL){
+                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'likes' => $input['like'], 'dislikes' => 0 ]);
+                return response()->json(['status' => 'success','response' => 'User like business']);
+            } else {
+                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'likes' => 0, 'dislikes' => $input['dislike'] ]);
+                return response()->json(['status' => 'success','response' => 'User dislike business']);
+            }
+        }
+        return response()->json(['status' => 'failure','response' => 'System Error']);
+    }
+
+    /**
+     * Author:Divya
+     * Function: Post business rating
+     * Url: api/post/business/rating
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postBusinessRating(Request $request)
+    {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+        $check = DB::table('business_ratings')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
+        if($check)
+        {   
+            DB::table('business_ratings')->where('id', $check)->update(['rating' => $input['rating'] ]); 
+            return response()->json(['status' => 'success','response' => 'Business rating Updated successfully']);
+
+        } else {
+
+            DB::table('business_ratings')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'rating' => $input['rating']]);
+            return response()->json(['status' => 'success','response' => 'Business rating saved successfully']);
+       }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Post business reviews
+     * Url: api/post/business/reviews
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postBusinessReviews(Request $request)
+    {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+        $check = DB::table('business_reviews')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
+        if($check)
+        {   
+            return response()->json(['status' => 'success','response' => 'User already reviewed on this business']);
+
+        } else {
+
+            DB::table('business_reviews')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'review' => $input['review']]);
+            return response()->json(['status' => 'success','response' => 'User review save successfully.']);
+       }
     }
 }
