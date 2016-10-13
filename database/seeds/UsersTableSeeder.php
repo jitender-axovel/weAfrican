@@ -24,28 +24,8 @@ class UsersTableSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
         ],
         [
-            'full_name' => 'madhav',
-            'slug' => 'madhav-2',
-            'user_role_id' => 3,
-            'country_code' => 91,
-            'mobile_number' => 7836860011,
-            'password' => Hash::make('7836860011'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ],
-        [
-            'full_name' => 'Divya',
-            'slug' => 'divya-3',
-            'user_role_id' => 3,
-            'country_code' => 91,
-            'mobile_number' => 9191919191,
-            'password' => Hash::make('9191919191'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ],
-        [
             'full_name' => 'Richa',
-            'slug' => 'richa-4',
+            'slug' => 'richa-2',
             'user_role_id' => 4,
             'country_code' => 91,
             'mobile_number' => 9292929292,
@@ -54,7 +34,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
         ],[
             'full_name' => 'Arun',
-            'slug' => 'arun-5',
+            'slug' => 'arun-3',
             'user_role_id' => 4,
             'country_code' => 91,
             'mobile_number' => 9393939393,
@@ -63,7 +43,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
         ],[
             'full_name' => 'Nikhil',
-            'slug' => 'nikhil-6',
+            'slug' => 'nikhil-4',
             'user_role_id' => 4,
             'country_code' => 91,
             'mobile_number' => 9494949494,
