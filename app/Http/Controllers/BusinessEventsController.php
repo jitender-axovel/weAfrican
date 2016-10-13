@@ -22,9 +22,6 @@ class BusinessEventsController extends Controller
     {
         $pageTitle = "Business Event";
         $events = BusinessEvent::get();
-
-
-
         return view('business-event.index', compact('events','pageTitle'));
     }
 

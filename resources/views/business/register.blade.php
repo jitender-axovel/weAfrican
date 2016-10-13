@@ -2,19 +2,16 @@
 @section('content')
 <div class="main-container row">
     <div class="col-md-10 col-md-offset-1">
-
-
-@include('notification')
-
-    @if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        @include('notification')
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="panel panel-default">
             <div class="panel-heading">Register Your Business for Free</div>
             <div class="panel-body">
@@ -25,19 +22,19 @@
                         <div class="col-md-4">
                             <input required type="text" class="form-control" name="full_name" value="{{ old('full_name') }}" autofocus>
                             @if ($errors->has('full_name'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('full_name') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('full_name') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="country_code" class="col-md-2 control-label">Country Code:</label>
                         <div class="col-md-4">
                             <input required type="number" min="0"
-                            class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
+                                class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
                             @if ($errors->has('country_code'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('country_code') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('country_code') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -46,9 +43,9 @@
                         <div class="col-md-4">
                             <input required type="text" class="form-control" name="title" value="{{ old('title') }}">
                             @if ($errors->has('title'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('title') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('title') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="category" class="col-md-2 control-label">Category:</label>
@@ -56,13 +53,13 @@
                             <select required name="bussiness_category_id" required>
                                 <option value="" selected>Select Category</option>
                                 @foreach($categories as $category)
-                                <option value="{{ $category->id }}" >{{ $category->title }}</option>
+                                    <option value="{{ $category->id }}" >{{ $category->title }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('bussiness_category_id'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('bussiness_category_id') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('bussiness_category_id') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -71,18 +68,18 @@
                         <div class="col-md-4">
                             <input required type="text" class="form-control" name="keywords" value="{{ old('keywords') }}">
                             @if ($errors->has('keywords'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('keywords') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('keywords') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="email" class="col-md-2 control-label">Business Email:</label>
                         <div class="col-md-4">
                             <input required type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="email" value="{{ old('email') }}">
                             @if ($errors->has('email'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -91,18 +88,18 @@
                         <div class="col-md-4">
                             <input type="text" class="form-control" name="address" value="{{ old('address') }}">
                             @if ($errors->has('address'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('address') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('address') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="city" class="col-md-2 control-label">City:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" name="city" value="{{ old('city') }}">
                             @if ($errors->has('city'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('city') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('city') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -111,18 +108,18 @@
                         <div class="col-md-4">
                             <input type="text" class="form-control" name="state" value="{{ old('state') }}">
                             @if ($errors->has('state'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('state') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('state') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="country" class="col-md-2 control-label">Country:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" name="country" value="{{ old('country') }}" >
                             @if ($errors->has('country'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('country') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('country') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -131,18 +128,18 @@
                         <div class="col-md-4">
                             <input type="text" pattern="[0-9]{6}" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
                             @if ($errors->has('pin_code'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('pin_code') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('pin_code') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="website" class="col-md-2 control-label">Website:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" name="website" value="{{ old('website') }}">
                             @if ($errors->has('website'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('website') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('website') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -151,9 +148,9 @@
                         <div class="col-md-4">
                             <input required type="text" maxlength="10" minlength="10" pattern="[0-9]{10}" class="form-control" name="mobile_number" value="{{ old('mobile_number') }}">
                             @if ($errors->has('mobile_number'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('mobile_number') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('mobile_number') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="secondary_phone_number" class="col-md-2 control-label">
@@ -163,9 +160,9 @@
                         <div class="col-md-4">
                             <input type="text"  maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}" required>
                             @if ($errors->has('secondary_phone_number'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('secondary_phone_number') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('secondary_phone_number') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -174,9 +171,9 @@
                         <div class="col-md-4">
                             <textarea class="form-control" name="about_us" rows="10" ></textarea>
                             @if ($errors->has('about_us'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('about_us') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('about_us') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="working_hours" class="col-md-2 control-label">
@@ -185,9 +182,9 @@
                         <div class="col-md-4">
                             <textarea class="form-control" name="working_hours" rows="10" ></textarea>
                             @if ($errors->has('working_hours'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('working_hours') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('working_hours') }}</strong>
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -196,9 +193,9 @@
                         <div class="col-md-4">
                             <input type="file" name="business_logo" id="business_logo">
                             @if ($errors->has('business_logo'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('business_logo') }}</strong>
-                            </span>
+                                <span class="help-block">
+                                <strong>{{ $errors->first('business_logo') }}</strong>
+                                </span>
                             @endif
                         </div>
                         <label for="logo_preview" class="col-md-2 control-label">
@@ -235,25 +232,18 @@
                 <h4 class="modal-title">Terms & Conditions</h4>
             </div>
             <div class="modal-body">
-            @if($term->content)
+                @if($term->content)
                 {!! $term->content !!}
-            @else
+                @else
                 <p class="text-center">{{ $term->title }}'s page content is still being prepared.</p>
-            @endif
-                    
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</div>    
-<style>
-.form-group.required .control-label:after { 
-   content:"*";
-   color:red;
-}
-</style>
+</div>
 @endsection
 @section('scripts')
 <script type="text/javascript">

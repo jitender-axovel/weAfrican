@@ -160,3 +160,13 @@ footer .available .list-inline > li {padding-right: 0;}
   float: right;
   margin-top: 16px;
 }
+.panel.panel-default.document {
+  padding: 30px;
+}
+.form-group.required .control-label:after { 
+	content:"*";
+	color:red;
+}
+.container.subscription-plans {
+    padding: 70px;
+}
