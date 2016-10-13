@@ -21,7 +21,7 @@ class BusinessEventsController extends Controller
     public function index()
     {
         $pageTitle = "Business Event";
-        $events = DB::table('business_events')->select('business_events.*', DB::raw('COUNT(event_users.event_id) as attending'))->leftJoin('event_users', 'business_events.id', '=', 'event_users.event_id')->where('business_events.user_id', Auth::id())->groupBy('business_events.id')->get();
+        $events = BusinessEvent::get();
         return view('business-event.index', compact('events','pageTitle'));
     }
 
