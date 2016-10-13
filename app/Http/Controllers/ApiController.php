@@ -10,6 +10,7 @@ use App\SubscriptionPlan;
 use App\BusinessProduct;
 use App\BusinessEvent;
 use App\UserBusiness;
+use App\BusinessService;
 use Validator;
 use DB;
 
@@ -29,7 +30,7 @@ class ApiController extends Controller
         $this->businessProduct = new BusinessProduct();
         $this->businessEvent = new BusinessEvent();
         $this->userBusiness = new UserBusiness();
-
+        $this->businessService = new BusinessService();
     }
 
     /**
@@ -369,4 +370,129 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' => 'User review save successfully.']);
        }
     }
+
+    /**
+     * Author:Divya
+     * Function: Post business followers
+     * Url: api/post/business/followers
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postBusinessFollowers(Request $request)
+    {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+        $check = DB::table('business_followers')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
+        if($check)
+        {   
+            DB::table('business_followers')->where('id', $check)->delete();
+            return response()->json(['status' => 'success','response' => 'User unfollow this business successfully']);
+
+        } else {
+
+            DB::table('business_followers')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId']]);
+            return response()->json(['status' => 'success','response' => 'User follow this business successfully']);
+       }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Post business favourites
+     * Url: api/post/business/favourites
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postBusinessFavourites(Request $request)
+    {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+        $check = DB::table('business_favourites')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
+        if($check)
+        {   
+            DB::table('business_favourites')->where('id', $check)->delete();
+            return response()->json(['status' => 'success','response' => 'User remove this business from favourite list.']);
+
+        } else {
+
+            DB::table('business_favourites')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId']]);
+            return response()->json(['status' => 'success','response' => 'User add this business in favourite list']);
+       }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Get services of Business user.
+     * Url: api/get/business-services
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBusinessServices(Request $request)
+    {   
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $response = $this->businessService->apiGetBusinessServices($input);
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Service.']);
+    }
+
+    /**
+     * Author:Divya
+     * Function: create and update service Details of business user.
+     * Url: api/post/user/service
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postUserService(Request $request)
+    {   
+        $response = $this->businessService->apiPostUserService($request);
+        return $response;
+    }
+
+    /**
+     * Author:Divya
+     * Function: delete product.
+     * Url: api/post/user/delete/service
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postDeleteService(Request $request)
+    {   
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $service = BusinessService::where('user_id',$input['userId'])->where('id',$input['serviceId'])->first();
+
+        if($service && $service->delete()){
+            return response()->json(['status' => 'success', 'response' => 'Service deleted successfully.']);
+        } else {
+            return response()->json(['status' => 'exception', 'response' => 'Service could not be deleted.Please try again.']);
+        }
+    }
+
+
 }

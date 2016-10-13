@@ -31,7 +31,7 @@ class BusinessProduct extends Model
 
     public function apiGetBusinessProducts($input)
     {
-        $products = $this->where('id',$input['userId'])->where('is_blocked',0)->get();
+        $products = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();
         return $products;
     }
 

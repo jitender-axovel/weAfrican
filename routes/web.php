@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('business-product', 'BusinessProductsController');
 	Route::resource('business-event', 'BusinessEventsController');
 	Route::resource('subscription-plans', 'SubscriptionPlansController');
+	Route::resource('business-service', 'BusinessServicesController');
 });
 
 Route::group(['prefix' => 'admin'], function() {
@@ -49,6 +50,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('subscription/plan', 'AdminSubscriptionPlansController');
 		Route::get('product/block/{id}','AdminBusinessProductsController@block');
 		Route::resource('product', 'AdminBusinessProductsController');
+		Route::get('service/block/{id}','AdminBusinessServicesController@block');
+		Route::resource('service', 'AdminBusinessServicesController');
 		Route::get('banner/block/{id}','AdminBusinessBannersController@block');
 		Route::resource('banner', 'AdminBusinessBannersController');
 		Route::resource('cms', 'AdminCmsPagesController');

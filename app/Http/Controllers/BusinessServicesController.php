@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\BusinessService;
 use Auth;
-use App\BusinessEvent;
 use Validator;
 use App\Helper;
-use DB;
 
-class BusinessEventsController extends Controller
+class BusinessServicesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +19,9 @@ class BusinessEventsController extends Controller
      */
     public function index()
     {
-        $pageTitle = "Business Event";
-        $events = DB::table('business_events')->select('business_events.*', DB::raw('COUNT(event_users.event_id) as attending'))->leftJoin('event_users', 'business_events.id', '=', 'event_users.event_id')->where('business_events.user_id', Auth::id())->groupBy('business_events.id')->get();
-        return view('business-event.index', compact('events','pageTitle'));
+        $pageTitle = "Business Services";
+        $services = BusinessService::where('user_id',Auth::id())->where('is_blocked',0)->get();
+        return view('business-service.index', compact('services','pageTitle'));
     }
 
     /**
@@ -32,8 +31,8 @@ class BusinessEventsController extends Controller
      */
     public function create()
     {
-        $pageTitle = "Business Event -create";
-        return view('business-event.create', compact('pageTitle'));
+        $pageTitle = "Business Service -create";
+        return view('business-service.create', compact('pageTitle'));
     }
 
     /**
@@ -44,26 +43,25 @@ class BusinessEventsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), BusinessEvent::$validater );
+        $validator = Validator::make($request->all(), BusinessService::$validater );
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
         $input = $request->input();
-        
-        $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
-        $event['user_id'] = Auth::id();
-          
-        $event = BusinessEvent::create($event);
 
-        $event->save();
-      
-        $event->slug = Helper::slug($event->title, $event->id);
-        $event->save();
+        $service = new BusinessService();
 
-        return redirect('business-event')->with('success', 'New Event created successfully');
-}
+        $service->user_id = Auth::id();
+        $service->title = $input['title'];
+        $service->description = $input['description'];
+        $service->slug = Helper::slug($input['title'], $service->id);
+
+        $service->save();
+
+        return redirect('business-service')->with('success', 'New Service created successfully');
+    }
 
     /**
      * Display the specified resource.
@@ -84,9 +82,9 @@ class BusinessEventsController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = "Business Product-Edit";
-        $event = BusinessEvent::find($id);
-        return view('business-event.edit',compact('pageTitle','event'));
+        $pageTitle = "Business Service-Edit";
+        $service = BusinessService::find($id);
+        return view('business-service.edit',compact('pageTitle','service'));
     }
 
     /**
@@ -98,7 +96,7 @@ class BusinessEventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BusinessEvent::$updateValidater);
+        $validator = Validator::make($request->all(),BusinessService::$updateValidater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -106,11 +104,12 @@ class BusinessEventsController extends Controller
 
         $input = $request->input();
 
-        $input = array_intersect_key($input, BusinessEvent::$updatable);
+        $input = array_intersect_key($input, BusinessService::$updatable);
 
-        $product = BusinessEvent::where('id',$id)->update($input);
+        $service = BusinessService::where('id',$id)->update($input);
+      
 
-        return redirect('business-event')->with('success', 'Event updated successfully');
+            return redirect('business-service')->with('success', 'Service updated successfully');
     }
 
     /**
@@ -121,17 +120,17 @@ class BusinessEventsController extends Controller
      */
     public function destroy($id)
     {
-        $event = BusinessEvent::findOrFail($id);
+        $service = BusinessService::findOrFail($id);
 
-        if($event->delete()){
+        if($service->delete()){
             $response = array(
                 'status' => 'success',
-                'message' => 'Event deleted  successfully',
+                'message' => 'Service deleted  successfully',
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'message' => 'Event can not be deleted.Please try again',
+                'message' => 'Service can not be deleted.Please try again',
             );
         }
 

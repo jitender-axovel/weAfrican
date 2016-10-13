@@ -4,29 +4,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
-use App\BusinessEvent;
+use App\BusinessService;
 use Auth;
-use DB;
 
-class AdminBusinessEventsController extends Controller
+class AdminBusinessServicesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     public function index()
+    public function index()
     {
-        $page = 'Business Event- Admin';
-        $events = BusinessEvent::select('business_events.*',DB::raw('count(event_users.user_id) AS attending'))->join('event_users','event_users.event_id', '=', 'business_events.id')->groupBy('event_users.event_id')->get();
-        return view('admin.events.index', compact('page', 'events'));
+        $pageTitle = 'Admin - Service';
+        $services = BusinessService::get();
+        return view('admin.services.index', compact('pageTitle', 'services'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Respons
-e     */
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         //
@@ -62,7 +61,7 @@ e     */
      */
     public function edit($id)
     {
-     
+        //
     }
 
     /**
@@ -74,44 +73,44 @@ e     */
      */
     public function update(Request $request, $id)
     {
-       
+        //
     }
 
     /**
-     * Block the specified resource from storage.
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function block($id)
-    {
-        $event = BusinessEvent::find($id);
-        $event->is_blocked = !$event->is_blocked;
-        $event->save();
-
-        if ($event->is_blocked) { 
-            return back()->with('success', 'Business Event blocked successfully');
-        } else {
-            return back()->with('success', 'Business Event unblocked successfully');
-        }   
-    }
-
     public function destroy($id)
     {
-        $event = BusinessEvent::findOrFail($id);
+        $service = BusinessService::findOrFail($id);
 
-        if($event->delete()){
+        if($service->delete()){
             $response = array(
                 'status' => 'success',
-                'message' => 'Business Event deleted  successfully',
+                'message' => 'Service deleted  successfully',
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'message' => 'Business Event can not be deleted.Please try again',
+                'message' => 'Service can not be deleted.Please try again',
             );
         }
 
         return json_encode($response);
+    }
+
+    public function block($id)
+    {
+        $service = BusinessService::find($id);
+        $service->is_blocked = !$service->is_blocked;
+        $service->save();
+
+        if ($service->is_blocked) {
+            return redirect('admin/service')->with('success', 'Service has been blocked successfully');
+        } else {
+            return redirect('admin/service')->with('success', 'Service has been unblocked');
+        }
     }
 }

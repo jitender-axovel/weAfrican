@@ -33,4 +33,10 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/business/likes', 'ApiController@postBusinessLikes');
 	Route::post('post/business/rating', 'ApiController@postBusinessRating');
 	Route::post('post/business/reviews', 'ApiController@postBusinessReviews');
+	Route::post('post/business/followers', 'ApiController@postBusinessFollowers');
+	Route::post('post/business/favourites', 'ApiController@postBusinessFavourites');
+	Route::post('get/business-services', 'ApiController@getBusinessServices');
+	Route::get('post/user/service', 'ApiController@postUserService');
+	Route::get('post/user/delete/service', 'ApiController@postDeleteService');
+
 });

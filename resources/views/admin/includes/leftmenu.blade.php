@@ -27,8 +27,11 @@
         <li>
             <a href="{{url('admin/banner')}}">Banner Management</a>
         </li>
-         <li>
+        <li>
             <a href="{{url('admin/product')}}">Product Management</a>
+        </li>
+        <li>
+            <a href="{{url('admin/service')}}">Service Management</a>
         </li>
         <li>
             <a href="{{url('admin/event')}}">Event Mangement</a>
