@@ -22,6 +22,26 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('admin123'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
+        ],
+        [
+            'full_name' => 'madhav',
+            'slug' => 'madhav-2',
+            'user_role_id' => 3,
+            'country_code' => 91,
+            'mobile_number' => 7836860011,
+            'password' => Hash::make('7836860011'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ],
+        [
+            'full_name' => 'Divya',
+            'slug' => 'divya-3',
+            'user_role_id' => 3,
+            'country_code' => 91,
+            'mobile_number' => 9191919191,
+            'password' => Hash::make('9191919191'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]]);
-    }
+   }
 }
