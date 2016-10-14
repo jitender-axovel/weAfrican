@@ -39,10 +39,27 @@ class BusinessService extends Model
             return json_encode(['status' =>'exception','response'=> 'Input parameters are missing']); 
         }
 
-        $service = $this->where('user_id',$input['userId'])->where('id', $input['serviceId'])->first();
-       
+        if(isset($input['serviceId']))
+        {   
+            $validator = Validator::make($input, [
+            'title' => 'required|max:255',
+            'description' => 'required',
+            ]);
 
-        if (!$service){
+            if ($validator->fails()) {
+                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
+            }
+
+            $input['user_id'] = $input['userId'];
+            $input['id'] = $input['serviceId'];
+            
+            $service = array_intersect_key($input, BusinessService::$updatable);
+           
+            $service = BusinessService::where('id', $input['id'])->where('user_id', $input['user_id'])->update($service);
+          
+            return response()->json(['status' => 'success','response' => "Service updated successfully."]);
+
+        }else{
 
             $validator = Validator::make($input, [
                 'title' => 'required|unique:business_services|max:255',
@@ -66,25 +83,6 @@ class BusinessService extends Model
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:Service could not be created .Please try later.']);
             }
-        } else {
- 
-            $validator = Validator::make($input, [
-                'title' => 'required|max:255',
-                'description' => 'required',
-                ]);
-
-            if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
-            }
-
-            $input['user_id'] = $input['userId'];
-            $input['id'] = $input['serviceId'];
-            
-            $service = array_intersect_key($input, BusinessService::$updatable);
-           
-            $service = BusinessService::where('id', $input['id'])->where('user_id', $input['user_id'])->update($service);
-          
-            return response()->json(['status' => 'success','response' => "Service updated successfully."]);
         }
     }
 }
