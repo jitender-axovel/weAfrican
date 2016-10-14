@@ -12,16 +12,17 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'event_dt', ];
+    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'event_starting', 'event_ending' ];
 
-    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'event_dt' => ""];
+    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'event_starting' => "", 'event_ending' => ""];
 
     public static $validater = array(
         'name' => 'required|max:255',
     	'title' => 'required|max:255',
     	'organizer_name' => 'required',
     	'address' => 'required',
-        'event_dt' => 'required',
+        'event_starting' => 'required',
+        'event_ending' => 'required',
     	);
 
     public static $updateValidater = array(
@@ -29,12 +30,18 @@ class BusinessEvent extends Model
         'title' => 'required|max:255',
         'organizer_name' => 'required',
         'address' => 'required',
-        'event_dt' => 'required',
+        'event_starting' => 'required',
+        'event_ending' => 'required',
     	);
+
+    public function participations()
+    {
+        return $this->hasMany('App\EventParticipant','event_id');
+    }
 
     public function apiGetBusinessEvents($input)
     {
-        $events = $this->where('id',$input['userId'])->where('is_blocked',0)->get();
+        $events = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();
         return $events;
     }
 
@@ -46,11 +53,32 @@ class BusinessEvent extends Model
             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']); 
         }
 
-        $event = $this->where('user_id',$input['userId'])->where('id', $input['eventId'])->first();
-
-        if (!$event){
+        if(isset($input['eventId'])){
 
             $validator = Validator::make($input, [
+                'name' => 'required',
+                'title' => 'required',
+                'organizerName' => 'required',
+                'address' => 'required',
+                'eventDateTime' => 'required',
+                ]);
+
+            if ($validator->fails()) {
+                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
+            }
+
+            $input['user_id'] = $input['userId'];
+            $input['id'] = $input['eventId'];
+            $input['organizer_name'] = $input['organizerName'];
+            $input['event_dt'] = $input['eventDateTime'];
+            
+            $event = array_intersect_key($input, BusinessEvent::$updatable);
+           
+            $event = BusinessEvent::where('id', $input['id'])->where('user_id', $input['user_id'])->update($event);
+
+            return response()->json(['status' => 'success','response' => "Event updated successfully."]);
+        }else{
+              $validator = Validator::make($input, [
                 'name' => 'required|max:255',
                 'title' => 'required|max:255',
                 'organizerName' => 'required',
@@ -76,30 +104,6 @@ class BusinessEvent extends Model
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:Product could not be created .Please try later.']);
             }
-        } else {
-
-            $validator = Validator::make($input, [
-                'name' => 'required',
-                'title' => 'required',
-                'organizerName' => 'required',
-                'address' => 'required',
-                'eventDateTime' => 'required',
-                ]);
-
-            if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
-            }
-
-            $input['user_id'] = $input['userId'];
-            $input['id'] = $input['eventId'];
-            $input['organizer_name'] = $input['organizerName'];
-            $input['event_dt'] = $input['eventDateTime'];
-            
-            $event = array_intersect_key($input, BusinessEvent::$updatable);
-           
-            $event = BusinessEvent::where('id', $input['id'])->where('user_id', $input['user_id'])->update($event);
-
-            return response()->json(['status' => 'success','response' => "Event updated successfully."]);
         }
     }
 
