@@ -10,8 +10,7 @@ class UserBusiness extends Model
 
     protected $fillable = ['user_id', 'bussiness_category_id', 'title' ,'keywords', 'about_us', 'address', 'city', 'state', 'country', 'pin_code', 'mobile_number', 'secondary_phone_number', 'email', 'website', 'working_hours' , 'is_agree_to_terms', 'identity_proof' , 'business_proof' , 'business_logo'];
 
-    public static $updatable = ['user_id' => "", 'bussiness_category_id' => "", 
-    'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'mobile_number' => "", 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => ""];
+    public static $updatable = ['user_id' => "", 'bussiness_category_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'mobile_number' => "", 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => ""];
 
     public function category()
     {
@@ -28,7 +27,7 @@ class UserBusiness extends Model
         $input = $request->input();
         if($input == NULL)
         {
-             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+             return json_encode(['status' =>'exception','response'=> 'Input parameters are missing']);  
         }
 
         $user = $this->where('user_id',$input['userId'])->first();
@@ -84,6 +83,7 @@ class UserBusiness extends Model
             $business['about_us'] = $input['aboutUs'];
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $business['working_hours'] = $input['workingHours'];
+            $business['is_agree_to_terms'] = $input['isAgreeToTerms'];
           
             if(isset($fileName)){
                 $business['business_logo'] = $image;
