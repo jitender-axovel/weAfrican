@@ -61,13 +61,32 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="event_dt" class="col-md-2 required control-label">Event Date& Time</label>
+                    <label for="start_date_time" class="col-md-2 required control-label">Event Start Date& Time</label>
                     <div class="col-md-4">
-                        <input  type="text" class="form-control" name="event_dt" id="dob" value="{{old('event_dt')}}" >
-                        @if($errors->has('event_dt'))
+                        <div class='input-group date' >
+                            <input type='text' class="form-control" id='datetimepicker1' name="start_date_time" value="{{ old('start_date_time') }}" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @if($errors->has('start_date_time'))
 	                        <span class="help-block">
-	                        <strong>{{ $errors->first('event_dt') }}</strong>
+	                        <strong>{{ $errors->first('start_date_time') }}</strong>
 	                        </span>
+                        @endif
+                    </div>
+                    <label for="end_date_time" class="col-md-2 required control-label">Event End Date& Time</label>
+                    <div class="col-md-4">
+                        <div class='input-group date' >
+                            <input type='text' class="form-control" id='datetimepicker2' name="end_date_time" value="{{ old('end_date_time')}}" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        @if($errors->has('end_date_time'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('end_date_time') }}</strong>
+                            </span>
                         @endif
                     </div>
                 </div>
@@ -85,12 +104,12 @@
 @endsection
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-		$('#dob').datepicker({
-           	format: "yyyy-mm-dd"
-       	});  
-           
-   });
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+    });
 </script>
 @endsection

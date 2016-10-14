@@ -18,7 +18,7 @@ class AdminBusinessEventsController extends Controller
      public function index()
     {
         $page = 'Business Event- Admin';
-        $events = BusinessEvent::get();
+        $events = BusinessEvent::withCount('participations')->get();
         return view('admin.events.index', compact('page', 'events'));
     }
 

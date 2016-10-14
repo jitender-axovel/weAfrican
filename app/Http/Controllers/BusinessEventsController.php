@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use Auth;
+
 use App\BusinessEvent;
 use Validator;
 use App\Helper;
+use Auth;
 use DB;
 
 class BusinessEventsController extends Controller
@@ -21,7 +20,7 @@ class BusinessEventsController extends Controller
     public function index()
     {
         $pageTitle = "Business Event";
-        $events = BusinessEvent::get();
+        $events = BusinessEvent::whereUserId(Auth::id())->withCount('participations')->get();
         return view('business-event.index', compact('events','pageTitle'));
     }
 
@@ -54,6 +53,9 @@ class BusinessEventsController extends Controller
         
         $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
         $event['user_id'] = Auth::id();
+        $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
+        $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
+       
           
         $event = BusinessEvent::create($event);
 
@@ -107,8 +109,10 @@ class BusinessEventsController extends Controller
         $input = $request->input();
 
         $input = array_intersect_key($input, BusinessEvent::$updatable);
+        $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
+        $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 
-        $product = BusinessEvent::where('id',$id)->update($input);
+        $event = BusinessEvent::where('id',$id)->update($input);
 
         return redirect('business-event')->with('success', 'Event updated successfully');
     }

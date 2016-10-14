@@ -18,7 +18,7 @@ class CreateBusinessProductsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('title')->unique();
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->text('description');
             $table->integer('price');
             $table->string('image')->nullable();

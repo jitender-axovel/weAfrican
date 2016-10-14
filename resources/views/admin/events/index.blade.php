@@ -11,8 +11,9 @@
 				<th>Event title</th>
 				<th>Organizer Name</th>
 				<th>Address</th>
-				<th>Date</th>
-				<th>Attending Users</th>
+				<th>Start Date Time</th>
+				<th>End Date Time</th>
+				<th>Participants</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -23,8 +24,9 @@
 				<td>{{ $event->title}}</td>
 				<td>{{ $event->organizer_name }}</td>
 				<td>{{ $event->address }}</td>
-				<td>{{ $event->event_dt }}</td>
-				<td>{{ $event->attending }}</td>
+				<td>{{ date('m/d/Y h:i A', strtotime($event->start_date_time))}}</td>
+				<td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
+				<td>{{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
 				<td>
 					<ul class="list-inline">
 						<li>

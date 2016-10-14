@@ -29,14 +29,14 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/event', 'ApiController@postUserEvent');
 	Route::post('post/user/delete/product', 'ApiController@postDeleteProduct');
 	Route::post('post/user/delete/event', 'ApiController@postDeleteEvent');
-	Route::post('post/event/attending/users', 'ApiController@postEventAttendingUsers');
+	Route::post('post/event/participants', 'ApiController@postEventParticipants');
 	Route::post('post/business/likes', 'ApiController@postBusinessLikes');
 	Route::post('post/business/rating', 'ApiController@postBusinessRating');
 	Route::post('post/business/reviews', 'ApiController@postBusinessReviews');
 	Route::post('post/business/followers', 'ApiController@postBusinessFollowers');
 	Route::post('post/business/favourites', 'ApiController@postBusinessFavourites');
 	Route::post('get/business-services', 'ApiController@getBusinessServices');
-	Route::get('post/user/service', 'ApiController@postUserService');
-	Route::get('post/user/delete/service', 'ApiController@postDeleteService');
+	Route::post('post/user/service', 'ApiController@postUserService');
+	Route::post('post/user/delete/service', 'ApiController@postDeleteService');
 
 });

@@ -12,17 +12,17 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'event_starting', 'event_ending' ];
+    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'start_date_time', 'end_date_time' ];
 
-    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'event_starting' => "", 'event_ending' => ""];
+    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => ""];
 
     public static $validater = array(
         'name' => 'required|max:255',
     	'title' => 'required|max:255',
     	'organizer_name' => 'required',
     	'address' => 'required',
-        'event_starting' => 'required',
-        'event_ending' => 'required',
+        'start_date_time' => 'required',
+        'end_date_time' => 'required',
     	);
 
     public static $updateValidater = array(
@@ -30,8 +30,8 @@ class BusinessEvent extends Model
         'title' => 'required|max:255',
         'organizer_name' => 'required',
         'address' => 'required',
-        'event_starting' => 'required',
-        'event_ending' => 'required',
+        'start_date_time' => 'required',
+        'end_date_time' => 'required',
     	);
 
     public function participations()
@@ -60,7 +60,8 @@ class BusinessEvent extends Model
                 'title' => 'required',
                 'organizerName' => 'required',
                 'address' => 'required',
-                'eventDateTime' => 'required',
+                'startDateTime' => 'required',
+                'endDateTime' => 'required',
                 ]);
 
             if ($validator->fails()) {
@@ -70,7 +71,8 @@ class BusinessEvent extends Model
             $input['user_id'] = $input['userId'];
             $input['id'] = $input['eventId'];
             $input['organizer_name'] = $input['organizerName'];
-            $input['event_dt'] = $input['eventDateTime'];
+            $input['start_date_time'] = $input['startDateTime'];
+            $input['end_date_time'] = $input['endDateTime'];
             
             $event = array_intersect_key($input, BusinessEvent::$updatable);
            
@@ -83,7 +85,8 @@ class BusinessEvent extends Model
                 'title' => 'required|max:255',
                 'organizerName' => 'required',
                 'address' => 'required',
-                'eventDateTime' => 'required',
+                'startDateTime' => 'required',
+                'endDateTime' => 'required',
                 ]);
 
             if ($validator->fails()) {
@@ -93,7 +96,8 @@ class BusinessEvent extends Model
             $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
             $event['user_id'] = $input['userId'];
             $event['organizer_name'] = $input['organizerName'];
-            $event['event_dt'] = $input['eventDateTime'];
+            $input['start_date_time'] = $input['startDateTime'];
+            $input['end_date_time'] = $input['endDateTime'];
             $event = BusinessEvent::create($event);
             $event->save();
 
@@ -107,17 +111,17 @@ class BusinessEvent extends Model
         }
     }
 
-    public function apiPostEventAttendingUsers($input)
+    public function apiPostEventParticipants($input)
     {
-        $check = DB::table('event_users')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->first();
+        $check = DB::table('event_participants')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->first();
 
         if($check)
         {
-            DB::table('event_users')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->delete();
+            DB::table('event_participants')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->delete();
             return response()->json(['status' => 'success','response' => "User does not attending event."]);
 
         } else{
-            $event = DB::table('event_users')->insert(['user_id' => $input['userId'], 'event_id' => $input['eventId'] ]);
+            $event = DB::table('event_participants')->insert(['user_id' => $input['userId'], 'event_id' => $input['eventId'] ]);
             return response()->json(['status' => 'success','response' => "User attending event"]);
         }
     }

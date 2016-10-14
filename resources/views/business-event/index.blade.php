@@ -21,9 +21,10 @@
                     <th>Event Name</th>
                     <th>Event Title</th>
                     <th>Orgainzer Name</th>
-                    <th>Date& time</th>
+                    <th>Event Start Date& time</th>
+                    <th>Event End Date& time</th>
                     <th>Address</th>
-                    <th>Attending Users</th>
+                    <th>Participants</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -34,9 +35,10 @@
                         <td>{{$event->name}}</td>
                         <td>{{$event->title}}</td>
                         <td>{{$event->organizer_name}}</td>
-                        <td>{{$event->event_dt}}</td>
+                        <td>{{ date('m-d-Y h:i A', strtotime($event->start_date_time))}}</td>
+                        <td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
                         <td>{{$event->address}}</td>
-                        <td>{{$event->attending}}</td>
+                        <td> {{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
                         <td>
                             <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             Edit</button></a>

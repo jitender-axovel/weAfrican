@@ -255,14 +255,14 @@ class ApiController extends Controller
 
     /**
      * Author:Divya
-     * Function: Post event attending users
-     * Url: api/post/event/attending/users
+     * Function: Post event participants
+     * Url: api/post/event/participants
      * Request type: Post
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postEventAttendingUsers(Request $request)
+    public function postEventParticipants(Request $request)
     {   
         $input = $request->input();
         if($input == NULL)

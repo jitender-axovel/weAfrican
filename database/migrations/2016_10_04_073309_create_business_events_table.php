@@ -22,7 +22,8 @@ class CreateBusinessEventsTable extends Migration
             $table->string('slug')->nullable();
             $table->string('organizer_name');
             $table->string('address');
-            $table->date('event_dt');
+            $table->datetime('start_date_time');
+            $table->datetime('end_date_time');
             $table->string('banner_image')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
