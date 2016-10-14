@@ -7,6 +7,7 @@
 	<table id="categories_list" class="display">
 		<thead>
 			<tr>
+				<th>Business ID</th>
 				<th>Business Name</th>
 				<th>Mobile Number</th>
 				<th>Created On</th>
@@ -16,6 +17,7 @@
 		<tbody>
 			@foreach($businesses as $business)
 			<tr>
+				<td>{{ $business->business_id}}</td>
 				<td>{{ $business->title}}</td>
 				<td>{{ $business->mobile_number}}</td>
 				<td>{{ date_format(date_create($business->created_at), 'F d, Y') }}</td>

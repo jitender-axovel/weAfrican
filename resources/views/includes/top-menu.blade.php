@@ -7,7 +7,7 @@
         <li role="presentation"><a href="{{ url('business-service') }}">Business Service</a></li>
         <li role="presentation"><a href="{{ url('business-event') }}">Business Event</a></li>
         <li role="presentation"><a href="{{ url('subscription-plans') }}">Subscription History</a></li>
-        <li role="presentation" class="dropdown">
+        <!-- <li role="presentation" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             Dropdown <span class="caret"></span>
             </a>
@@ -16,7 +16,7 @@
                 <li role="presentation"><a href="#">Profile</a></li>
                 <li role="presentation"><a href="#">Messages</a></li>
             </ul>
-        </li>
+        </li> -->
     </ul>
 </div>
 @endif

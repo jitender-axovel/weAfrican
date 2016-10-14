@@ -24,6 +24,8 @@
 	            <img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
             @endif
 	        </dd>
+	        <dt>Business ID</dt>
+	        <dd>{{$business->business_id}}</dd>
 	        <dt>Business name</dt>
 	        <dd>{{$business->title}}</dd>
 	        <dt>Category:</dt>
