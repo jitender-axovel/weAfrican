@@ -48,7 +48,7 @@ class User extends Authenticatable
     public function apiLogin(Request $request)
     {
         $input = $request->input();
-        if($input == NULL)
+        if(!$request->input())
         {
              return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
         }
