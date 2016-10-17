@@ -13,6 +13,7 @@ use App\User;
 use Auth;
 use Validator;
 use App\Helper;
+use session;
 
 class UserBusinessController extends Controller
 {
@@ -24,6 +25,7 @@ class UserBusinessController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('index','show', 'edit', 'update', 'destroy');
+        $this->user = new User();
 
     }
 
@@ -66,9 +68,9 @@ class UserBusinessController extends Controller
             'email' => 'required|email|max:255|unique:user_businesses',
             'mobile_number' => 'required|numeric|unique:users',
             'pin_code' => 'regex:/\b\d{6}\b/',
-            'country' => 'alpha',
-            'state' => 'alpha',
-            'city' => 'alpha',
+            'country' => 'string',
+            'state' => 'string',
+            'city' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg',
         ]);
 
@@ -109,6 +111,7 @@ class UserBusinessController extends Controller
 
             $user->slug = Helper::slug($user->full_name, $user->id);
             $user->save();
+            
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
             $business['business_id']=substr($input['full_name'],0,3).rand(0,999);
@@ -119,7 +122,7 @@ class UserBusinessController extends Controller
            
             $business = UserBusiness::create($business);
             $business->save();
-
+            $value = $request->session()->get('key');
             if($business)
             {
                 if (Auth::attempt(['full_name' => $request->input('full_name'), 'mobile_number' => $request->input('mobile_number'), 'user_role_id' => 3 ,'password' => $request->input('mobile_number')])) {
@@ -135,6 +138,17 @@ class UserBusinessController extends Controller
         } else {
             return back()->with('error', 'Please select terms and conditions');
         }
+    }
+
+    public function otp()
+    {
+        $pageTitle = "Otp";
+        return view('business.otp', compact('pageTitle'));
+    }
+
+    public function checkOtp(Request $request)
+    {
+
     }
 
     public function uploadForm()

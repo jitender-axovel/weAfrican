@@ -29,7 +29,12 @@ class BusinessProduct extends Model
         'product_image' => 'image|mimes:jpg,png,jpeg',
     	);
 
-    public function apiGetBusinessProducts($input)
+    public function product_business()
+    {
+        return $this->hasOne('App\UserBusiness','user_id');
+    }
+
+    public function apiGetUserBusinessProducts($input)
     {
         $products = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();
         return $products;

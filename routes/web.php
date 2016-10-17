@@ -21,6 +21,9 @@ Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
 
 Route::resource('register-business', 'UserBusinessController');
 
+Route::get('otp', 'UserBusinessController@otp');
+Route::post('check-otp', 'UserBusinessController@checkOtp');
+
 Route::group(['middleware' => ['auth']], function() {
 	
 	Route::get('upload', 'UserBusinessController@uploadForm');
@@ -55,5 +58,9 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('banner/block/{id}','AdminBusinessBannersController@block');
 		Route::resource('banner', 'AdminBusinessBannersController');
 		Route::resource('cms', 'AdminCmsPagesController');
+		Route::resource('fcm-notification', 'AdminFcmNotificationController');
+		Route::post('send/notification', 'AdminFcmNotificationController@sendNotification');
+		Route::resource('app-feedback', 'AdminAppFeedbackController');
+		Route::get('app-feedback/block/{id}','AdminAppFeedbackController@block');
 	});
 });

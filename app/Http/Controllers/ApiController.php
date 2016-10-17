@@ -527,7 +527,7 @@ class ApiController extends Controller
      * Author:Divya
      * Function: Get all events details.
      * Url: api/post/user/business-events
-     * Request type: Post
+     * Request type: Get
      *
      * @param  Void
      * @return \Illuminate\Http\JsonResponse
@@ -564,11 +564,41 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' =>'This Fcm registration id for this user already exist in database.']);
         }
         else{
-            $response = DB::table('fcm_users')->insert(['user_id' => $input['userId'], 'fcm_reg_id' => $input['fcmRegId'], 'user_role_id' => $input['userRoleId']]);
+            $response = DB::table('fcm_users')->insert(['user_id' => $input['userId'], 'fcm_reg_id' => $input['fcmRegId']]);
             if($response)
                 return response()->json(['status' => 'success','response' =>' Fcm registration id for this user save successfully.']);
             else
                 return response()->json(['status' => 'exception','response' =>'Unable to Fcm registration id for this user.']);
+        }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Post app feedback.
+     * Url: api/post/app/feedback
+     * Request type: Post
+     *
+     * @param  Void
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postAppFeedBack(Request $request)
+    {  
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'success','response' => 'Input parmeters are missing.']);
+        }
+
+        $user = DB::table('app_feedbacks')->where('user_id', $input['userId'])->first();
+        if($user){
+            return response()->json(['status' => 'success','response' => 'This user already gave feedback']);
+        }
+        else {
+            $feedback = DB::table('app_feedbacks')->insert(['user_id' => $input['userId'], 'feedback' => $input['feedback']]);
+            if($feedback)
+                return response()->json(['status' => 'success','response' => 'User feedback save successfully']);
+            else
+                return response()->json(['status' => 'success','response' => 'System Error:Unable to save feedback.Please try again.']);
         }
     }
 }

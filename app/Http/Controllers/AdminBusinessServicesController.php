@@ -17,7 +17,7 @@ class AdminBusinessServicesController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Service';
-        $services = BusinessService::get();
+        $services = BusinessService::select('business_services.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses','business_services.user_id' , '=', 'user_businesses.user_id')->get();
         return view('admin.services.index', compact('pageTitle', 'services'));
     }
 

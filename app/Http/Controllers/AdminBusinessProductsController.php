@@ -17,7 +17,7 @@ class AdminBusinessProductsController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Products';
-        $products = BusinessProduct::get();
+        $products = BusinessProduct::select('business_products.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses','business_products.user_id' , '=', 'user_businesses.user_id')->get();
         return view('admin.products.index', compact('pageTitle', 'products'));
     }
 

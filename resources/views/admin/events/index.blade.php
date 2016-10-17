@@ -7,6 +7,8 @@
 	<table id="subscription_list" class="display">
 		<thead>
 			<tr>
+				<th>Business ID</th>
+				<th>Business Name</th>
 				<th>Event Name</th>
 				<th>Event title</th>
 				<th>Organizer Name</th>
@@ -20,6 +22,8 @@
 		<tbody>
 			@foreach($events as $event)
 			<tr>
+				<td>{{ $event->business_id}}</td>
+				<td>{{ $event->business_name}}</td>
 				<td>{{ $event->name}}</td>
 				<td>{{ $event->title}}</td>
 				<td>{{ $event->organizer_name }}</td>

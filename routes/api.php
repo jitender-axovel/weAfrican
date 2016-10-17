@@ -41,5 +41,6 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('check/otp' ,'ApiController@checkOtp');
 	Route::get('get/business-events' ,'ApiController@getBusinessEvents');
 	Route::post('post/fcm/id' ,'ApiController@postFcmId');
+	Route::get('post/app/feedback' ,'ApiController@postAppFeedback');
 
 });

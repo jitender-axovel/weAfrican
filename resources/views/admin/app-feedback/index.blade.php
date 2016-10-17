@@ -1,41 +1,45 @@
 @extends('admin.layouts.adminapp')
-@section('title', $pageTitle)
+@section('title', $page)
 @section('content')
-	<h2>Services</h2>
+	<h2>App Feedbacks</h2>
 	<hr>
 	@include('notification')
 	<table id="subscription_list" class="display">
 		<thead>
 			<tr>
-				<th>Business ID</th>
-				<th>Business Name</th>
-				<th>Service Name</th>
-				<th>Description</th>
+				<th>Full Name</th>
+				<th>Mobile Number</th>
+				<th>Feedbacks</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($services as $service)
+			@foreach($feedbacks as $feedback)
 			<tr>
-				<td>{{ $service->business_id}}</td>
-				<td>{{ $service->business_name}}</td>
-				<td>{{ $service->title}}</td>
-				<td>{{ $service->description}}</td>
-				<td>{{ date_format(date_create($service->created_at), 'F d, Y') }}</td>
+				<td>{{ $feedback->full_name}}</td>
+				<td>{{ '+' . $feedback->country_code . '-' . $feedback->mobile_number }}</td>
+				<td>{{ $feedback->feedback}}</td>
+				<td>{{ date_format(date_create($feedback->created_at), 'F d, Y') }}</td>
 				<td>
-					<a href="{{ URL::to('admin/service/block/'.$service->id) }}">
-	                    @if($service->is_blocked)
-	                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
-	                	@else
-	                		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
-	            		@endif
-	        		</a>
-	        		<form action="{{ url('admin/service/'.$service->id) }}" method="POST" onsubmit="deleteService('{{$service->id}}', '{{$service->title}}', event,this)">
+					<ul class="list-inline">
+						<li>
+							<a href="{{ URL::to('admin/app-feedback/block/'.$feedback->id) }}">
+			                    @if ($feedback->is_blocked)
+			                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
+		                    	@else
+		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+	                    		@endif
+			                </a>
+						</li>
+						<li>
+							<form action="{{ url('admin/app-feedback/'.$feedback->id) }}" method="POST" onsubmit="deleteFeedback('{{$feedback->id}}', '{{$feedback->full_name}}', event,this)">
 								{{csrf_field()}}
 								{{ method_field('DELETE') }}
 								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
-					</form>
+							</form>
+						</li>
+					</ul>
 				</td>
 			</tr>
 			@endforeach
@@ -49,7 +53,7 @@
 @endsection
 @section('scripts')
 	<script type="text/javascript">
-		function deleteService(id, title, event,form)
+		function deleteFeedback(id, title, event,form)
 		{   
 
 			event.preventDefault();

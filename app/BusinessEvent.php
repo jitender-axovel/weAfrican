@@ -39,7 +39,18 @@ class BusinessEvent extends Model
         return $this->hasMany('App\EventParticipant','event_id');
     }
 
-    public function apiGetBusinessEvents($input)
+    public function business()
+    {
+        return $this->hasOne('App\UserBusiness','id');
+    }
+
+    public function apiGetBusinessEvents()
+    {
+        $events = $this->where('is_blocked',0)->get();
+        return $events;
+    }
+
+    public function apiGetUserBusinessEvents($input)
     {
         $events = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();
         return $events;

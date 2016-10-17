@@ -37,6 +37,12 @@
             <a href="{{url('admin/event')}}">Event Mangement</a>
         </li>
         <li>
+            <a href="{{url('admin/app-feedback')}}">App feedbacks</a>
+        </li>
+        <li>
+            <a href="{{url('admin/fcm-notification')}}">Fcm Notification</a>
+        </li>
+        <li>
             <a href="{{ url('admin/cms') }}">Manage CMS Pages</a>
         </li>
     </ul>

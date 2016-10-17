@@ -17,6 +17,7 @@ class CreateUserBusinessesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('business_id');
             $table->integer('bussiness_category_id')->unsigned();
             $table->foreign('bussiness_category_id')->references('id')->on('bussiness_categories');
             $table->string('title');
