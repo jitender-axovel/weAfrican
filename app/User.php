@@ -64,7 +64,7 @@ class User extends Authenticatable
             ]);
 
             if ($validator->fails()) {
-               return json_encode(['status' =>'error','response'=>$validator->errors()->all()]);  
+               return json_encode(['status' =>'error','response'=> 'All fields are required.']);  
             }
            
             $user['full_name'] = $request->input('fullName');
