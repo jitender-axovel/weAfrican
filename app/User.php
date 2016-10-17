@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -37,8 +36,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $hidden = [
-    'password', 'remember_token',
-    ];
+    'password', 'remember_token',];
 
     public function role()
     {
@@ -64,7 +62,7 @@ class User extends Authenticatable
             ]);
 
             if ($validator->fails()) {
-               return json_encode(['status' =>'error','response'=> 'All fields are required.']);  
+               return json_encode(['status' => 'error','response' => 'All fields are required.']);  
             }
            
             $user['full_name'] = $request->input('fullName');
@@ -91,6 +89,7 @@ class User extends Authenticatable
             if (Auth::attempt(['mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 0])) {
                 // Authentication passed...
                 return response()->json(['status' => 'success','response' => Auth::user()]);
+                
             } else if (Auth::attempt(['full_name' => $request->input('fullName'), 'mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 1])){
                 return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
             }

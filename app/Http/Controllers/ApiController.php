@@ -54,7 +54,7 @@ class ApiController extends Controller
      * Url: api/get/bussiness-categories
      * Request type: Get
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Void
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCategories()
@@ -72,7 +72,7 @@ class ApiController extends Controller
      * Url: api/get/subscription-plans
      * Request type: Get
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Void
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSubscriptionPlans()
@@ -87,13 +87,13 @@ class ApiController extends Controller
     /**
      * Author:Divya
      * Function: Get Business Products of user.
-     * Url: api/get/business-products
+     * Url: api/get/user/business-products
      * Request type: Post
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBusinessProducts(Request $request)
+    public function getUserBusinessProducts(Request $request)
     {   
         $input = $request->input();
         if($input == NULL)
@@ -101,7 +101,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
-        $response = $this->businessProduct->apiGetBusinessProducts($input);
+        $response = $this->businessProduct->apiGetUserBusinessProducts($input);
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
@@ -111,13 +111,13 @@ class ApiController extends Controller
     /**
      * Author:Divya
      * Function: Get Business Events of user.
-     * Url: api/get/business-events
+     * Url: api/get/user/business-events
      * Request type: Post
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBusinessEvents(Request $request)
+    public function getUserBusinessEvents(Request $request)
     {   
         $input = $request->input();
         if($input == NULL)
@@ -125,7 +125,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
-        $response = $this->businessEvent->apiGetBusinessEvents($input);
+        $response = $this->businessEvent->apiGetUserBusinessEvents($input);
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
@@ -494,5 +494,81 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Author:Divya
+     * Function: Check Otp.
+     * Url: api/check/otp
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkOtp(Request $request)
+    {   
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
 
+        $response = $this->user->apiCheckOtp($input);
+        
+        if($response == 1)
+        {
+            return response()->json(['status' => 'success', 'response' => 'Otp Verified']);
+        } else if($response == 2) {
+            return response()->json(['status' => 'exception', 'response' => 'Incorrect Otp']);
+        }else{
+            return response()->json(['status' => 'exception', 'response' => 'Mobile Number does not exist.']);
+        }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Get all events details.
+     * Url: api/post/user/business-events
+     * Request type: Post
+     *
+     * @param  Void
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBusinessEvents()
+    {  
+        $response = $this->businessEvent->apiGetBusinessEvents();
+        
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Event.']);
+    }
+
+    /**
+     * Author:Divya
+     * Function: Save user fcm registration Ids.
+     * Url: api/post/fcm/id
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postFcmId(Request $request)
+    {  
+        $input = $request->input();
+        if($input == NULL){
+            return response()->json(['status' => 'exception','response' =>'Input parameters are missing.']);
+        }
+        
+        $response = DB::table('fcm_users')->where('user_id', $input['userId'])->where('fcm_reg_id', $input['fcmRegId'])->first();
+        
+        if($response){
+            return response()->json(['status' => 'success','response' =>'This Fcm registration id for this user already exist in database.']);
+        }
+        else{
+            $response = DB::table('fcm_users')->insert(['user_id' => $input['userId'], 'fcm_reg_id' => $input['fcmRegId'], 'user_role_id' => $input['userRoleId']]);
+            if($response)
+                return response()->json(['status' => 'success','response' =>' Fcm registration id for this user save successfully.']);
+            else
+                return response()->json(['status' => 'exception','response' =>'Unable to Fcm registration id for this user.']);
+        }
+    }
 }
