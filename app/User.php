@@ -50,7 +50,7 @@ class User extends Authenticatable
         $input = $request->input();
         if($input == NULL)
         {
-             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+            return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
         }
 
         $user = $this->where('mobile_number', $request->input('mobileNumber'))->first();
@@ -86,12 +86,29 @@ class User extends Authenticatable
             }
         } else{
 
-            if (Auth::attempt(['full_name' => $request->input('fullName'), 'mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 0])) {
+            $user = $this->where('mobile_number',$request->input('mobileNumber'))->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
+
+            if (Auth::attempt(['mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 0])) {
                 // Authentication passed...
                 return response()->json(['status' => 'success','response' => Auth::user()]);
-            } else {
-                return response()->json(['status' => 'exception','response' => 'Invalid Credentials']);
+            } else if (Auth::attempt(['full_name' => $request->input('fullName'), 'mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 1])){
+                return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
             }
+        }
+    }
+
+    public function apiCheckOtp($input)
+    {
+        $check = $this->where('mobile_number', $input['mobileNumber'])->first();
+        if($check)
+        { 
+            $otp = $this->where('mobile_number', $input['mobileNumber'])->where('otp', $input['otp'])->first();
+            if($otp)
+                return 1;
+            else
+                return 2;
+        }else {
+            return 0;
         }
     }
 }
