@@ -20,6 +20,7 @@ class CreateBusinessReviewsTable extends Migration
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')->references('id')->on('user_businesses');
             $table->string('review');
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
         });
     }

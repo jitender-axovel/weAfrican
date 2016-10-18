@@ -112,3 +112,6 @@ header.admin-header {
 .dataTables_wrapper::after{
     height:30px;
 }
+.form-group {
+        overflow: hidden;
+}

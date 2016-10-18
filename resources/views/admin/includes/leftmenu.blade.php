@@ -37,6 +37,9 @@
             <a href="{{url('admin/event')}}">Event Mangement</a>
         </li>
         <li>
+            <a href="{{url('admin/reviews')}}">Business Reviews</a>
+        </li>
+        <li>
             <a href="{{url('admin/app-feedback')}}">App feedbacks</a>
         </li>
         <!-- <li>

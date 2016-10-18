@@ -42,7 +42,6 @@ class UserBusiness extends Model
                 'country' => 'string',
                 'state' => 'string',
                 'city' => 'string',
-                'businessLogo' => 'image|mimes:jpg,png,jpeg',
                 'aboutUs' => 'string',
                 'address' => 'string',
                 'secondaryPhoneNumber' => 'numeric',
@@ -58,39 +57,22 @@ class UserBusiness extends Model
         }
 
         if(!$user){
-           
-            if ($request->hasFile('businessLogo') ){
-                if ($request->file('businessLogo')->isValid())
-                {
-                    $file = $key = md5(uniqid(rand(), true));
-                    $ext = $request->file('businessLogo')->
-                        getClientOriginalExtension();
-                    $image = $file.'.'.$ext;  
-
-                    $fileName = $request->file('businessLogo')->move(config('image.logo_image_path'), $image);
-
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                    shell_exec($command);
-                }
-            }
             
             $user = User::where('id',$input['userId'])->update(['user_role_id' => 3]);
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $business['user_id'] = $input['userId'];
+             $business['business_id']=substr($user->full_name,0,3).rand(0,999);
             $business['bussiness_category_id'] = $input['categoryId'];
             $business['pin_code'] = $input['pinCode'];
             $business['mobile_number'] = $input['mobileNumber'];
             $business['about_us'] = $input['aboutUs'];
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $business['working_hours'] = $input['workingHours'];
-            $business['is_agree_to_terms'] = $input['isAgreeToTerms'];
+            $business['is_agree_to_terms'] = 1;
+            $business['business_logo'] = $input['businessLogo'];
           
-            if(isset($fileName)){
-                $business['business_logo'] = $image;
-            }
-           
             $business = UserBusiness::create($business);
 
             if($business->save()){
@@ -100,21 +82,6 @@ class UserBusiness extends Model
             }
         } else {
 
-            if ($request->hasFile('businessLogo') ){
-                if ($request->file('businessLogo')->isValid())
-                {
-                    $file = $key = md5(uniqid(rand(), true));
-                    $ext = $request->file('businessLogo')->
-                        getClientOriginalExtension();
-                    $image = $file.'.'.$ext; 
-
-                    $fileName = $request->file('businessLogo')->move(config('image.logo_image_path'), $image);
-
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                    shell_exec($command);
-                }
-            }
-
             $input['user_id'] = $input['userId'];
             $input['bussiness_category_id'] = $input['categoryId'];
             $input['pin_code'] = $input['pinCode'];
@@ -123,17 +90,42 @@ class UserBusiness extends Model
             $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $input['working_hours'] = $input['workingHours'];
 
+            if(isset($input['businessLogo'])) {
+                $input['business_logo'] =  $input['businessLogo'];
+            } 
+
             $business = array_intersect_key($input, UserBusiness::$updatable);
             
-            if(isset($fileName)) {
-                $input['business_logo'] =  $image;
-                $user = UserBusiness::where('user_id',$input['user_id'])->update($business);
-            } else {
-                
-                $user = UserBusiness::where('user_id',$input['user_id'])->update($business);
-            }
+            UserBusiness::where('user_id',$input['user_id'])->update($business);
 
             return response()->json(['status' => 'success','response' => "Business updated successfully."]);
         }
+    }
+
+    public function apiPostUploadDocuments(Request $request)
+    {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'success','response' => 'Input parmeters are missing.']);
+        }
+
+        $check = $this->where('id',$input['businessId'])->first();
+        if($check){
+            $input['business_proof'] = $input['businessProof'];
+            $input['identity_proof'] = $input['identityProof'];
+
+            $this->where('id',$input['businessId'])->update(['identity_proof' => $input['identityProof'], 'business_proof' => $input['businessProof']]);
+
+            return response()->json(['status' => 'success','response' => "Documents uploaded successfully."]);
+        }else {
+            return response()->json(['status' => 'exception','response' => "Documents does not uploaded  successfully."]);
+        }
+    }
+
+    public function apiGetUserBusinessDetails($businessId)
+    {
+        $business = $this->where('id', $businessId)->where('is_blocked', 0)->first();
+        return $business;
     }
 }

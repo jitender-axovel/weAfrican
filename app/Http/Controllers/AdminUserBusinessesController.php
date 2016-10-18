@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\UserBusiness;
 use App\BussinessCategory;
+use App\User;
 
 class AdminUserBusinessesController extends Controller
 {
@@ -29,7 +30,7 @@ class AdminUserBusinessesController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**

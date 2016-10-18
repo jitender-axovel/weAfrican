@@ -62,5 +62,7 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::post('send/notification', 'AdminFcmNotificationController@sendNotification');
 		Route::resource('app-feedback', 'AdminAppFeedbackController');
 		Route::get('app-feedback/block/{id}','AdminAppFeedbackController@block');
+		Route::resource('reviews', 'AdminBusinessReviewsController');
+		Route::get('reviews/block/{id}','AdminBusinessReviewsController@block');
 	});
 });

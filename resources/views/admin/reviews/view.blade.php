@@ -1,70 +1,59 @@
 @extends('admin.layouts.adminapp')
-@section('title', $pageTitle)
+@section('title', $page)
 @section('content')
-	<h2>Users</h2>
+<?php $i = 0; ?>	
+	<h2>View Business Reviews</h2>
 	<hr>
 	@include('notification')
-	<table id="users_list" class="display">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Mobile No.</th>
-				<th>Role</th>
-				<th>Created On</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach($users as $user)
-			<tr>
-				<td>{{ $user->full_name}}</td>
-				<td>{{ '+' . $user->country_code . '-' . $user->mobile_number }}</td>
-				<td>{{ $user->role->name }}</td>
-				<td>{{ date_format(date_create($user->created_at), 'F d, Y') }}</td>
-				<td>
-					<ul class="list-inline">
-						@if($user->user_role_id == 4)
+	@if (count($errors) > 0)
+	<div class="alert alert-danger">
+	    <ul>
+	        @foreach ($errors->all() as $error)
+	        <li>{{ $error }}</li>
+	        @endforeach
+	    </ul>
+	</div>
+	@endif
+	<div class="panel panel-default">
+		<div class="panel-body">
+		    @if($reviews)
+			    @foreach($reviews as $review)
+			    <div class="form-group">
+			        <label class="control-label col-md-2">Review {{$i++}}:</label>
+			        <div class="col-md-10">
+			            {{ $review->review  }}
+			            <ul class="list-inline">
 						<li>
-							<a class="btn btn-info" href="{{url('admin/users/'.$user->id)}}" title="Add business"><i class="fa fa-user-plus" aria-hidden="true"></i>
-							</a>
-						</li>
-						@endif
-						<li>
-							<a href="{{ url('admin/user/blocked/'.$user->id) }}">
-			                    @if($user->is_blocked)
+							<a href="{{ URL::to('admin/reviews/block/'.$review->id) }}">
+			                    @if($review->is_blocked)
 			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
-			                	@else
-			                		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
-			            		@endif
-			        		</a>
+		                    	@else
+		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                		@endif
+		                    </a>
 						</li>
 						<li>
-							<a class="btn btn-warning" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
-						</li>
-						<li>
-							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" class="form-horizontal" onsubmit="deleteUser('{{$user->id}}', '{{$user->first_name}}', event,this)">
+							<form action="{{ url('admin/reviews/'.$review->id) }}" method="POST" onsubmit="deleteReview('{{$review->id}}', '{{$review->review}}', event,this)">
 								{{csrf_field()}}
-								<input type="hidden" name="method" value="DELETE">
 								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
 							</form>
 						</li>
 					</ul>
-				</td>
-			</tr>
-			@endforeach
-		</tbody>
-	</table>
-	<script type="text/javascript">
-		$(document).ready( function () {
-		    $('#users_list').DataTable();
-		} );
-	</script>
+			        </div>
+			    </div>
+			    @endforeach
+			@else
+			    <div class="form-group">
+			    No reviews found.
+			    </div>
+		    @endif
+		</div>
+	</div>
 @endsection
 @section('scripts')
 	<script type="text/javascript">
-		function deleteUser(id, name, event,form)
-		{   
-
+		function deleteReview(id, name, event,form)
+		{
 			event.preventDefault();
 			swal({
 				title: "Are you sure?",

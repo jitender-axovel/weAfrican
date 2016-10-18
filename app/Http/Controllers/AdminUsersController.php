@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
 use App\User;
+use App\BussinessCategory;
+use App\UserBusiness;
+use Auth;
+use Validator;
 
 class AdminUsersController extends Controller
 {
@@ -40,7 +42,63 @@ class AdminUsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'keywords' =>'required',
+            'email' => 'required|email|max:255|unique:user_businesses',
+            'pin_code' => 'regex:/\b\d{6}\b/|required',
+            'country' => 'string',
+            'state' => 'string',
+            'city' => 'string',
+            'business_logo' => 'image|mimes:jpg,png,jpeg,gif',
+            'secondary_phone_number' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+
+        $input = $request->input();
+        
+        if ($request->hasFile('business_logo') ){
+            if ($request->file('business_logo')->isValid())
+            {
+                $file = $key = md5(uniqid(rand(), true));
+                $ext = $request->file('business_logo')->
+                    getClientOriginalExtension();
+                $image = $file.'.'.$ext; 
+
+                $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+            }
+        }
+
+        User::where('id',$input['id'])->update(['user_role_id' => 3]);
+        $user = User::where('id', $input['id'])->first();
+    
+        $business = array_intersect_key($input, UserBusiness::$updatable);
+
+        $business['business_id']=substr($user->full_name,0,3).rand(0,999);
+        $business['user_id'] = $user->id;
+        $business['is_agree_to_terms'] = 1;
+
+        if(isset($fileName)){
+            $business['business_logo'] = $image;
+        }
+
+        $business = UserBusiness::create($business);
+        $business->save();
+
+        if($business)
+        {
+            return redirect('admin/users')->with('success', 'User Business created successfully.'); 
+               
+        } else {
+            return back()->with('error', 'User business could not be created.Please try again');
+        }
     }
 
     /**
@@ -51,7 +109,12 @@ class AdminUsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $pageTitle = "Admin - Add Bussiness user";
+        $user = User::find($id);
+
+        $categories = BussinessCategory::where('is_blocked', 0)->get();
+        return view('admin.users.create', compact('pageTitle', 'categories', 'user'));
+       
     }
 
     /**

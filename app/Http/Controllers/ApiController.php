@@ -11,6 +11,7 @@ use App\BusinessProduct;
 use App\BusinessEvent;
 use App\UserBusiness;
 use App\BusinessService;
+use App\BusinessReview;
 use Validator;
 use DB;
 
@@ -31,6 +32,7 @@ class ApiController extends Controller
         $this->businessEvent = new BusinessEvent();
         $this->userBusiness = new UserBusiness();
         $this->businessService = new BusinessService();
+        $this->businessReviews = new BusinessReview();
     }
 
     /**
@@ -568,7 +570,7 @@ class ApiController extends Controller
             if($response)
                 return response()->json(['status' => 'success','response' =>' Fcm registration id for this user save successfully.']);
             else
-                return response()->json(['status' => 'exception','response' =>'Unable to Fcm registration id for this user.']);
+                return response()->json(['status' => 'failure','response' =>'System Error:Unable to save Fcm registration id for this user.']);
         }
     }
 
@@ -578,7 +580,7 @@ class ApiController extends Controller
      * Url: api/post/app/feedback
      * Request type: Post
      *
-     * @param  Void
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function postAppFeedBack(Request $request)
@@ -598,7 +600,58 @@ class ApiController extends Controller
             if($feedback)
                 return response()->json(['status' => 'success','response' => 'User feedback save successfully']);
             else
-                return response()->json(['status' => 'success','response' => 'System Error:Unable to save feedback.Please try again.']);
+                return response()->json(['status' => 'failure','response' => 'System Error:Unable to save feedback.Please try again.']);
         }
+    }
+
+    /**
+     * Author:Divya
+     * Function: Upload document(identity & business proof)
+     * Url: api/post/upload/documents
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postUploadDocuments(Request $request)
+    {  
+        $response = $this->userBusiness->apiPostUploadDocuments($request);
+        return $response;
+    }
+
+    /**
+     * Author:Divya
+     * Function: get all business reviews by business id
+     * Url: api/get/business/reviews/{businessId}
+     * Request type: Post
+     *
+     * @param  int $businessId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBusinessReviews($businessId)
+    {  
+        $response = $this->businessReviews->apiGetBusinessReview($businessId);
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any review.']);
+    }
+
+     /**
+     * Author:Divya
+     * Function: get business details of user by business id
+     * Url: api/get/user/business/details/{businessId}
+     * Request type: Post
+     *
+     * @param  int $businessId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserBusinessDetails($businessId)
+    {  
+        $response = $this->userBusiness->apiGetUserBusinessDetails($businessId);
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any business details.']);
     }
 }

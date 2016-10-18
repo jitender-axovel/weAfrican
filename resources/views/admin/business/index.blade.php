@@ -4,6 +4,7 @@
 	<h2>User Business</h2>
 	<hr>
 	@include('notification')
+	
 	<table id="categories_list" class="display">
 		<thead>
 			<tr>

@@ -61,7 +61,7 @@ class UserBusinessController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'full_name' => 'required|max:255|alpha',
+            'full_name' => 'required|max:255|string',
             'country_code' => 'required|numeric|min:0|max:99',
             'title' => 'required',
             'keywords' =>'required',
@@ -236,6 +236,7 @@ class UserBusinessController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'full_name' => 'required|max:255|string',
             'title' => 'required',
             'email' => 'required|email|max:255',
             'keywords' =>'required',
