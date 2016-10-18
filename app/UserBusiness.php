@@ -58,12 +58,12 @@ class UserBusiness extends Model
 
         if(!$user){
             
-            $user = User::where('id',$input['userId'])->update(['user_role_id' => 3]);
-
+            User::where('id',$input['userId'])->update(['user_role_id' => 3]);
+            $user = User::where('id',$input['userId'])->first();
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $business['user_id'] = $input['userId'];
-             $business['business_id']=substr($user->full_name,0,3).rand(0,999);
+            $business['business_id']=substr($user->full_name,0,3).rand(0,999);
             $business['bussiness_category_id'] = $input['categoryId'];
             $business['pin_code'] = $input['pinCode'];
             $business['mobile_number'] = $input['mobileNumber'];
