@@ -39,7 +39,8 @@
                         <td>{{ date('m-d-Y h:i A', strtotime($event->start_date_time))}}</td>
                         <td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
                         <td>{{$event->address}}</td>
-                        <td> <img src="{{asset(config('image.banner_image_url').$event->banner)}}"/></td>
+                        <td> @if($event->banner)<img src="{{asset(config('image.banner_image_url').$event->banner)}}"/>
+                        @else Banner not uploded yet @endif</td>
                         <td> {{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
                         <td>
                             <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>

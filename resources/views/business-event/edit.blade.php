@@ -17,7 +17,7 @@
         </div>
         @endif
         <div class="panel panel-default document">
-            <form id="register-form" class="form-horizontal" action="{{ url('business-event/'.$event->id) }}" method="POST">
+            <form id="register-form" class="form-horizontal" action="{{ url('business-event/'.$event->id) }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                 {{ method_field('PUT') }}
                 <div class="form-group ">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <label for="banner" class="col-md-2 control-label">Image</label>
                     <div class="col-md-4">
                         <input type="file" name="banner" id="banner">
                         @if($errors->has('banner'))
@@ -131,6 +131,20 @@
     $(document).ready(function () {
         $('#datetimepicker1').datetimepicker();
         $('#datetimepicker2').datetimepicker();
+    });
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    $("#banner").change(function(){
+        readURL(this);
     });
 </script>
 @endsection

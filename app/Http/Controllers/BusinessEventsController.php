@@ -121,11 +121,16 @@ class BusinessEventsController extends Controller
 
         $input = $request->input();
 
-        if ($request->file('banner')) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('banner')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName = $request->file('banner')->move(config('image.banner_image_path'),$image );
+        if ($request->hasFile('banner') ){
+            if ($request->file('banner')->isValid())
+            {
+                $file = $key = md5(uniqid(rand(), true));
+                $ext = $request->file('banner')->
+                    getClientOriginalExtension();
+                $image = $file.'.'.$ext; 
+                
+                $fileName = $request->file('banner')->move(config('image.banner_image_path'), $image);
+            }
         }
 
         $input = array_intersect_key($input, BusinessEvent::$updatable);
