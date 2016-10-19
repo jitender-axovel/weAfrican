@@ -49,7 +49,7 @@ class UserBusiness extends Model
 
     public function getRatings()
     {
-        return $this->ratings()->count();
+        return $this->ratings()->avg('rating');
     }
 
     public function favourites()
