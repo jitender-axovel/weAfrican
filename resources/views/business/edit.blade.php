@@ -193,6 +193,33 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="about_us" class="col-md-2 control-label">Business Logo</label>
+                <div class="col-md-10">
+                    @if($business->banner != NULL)
+                        <img src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}" style="width:100px;height:100px"/>
+                    @else
+                        <img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
+                    @endif
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="banner" class="col-md-2 control-label">Upload Business Banner:</label>
+                <div class="col-md-4">
+                    <input type="file" name="banner" id="banner">
+                    @if ($errors->has('banner'))
+                        <span class="help-block">
+                        <strong>{{ $errors->first('banner') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <label for="banner_preview" class="col-md-2 control-label">
+               Banner Preview:
+                </label>
+                <div class="col-md-4">
+                    <img src="#" alt=""  id="bannerPreview">
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-md-12 col-md-offset-2">
                     <button type="submit" class="btn btn-primary">
                     Submit
@@ -217,6 +244,20 @@
     
     $("#business_logo").change(function(){
         readURL(this);
+    });
+
+    function bannerReadURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#bannerPreview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    $("#banner").change(function(){
+        bannerReadURL(this);
     });
 </script>
 @endsection

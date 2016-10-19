@@ -11,6 +11,11 @@
 				<th>Business ID</th>
 				<th>Business Name</th>
 				<th>Mobile Number</th>
+				<th>Likes</th>
+				<th>Dislikes</th>
+				<th>Favourites</th>
+				<th>Followers</th>
+				<th>Ratings</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -19,8 +24,13 @@
 			@foreach($businesses as $business)
 			<tr>
 				<td>{{ $business->business_id}}</td>
-				<td>{{ $business->title}}</td>
+				<td>{{ $business->title}} </td>
 				<td>{{ $business->mobile_number}}</td>
+				<td>{{ $business->getLikes()}}</td>
+				<td>{{ $business->getDislikes()}}</td>
+				<td>{{ $business->getFavourites()}}</td>
+				<td>{{ $business->getFollowers()}}</td>
+				<td>{{ $business->getRatings()}}</td>
 				<td>{{ date_format(date_create($business->created_at), 'F d, Y') }}</td>
 				<td>
 					<ul class="list-inline">

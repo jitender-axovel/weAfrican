@@ -12,9 +12,9 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'start_date_time', 'end_date_time' ];
+    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
 
-    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => ""];
+    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
 
     public static $validater = array(
         'name' => 'required|max:255',
@@ -23,6 +23,7 @@ class BusinessEvent extends Model
     	'address' => 'required',
         'start_date_time' => 'required',
         'end_date_time' => 'required',
+        'banner' => 'required|image|mimes:jpg,png,jpeg',
     	);
 
     public static $updateValidater = array(
@@ -32,6 +33,7 @@ class BusinessEvent extends Model
         'address' => 'required',
         'start_date_time' => 'required',
         'end_date_time' => 'required',
+        'banner' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public function participations()
@@ -84,6 +86,10 @@ class BusinessEvent extends Model
             $input['organizer_name'] = $input['organizerName'];
             $input['start_date_time'] = $input['startDateTime'];
             $input['end_date_time'] = $input['endDateTime'];
+
+            if(isset($input['eventBanner'])) {
+                $input['banner'] =  $input['eventBanner'];
+            } 
             
             $event = array_intersect_key($input, BusinessEvent::$updatable);
            
@@ -98,6 +104,7 @@ class BusinessEvent extends Model
                 'address' => 'required',
                 'startDateTime' => 'required',
                 'endDateTime' => 'required',
+                'eventBanner' => 'required',
                 ]);
 
             if ($validator->fails()) {
@@ -109,6 +116,7 @@ class BusinessEvent extends Model
             $event['organizer_name'] = $input['organizerName'];
             $input['start_date_time'] = $input['startDateTime'];
             $input['end_date_time'] = $input['endDateTime'];
+            $input['banner'] = $input['eventBanner'];
             $event = BusinessEvent::create($event);
             $event->save();
 

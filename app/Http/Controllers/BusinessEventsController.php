@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\BusinessEvent;
+use App\EventBanner;
 use Validator;
 use App\Helper;
 use Auth;
@@ -21,9 +22,8 @@ class BusinessEventsController extends Controller
     {
         $pageTitle = "Business Event";
         $events = BusinessEvent::whereUserId(Auth::id())->withCount('participations')->get();
-        return view('business-event.index', compact('events','pageTitle'));
+        return view('business-event.index', compact('pageTitle', 'events'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -50,11 +50,24 @@ class BusinessEventsController extends Controller
         }
 
         $input = $request->input();
+
+        if ($request->hasFile('banner') ){
+            if ($request->file('banner')->isValid())
+            {
+                $file = $key = md5(uniqid(rand(), true));
+                $ext = $request->file('banner')->
+                    getClientOriginalExtension();
+                $image = $file.'.'.$ext; 
+                
+                $fileName = $request->file('banner')->move(config('image.banner_image_path'), $image);
+            }
+        }
         
         $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
         $event['user_id'] = Auth::id();
         $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
+        $event['banner'] = $image;
        
           
         $event = BusinessEvent::create($event);
@@ -65,7 +78,7 @@ class BusinessEventsController extends Controller
         $event->save();
 
         return redirect('business-event')->with('success', 'New Event created successfully');
-}
+    }
 
     /**
      * Display the specified resource.
@@ -108,11 +121,23 @@ class BusinessEventsController extends Controller
 
         $input = $request->input();
 
+        if ($request->file('banner')) {
+            $file = $key = md5(uniqid(rand(), true));
+            $ext = $request->file('banner')->getClientOriginalExtension();
+            $image = $file.'.'.$ext;
+            $fileName = $request->file('banner')->move(config('image.banner_image_path'),$image );
+        }
+
         $input = array_intersect_key($input, BusinessEvent::$updatable);
         $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 
-        $event = BusinessEvent::where('id',$id)->update($input);
+        if(isset($fileName)) {
+            $input['banner'] =  $image;
+            $event = BusinessEvent::where('id',$id)->update($input);
+        } else {
+            $event = BusinessEvent::where('id',$id)->update($input);
+        }
 
         return redirect('business-event')->with('success', 'Event updated successfully');
     }

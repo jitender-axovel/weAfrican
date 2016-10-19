@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBusinessEventsTable extends Migration
+class CreateEventBannersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,21 @@ class CreateBusinessEventsTable extends Migration
      */
     public function up()
     {
-       Schema::create('business_events', function (Blueprint $table) {
+        Schema::create('event_banners', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('name');
-            $table->string('title');
-            $table->string('slug')->nullable();
-            $table->string('organizer_name');
-            $table->string('address');
-            $table->datetime('start_date_time');
-            $table->datetime('end_date_time');
+            $table->integer('subscription_plan_id')->unsigned()->nullable();
+            $table->foreign('subscription_plan_id')->references('id')->on('subscription_plans');
             $table->string('banner')->nullable();
+            $table->boolean('is_premium')->default(false);
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -38,6 +38,6 @@ class CreateBusinessEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('business_events');
+        Schema::dropIfExists('business_banners');
     }
 }

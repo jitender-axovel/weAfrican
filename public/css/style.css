@@ -170,3 +170,11 @@ footer .available .list-inline > li {padding-right: 0;}
 .container.subscription-plans {
     padding: 70px;
 }
+.business_image {
+    height: 200px !important;
+    width: 100% !important;
+}
+.event_image {
+    height: 200px !important;
+    width: 100% !important;
+}

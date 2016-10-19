@@ -236,7 +236,6 @@ class UserBusinessController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'full_name' => 'required|max:255|string',
             'title' => 'required',
             'email' => 'required|email|max:255',
             'keywords' =>'required',
@@ -249,6 +248,7 @@ class UserBusinessController extends Controller
             'about_us' => 'string',
             'working_hours' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg',
+            'banner' => 'image|mimes:jpg,png,jpeg',
         ]);
 
         if ($validator->fails()) {
@@ -271,11 +271,29 @@ class UserBusinessController extends Controller
                 shell_exec($command);
             }
         }
+        if ($request->hasFile('banner') ){
+            if ($request->file('banner')->isValid())
+            {
+                $bannerfile = $key = md5(uniqid(rand(), true));
+                $bannerExt = $request->file('banner')->
+                    getClientOriginalExtension();
+                $bannerImage = $bannerfile.'.'.$bannerExt; 
+
+                $bannerFileName = $request->file('banner')->move(config('image.banner_image_path').'business/', $bannerImage);
+            }
+        }
 
         $input = array_intersect_key($input, UserBusiness::$updatable);
 
         if(isset($fileName)) {
             $input['business_logo'] =  $image;
+            $user = UserBusiness::where('id',$id)->update($input);
+        } else if(isset($bannerFileName)){
+            $input['banner'] =  $bannerImage;
+            $user = UserBusiness::where('id',$id)->update($input);
+        } else if((isset($fileName)) && (isset($bannerFileName))){
+            $input['business_logo'] =  $image;
+            $input['banner'] =  $bannerImage;
             $user = UserBusiness::where('id',$id)->update($input);
         } else {
             $user = UserBusiness::where('id',$id)->update($input);

@@ -1,7 +1,7 @@
 @extends('admin.layouts.adminapp')
 @section('title', $page)
 @section('content')
-	<h2>Business Event</h2>
+	<h2>Business Reviews</h2>
 	<hr>
 	@include('notification')
 	<table id="subscription_list" class="display">

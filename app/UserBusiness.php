@@ -8,14 +8,60 @@ use Validator;
 class UserBusiness extends Model
 {
 
-    protected $fillable = ['user_id', 'business_id', 'bussiness_category_id', 'title' ,'keywords', 'about_us', 'address', 'city', 'state', 'country', 'pin_code', 'mobile_number', 'secondary_phone_number', 'email', 'website', 'working_hours' , 'is_agree_to_terms', 'identity_proof' , 'business_proof' , 'business_logo', 'latitude', 'longitude'];
+    protected $fillable = ['user_id', 'business_id', 'bussiness_category_id', 'title' ,'keywords', 'about_us', 'address', 'city', 'state', 'country', 'pin_code', 'mobile_number', 'secondary_phone_number', 'email', 'website', 'working_hours' , 'is_agree_to_terms', 'identity_proof' , 'business_proof' , 'business_logo', 'banner','latitude', 'longitude'];
 
-    public static $updatable = ['user_id' => "", 'business_id' => "" ,'bussiness_category_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'mobile_number' => "", 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => "", 'latitude' => "", 'longitude' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "" ,'bussiness_category_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'mobile_number' => "", 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => "", 'banner' => "", 'latitude' => "", 'longitude' => ""];
 
     public function category()
     {
         return $this->belongsTo('App\BussinessCategory','bussiness_category_id');
     }
+
+    public function likes()
+    {
+        return $this->hasMany('App\BusinessLike','business_id');
+    }
+
+    public function getLikes()
+    {
+        return $this->likes()->where('likes', 1)->count();
+    }
+
+    public function getDislikes()
+    {
+        return $this->likes()->where('dislikes', 1)->count();
+    }
+
+    public function followers()
+    {
+        return $this->hasMany('App\BusinessFollower','business_id');
+    }
+
+    public function getFollowers()
+    {
+        return $this->followers()->count();
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany('App\BusinessRating','business_id');
+    }
+
+    public function getRatings()
+    {
+        return $this->ratings()->count();
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany('App\BusinessFavourite','business_id');
+    }
+
+    public function getFavourites()
+    {
+        return $this->favourites()->count();
+    }
+
 
     public function apiGetBusinessesByCategory($input)
     {
@@ -93,9 +139,12 @@ class UserBusiness extends Model
             if(isset($input['businessLogo'])) {
                 $input['business_logo'] =  $input['businessLogo'];
             } 
+            if(isset($input['businessBanner'])) {
+                $input['banner'] =  $input['businessBanner'];
+            }
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
-            
+           
             UserBusiness::where('user_id',$input['user_id'])->update($business);
 
             return response()->json(['status' => 'success','response' => "Business updated successfully."]);

@@ -18,7 +18,7 @@
 	        </div>
         @endif
         <div class="panel panel-default document">
-            <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST">
+            <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                 <div class="form-group ">
                     <label for="name" class="col-md-2 required control-label"> Name of Event</label>
@@ -90,6 +90,21 @@
                         @endif
                     </div>
                 </div>
+                 <div class="form-group">
+                    <label for="banner" class="col-md-2 required control-label">Banner Image</label>
+                    <div class="col-md-4">
+                        <input type="file" name="banner" id="banner" required>
+                        @if($errors->has('banner'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('banner') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <label for="city" class="col-md-2 control-label">Banner Preview</label>
+                    <div class="col-md-4">
+                        <img src="#" alt=""  id="preview">
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-md-12 col-md-offset-2">
                         <button type="submit" class="btn btn-primary">
@@ -110,6 +125,20 @@
     $(document).ready(function () {
         $('#datetimepicker1').datetimepicker();
         $('#datetimepicker2').datetimepicker();
+    });
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    $("#banner").change(function(){
+        readURL(this);
     });
 </script>
 @endsection

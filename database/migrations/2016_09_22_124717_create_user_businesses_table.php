@@ -33,6 +33,7 @@ class CreateUserBusinessesTable extends Migration
             $table->string('email');
             $table->string('website')->nullable();
             $table->string('working_hours')->nullable();
+            $table->string('banner')->nullable();
             $table->string('business_logo')->nullable();
             $table->string('identity_proof')->nullable();
             $table->string('business_proof')->nullable();

@@ -44,6 +44,6 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
 	Route::post('get/business/reviews/{businessId}' ,'ApiController@getBusinessReviews');
-	Route::get('get/user/business/details/{businessId}' ,'ApiController@getUserBusinessDetails');
+	Route::post('get/user/business/details/{businessId}' ,'ApiController@getUserBusinessDetails');
 
 });

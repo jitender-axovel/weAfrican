@@ -13,7 +13,7 @@
             </ul>
         </div>
     @endif
-    <p class="text-right"><a href="{{url('business-event/create')}}"><button type="button" class="btn btn-info">Add Event</button></a></p>
+    <p class="text-right"><a href="{{url('business-event/create')}}"><button type="button" class="btn btn-info">Add Event</button></a>
     <div class="panel panel-default ">
         <table class="table">
             <thead>
@@ -24,6 +24,7 @@
                     <th>Event Start Date& time</th>
                     <th>Event End Date& time</th>
                     <th>Address</th>
+                    <th>Event Banner</th>
                     <th>Participants</th>
                     <th>Actions</th>
                 </tr>
@@ -38,6 +39,7 @@
                         <td>{{ date('m-d-Y h:i A', strtotime($event->start_date_time))}}</td>
                         <td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
                         <td>{{$event->address}}</td>
+                        <td> <img src="{{asset(config('image.banner_image_url').$event->banner)}}"/></td>
                         <td> {{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
                         <td>
                             <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>

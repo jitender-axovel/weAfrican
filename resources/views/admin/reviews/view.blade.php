@@ -1,7 +1,6 @@
 @extends('admin.layouts.adminapp')
 @section('title', $page)
 @section('content')
-<?php $i = 0; ?>	
 	<h2>View Business Reviews</h2>
 	<hr>
 	@include('notification')
@@ -16,10 +15,10 @@
 	@endif
 	<div class="panel panel-default">
 		<div class="panel-body">
-		    @if($reviews)
-			    @foreach($reviews as $review)
+		    @if($reviews->count())
+			    @foreach($reviews as $key => $review)
 			    <div class="form-group">
-			        <label class="control-label col-md-2">Review {{$i++}}:</label>
+			        <label class="control-label col-md-2">Review {{++$key}}:</label>
 			        <div class="col-md-10">
 			            {{ $review->review  }}
 			            <ul class="list-inline">

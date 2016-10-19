@@ -13,8 +13,17 @@
 	    </div>
     @endif
     <h5 class="text-left">Business Profile</h5>
+
     @if($business)
+
 	    <p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button> </a> </p>
+	    <div class="panel panel-default ">
+	    	@if($business->banner != NULL)
+	    		<img class="business_image" src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}"/>
+	    	@else
+	            <img class="event_image" src="{{asset('images/blank-image.jpeg')}}" style="width:100px;height:100px"/>
+            @endif
+	    </div>
 	    <dl class="dl-horizontal">
 	        <dt>Business Logo</dt>
 	        <dd>
@@ -57,15 +66,19 @@
 	        @if($business->business_proof)
 		        <dt>Identity Proof</dt>
 		        <dd>
+		        	@if($business->identity_proof)
 		            <a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	
-		            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
+		            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i> </a>
+		            @endif
 		        </dd>
-		        </a>
+		       
 		        <dt>Business Proof</dt>
 		        <dd>
+		        	@if($business->business_proof)
 		            <a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	
 		            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
 		            </a>
+		            @endif
 		        </dd>
 	        	@if($business->is_identity_proof_validate && $business->is_business_proof_validate)
 			        <dt>Document Status</dt>

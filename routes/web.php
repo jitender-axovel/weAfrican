@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('business-product', 'BusinessProductsController');
 	Route::resource('business-event', 'BusinessEventsController');
 	Route::resource('subscription-plans', 'SubscriptionPlansController');
-	Route::resource('business-service', 'BusinessServicesController');
+	Route::resource('business-service', 'BusinessServicesController');	
 });
 
 Route::group(['prefix' => 'admin'], function() {
