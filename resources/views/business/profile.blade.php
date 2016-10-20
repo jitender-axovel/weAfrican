@@ -19,38 +19,20 @@
 	    <p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button> </a> </p>
 	    <div class="panel panel-default ">
 	    	@if($business->banner != NULL)
-	    		<img class="business_image" src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}"/>
+	    		<img class="banner_image" src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}"/>
 	    	@else
-	            <img class="event_image" src="{{asset('images/blank-image.jpeg')}}" style="width:100px;height:100px"/>
+	            <img src="{{asset('images/blank-image.jpeg')}}">
             @endif
 	    </div>
-	    <div class="comment-section">
-			<div class="col-md-3 col-sm-3 col-xs-3 item item-1">
-				<p class="disc_like">20</p>
-				<p class="tile_like">Likes</p>
-			</div>
-			<div class="col-md-3 col-sm-3 col-xs-3 item item-2">
-				<p class="disc_dislike">4</p>
-				<p class="tile_dislike">Dislikes</p>
-			</div>
-			<div class="col-md-3 col-sm-3 col-xs-3 item item-3">
-				<p class="disc_follow">2</p>
-				<p class="tile_follow">Followers</p>
-			</div>
-			<div class="col-md-3 col-sm-3 col-xs-3 item item-4">
-				<p class="disc_review">20</p>
-				<p class="tile_review">Ratings</p>
-			</div>
-		</div>
 		<div class="business-profile">
-			<div class="business-left col-md-8">
+			<div class="business-left col-md-6">
 			    <dl class="dl-horizontal">
 			        <dt>Business Logo</dt>
 			        <dd>
 		          	@if($business->business_logo != NULL)
-			            <img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/>
+			            <img src="{{asset(config('image.logo_image_url').'thumbnails/small/'.$business->business_logo)}}"/>
 		            @else
-			            <img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
+			            <img src="{{asset('images/no-uploaded.png')}}"/>
 		            @endif
 			        </dd>
 			        <dt>Business ID</dt>
@@ -83,9 +65,10 @@
 			        <dd>{{ $business->website }}</dd>
 			        <dt>Working Hours</dt>
 			        <dd>{{ $business->working_hours }}</dd>
-			    </dl>
+			        <dt></dt>
+			     </dl>    
 		    </div>
-		    <div class="business-right col-md-4">
+		    <div class="business-right col-md-6">
 				<dl class="dl-horizontal">
 					@if($business->business_proof)
 				        <dt>Identity Proof</dt>
@@ -116,11 +99,38 @@
 					        <dd> <span class=" pending btn-danger label">Pending Verification</span></dd>
 			        	@endif
 			        @else
-				        <dt>Please Upload document to verify your business</dt>
+				        <dt>Upload Document</dt>
 				        <dd><a href="{{url('upload')}}"><button>Upload Document</button></a> </dd>
 			        @endif
 				</dl>
 		    </div>
+		    <div class="comment-section col-md-12">
+			    	<div class="col-md-2 like item">
+			        	<span class="label label-warning" title="Likes"><i class="fa fa-thumbs-o-up" aria-hidden="true"><span class="badge">{{$business->getLikes()}}</span></i></span>
+					</div>
+
+					<div class="col-md-2 dislike item">
+						<span class="label label-primary" title="Dislikes"><i class="fa fa-thumbs-o-down" aria-hidden="true">
+						<span class="badge">{{$business->getDislikes()}}</span></i></span>
+					</div>
+
+					<div class="col-md-2 rating item">
+						<span class="label label-success" title="Ratings"><i class="fa fa-star-o" aria-hidden="true">
+						<span class="badge">{{$business->getRatings()}}</span></i>
+						</span>
+					</div>
+
+					<div class="col-md-2 favourite item">
+						<span class="label label-info" title="Favourites"><i class="fa fa-heart-o" aria-hidden="true">
+						<span class="badge">{{$business->getFavourites()}}</span></i>
+						</span>
+					</div>
+
+					<div class="col-md-2 followers item">
+						<span class="label label-danger" title="Followers"><i class="fa fa-users" aria-hidden="true">
+						<span class="badge">{{$business->getFollowers()}}</span></i></span>
+					</div>
+				</div> 
 		</div>
     @else
         <p>Could not find any profile</p>
