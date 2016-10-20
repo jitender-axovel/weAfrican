@@ -129,10 +129,13 @@ footer .available .list-inline > li {padding-right: 0;}
     color:red;
     }
 .register-business .dl-horizontal {
-  border: 1px solid;
   overflow: hidden;
   padding-bottom: 15px;
   padding-top: 15px;
+}
+.business-profile {
+  border: 1px solid;
+  overflow: hidden;
 }
 .dl-horizontal dt {
   float: left;
