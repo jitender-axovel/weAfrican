@@ -93,7 +93,7 @@
                 <div class="form-group ">
                     <label for="banner" class="col-md-2  control-label">Banner Image</label>
                     <div class="col-md-4">
-                        <img src="{{asset(config('image.banner_image_url').$event->banner)}}"/>
+                        <img src="{{asset(config('image.banner_image_url').'event/thumbnails/small/'.$event->banner)}}"/>
                     </div>
                 </div>
                 <div class="form-group">
