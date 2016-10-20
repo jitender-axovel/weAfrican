@@ -32,7 +32,7 @@ Route::group(['middleware' => ['before']], function(){
 		Route::resource('business-event', 'BusinessEventsController');
 		Route::resource('subscription-plans', 'SubscriptionPlansController');
 		Route::resource('business-service', 'BusinessServicesController');
-		Route::resource('event/participants/download-csv/{id}', 'BusinessEventsController@exportToCsv');
+		Route::post('event/participants/download-csv/{eventId}', 'BusinessEventsController@exportToCsv');
 	});
 });
 
