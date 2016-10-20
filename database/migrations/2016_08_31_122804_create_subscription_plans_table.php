@@ -18,7 +18,8 @@ class CreateSubscriptionPlansTable extends Migration
             $table->string('title')->unique();
             $table->string('slug');
             $table->string('coverage');
-            $table->integer('price')->unsigned();
+            $table->integer('price');
+            $table->integer('validity_period');
             $table->integer('keywords_limit')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();

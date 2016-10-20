@@ -45,6 +45,17 @@
                     @endif
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Validity Period (in days)</label>
+                <div class="col-md-6{{ $errors->has('validity_period') ? ' has-error' : '' }}">
+                    <input required type="text" class="form-control" name="validity_period" value="{{ $subscription->validity_period }}" >
+                    @if($errors->has('validity_period'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('validity_period') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
             <div class="col-md-6 col-md-offset-2">
                 <button type="submit" class="btn btn-success btn-block" id="btn-login">Update Subscription</button>
             </div>

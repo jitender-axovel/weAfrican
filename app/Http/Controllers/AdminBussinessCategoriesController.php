@@ -57,7 +57,13 @@ class AdminBussinessCategoriesController extends Controller
             $image = $file.'.'.$ext;
             $fileName=$request->file('category_image')->move(config('image.category_image_path'), $image);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
+            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
             shell_exec($command);
         } else {
             return redirect('admin/bussiness/category/create')->with('Error', 'Category image is not uploaded. Please try again');

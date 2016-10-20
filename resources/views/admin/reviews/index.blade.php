@@ -9,6 +9,7 @@
 			<tr>
 				<th>Business ID</th>
 				<th>Business Name</th>
+				<th>Reviews Count</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -17,6 +18,7 @@
 			<tr>
 				<td>{{ $business->business_id}}</td>
 				<td>{{ $business->title}}</td>
+				<td>{{ $business->getReviews()}}</td>
 				<td>
 					<ul class="list-inline">
 						<li>

@@ -55,7 +55,13 @@ class BusinessProductsController extends Controller
             $image = $file.'.'.$ext;
             $fileName=$request->file('product_image')->move(config('image.product_image_path'), $image);
 
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.product_small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
+            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/medium/'.$image;
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/large/'.$image;
             shell_exec($command);
         } else {
             return back()->with('Error', 'Category image is not uploaded. Please try again');
@@ -122,7 +128,13 @@ class BusinessProductsController extends Controller
             $image = $file.'.'.$ext;
             $fileName = $request->file('product_image')->move(config('image.product_image_path'),$image );
             
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.product_small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
+            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/medium/'.$image;
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/large/'.$image;
             shell_exec($command);
         }
 

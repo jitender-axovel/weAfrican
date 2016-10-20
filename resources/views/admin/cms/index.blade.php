@@ -19,7 +19,7 @@
 				<td>{{ $cmsPage->title}}</td>
 				<td>{{ date_format(date_create($cmsPage->created_at), 'F d, Y') }}</td>
 				<td>
-					<a href="{{ url('cms/'.$cmsPage->slug) }}" class="btn btn-success" title="Visit"><i class="fa fa-eye"></i></a>
+					<a href="{{ url('cms/'.$cmsPage->slug) }}" class="btn btn-success" title="Visit" target="_blank"><i class="fa fa-eye"></i></a>
 				</td>
 				<td>
 					<a class="btn btn-info" href="{{ url('admin/cms/'.$cmsPage->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil"></i></a>

@@ -30,12 +30,12 @@
 	                        </span>
                         @endif
                     </div>
-                    <label for="title" class="col-md-2 required control-label">Title of Event</label>
+                    <label for="keywords" class="col-md-2 required control-label">Event Keywords</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="title" value="{{ old('title') }}" required>
-                        @if($errors->has('title'))
+                        <input type="text" class="form-control" name="keywords" value="{{ old('keywords') }}" required>
+                        @if($errors->has('keywords'))
 	                        <span class="help-block">
-	                        <strong>{{ $errors->first('title') }}</strong>
+	                        <strong>{{ $errors->first('keywords') }}</strong>
 	                        </span>
                         @endif
                     </div>
@@ -43,7 +43,7 @@
                 <div class="form-group ">
                     <label for="organizer_name" class="col-md-2 required control-label">Organizer Name</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="organizer_name" value="{{ old('organizer_name')}}" required>
+                        <input type="text" class="form-control" name="organizer_name" value="{{ $business->title or old('organizer_name')}}" required>
                         @if($errors->has('organizer_name'))
 	                        <span class="help-block">
 	                        <strong>{{ $errors->first('organizer_name') }}</strong>
@@ -63,12 +63,12 @@
                 <div class="form-group">
                     <label for="start_date_time" class="col-md-2 required control-label">Event Start Date& Time</label>
                     <div class="col-md-4">
-                        <div class='input-group date' >
+                        <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control" id='datetimepicker1' name="start_date_time" value="{{ old('start_date_time') }}" />
                             <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
                         @if($errors->has('start_date_time'))
 	                        <span class="help-block">
 	                        <strong>{{ $errors->first('start_date_time') }}</strong>
@@ -77,12 +77,12 @@
                     </div>
                     <label for="end_date_time" class="col-md-2 required control-label">Event End Date& Time</label>
                     <div class="col-md-4">
-                        <div class='input-group date' >
+                        <div class='input-group date' id='datetimepicker2'>
                             <input type='text' class="form-control" id='datetimepicker2' name="end_date_time" value="{{ old('end_date_time')}}" />
                             <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
                         @if($errors->has('end_date_time'))
                             <span class="help-block">
                             <strong>{{ $errors->first('end_date_time') }}</strong>

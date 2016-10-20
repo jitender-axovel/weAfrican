@@ -169,9 +169,9 @@
                 <label for="about_us" class="col-md-2 control-label">Business Logo</label>
                 <div class="col-md-10">
                     @if($business->business_logo != NULL)
-                        <img src="{{asset(config('image.logo_image_url').$business->business_logo)}}" style="width:100px;height:100px"/>
+                        <img src="{{asset(config('image.logo_image_url').$business->business_logo)}}"/>
                     @else
-                        <img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
+                        <img src="{{asset('images/no-uploaded.png')}}"/>
                     @endif
                 </div>
             </div>
@@ -196,9 +196,9 @@
                 <label for="about_us" class="col-md-2 control-label">Business Logo</label>
                 <div class="col-md-10">
                     @if($business->banner != NULL)
-                        <img src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}" style="width:100px;height:100px"/>
+                        <img src="{{asset(config('image.banner_image_url').'business/thumbnails/small/'.$business->banner)}}"/>
                     @else
-                        <img src="{{asset('images/no-uploaded.png')}}" style="width:100px;height:100px"/>
+                        <img src="{{asset('images/no-uploaded.png')}}"/>
                     @endif
                 </div>
             </div>

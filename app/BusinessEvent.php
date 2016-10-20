@@ -12,13 +12,13 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'name', 'title', 'slug', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
+    protected $fillable = ['user_id', 'name', 'keywords', 'slug', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
 
-    public static $updatable = ['user_id' => "", 'name' => "" , 'title' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
+    public static $updatable = ['user_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
 
     public static $validater = array(
         'name' => 'required|max:255',
-    	'title' => 'required|max:255',
+    	'keywords' => 'required|max:255',
     	'organizer_name' => 'required',
     	'address' => 'required',
         'start_date_time' => 'required',
@@ -28,7 +28,7 @@ class BusinessEvent extends Model
 
     public static $updateValidater = array(
     	'name' => 'required|max:255',
-        'title' => 'required|max:255',
+        'keywords' => 'required|max:255',
         'organizer_name' => 'required',
         'address' => 'required',
         'start_date_time' => 'required',
@@ -70,7 +70,7 @@ class BusinessEvent extends Model
 
             $validator = Validator::make($input, [
                 'name' => 'required',
-                'title' => 'required',
+                'keywords' => 'required',
                 'organizerName' => 'required',
                 'address' => 'required',
                 'startDateTime' => 'required',
@@ -99,7 +99,7 @@ class BusinessEvent extends Model
         }else{
               $validator = Validator::make($input, [
                 'name' => 'required|max:255',
-                'title' => 'required|max:255',
+                'keywords' => 'required|max:255',
                 'organizerName' => 'required',
                 'address' => 'required',
                 'startDateTime' => 'required',
@@ -120,7 +120,7 @@ class BusinessEvent extends Model
             $event = BusinessEvent::create($event);
             $event->save();
 
-            $event->slug = Helper::slug($event->title, $event->id);
+            $event->slug = Helper::slug($event->name, $event->id);
 
             if($event->save()){
                 return response()->json(['status' => 'success','response' => $event]);

@@ -297,19 +297,19 @@ class ApiController extends Controller
         if($check)
         {
             if(isset($input['like'])!= NULL){
-                DB::table('business_likes')->where('id',$check)->update(['likes' => $input['like'], 'dislikes' => 0 ]);
+                DB::table('business_likes')->where('id',$check)->update(['is_like' => $input['like'], 'is_dislike' => 0 ]);
                 return response()->json(['status' => 'success','response' => 'User updated like status for business']);
 
             } else {
-                DB::table('business_likes')->where('id',$check)->update(['likes' => 0, 'dislikes' => $input['dislike'] ]);
+                DB::table('business_likes')->where('id',$check)->update(['is_like' => 0, 'is_dislike' => $input['dislike'] ]);
                 return response()->json(['status' => 'success','response' => 'User updated dislike status for business']);
             }
         } else{
             if(isset($input['like'])!= NULL){
-                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'likes' => $input['like'], 'dislikes' => 0 ]);
+                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_like' => $input['like'], 'is_dislike' => 0 ]);
                 return response()->json(['status' => 'success','response' => 'User like business']);
             } else {
-                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'likes' => 0, 'dislikes' => $input['dislike'] ]);
+                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_like' => 0, 'is_dislike' => $input['dislike'] ]);
                 return response()->json(['status' => 'success','response' => 'User dislike business']);
             }
         }

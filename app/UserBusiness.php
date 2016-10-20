@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Validator;
+use Auth;
 
 class UserBusiness extends Model
 {
@@ -24,12 +25,12 @@ class UserBusiness extends Model
 
     public function getLikes()
     {
-        return $this->likes()->where('likes', 1)->count();
+        return $this->likes()->where('is_like', 1)->count();
     }
 
     public function getDislikes()
     {
-        return $this->likes()->where('dislikes', 1)->count();
+        return $this->likes()->where('is_dislike', 1)->count();
     }
 
     public function followers()
@@ -62,6 +63,15 @@ class UserBusiness extends Model
         return $this->favourites()->count();
     }
 
+    public function reviews()
+    {
+        return $this->hasMany('App\BusinessReview','business_id');
+    }
+
+    public function getReviews()
+    {
+        return $this->reviews()->count();
+    }
 
     public function apiGetBusinessesByCategory($input)
     {

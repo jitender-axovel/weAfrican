@@ -34,13 +34,17 @@
                         <td>{{$product->price}}</td>
                         <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product->image)}}"/></td>
                         <td>
-                            <a href="{{url('business-product/'.$product->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            Edit</button></a>
-                            <form action="{{url('business-product/'.$product->id)}}" method="POST" onsubmit="deleteProduct('{{$product->id}}', '{{$product->title}}', event,this)">
-                                {{csrf_field()}}
-                                <button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i>
-                                Delete</button>
-                            </form>
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="{{url('business-product/'.$product->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Product"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                                </li>
+                                <li>
+                                    <form action="{{url('business-product/'.$product->id)}}" method="POST" onsubmit="deleteProduct('{{$product->id}}', '{{$product->title}}', event,this)">
+                                        {{csrf_field()}}
+                                        <button type="submit" class="btn btn-danger" title="Delete Product"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    </form>
+                                </li>
+                            </ul>
                         </td>
                     <tr>
                 @endforeach

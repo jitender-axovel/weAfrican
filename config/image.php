@@ -46,10 +46,14 @@ return array(
      |
      */
      
-    'media_small_thumbnail_height' => '200',
-    'media_small_thumbnail_width' => '100',
-    'product_small_thumbnail_height' => '200',
-    'product_small_thumbnail_width' => '100',
+    'small_thumbnail_height' => '100',
+    'small_thumbnail_width' => '200',
+
+    'medium_thumbnail_height' => '480',
+    'medium_thumbnail_width' => '640',
+
+    'large_thumbnail_height' => '600',
+    'large_thumbnail_width' => '800'
     
 
 

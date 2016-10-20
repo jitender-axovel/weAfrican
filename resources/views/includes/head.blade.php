@@ -14,4 +14,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="{{ asset('js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script>
+    jQuery(function($) {
+        var path = window.location.href; 
+
+        $('ul a').each(function() {
+            if (this.href === path) {
+                $(this).addClass('active');
+            }
+        });
+    });
+</script>
 @yield('header-scripts')

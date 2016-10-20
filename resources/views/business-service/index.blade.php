@@ -30,13 +30,19 @@
                         <td>{{$service->title}}</td>
                         <td>{{$service->description}}</td>
                         <td>
-                            <a href="{{url('business-service/'.$service->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            Edit</button></a>
-                            <form action="{{url('business-service/'.$service->id)}}" method="POST" onsubmit="deleteService('{{$service->id}}', '{{$service->title}}', event,this)">
-                                {{csrf_field()}}
-                                <button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i>
-                                Delete</button>
-                            </form>
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="{{url('business-service/'.$service->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Service"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i>
+                                    </button></a>
+                                </li>
+                                <li>
+                                    <form action="{{url('business-service/'.$service->id)}}" method="POST" onsubmit="deleteService('{{$service->id}}', '{{$service->title}}', event,this)">
+                                        {{csrf_field()}}
+                                        <button type="submit" class="btn btn-danger" title="Delete Service"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </li>
+                            <ul>
                         </td>
                     <tr>
                 @endforeach

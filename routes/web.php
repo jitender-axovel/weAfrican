@@ -10,28 +10,30 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::group(['middleware' => ['before']], function(){
+	Route::get('/', ['uses' => 'HomeController@index', 'as' => 'home']);
 
-Route::get('/', ['uses' => 'HomeController@index', 'as' => 'home']);
+	Auth::routes();
 
-Auth::routes();
+	Route::get('logout', 'Auth\LoginController@logout');
 
-Route::get('logout', 'Auth\LoginController@logout');
+	Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
 
-Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
+	Route::resource('register-business', 'UserBusinessController');
 
-Route::resource('register-business', 'UserBusinessController');
+	Route::get('otp', 'UserBusinessController@otp');
+	Route::post('check-otp', 'UserBusinessController@checkOtp');
 
-Route::get('otp', 'UserBusinessController@otp');
-Route::post('check-otp', 'UserBusinessController@checkOtp');
-
-Route::group(['middleware' => ['auth']], function() {
-	
-	Route::get('upload', 'UserBusinessController@uploadForm');
-	Route::post('upload-document', 'UserBusinessController@uploadDocument');
-	Route::resource('business-product', 'BusinessProductsController');
-	Route::resource('business-event', 'BusinessEventsController');
-	Route::resource('subscription-plans', 'SubscriptionPlansController');
-	Route::resource('business-service', 'BusinessServicesController');	
+	Route::group(['middleware' => ['auth']], function() {
+		
+		Route::get('upload', 'UserBusinessController@uploadForm');
+		Route::post('upload-document', 'UserBusinessController@uploadDocument');
+		Route::resource('business-product', 'BusinessProductsController');
+		Route::resource('business-event', 'BusinessEventsController');
+		Route::resource('subscription-plans', 'SubscriptionPlansController');
+		Route::resource('business-service', 'BusinessServicesController');
+		Route::resource('event/participants/download-csv/{id}', 'BusinessEventsController@exportToCsv');
+	});
 });
 
 Route::group(['prefix' => 'admin'], function() {

@@ -10,7 +10,7 @@
 				<th>Business ID</th>
 				<th>Business Name</th>
 				<th>Event Name</th>
-				<th>Event title</th>
+				<th>Event Keywords</th>
 				<th>Organizer Name</th>
 				<th>Address</th>
 				<th>Start Date Time</th>
@@ -25,7 +25,7 @@
 				<td>{{ $event->business_id}}</td>
 				<td>{{ $event->business_name}}</td>
 				<td>{{ $event->name}}</td>
-				<td>{{ $event->title}}</td>
+				<td>{{ $event->keywords}}</td>
 				<td>{{ $event->organizer_name }}</td>
 				<td>{{ $event->address }}</td>
 				<td>{{ date('m/d/Y h:i A', strtotime($event->start_date_time))}}</td>

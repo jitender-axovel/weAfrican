@@ -19,8 +19,8 @@ class CreateBusinessLikesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')->references('id')->on('user_businesses');
-            $table->integer('likes');
-            $table->integer('dislikes');
+            $table->boolean('is_like');
+            $table->boolean('is_dislike');
             $table->timestamps();
         });
     }

@@ -11,6 +11,7 @@
 				<th>Coverage</th>
 				<th>Keywords limit</th>
 				<th>Price (per month)</th>
+				<th>Validity Period (in days)</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -20,8 +21,9 @@
 			<tr>
 				<td>{{ $subscription->title}}</td>
 				<td>{{ $subscription->coverage}}</td>
-				<td>@if($subscription->keywords_limit){{ $subscription->keywords_limit}} @endif</td>
+				<td>@if($subscription->keywords_limit){{ $subscription->keywords_limit}} @else NA @endif</td>
                 <td>{{ $subscription->price}}</td>
+                <td>{{ $subscription->validity_period}}</td>
 				<td>{{ date_format(date_create($subscription->created_at), 'F d, Y') }}</td>
 				<td>
 					<a class="btn btn-info" href="{{ url('admin/subscription/plan/'.$subscription->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil"></i></a>

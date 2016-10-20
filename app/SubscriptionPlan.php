@@ -9,18 +9,20 @@ class SubscriptionPlan extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['price','keywords_limit'];
+    protected $fillable = ['price','keywords_limit', 'validity_period'];
 
-    public static $updatable = ['price' => "" ,'keywords_limit' => ""];
+    public static $updatable = ['price' => "" ,'keywords_limit' => "", 'validity_period' => ""];
 
     public static $validater = array(
     	'price' => 'required|numeric',
-        'keywords_limit' => 'numeric|min:1',   
+        'keywords_limit' => 'numeric|min:1', 
+        'validity_period' => 'required|numeric',  
     	);
 
     public static $updateValidater = array(
     	'price' => 'required|numeric',  
-        'keywords_limit' => 'numeric|min:1',    
+        'keywords_limit' => 'numeric|min:1', 
+        'validity_period' => 'required|numeric',    
     	);
 
     public function apiGetSubscriptionPlans()

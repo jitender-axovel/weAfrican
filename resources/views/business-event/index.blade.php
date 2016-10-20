@@ -19,7 +19,7 @@
             <thead>
                 <tr>
                     <th>Event Name</th>
-                    <th>Event Title</th>
+                    <th>Event Keywords</th>
                     <th>Orgainzer Name</th>
                     <th>Event Start Date& time</th>
                     <th>Event End Date& time</th>
@@ -34,21 +34,72 @@
                 @foreach($events as $event)
                     <tr>
                         <td>{{$event->name}}</td>
-                        <td>{{$event->title}}</td>
+                        <td>{{$event->keywords}}</td>
                         <td>{{$event->organizer_name}}</td>
                         <td>{{ date('m-d-Y h:i A', strtotime($event->start_date_time))}}</td>
                         <td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
                         <td>{{$event->address}}</td>
-                        <td> @if($event->banner)<img src="{{asset(config('image.banner_image_url').$event->banner)}}"/>
+                        <td> @if($event->banner)<img src="{{asset(config('image.banner_image_url').'event/thumbnails/small/'.$event->banner)}}"/>
                         @else Banner not uploded yet @endif</td>
                         <td> {{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
                         <td>
-                            <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            Edit</button></a>
-                            <form action="{{url('business-event/'.$event->id)}}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->title}}', event,this)">
-                                {{csrf_field()}}
-                                <button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                            </form>
+                            <ul class="list-inline">
+                                <li>
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal-{{$event->id}}" title="Download Participant List"><i class="fa fa-download" aria-hidden="true"></i></button>
+                                  <!-- Modal -->
+                                    <div class="modal fade" id="myModal-{{$event->id}}" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+
+                                      <!-- Modal content-->
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h6 class="modal-title">Choose data to show in csv</h6>
+                                        </div>
+                                        <div class="modal-body">
+                                         <form class="form-horizontal" action="{{ url('event/participants/download-csv/'.$event->id) }}" method="POST">
+                    {{csrf_field()}}
+                    <div class="form-group form-inline col-md-2">
+                        <label>Full Name</label>
+                        <input type="checkbox" class="form-control" name="full_name" value="full_name">
+                    </div>
+                    <div class="form-group form-inline col-md-2">
+                        <label>Mobile Number</label>
+                        <input type="checkbox" class="form-control" name="mobile_number" value="mobile_number">
+                    </div>
+                    <div class="form-group form-inline col-md-2">
+                        <label>Country Code</label>
+                        <input type="checkbox" class="form-control" name="country_code" value="country_code">
+                    </div>
+                    <div class="form-group form-inline col-md-3">
+                        <label>Index</label>
+                            <input type="number" class="form-control " name="index">
+                    </div>
+                    <div class="form-group form-inline col-md-3">
+                        <label>Limit</label>
+                            <input type="number" class="form-control " name="limit">
+                    </div>
+                    <button class="btn btn-success col-md-12" type="submit">Download</button>
+                </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Event"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></button></a>
+                                </li>
+                                <li>
+                                    <form action="{{url('business-event/'.$event->id)}}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->title}}', event,this)">
+                                        {{csrf_field()}}
+                                        <button type="submit" class="btn btn-danger" title="Delete Event"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    </form>
+                                </li>
+                            </ul>
                         </td>
                     </tr>
                 @endforeach

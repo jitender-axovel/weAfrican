@@ -3,11 +3,9 @@
 		<div class="container">
 			<div class="col-md-6 text-left col-sm-6 col-xs-12">
 				<ul class="footer-linkss list-inline">
-					<li> <a href="{{url('/')}}">home</a> </li>
-					<li> <a href="{{url('cms/about-us')}}">about</a> </li>
-					<li> <a href="{{url('cms/cookie-policy')}}">Cookie Policy</a> </li>
-					<li> <a href="{{url('cms/privacy-policy')}}">Privacy Policy</a> </li>
-					<li> <a href="{{url('cms/terms-of-use')}}">Terms of Use</a> </li>
+					@foreach($cmsPages as $cms)
+					<li> <a href="{{url('cms/'.$cms->slug)}}">{{$cms->title}}</a> </li>
+					@endforeach
 			 	</ul>
 			</div>
 			<div class="col-md-6 text-right col-sm-6 col-xs-12">

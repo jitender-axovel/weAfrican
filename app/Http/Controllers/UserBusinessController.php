@@ -98,7 +98,13 @@ class UserBusinessController extends Controller
 
                     $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
 
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.logo_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
                     shell_exec($command);
                 }
             }
@@ -267,7 +273,13 @@ class UserBusinessController extends Controller
 
                 $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
 
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.media_small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
                 shell_exec($command);
             }
         }
@@ -280,6 +292,15 @@ class UserBusinessController extends Controller
                 $bannerImage = $bannerfile.'.'.$bannerExt; 
 
                 $bannerFileName = $request->file('banner')->move(config('image.banner_image_path').'business/', $bannerImage);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$bannerImage.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/small/'.$bannerImage;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$bannerImage.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/medium/'.$bannerImage;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$bannerImage.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/large/'.$bannerImage;
+                shell_exec($command);
             }
         }
 
