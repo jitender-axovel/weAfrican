@@ -17,13 +17,14 @@ img {max-height: 100% !important; max-width: 100% !important;}
 
 /* Header */
 header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110px; padding: 35px 0 0; width: 100%;}
-.navbar .navbar-nav > li > a {color: #ffffff; padding: 4px 15px; text-transform: uppercase; border-radius: 4px;}
+.navbar .navbar-nav > li > a {color: #ffffff; padding: 9px 16px; text-transform: uppercase; border-radius: 4px;}
 .navbar .navbar-nav li .download-link, .download-link {background: #05c2f9; border: 1px solid #05c2f9; border-radius: 4px; color: #ffffff;}
 .btn{text-transform:uppercase; padding: 8px 15px;}
 .navbar-nav > li.active {border-bottom: 2px solid #05c2f9;}
 .navbar-nav > li {margin-left: 15px;}
 .nav > li > a:focus, .nav > li > a:hover {background-color: #05c2f9; text-decoration: none;}
 .app-image > img {height: 480px; width: auto; bottom: -100px; position: relative;}
+.top-business-menu a.active {background:#05c2f9;}
 
 /* Main Content */
 .top-container .main-content {min-height: 350px;}
@@ -66,7 +67,82 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110p
 
 .video-section p {margin: 30px 0;}
 .video-section {padding: 50px 0;}
-
+/*register-business css*/
+.register-business {margin: 0 auto; width: 80%;}
+.form-group .required.control-label:after { 
+    content:"*";
+    color:red;
+    }
+.register-business .dl-horizontal {
+  overflow: hidden;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+.business-profile {
+  border: 1px solid;
+  overflow: hidden;
+}
+.dl-horizontal dt {
+  float: left;
+  padding: 3px;
+  text-align: right;
+  width: 30%;
+}
+.business-right .dl-horizontal dd {
+  padding: 0;
+  width: 50%;
+}
+.business-right dt {
+  width: 50%;
+}
+.dl-horizontal dd {
+  float: left;
+  margin: 0;
+  overflow: hidden;
+  padding: 4px 0 4px 51px;
+  width: 70%;
+}
+.pending.btn-danger.label,.verified.btn-success.label {
+  border-radius: 9px;
+  font-size: 15px;
+  padding: 8px 37px;
+}
+.top-business-menu {
+  margin: 0 auto;
+  width: 80%;
+}
+.top-business-menu .nav.nav-pills {
+  float: right;
+  margin-top: 16px;
+}
+.panel.panel-default.document {
+  padding: 30px;
+}
+.form-group.required .control-label:after { 
+	content:"*";
+	color:red;
+}
+.container.subscription-plans {
+    padding: 70px;
+}
+.business_image {
+    height: 200px !important;
+    width: 100% !important;
+}
+.event_image {
+    height: 200px !important;
+    width: 100% !important;
+}
+/*comment-section*/
+.comment-section .item-head .item{
+  background: #5bc0de none repeat scroll 0 0;margin-bottom: 20px;text-align: center;border-radius: 80px; height: 150px;
+    width: 150px; -moz-border-radius: 80px; -webkit-border-radius: 80px; }
+/*business-event-page*/
+.datepicker div.datepicker-months td,
+.datepicker div.datepicker-years td,.datepicker.days div.datepicker-days td {
+  width: 240px !important;
+}
+.register-business .panel tbody tr td form {display: inline-block;}
 /* Login Page */
 .top-container .main-content .main-container.row { padding:50px 0;}
 
@@ -121,63 +197,4 @@ footer .available .list-inline > li {padding-right: 0;}
 	.container {padding: 0;}
 	.download-section .list-inline > li {margin: 0 0 15px; width: 100%;}
 	.download-section .list-inline img {height: auto; width: 200px;}
-}
-/*register-business css*/
-.register-business {margin: 0 auto; width: 80%;}
-.form-group .required.control-label:after { 
-    content:"*";
-    color:red;
-    }
-.register-business .dl-horizontal {
-  overflow: hidden;
-  padding-bottom: 15px;
-  padding-top: 15px;
-}
-.business-profile {
-  border: 1px solid;
-  overflow: hidden;
-}
-.dl-horizontal dt {
-  float: left;
-  padding: 3px;
-  text-align: right;
-  width: 20%;
-}
-.dl-horizontal dd {
-  float: left;
-  margin: 0;
-  overflow: hidden;
-  padding: 4px 0 4px 51px;
-  width: 80%;
-}
-.pending.btn-danger.label,.verified.btn-success.label {
-  border-radius: 9px;
-  font-size: 15px;
-  padding: 8px 37px;
-}
-.top-business-menu {
-  margin: 0 auto;
-  width: 80%;
-}
-.top-business-menu .nav.nav-pills {
-  float: right;
-  margin-top: 16px;
-}
-.panel.panel-default.document {
-  padding: 30px;
-}
-.form-group.required .control-label:after { 
-	content:"*";
-	color:red;
-}
-.container.subscription-plans {
-    padding: 70px;
-}
-.business_image {
-    height: 200px !important;
-    width: 100% !important;
-}
-.event_image {
-    height: 200px !important;
-    width: 100% !important;
 }
