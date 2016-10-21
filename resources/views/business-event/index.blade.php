@@ -59,23 +59,23 @@
                                         <div class="modal-body">
                                          <form class="form-horizontal" action="{{ url('event/participants/download-csv/'.$event->id) }}" method="POST">
                     {{csrf_field()}}
-                    <div class="form-group form-inline col-md-2">
+                    <div class="form-group form-inline col-md-4">
                         <label>Full Name</label>
                         <input type="checkbox" class="form-control" name="full_name" value="full_name">
                     </div>
-                    <div class="form-group form-inline col-md-2">
+                    <div class="form-group form-inline col-md-4">
                         <label>Mobile Number</label>
                         <input type="checkbox" class="form-control" name="mobile_number" value="mobile_number">
                     </div>
-                    <div class="form-group form-inline col-md-2">
+                    <div class="form-group form-inline col-md-4">
                         <label>Country Code</label>
                         <input type="checkbox" class="form-control" name="country_code" value="country_code">
                     </div>
-                    <div class="form-group form-inline col-md-3">
+                    <div class="form-group form-inline col-md-6">
                         <label>Index</label>
                             <input type="number" class="form-control " name="index">
                     </div>
-                    <div class="form-group form-inline col-md-3">
+                    <div class="form-group form-inline col-md-6">
                         <label>Limit</label>
                             <input type="number" class="form-control " name="limit">
                     </div>

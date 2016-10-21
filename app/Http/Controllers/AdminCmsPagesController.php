@@ -18,9 +18,9 @@ class AdminCmsPagesController extends Controller
     public function index()
     {
         $cmsPages = CmsPage::get();
-        $page = 'We African - Admin';
+        $pageTitle = 'We African - Admin';
 
-        return view('admin.cms.index', compact('cmsPages', 'page'));
+        return view('admin.cms.index', compact('cmsPages', 'pageTitle'));
     }
 
     /**
@@ -64,7 +64,7 @@ class AdminCmsPagesController extends Controller
     public function edit($id)
     {
         $cmsPage = CmsPage::find($id);
-        $page = 'We African - Edit ' . $cmsPage->title;
+        $pageTitle = 'We African - Edit ' . $cmsPage->title;
 
         return view('admin.cms.edit', compact('cmsPage', 'page'));
     }

@@ -2,6 +2,17 @@
 @section('title', $pageTitle)
 @section('content')
 <h2>Notification</h2>
+<hr>
+        <section required>
+            <header class="panel-heading"><strong>Select Users to whom you want to send Notification</strong> </header>
+            <select class="form-control" id="select_type" name="select_action" required="">
+                    <option value="" > Select </option>
+                    <option value="1">Business users</option>
+                    <option value="2">End Users</option>
+                    <option value="3">All Users</option>
+            </select>
+        </section>
+    
 <div class="greetblock">
     <div class="leftdiv">
         <p class="header">Select Users to whom you want to send Notification
@@ -134,6 +145,8 @@
 	$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 	
     function sendMsg(){
+   
+
     var msgLength = $.trim($("textarea").val()).length;
     var checkedCB = $("input[type='checkbox']:checked").length;
     if( checkedCB == 0){
@@ -141,7 +154,9 @@
     }else if(msgLength == 0){
     	alert("You left the message field blank, please fill it");
     }else{
-    	var formData = $(".wrapper").find("input").serialize() + "&message=" + $("textarea").val();	
+         var cus = document.getElementById('select_type');
+    var custid = cus.options[cus.selectedIndex].value;
+    	var formData = $(".wrapper").find("input").serialize() + "&message=" + $("textarea").val() + "&type=" +custid;	
     	$.ajax({type: "POST",data: formData, url: "{{url('admin/send/notification')}}", success:function(res){
     		$(".greetblock").slideUp(1000);
     		$(".serverresponse").prepend(res).hide().fadeIn(2000);

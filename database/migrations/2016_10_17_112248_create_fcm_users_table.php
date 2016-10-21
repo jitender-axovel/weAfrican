@@ -16,6 +16,7 @@ class CreateFcmUsersTable extends Migration
         Schema::create('fcm_users', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('user_role_id')->unsigned();
             $table->string('fcm_reg_id');
             $table->timestamps();
         });

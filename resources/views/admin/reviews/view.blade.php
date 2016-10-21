@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminapp')
-@section('title', $page)
+@section('title', $pageTitle)
 @section('content')
 	<h2>View Business Reviews</h2>
 	<hr>

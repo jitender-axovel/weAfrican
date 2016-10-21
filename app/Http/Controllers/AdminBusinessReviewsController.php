@@ -10,16 +10,16 @@ use App\UserBusiness;
 
 class AdminBusinessReviewsController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $page = 'Admin - Review';
+        $pageTitle = 'Admin - Review';
         $businesses = UserBusiness::get();
-        return view('admin.reviews.index', compact('page', 'businesses'));
+        return view('admin.reviews.index', compact('pageTitle', 'businesses'));
     }
     /**
      * Display the specified resource.
@@ -29,9 +29,9 @@ class AdminBusinessReviewsController extends Controller
      */
     public function show($id)
     {
-        $page = 'Admin - View Reviews';
+        $pageTitle = 'Admin - View Reviews';
         $reviews = BusinessReview::where('business_id', $id)->get();
-        return view('admin.reviews.view', compact('page', 'reviews'));
+        return view('admin.reviews.view', compact('pageTitle', 'reviews'));
     }
 
     /**

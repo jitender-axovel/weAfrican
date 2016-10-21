@@ -16,13 +16,12 @@
                     <div class="col-md-2">
                         @include('admin.includes.leftmenu')
                     </div>
-                @endif
-                
-                <div class="col-md-10">
-                    @yield('content')
+                @endif           
+                    <div class="col-md-10">
+                        @yield('content')
+                    </div>
+                    @yield('scripts')
                 </div>
-                @yield('scripts')
-            </div>
             </div>
         </div>
     </body>

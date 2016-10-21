@@ -19,9 +19,9 @@ class AdminSubscriptionPlansController extends Controller
      */
    public function index()
     {
-        $page = 'Subscription Plan- Admin';
+        $pageTitle = 'Subscription Plan- Admin';
         $subscriptions = SubscriptionPlan::orderBy('id','DESC')->get();
-        return view('admin.subscriptions.index', compact('page', 'subscriptions'));
+        return view('admin.subscriptions.index', compact('pageTitle', 'subscriptions'));
     }
 
     /**
@@ -64,9 +64,9 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function edit($id)
     {
-        $page = "Edit Subscription Plan - Admin";
+        $pageTitle = "Edit Subscription Plan - Admin";
         $subscription = SubscriptionPlan::find($id);
-        return view('admin.subscriptions.edit',compact('subscription','page'));
+        return view('admin.subscriptions.edit',compact('subscription','pageTitle'));
     }
 
     /**

@@ -27,19 +27,35 @@ class AdminFcmNotificationController extends Controller
     public function sendNotification(Request $request)
     {
     	$input = $request->input();
+        
     	$sendUsers = $input['sendmsg'];
 	    $resp = "<tr id='header'><td>FCM Response [".date("h:i:sa")."]</td></tr>";
 	    $userCount = count($sendUsers);
 		$msg = $input['message'];
 		$respJson = '{"Message":"'.$msg.'"}';
 		$registation_ids = array();
-		for($i=0; $i < $userCount; $i++)
+		/*for($i=0; $i < $userCount; $i++)
 	    {	
 			array_push($registation_ids, $sendUsers[$i]);			  
-	    } 
+	    } */
 		// JSON Msg to be transmitted to selected Users
 		$message = array("m" => $respJson);  
-		$pushsts = $this->sendPushNotificationToFCM($registation_ids, $message); 
+        if($input['type'] == 1){
+            $ids = FcmUser::select('fcm_reg_id')->where('user_role_id', 3)->get();
+        
+        } else if($input['type'] == 2){
+            $ids = FcmUser::select('fcm_reg_id')->where('user_role_id', 4)->get();
+        }
+        else{
+            $ids = FcmUser::select('fcm_reg_id')->get();
+        }
+        foreach($ids as $key =>$id)
+        {
+            $registation_ids[] = $id->fcm_reg_id;
+        }
+        
+		$pushsts = $this->sendPushNotificationToFCM($registation_ids, $message);
+       
 		$resp = $resp."<tr><td>".$pushsts."</td></tr>";
 		echo "<table>".$resp."</table>";
     }

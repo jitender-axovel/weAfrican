@@ -21,7 +21,7 @@
 	    	@if($business->banner != NULL)
 	    		<img class="banner_image" src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}"/>
 	    	@else
-	            <img src="{{asset('images/blank-image.jpeg')}}">
+	            <img class="banner_image" src="{{asset('images/blank-image.jpeg')}}">
             @endif
 	    </div>
 		<div class="business-profile">
@@ -116,7 +116,7 @@
 
 					<div class="col-md-2 rating item">
 						<span class="label label-success" title="Ratings"><i class="fa fa-star-o" aria-hidden="true">
-						<span class="badge">{{$business->getRatings()}}</span></i>
+						<span class="badge">{{(int)$business->getRatings()}}</span></i>
 						</span>
 					</div>
 

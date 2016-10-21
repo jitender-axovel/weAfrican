@@ -19,13 +19,13 @@ class AdminBusinessBannersController extends Controller
      */
     public function index()
     {
-        $page = 'Banners- Admin';
+        $pageTitle = 'Banners- Admin';
         $banners = BusinessBanner::select('business_banners.*', DB::raw('user_businesses.title AS title , subscription_plans.title AS name'))->leftJoin('user_businesses', 'user_businesses.user_id', '=', 'business_banners.user_id')->leftJoin('subscription_plans', 'subscription_plans.id', '=', 'business_banners.subscription_plan_id')
             ->get();
 
           
            
-        return view('admin.banners.index', compact('page', 'banners'));
+        return view('admin.banners.index', compact('pageTitle', 'banners'));
     }
 
     /**
