@@ -134,7 +134,7 @@ class UserBusiness extends Model
                 $business['banner'] = $input['banner'];
             
             $business = UserBusiness::create($business);
-
+                
             if($business->save()){
                 return response()->json(['status' => 'success','response' => $business]);
             } else {
