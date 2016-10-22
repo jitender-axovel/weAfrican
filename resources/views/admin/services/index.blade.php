@@ -22,7 +22,7 @@
 				<td>{{ $service->business_name}}</td>
 				<td>{{ $service->title}}</td>
 				<td>{{ $service->description}}</td>
-				<td>{{ date_format(date_create($service->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($service->created_at), 'd M,Y') }}</td>
 				<td>
 					<a href="{{ URL::to('admin/service/block/'.$service->id) }}">
 	                    @if($service->is_blocked)

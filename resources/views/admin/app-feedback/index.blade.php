@@ -20,7 +20,7 @@
 				<td>{{ $feedback->full_name}}</td>
 				<td>{{ '+' . $feedback->country_code . '-' . $feedback->mobile_number }}</td>
 				<td>{{ $feedback->feedback}}</td>
-				<td>{{ date_format(date_create($feedback->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($feedback->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
 						<li>

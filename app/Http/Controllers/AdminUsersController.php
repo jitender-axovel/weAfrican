@@ -46,7 +46,7 @@ class AdminUsersController extends Controller
             'title' => 'required',
             'keywords' =>'required',
             'email' => 'required|email|max:255|unique:user_businesses',
-            'pin_code' => 'regex:/\b\d{6}\b/|required',
+            'pin_code' => 'regex:/\b\d{6}\b/|required|numeric',
             'country' => 'string',
             'state' => 'string',
             'city' => 'string',

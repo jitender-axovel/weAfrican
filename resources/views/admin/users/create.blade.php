@@ -101,9 +101,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-2">Pin code:</label>
+					<label class="control-label col-md-2">Pin Code: (format:110075)</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="pin_code" value="{{ old('pin_code') }}" >
+						<input type="text" pattern="[0-9]{6}" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
 						@if($errors->has('pin_code'))
 						<span class="help-block">
 							<strong>{{ $errors->first('pin_code') }}</strong>
@@ -123,16 +123,17 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Primary Mobile Number:</label>
 					<div class="col-md-4">
-						<input  type="text" class="form-control" name="mobile_number" value="{{ $user->mobile_number }}" required >
+						<input type="text" class="form-control" name="mobile_number" value="{{ $user->mobile_number}}">
 						@if($errors->has('mobile_number'))
 						<span class="help-block">
 							<strong>{{ $errors->first('mobile_number') }}</strong>
 						</span>
 						@endif
 					</div>
-					<label class="control-label col-md-2">Secondary Mobile Number:</label>
+					<label class="control-label col-md-2">Secondary Mobile Number:(format:99-99-999999)</label>
 					<div class="col-md-4">
-					<input type="text" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}">
+					 <input type="text" maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}">
+					<!-- <input type="text" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}"> -->
 						@if($errors->has('secondary_phone_number'))
 						<span class="help-block">
 							<strong>{{ $errors->first('secondary_phone_number') }}</strong>

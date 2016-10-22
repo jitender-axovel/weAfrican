@@ -17,7 +17,7 @@
 			@foreach($cmsPages as $cmsPage)
 			<tr>
 				<td>{{ $cmsPage->title}}</td>
-				<td>{{ date_format(date_create($cmsPage->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($cmsPage->created_at), 'd M,Y') }}</td>
 				<td>
 					<a href="{{ url('cms/'.$cmsPage->slug) }}" class="btn btn-success" title="Visit" target="_blank"><i class="fa fa-eye"></i></a>
 				</td>

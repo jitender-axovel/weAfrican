@@ -26,7 +26,7 @@
 				<td>{{ $product->description}}</td>
                 <td>{{ $product->price}}</td>
                 <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product->image)}}"/></td>
-				<td>{{ date_format(date_create($product->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($product->created_at), 'd M,Y') }}</td>
 				<td>
 					<a href="{{ URL::to('admin/product/block/'.$product->id) }}">
 	                    @if($product->is_blocked)

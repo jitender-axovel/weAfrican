@@ -20,7 +20,7 @@
                 <tr>
                     <th>Product Name</th>
                     <th>Description</th>
-                    <th>Price</th>
+                    <th>Price(in Rs)</th>
                     <th>Image</th>
                     <th>Actions</th>
                 </tr>

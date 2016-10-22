@@ -28,8 +28,8 @@
 				<td>{{ $event->keywords}}</td>
 				<td>{{ $event->organizer_name }}</td>
 				<td>{{ $event->address }}</td>
-				<td>{{ date('m/d/Y h:i A', strtotime($event->start_date_time))}}</td>
-				<td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
+				<td>{{ date('d M,Y h:i A', strtotime($event->start_date_time))}}</td>
+				<td>{{ date('d M,Y h:i A', strtotime($event->end_date_time))}}</td>
 				<td>{{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
 				<td>
 					<ul class="list-inline">

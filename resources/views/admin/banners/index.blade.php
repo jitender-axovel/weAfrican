@@ -23,7 +23,7 @@
 				<td>@if($banner->country) Country: {{ $banner->country }} @elseif($banner->state) State: {{$banner->state}} @else  City: {{$banner->city}}  @endif
 				</td>
 				<td>{{ asset(config('image.banner_image_url').$banner->image) }}</td>
-				<td>{{ date_format(date_create($banner->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($banner->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
 						<!-- <li>

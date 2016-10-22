@@ -1,9 +1,10 @@
 @extends('admin.layouts.adminapp')
 @section('title', $pageTitle)
 @section('content')
-<h2>Notification</h2>
-<hr>
-        <section required>
+    <h2>Notification</h2>
+    <hr>
+    <div class="col-md-7 fcm-section">
+        <section class="fcm_users" required>
             <header class="panel-heading"><strong>Select Users to whom you want to send Notification</strong> </header>
             <select class="form-control" id="select_type" name="select_action" required="">
                     <option value="" > Select </option>
@@ -12,132 +13,48 @@
                     <option value="3">All Users</option>
             </select>
         </section>
-    
-<div class="greetblock">
-    <div class="leftdiv">
-        <p class="header">Select Users to whom you want to send Notification
-        </p>
-        <table>
-            <tr id="header">
-                <td>Id</td>
-                <td>User Name</td>
-                <td>User Role</td>
-                <td>Send Message?</td>
-            </tr>
-            @if($fcmUsers)
-            @foreach($fcmUsers as $fcmUser)
-            <tr>
-                <td><span>{{$fcmUser->id}}</span></td>
-                <td><span>{{$fcmUser->full_name}}</span></td>
-                <td><span>@if($fcmUser->user_role_id == 3) BusinessUser @else EndUsers @endif</span></td>
-                <td><span class="wrapper"><input type="checkbox" name="sendmsg[]" value="{{ $fcmUser->fcm_reg_id}}"/></span></td>
-            </tr>
-            @endforeach
+        <table id="users_list" class="display">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>User Name</th>
+                    <th>User Role</th>
+                    <th>Send Message?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if($fcmUsers)
+                    @foreach($fcmUsers as $fcmUser)
+                    <tr>
+                        <td>{{$fcmUser->id}}</td>
+                        <td>{{$fcmUser->full_name}}</td>
+                        <td>{{$fcmUser->user_role_id}}</td>   
+                        <td>
+                            <ul class="list-inline">
+                                <li>
+                                   <span class="wrapper"><input type="checkbox" name="sendmsg[]" value="{{ $fcmUser->fcm_reg_id}}"/></span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    @endforeach
+                @endif
+            </tbody>
         </table>
     </div>
-    <!-- <div class="rightdiv">
-        <p class="header">Select Greeting Card
-        </p>
-        <select id="festival">
-            <option value="http://dev.mycareline.in/app/gcmwebapp/img/diwali.png">Diwali</option>
-            <option value="http://dev.mycareline.in/app/gcmwebapp/img/pongal.png">Pongal</option>
-            <option value="http://dev.mycareline.in/app/gcmwebapp/img/christmas.png">Christmas</option>
-            <option value="http://dev.mycareline.in/app/gcmwebapp/img/ramzan.png">Ramadan</option>
-        </select>
-        <br/>
-        <img src="http://dev.mycareline.in/app/gcmwebapp/img/diwali.png"/>
-    </div> -->
-    <div class="rightdiv">
-        <p class="header">Type your message
-        </p>
-        <textarea cols="15" rows="5" value="txtarea"></textarea></br>
-		<button onclick="sendMsg()">Send Message</button>
+    <div class="col-md-5 message-section">
+        <p class="header">Type your message</p>
+        <textarea cols="15" rows="5" value="txtarea"></textarea>
+        <button onclick="sendMsg()">Send Message</button>
     </div>
-    <div class="rightdiv">
-        <!-- <p class="header">Send your customized message to your Users
-        </p>
-        <center>
-            <button onclick="sendMsg()">Send Message</button>
-        </center> -->
+    <div class="col-md-12 serverresponse hidediv">
+        <center><button id="sendmsg">Send Message Again</button></center>
     </div>
-</div>
-<div class="serverresponse hidediv">
-    <center><button id="sendmsg">Send Message Again</button></center>
-</div>
-@else
-<div id="norecord">
-    No records in MySQL DB
-</div>
-@endif
-<style>
-    table{width:100%;}
-    tr > td {
-    padding: 0.25rem;
-    text-align: center;
-    border: 1px solid #ccc;
-    }
-    tr:nth-child(even) {
-    background: #fff;
-    }
-    tr:nth-child(odd) {
-    background: #5bc0de;
-    color: #fff;
-    }
-    tr#header{
-    background: #5bc0de;
-    }
-    div#norecord{
-    margin-top:10px;
-    width: 15%;
-    margin-left: auto;
-    margin-right: auto;
-    }
-    input,select{
-    cursor: pointer;
-    }
-    img{
-    margin-top: 10px;
-    height: 200px;
-    width: 300px;
-    }
-    select{
-    width: 200px
-    }
-    div.leftdiv{
-    width: 45%;
-    padding: 0 10px;
-    float: left;
-    border: 1px solid #ccc;
-    margin: 5px;
-    height: 320px;
-    text-align:center;
-    }
-    div.rightdiv{
-    width: 45%;
-    padding: 0 10px;
-    float: right;
-    border: 1px solid #ccc;
-    margin: 5px;
-    height: 320px;
-    text-align:center;
-    }
-    hidediv{
-    display: none;
-    }
-    p.header{
-    height: 40px;
-    background-color: #5bc0de;
-    padding: 10px;
-    color: #fff;
-    text-align:center;
-    margin: 0;
-    margin-bottom: 10px;
-    }
-    textarea{
-    font-size: 25px;
-    font-weight: bold;
-    }
-</style>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#users_list').DataTable();
+        } );
+    </script>
 @endsection
 @section('scripts')
 <script>
@@ -191,4 +108,3 @@
     });
 </script>
 @endsection
-

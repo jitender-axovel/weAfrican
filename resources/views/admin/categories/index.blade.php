@@ -18,9 +18,9 @@
 			<tr>
 				<td>{{ $category->title}}</td>
 				<td>
-					<img style="width:100px;height:100px;" src="{{ asset(config('image.category_image_url').$category->image) }}" class="responsive">
+					<img src="{{ asset(config('image.category_image_url').'thumbnails/small/'.$category->image) }}" class="responsive">
 				</td>
-				<td>{{ date_format(date_create($category->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($category->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
 						<li>

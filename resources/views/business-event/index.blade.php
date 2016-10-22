@@ -36,8 +36,8 @@
                         <td>{{$event->name}}</td>
                         <td>{{$event->keywords}}</td>
                         <td>{{$event->organizer_name}}</td>
-                        <td>{{ date('m-d-Y h:i A', strtotime($event->start_date_time))}}</td>
-                        <td>{{ date('m-d-Y h:i A', strtotime($event->end_date_time))}}</td>
+                        <td>{{ date('d M,Y h:i A', strtotime($event->start_date_time))}}</td>
+                        <td>{{ date('d M,Y h:i A', strtotime($event->end_date_time))}}</td>
                         <td>{{$event->address}}</td>
                         <td> @if($event->banner)<img src="{{asset(config('image.banner_image_url').'event/thumbnails/small/'.$event->banner)}}"/>
                         @else Banner not uploded yet @endif</td>

@@ -20,7 +20,7 @@
 				<td>{{ $user->full_name}}</td>
 				<td>{{ '+' . $user->country_code . '-' . $user->mobile_number }}</td>
 				<td>{{ $user->role->name }}</td>
-				<td>{{ date_format(date_create($user->created_at), 'F d, Y') }}</td>
+				<td>{{ date_format(date_create($user->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
 						@if($user->user_role_id == 4)
