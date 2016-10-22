@@ -75,7 +75,7 @@ class UserBusiness extends Model
 
     public function apiGetBusinessesByCategory($input)
     {
-        return $this->where('bussiness_category_id', $input['categoryId'])->where('is_blocked', 0)->get();
+        return $this->where('bussiness_category_id', $input['categoryId'])->skip($input['index'])->take($input['limit'])->where('is_blocked', 0)->get();
     }
 
     public function apiPostUserBusiness(Request $request)
