@@ -150,8 +150,6 @@ class UserBusiness extends Model
             $input['bussiness_category_id'] = $input['categoryId'];
             $input['pin_code'] = $input['pinCode'];
             $input['mobile_number'] = $input['mobileNumber'];
-            $input['about_us'] = $input['aboutUs'];
-            $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $input['working_hours'] = $input['workingHours'];
 
             if(isset($input['aboutUs']))
