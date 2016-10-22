@@ -127,8 +127,14 @@ class UserBusiness extends Model
             $business['is_agree_to_terms'] = 1;
             if(isset($input['aboutUs']))
                   $business['about_us'] = $input['aboutUs'];
+            else
+                $business['about_us'] = "";
+            
             if(isset($input['secondaryPhoneNumber']))
                  $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+            else
+                 $business['secondary_phone_number'] = "";
+
             if(isset($input['businessLogo']))
                 $business['business_logo'] = $input['businessLogo'];
     
