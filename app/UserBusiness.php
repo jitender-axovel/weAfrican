@@ -134,8 +134,8 @@ class UserBusiness extends Model
                 $business['banner'] = $input['banner'];
             
             $business = UserBusiness::create($business);
-                
-            if($business->save()){
+            $business->save(); 
+            if($business){
                 return response()->json(['status' => 'success','response' => $business]);
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
