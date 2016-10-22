@@ -126,14 +126,10 @@ class UserBusiness extends Model
             $business['working_hours'] = $input['workingHours'];
             $business['is_agree_to_terms'] = 1;
             if(isset($input['aboutUs']))
-                  $business['about_us'] = $input['aboutUs'];
-            else
-                $business['about_us'] = "";
-            
+                $business['about_us'] = $input['aboutUs'];
+
             if(isset($input['secondaryPhoneNumber']))
                  $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
-            else
-                 $business['secondary_phone_number'] = "";
 
             if(isset($input['businessLogo']))
                 $business['business_logo'] = $input['businessLogo'];
@@ -157,6 +153,12 @@ class UserBusiness extends Model
             $input['about_us'] = $input['aboutUs'];
             $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $input['working_hours'] = $input['workingHours'];
+
+            if(isset($input['aboutUs']))
+                $business['about_us'] = $input['aboutUs'];
+
+            if(isset($input['secondaryPhoneNumber']))
+                 $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
             if(isset($input['businessLogo'])) {
                 $input['business_logo'] =  $input['businessLogo'];
