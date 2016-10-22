@@ -102,7 +102,7 @@ class UserBusiness extends Model
                 'address' => 'string',
                 'secondaryPhoneNumber' => 'numeric',
                 'website' => 'string',
-                'workingHours' => 'string',
+                'workingHours' => 'required|string',
                 'mobileNumber' => 'required',
                 'latitude' => 'required',
                 'longitude' => 'required',
@@ -123,10 +123,12 @@ class UserBusiness extends Model
             $business['bussiness_category_id'] = $input['categoryId'];
             $business['pin_code'] = $input['pinCode'];
             $business['mobile_number'] = $input['mobileNumber'];
-            $business['about_us'] = $input['aboutUs'];
-            $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $business['working_hours'] = $input['workingHours'];
             $business['is_agree_to_terms'] = 1;
+            if(isset($input['aboutUs']))
+                  $business['about_us'] = $input['aboutUs'];
+            if(isset($input['secondaryPhoneNumber']))
+                 $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             if(isset($input['businessLogo']))
                 $business['business_logo'] = $input['businessLogo'];
     
