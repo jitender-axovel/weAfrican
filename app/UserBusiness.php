@@ -127,8 +127,12 @@ class UserBusiness extends Model
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
             $business['working_hours'] = $input['workingHours'];
             $business['is_agree_to_terms'] = 1;
-            $business['business_logo'] = $input['businessLogo'];
-          
+            if(isset($input['businessLogo']))
+                $business['business_logo'] = $input['businessLogo'];
+    
+            if(isset($input['banner']))
+                $business['banner'] = $input['banner'];
+            
             $business = UserBusiness::create($business);
 
             if($business->save()){
