@@ -100,8 +100,7 @@ header.admin-header {
 /* Admin Content */
 
 .main-content > .col-md-10 {
-    top: 15px;
-    margin: 0 auto;
+    margin: 15px auto;
     padding-left: 75px;
     padding-right: 40px;
 }
@@ -114,4 +113,39 @@ header.admin-header {
 }
 .form-group {
         overflow: hidden;
+}
+/*notification-section*/
+.message-section p {
+   font-weight: bold;
+   background-color: #5bc0de;
+   padding: 5px 16px;
+   border-radius: 0;
+   color: #ffffff;
+   margin-top: 10px;
+}
+.message-section textarea {
+  margin-bottom: 10px;
+  width: 100%;
+  resize: none;
+}
+.col-md-7.fcm-section {
+  border-right: 1px solid #dadada;
+}
+.col-md-10 hr {
+  margin-bottom: 0;
+}
+section.fcm_users {
+  padding: 10px 0 25px;
+}
+.fcm_users .panel-heading {
+  background-color: #5bc0de;
+  border-radius: 0;
+  color: #ffffff;
+  margin-bottom: 10px;
+  padding: 5px 16px;
+}
+.col-md-12.serverresponse.hidediv {
+  border: 1px solid #dadada;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
