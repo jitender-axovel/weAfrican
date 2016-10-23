@@ -107,10 +107,8 @@ header.admin-header {
 }
 
 /* Category Section */
-
-#category-form img {height: auto; width: 100%;}
 .dataTables_wrapper::after{
-    height:30px;
+    height:50px;
 }
 .form-group {
         overflow: hidden;
