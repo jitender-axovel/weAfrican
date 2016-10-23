@@ -32,10 +32,11 @@
                         <tr>
                             <td>{{$plan->title}}</td>
                             <td>{{$plan->coverage}}</td>
-                            <td>{{$plan->keywords_limit}}</td>
+                            <td>@if($plan->keywords_limit){{ $plan->keywords_limit}} @else NA @endif</td>
                             <td>{{$plan->price}}</td>
-                            <td>{{$plan->subscription_date}}</td>
-                            <td>{{$plan->expired_date}}</td>
+                            <td>{{date('d M,Y', strtotime($plan->subscription_date))}}</td>
+                            <td>{{date('d M,Y', strtotime($plan->subscription_date .'+'. $plan->validity_period.'days')) }}
+                            </td>
                         </tr>
                     @endforeach
                 @else

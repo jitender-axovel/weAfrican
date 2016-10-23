@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EventBanner extends Model
+class HomePageBanner extends Model
 {
     protected $fillable = ['user_id', 'subscription_plan_id', 'country', 'state', 'city','image', 'latitude', 'longitude'];
 

@@ -19,6 +19,7 @@ class CreateCmsPagesTable extends Migration
             $table->string('slug')->unique();
             $table->longText('content')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +30,6 @@ class CreateCmsPagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cms_pages');
+        Schema::drop('cms_pages');
     }
 }

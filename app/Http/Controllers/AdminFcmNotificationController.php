@@ -67,7 +67,7 @@ class AdminFcmNotificationController extends Controller
             'registration_ids' => $registation_ids,
             'data' => $message,
         );
-         echo  json_encode($fields);
+        // echo  json_encode($fields);
 		// Update your Google Cloud Messaging API Key
 		if (!defined('FIREBASE_API_KEY')) {
 			define("FIREBASE_API_KEY", "AIzaSyAOTq4b4RmXSFeqUkLWK2Mf6tJdniweNV4"); 		

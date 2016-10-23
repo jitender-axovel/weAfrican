@@ -13,8 +13,8 @@
 				<th>Event Keywords</th>
 				<th>Organizer Name</th>
 				<th>Address</th>
-				<th>Start Date Time</th>
-				<th>End Date Time</th>
+				<th>Start Date & Time</th>
+				<th>End Date & Time</th>
 				<th>Participants</th>
 				<th>Actions</th>
 			</tr>

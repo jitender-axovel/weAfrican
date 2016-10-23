@@ -27,6 +27,7 @@ class CreateBusinessBannersTable extends Migration
             $table->float('longitude')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -37,6 +38,6 @@ class CreateBusinessBannersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_banners');
+        Schema::drop('business_banners');
     }
 }

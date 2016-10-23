@@ -21,6 +21,12 @@
                     {{ $subscription->coverage }}
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Type</label>
+                <div class="col-md-6">
+                    {{ $subscription->type }}
+                </div>
+            </div>
             @if($subscription->keywords_limit)
             <div class="form-group">
                 <label class=" required control-label col-md-2">keywords Limit</label>

@@ -17,17 +17,17 @@ class CreateEventBannersTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('subscription_plan_id')->unsigned()->nullable();
+            $table->integer('subscription_plan_id')->unsigned();
             $table->foreign('subscription_plan_id')->references('id')->on('subscription_plans');
-            $table->string('banner')->nullable();
-            $table->boolean('is_premium')->default(false);
-            $table->string('country')->nullable();
-            $table->string('state')->nullable();
-            $table->string('city')->nullable();
+            $table->string('image')->nullable();
+            $table->string('country');
+            $table->string('state');
+            $table->string('city');
             $table->float('latitude')->nullable();
             $table->float('longitude')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -38,6 +38,6 @@ class CreateEventBannersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_banners');
+        Schema::dropIfExists('event_banners');
     }
 }

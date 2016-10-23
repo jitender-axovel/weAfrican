@@ -30,7 +30,7 @@
 				<td>{{ $business->getDislikes()}}</td>
 				<td>{{ $business->getFavourites()}}</td>
 				<td>{{ $business->getFollowers()}}</td>
-				<td>{{ $business->getRatings()}}</td>
+				<td>{{ (int)$business->getRatings()}}</td>
 				<td>{{ date_format(date_create($business->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">

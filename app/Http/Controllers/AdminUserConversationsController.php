@@ -34,4 +34,10 @@ class AdminUserConversationsController extends Controller
 
         return view('admin.conversations.view', compact('pageTitle', 'conversations'));
     }
+
+    public function getMessage($id)
+    {
+        $message = UserConversation::select('message')->where('id',$id)->first();
+        return response()->json(['status' => 'success','response' => $message]);
+    }
 }

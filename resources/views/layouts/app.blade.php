@@ -10,7 +10,7 @@
     	<div class="main-content">
     		@yield('content')
     	</div>
-
+    		@yield('scripts')
 	    @include('includes.footer')
     </div>
 </body>

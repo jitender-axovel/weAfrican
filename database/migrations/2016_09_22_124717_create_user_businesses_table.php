@@ -44,6 +44,7 @@ class CreateUserBusinessesTable extends Migration
             $table->float('latitude')->nullable();
             $table->float('longitude')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -54,6 +55,6 @@ class CreateUserBusinessesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_businesses');
+        Schema::drop('user_businesses');
     }
 }

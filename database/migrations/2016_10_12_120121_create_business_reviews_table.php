@@ -22,6 +22,7 @@ class CreateBusinessReviewsTable extends Migration
             $table->string('review');
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

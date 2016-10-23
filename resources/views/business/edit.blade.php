@@ -196,9 +196,9 @@
                 <label for="about_us" class="col-md-2 control-label">Business Logo</label>
                 <div class="col-md-10">
                     @if($business->banner != NULL)
-                        <img src="{{asset(config('image.banner_image_url').'business/thumbnails/small/'.$business->banner)}}"/>
+                        <img src="{{asset(config('image.banner_image_url').'business/thumbnails/small/'.$business->banner)}}"/ alt="Banner Image">
                     @else
-                        <img src="{{asset('images/no-uploaded.png')}}"/>
+                        <p>Banner Image not uploded yet.</p>
                     @endif
                 </div>
             </div>

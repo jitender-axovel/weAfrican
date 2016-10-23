@@ -198,7 +198,7 @@ class BusinessEventsController extends Controller
     {
         $input = $request->input();
         
-        $index = $input['index'];
+        $index = (--$input['index']);
         $limit = $input['limit'];
         
         $input = array_intersect_key($input, User::$downloadable);

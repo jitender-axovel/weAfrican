@@ -9,7 +9,7 @@ class SubscriptionPlan extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['price','keywords_limit', 'validity_period'];
+    protected $fillable = ['price', 'keywords_limit', 'validity_period'];
 
     public static $updatable = ['price' => "" ,'keywords_limit' => "", 'validity_period' => ""];
 

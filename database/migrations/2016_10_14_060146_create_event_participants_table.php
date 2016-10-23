@@ -20,6 +20,8 @@ class CreateEventParticipantsTable extends Migration
             $table->integer('event_id')->unsigned();
             $table->foreign('event_id')->references('id')->on('business_events');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

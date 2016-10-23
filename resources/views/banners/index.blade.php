@@ -1,7 +1,8 @@
-@extends('admin.layouts.adminapp')
+@extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-	<h2>Banners</h2>
+<div class="main-container row register-business">
+	<h5>Banners</h5>
 	<hr>
 	@include('notification')
 	<ul class="nav nav-tabs">
@@ -36,7 +37,7 @@
 									<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
 								</li> -->
 								<li>
-									<a href="{{ URL::to('admin/home/banner/block/'.$banner->id) }}">
+									<a href="{{ URL::to('home/banner/block/'.$banner->id) }}">
 					                    @if ($banner->is_blocked)
 					                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
 				                    	@else
@@ -45,7 +46,7 @@
 					                </a>
 								</li>
 								<li>
-									<form action="{{ url('admin/banner/'.$banner->id) }}" method="POST" onsubmit="deleteHomeBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
+									<form action="{{ url('banner/'.$banner->id) }}" method="POST" onsubmit="deleteHomeBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
 										{{csrf_field()}}
 										<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
 									</form>
@@ -83,7 +84,7 @@
 									<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
 								</li> -->
 								<li>
-									<a href="{{ URL::to('admin/business/banner/block/'.$banner->id) }}">
+									<a href="{{ URL::to('business/banner/block/'.$banner->id) }}">
 					                    @if ($banner->is_blocked)
 					                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
 				                    	@else
@@ -92,7 +93,7 @@
 					                </a>
 								</li>
 								<li>
-									<form action="{{ url('admin/business/banner/'.$banner->id) }}" method="POST" onsubmit="deleteBusinessBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
+									<form action="{{ url('business/banner/'.$banner->id) }}" method="POST" onsubmit="deleteBusinessBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
 										{{csrf_field()}}
 										<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
 									</form>
@@ -130,7 +131,7 @@
 									<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
 								</li> -->
 								<li>
-									<a href="{{ URL::to('admin/event/banner/block/'.$banner->id) }}">
+									<a href="{{ URL::to('event/banner/block/'.$banner->id) }}">
 					                    @if ($banner->is_blocked)
 					                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
 				                    	@else
@@ -139,7 +140,7 @@
 					                </a>
 								</li>
 								<li>
-									<form action="{{ url('admin/event/banner/'.$banner->id) }}" method="POST" onsubmit="deleteEventBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
+									<form action="{{ url('event/banner/'.$banner->id) }}" method="POST" onsubmit="deleteEventBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
 										{{csrf_field()}}
 										<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
 									</form>
@@ -152,10 +153,11 @@
 			</table>
 	    </div>
 	</div>
-@endsection
+</div>
 <style type="text/css">
 	#event_list,#business_list{width: 100%!important;}
 </style>
+@endsection
 @section('scripts')
 	<script type="text/javascript">
 

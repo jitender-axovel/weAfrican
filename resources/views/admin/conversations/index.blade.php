@@ -13,11 +13,8 @@
 			</tr>
 		</thead>
 		<tbody>
-		
-			@foreach($users as $key => $user)
+		@foreach($users as $key => $user)
 			<tr>
-			
-    		
 				<td>{{ ++$key }}</td>
 				<td>{{ $user->sender->full_name.'-'.$user->receiver->full_name }}</td>
 				<td>
@@ -30,9 +27,11 @@
 					</ul>
 				</td>
 			</tr>
-			@endforeach
+		@endforeach
 		</tbody>
 	</table>
+@endsection
+@section('scripts')
 	<script type="text/javascript">
 		$(document).ready( function () {
 		    $('#subscription_list').DataTable();

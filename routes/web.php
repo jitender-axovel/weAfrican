@@ -30,9 +30,16 @@ Route::group(['middleware' => ['before']], function(){
 		Route::post('upload-document', 'UserBusinessController@uploadDocument');
 		Route::resource('business-product', 'BusinessProductsController');
 		Route::resource('business-event', 'BusinessEventsController');
-		Route::resource('subscription-plans', 'SubscriptionPlansController');
+		Route::resource('subscription-plans', 'UserSubscriptionPlansController');
 		Route::resource('business-service', 'BusinessServicesController');
 		Route::post('event/participants/download-csv/{eventId}', 'BusinessEventsController@exportToCsv');
+		Route::resource('banners', 'BannersController');
+		Route::delete('home/banner/{id}', 'BannersController@deleteHomeBanner');
+		Route::delete('business/banner/{id}', 'BannersController@deleteBusinessBanner');
+		Route::delete('event/banner/{id}', 'BannersController@deleteEventBanner');
+		Route::get('home/banner/block/{id}','BannersController@blockHomeBanner');
+		Route::get('business/banner/block/{id}','BannersController@blockBusinessBanner');
+		Route::get('event/banner/block/{id}','BannersController@blockEventBanner');
 	});
 });
 
@@ -57,8 +64,10 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('product', 'AdminBusinessProductsController');
 		Route::get('service/block/{id}','AdminBusinessServicesController@block');
 		Route::resource('service', 'AdminBusinessServicesController');
-		Route::get('banner/block/{id}','AdminBusinessBannersController@block');
-		Route::resource('banner', 'AdminBusinessBannersController');
+		Route::get('home/banner/block/{id}','AdminBannersController@blockHomeBanner');
+		Route::get('business/banner/block/{id}','AdminBannersController@blockBusinessBanner');
+		Route::get('event/banner/block/{id}','AdminBannersController@blockEventBanner');
+		Route::resource('banner', 'AdminBannersController');
 		Route::resource('cms', 'AdminCmsPagesController');
 		Route::resource('fcm-notification', 'AdminFcmNotificationController');
 		Route::post('send/notification', 'AdminFcmNotificationController@sendNotification');
@@ -68,5 +77,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('reviews/block/{id}','AdminBusinessReviewsController@block');
 		Route::resource('conversation', 'AdminUserConversationsController');
 		Route::get('get/conversations/{senderId}/{receiverId}', 'AdminUserConversationsController@getConversations');
+		Route::get('get/message/{senderId}', 'AdminUserConversationsController@getMessage');
+		Route::delete('business/banner/{id}', 'AdminBusinessBannersController@deleteBusinessBanner');
+		Route::delete('event/banner/{id}', 'AdminBannersController@deleteEventBanner');
 	});
 });

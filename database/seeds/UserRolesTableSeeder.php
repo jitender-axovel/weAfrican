@@ -13,7 +13,8 @@ class UserRolesTableSeeder extends Seeder
     {
         DB::table('user_roles')->delete();
     	$dt = new DateTime();
-	$dt = $dt->format('Y-m-d H:i:s');
+	    $dt = $dt->format('Y-m-d H:i:s');
+        
         DB::table('user_roles')->delete();
         DB::table('user_roles')->insert([
             ['name' => 'SuperAdmin', 'created_at' => $dt, 'updated_at' => $dt],

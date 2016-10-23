@@ -13,7 +13,22 @@ class CreateHomePageBannersTable extends Migration
      */
     public function up()
     {
-        //
+    Schema::create('home_page_banners', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('subscription_plan_id')->unsigned();
+            $table->foreign('subscription_plan_id')->references('id')->on('subscription_plans');
+            $table->string('image')->nullable();
+            $table->string('country');
+            $table->string('state');
+            $table->string('city');
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
+            $table->boolean('is_blocked')->default(false);
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -23,6 +38,6 @@ class CreateHomePageBannersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('home_page_banners');
     }
 }
