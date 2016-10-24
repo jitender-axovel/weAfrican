@@ -114,30 +114,31 @@ class UserBusiness extends Model
 
         if(!$user){
             
-            User::where('id',$input['userId'])->update(['user_role_id' => 3]);
+            $check =User::where('id',$input['userId'])->update(['user_role_id' => 3]);
+            if($check){
+                return response()->json(['status' => 'success','response' => "user role change"]);
+            } else {
+                return response()->json(['status' => 'failure','response' => 'user role does not change.']);
+            }
             $user = User::where('id',$input['userId'])->first();
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $business['user_id'] = $input['userId'];
-            $business['business_id']=substr($user->full_name,0,3).rand(0,999);
+            $business['business_id']= "xyz";
             $business['bussiness_category_id'] = $input['categoryId'];
             $business['pin_code'] = $input['pinCode'];
             $business['mobile_number'] = $input['mobileNumber'];
             $business['working_hours'] = $input['workingHours'];
             $business['is_agree_to_terms'] = 1;
-            if(isset($input['aboutUs']))
-                $business['about_us'] = $input['aboutUs'];
+            $business['about_us'] = $input['aboutUs'];
+            $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+        
+            if(isset($input['businessLogo'])) 
+                $business['business_logo'] =  $input['businessLogo'];
 
-            if(isset($input['secondaryPhoneNumber']))
-                 $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
-
-            if(isset($input['businessLogo']))
-                $business['business_logo'] = $input['businessLogo'];
-    
-            if(isset($input['businessBanner'])) {
-                $input['banner'] =  $input['businessBanner'];
-            }
-            
+            if(isset($input['businessBanner'])) 
+                $business['banner'] =  $input['businessBanner'];
+           
             $business = UserBusiness::create($business);
             $business->save(); 
             if($business){
@@ -152,22 +153,17 @@ class UserBusiness extends Model
             $input['pin_code'] = $input['pinCode'];
             $input['mobile_number'] = $input['mobileNumber'];
             $input['working_hours'] = $input['workingHours'];
+            $input['about_us'] = $input['aboutUs'];
+            $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
-            if(isset($input['aboutUs']))
-                $business['about_us'] = $input['aboutUs'];
-
-            if(isset($input['secondaryPhoneNumber']))
-                 $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
-
-            if(isset($input['businessLogo'])) {
+            if(isset($input['businessLogo'])) 
                 $input['business_logo'] =  $input['businessLogo'];
-            } 
-            if(isset($input['businessBanner'])) {
+           
+            if(isset($input['businessBanner'])) 
                 $input['banner'] =  $input['businessBanner'];
-            }
+          
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
-           
 
             $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
           
