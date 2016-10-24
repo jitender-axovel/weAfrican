@@ -168,10 +168,10 @@ class UserBusiness extends Model
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
            
-            UserBusiness::where('user_id',$input['user_id'])->update($business);
 
-            $business = UserBusiness::where('user_id',$input['user_id'])->get();
-            if($business)
+            $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
+          
+            if($userbusiness)
 
                 return response()->json(['status' => 'success','response' => "Business updated successfully."]);
             else
