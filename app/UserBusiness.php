@@ -100,7 +100,6 @@ class UserBusiness extends Model
                 'city' => 'string',
                 'aboutUs' => 'string',
                 'address' => 'string',
-                'secondaryPhoneNumber' => 'numeric',
                 'website' => 'string',
                 'workingHours' => 'required|string',
                 'mobileNumber' => 'required',
@@ -127,7 +126,7 @@ class UserBusiness extends Model
             $business['is_agree_to_terms'] = 1;
             $business['about_us'] = $input['aboutUs'];
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
-        
+
             if(isset($input['businessLogo'])) 
                 $business['business_logo'] =  $input['businessLogo'];
 
