@@ -134,8 +134,9 @@ class UserBusiness extends Model
             if(isset($input['businessLogo']))
                 $business['business_logo'] = $input['businessLogo'];
     
-            if(isset($input['banner']))
-                $business['banner'] = $input['banner'];
+            if(isset($input['businessBanner'])) {
+                $input['banner'] =  $input['businessBanner'];
+            }
             
             $business = UserBusiness::create($business);
             $business->save(); 
@@ -169,7 +170,12 @@ class UserBusiness extends Model
            
             UserBusiness::where('user_id',$input['user_id'])->update($business);
 
-            return response()->json(['status' => 'success','response' => "Business updated successfully."]);
+            $business = UserBusiness::where('user_id',$input['user_id'])->get();
+            if($business)
+
+                return response()->json(['status' => 'success','response' => "Business updated successfully."]);
+            else
+                return response()->json(['status' => 'success','response' => "Business can not updated successfully."]);
         }
     }
 
