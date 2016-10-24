@@ -101,15 +101,18 @@ class UserBusiness extends Model
                 'aboutUs' => 'string',
                 'address' => 'string',
                 'website' => 'string',
+                'secondaryPhoneNumber' => 'numeric',
                 'workingHours' => 'required|string',
                 'mobileNumber' => 'required',
                 'latitude' => 'required',
                 'longitude' => 'required',
         ]);
 
+
         if ($validator->fails()) {
-            return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
+            return response()->json(['status' => 'exception','response' => $validator->errors()]);   
         }
+   
 
         if(!$user){
             
