@@ -163,14 +163,14 @@ class UserBusiness extends Model
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
 
-            $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/small/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
+          /*  $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/small/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
             shell_exec($command);
 
             $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/medium/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
             shell_exec($command);
 
             $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/large/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
-            shell_exec($command);
+            shell_exec($command);*/
 
             if(isset($input['businessLogo'])) 
                 $business['business_logo'] =  $input['businessLogo'];
@@ -195,12 +195,12 @@ class UserBusiness extends Model
             $input['about_us'] = $input['aboutUs'];
             $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
-            $old = str_replace("\\","/",public_path()).'/uploads/images/logo/'.$input['businessLogo'];
+            /*$old = str_replace("\\","/",public_path()).'/uploads/images/logo/'.$input['businessLogo'];
             $new = str_replace("\\","/",public_path()).'/uploads/images/documents/'.$input['businessLogo'];
            $move = File::move($old, $new);
-          /* dd($move);
-            dd(Storage::move($old ,$new));
-    */
+           dd($move);
+            dd(Storage::move($old ,$new));*/
+    
             if(isset($input['businessLogo'])) 
                 $input['business_logo'] =  $input['businessLogo'];
            
