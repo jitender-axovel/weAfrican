@@ -654,4 +654,21 @@ class ApiController extends Controller
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any business details.']);
     }
+    /**
+     * Author:Divya
+     * Function: get business details of user by business id
+     * Url: api/get/user/business/details/{businessId}
+     * Request type: Post
+     *
+     * @param  int $businessId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBusinessCities($countryName)
+    {  
+        $response = $this->userBusiness->apiGetBusinessCities($countryName);
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not found any city']);
+    }
 }
