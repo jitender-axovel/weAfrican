@@ -86,13 +86,13 @@ class UserBusiness extends Model
         $st = $input['state'];
         $catId = $input['categoryId'];
 
-        $business = UserBusiness::select(DB::raw(" *,
+        $business = UserBusiness::select(DB::raw("latitude,longitude,
                 ($distance_unit
                  * DEGREES(ACOS(COS(RADIANS($latpoint))
-                 * COS(RADIANS('latitude'))
-                 * COS(RADIANS($lngpoint) - RADIANS('longitude'))
+                 * COS(RADIANS(latitude))
+                 * COS(RADIANS($lngpoint) - RADIANS(longitude))
                  + SIN(RADIANS($latpoint))
-                 * SIN(RADIANS('latitude')))) 
+                 * SIN(RADIANS(latitude)))) 
             
        ) AS distance")
     )
