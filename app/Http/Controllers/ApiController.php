@@ -656,11 +656,11 @@ class ApiController extends Controller
     }
     /**
      * Author:Divya
-     * Function: get business details of user by business id
-     * Url: api/get/user/business/details/{businessId}
+     * Function: get business cities according to countryName
+     * Url: api/get/business/cities/{countryName}
      * Request type: Post
      *
-     * @param  int $businessId
+     * @param  string $countryName
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBusinessCities($countryName)
