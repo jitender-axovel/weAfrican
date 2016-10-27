@@ -3,6 +3,8 @@
 namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 use Validator;
 use Auth;
 
@@ -94,7 +96,7 @@ class UserBusiness extends Model
                 'title' => 'required',
                 'keywords' =>'required',
                 'email' => 'required|email|max:255',
-                'pinCode' => 'numeric',
+                'pinCode' => 'required|max:10',
                 'country' => 'string',
                 'state' => 'string',
                 'city' => 'string',
@@ -108,11 +110,13 @@ class UserBusiness extends Model
                 'longitude' => 'required',
         ]);
 
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
         }
-   
 
         if(!$user){
             
@@ -129,6 +133,17 @@ class UserBusiness extends Model
             $business['is_agree_to_terms'] = 1;
             $business['about_us'] = $input['aboutUs'];
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+
+            dd(Storage::move(config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg', config('image.banner_image_path').'home/eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'));
+
+            $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/small/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/medium/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
+            shell_exec($command);
+
+            $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/large/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
+            shell_exec($command);
 
             if(isset($input['businessLogo'])) 
                 $business['business_logo'] =  $input['businessLogo'];
@@ -153,6 +168,12 @@ class UserBusiness extends Model
             $input['about_us'] = $input['aboutUs'];
             $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
+            $old = str_replace("\\","/",public_path()).'/uploads/images/logo/'.$input['businessLogo'];
+            $new = str_replace("\\","/",public_path()).'/uploads/images/documents/'.$input['businessLogo'];
+           $move = File::move($old, $new);
+           dd($move);
+            dd(Storage::move($old ,$new));
+    
             if(isset($input['businessLogo'])) 
                 $input['business_logo'] =  $input['businessLogo'];
            
@@ -197,5 +218,11 @@ class UserBusiness extends Model
     {
         $business = $this->where('id', $businessId)->where('is_blocked', 0)->first();
         return $business;
+    }
+
+    public function apiGetBusinessCities($countryName)
+    {
+        $cities = $this->where('country', $countryName)->where('is_blocked', 0)->pluck('city');
+        return $cities;
     }
 }
