@@ -85,7 +85,8 @@ class UserBusiness extends Model
         $lngpoint = $input['longitude'];
         $st = $input['state'];
         $catId = $input['categoryId'];
-            $business = UserBusiness::select(DB::raw("*, 
+
+        $business = UserBusiness::select(DB::raw(" *,
                 ($distance_unit
                  * DEGREES(ACOS(COS(RADIANS($latpoint))
                  * COS(RADIANS('latitude'))
@@ -97,7 +98,9 @@ class UserBusiness extends Model
     )
     ->whereBetween('latitude',array('$latpoint  - ($radius /$distance_unit)','latpoint  + (radius /distance_unit)'))
     ->whereBetween('longitude',array('$lngpoint - ($radius / ($distance_unit * COS(RADIANS($latpoint))))','$lngpoint + ($radius / ($distance_unit * COS(RADIANS($latpoint)))))'))
-    
+    ->where('bussiness_category_id', '=', $catId)
+    ->where('state', '=',  $st)
+    ->orderBy("distance")
     ->skip($input['index'])
     ->take($input['limit'])
     ->setBindings([$latpoint, $lngpoint, $distance_unit,  $radius, $catId, $st])
@@ -159,7 +162,6 @@ class UserBusiness extends Model
             $business['about_us'] = $input['aboutUs'];
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
-            dd(Storage::move(config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg', config('image.banner_image_path').'home/eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'));
 
             $command = 'ffmpeg -i '.config('image.api_image_path').'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg'.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'home/thumbnails/small/'.'eb5158b9b3bc3b16b9c74fa7c3d8ab42.jpeg';
             shell_exec($command);
