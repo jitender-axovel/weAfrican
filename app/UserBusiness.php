@@ -97,9 +97,7 @@ class UserBusiness extends Model
     )
     ->whereBetween('latitude',array('$latpoint  - ($radius /$distance_unit)','latpoint  + (radius /distance_unit)'))
     ->whereBetween('longitude',array('$lngpoint - ($radius / ($distance_unit * COS(RADIANS($latpoint))))','$lngpoint + ($radius / ($distance_unit * COS(RADIANS($latpoint)))))'))
-    ->where('bussiness_category_id', '=', $catId)
-    ->where('state', '=',  $st)
-    ->orderBy("distance")
+    
     ->skip($input['index'])
     ->take($input['limit'])
     ->setBindings([$latpoint, $lngpoint, $distance_unit,  $radius, $catId, $st])
