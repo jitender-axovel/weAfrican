@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use Validator;
 use Auth;
+use DB;
 
 class UserBusiness extends Model
 {
@@ -77,7 +78,33 @@ class UserBusiness extends Model
 
     public function apiGetBusinessesByCategory($input)
     {
-        return $this->where('bussiness_category_id', $input['categoryId'])->skip($input['index'])->take($input['limit'])->where('is_blocked', 0)->get();
+        //dd($input);
+        $distance_unit = 111.045;
+        $radius = 50.0;
+        $latpoint = $input['latitude'];
+        $lngpoint = $input['longitude'];
+        $st = $input['state'];
+        $catId = $input['categoryId'];
+            $business = UserBusiness::select(DB::raw("*, 
+                ($distance_unit
+                 * DEGREES(ACOS(COS(RADIANS($latpoint))
+                 * COS(RADIANS('latitude'))
+                 * COS(RADIANS($lngpoint) - RADIANS('longitude'))
+                 + SIN(RADIANS($latpoint))
+                 * SIN(RADIANS('latitude')))) 
+            
+       ) AS distance")
+    )
+    ->whereBetween('latitude',array('$latpoint  - ($radius /$distance_unit)','latpoint  + (radius /distance_unit)'))
+    ->whereBetween('longitude',array('$lngpoint - ($radius / ($distance_unit * COS(RADIANS($latpoint))))','$lngpoint + ($radius / ($distance_unit * COS(RADIANS($latpoint)))))'))
+    ->where('bussiness_category_id', '=', $catId)
+    ->where('state', '=',  $st)
+    ->orderBy("distance")
+    ->skip($input['index'])
+    ->take($input['limit'])
+    ->setBindings([$latpoint, $lngpoint, $distance_unit,  $radius, $catId, $st])
+    ->get();
+    return $business;
     }
 
     public function apiPostUserBusiness(Request $request)
