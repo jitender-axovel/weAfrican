@@ -198,9 +198,9 @@ class UserBusiness extends Model
             $old = str_replace("\\","/",public_path()).'/uploads/images/logo/'.$input['businessLogo'];
             $new = str_replace("\\","/",public_path()).'/uploads/images/documents/'.$input['businessLogo'];
            $move = File::move($old, $new);
-           dd($move);
+          /* dd($move);
             dd(Storage::move($old ,$new));
-    
+    */
             if(isset($input['businessLogo'])) 
                 $input['business_logo'] =  $input['businessLogo'];
            
