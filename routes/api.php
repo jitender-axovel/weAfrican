@@ -23,7 +23,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::get('get/subscription-plans', 'ApiController@getSubscriptionPlans');
 	Route::post('get/user/business-products', 'ApiController@getUserBusinessProducts');
 	Route::post('get/user/business-events', 'ApiController@getUserBusinessEvents');
-	Route::get('get/category/businesses', 'ApiController@getBusinessesByCategory');
+	Route::post('get/category/businesses', 'ApiController@getBusinessesByCategory');
 	Route::post('post/user/business', 'ApiController@postUserBusiness');
 	Route::post('post/user/product', 'ApiController@postUserProduct');
 	Route::post('post/user/event', 'ApiController@postUserEvent');
@@ -45,6 +45,6 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
 	Route::post('get/business/reviews/{businessId}' ,'ApiController@getBusinessReviews');
 	Route::post('get/user/business/details/{businessId}' ,'ApiController@getUserBusinessDetails');
-	Route::post('get/business/cities/{countryName}' ,'ApiController@getBusinessCities');
+	Route::get('get/business/states/{countryName}' ,'ApiController@getBusinessStates');
 
 });
