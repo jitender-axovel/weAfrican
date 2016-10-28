@@ -656,19 +656,19 @@ class ApiController extends Controller
     }
     /**
      * Author:Divya
-     * Function: get business cities according to countryName
-     * Url: api/get/business/cities/{countryName}
+     * Function: get business states according to countryName
+     * Url: api/get/business/states/{countryName}
      * Request type: Post
      *
      * @param  string $countryName
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBusinessCities($countryName)
+    public function getBusinessStates($countryName)
     {  
-        $response = $this->userBusiness->apiGetBusinessCities($countryName);
+        $response = $this->userBusiness->apiGetBusinessStates($countryName);
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
-            return response()->json(['status' => 'exception','response' => 'Could not found any city']);
+            return response()->json(['status' => 'exception','response' => 'Could not found any state']);
     }
 }

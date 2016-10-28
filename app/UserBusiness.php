@@ -78,7 +78,7 @@ class UserBusiness extends Model
 
     public function apiGetBusinessesByCategory($input)
     {
-        //dd($input);
+        /*//dd($input);
         $distance_unit = 111.045;
         $radius = 50.0;
         $latpoint = $input['latitude'];
@@ -86,17 +86,17 @@ class UserBusiness extends Model
         $st = $input['state'];
         $catId = $input['categoryId'];
 
-        $business = UserBusiness::select(DB::raw("latitude,longitude,
+        $business = UserBusiness::select(DB::raw("*66,latitude,longitude,
                 ($distance_unit
                  * DEGREES(ACOS(COS(RADIANS($latpoint))
-                 * COS(RADIANS(latitude))
-                 * COS(RADIANS($lngpoint) - RADIANS(longitude))
+                 * COS(RADIANS('latitude'))
+                 * COS(RADIANS($lngpoint) - RADIANS('longitude'))
                  + SIN(RADIANS($latpoint))
-                 * SIN(RADIANS(latitude)))) 
+                 * SIN(RADIANS('latitude')))) 
             
        ) AS distance")
     )
-    ->whereBetween('latitude',array('$latpoint  - ($radius /$distance_unit)','latpoint  + (radius /distance_unit)'))
+    ->whereBetween('latitude',array('$latpoint  - ($radius /$distance_unit)','$latpoint  + ($radius /$distance_unit)'))
     ->whereBetween('longitude',array('$lngpoint - ($radius / ($distance_unit * COS(RADIANS($latpoint))))','$lngpoint + ($radius / ($distance_unit * COS(RADIANS($latpoint)))))'))
     ->where('bussiness_category_id', '=', $catId)
     ->where('state', '=',  $st)
@@ -104,7 +104,15 @@ class UserBusiness extends Model
     ->skip($input['index'])
     ->take($input['limit'])
     ->setBindings([$latpoint, $lngpoint, $distance_unit,  $radius, $catId, $st])
-    ->get();
+    ->get();*/
+    if(isset($input['latitude']) && isset($input['longitude']))
+    {
+
+    }
+    if(isset($input['state']))
+    {
+         $business = $this->where('bussiness_category_id',$input['categoryId'])->where('state', $input['state'])->where('is_blocked', 0)->get();
+    }
     return $business;
     }
 
@@ -247,9 +255,9 @@ class UserBusiness extends Model
         return $business;
     }
 
-    public function apiGetBusinessCities($countryName)
+    public function apiGetBusinessStates($countryName)
     {
-        $cities = $this->where('country', $countryName)->where('is_blocked', 0)->pluck('city');
+        $cities = $this->where('country', $countryName)->where('is_blocked', 0)->pluck('state');
         return $cities;
     }
 }
