@@ -663,9 +663,10 @@ class ApiController extends Controller
      * @param  string $countryName
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBusinessStates($countryName)
+    public function getBusinessStates(Request $request)
     {  
-        $response = $this->userBusiness->apiGetBusinessStates($countryName);
+        $input = $request->input();
+        $response = $this->userBusiness->apiGetBusinessStates($input);
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else

@@ -45,6 +45,6 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
 	Route::post('get/business/reviews/{businessId}' ,'ApiController@getBusinessReviews');
 	Route::post('get/user/business/details/{businessId}' ,'ApiController@getUserBusinessDetails');
-	Route::get('get/business/states/{countryName}' ,'ApiController@getBusinessStates');
+	Route::get('get/business/states' ,'ApiController@getBusinessStates');
 
 });

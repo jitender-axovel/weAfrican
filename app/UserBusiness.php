@@ -255,9 +255,9 @@ class UserBusiness extends Model
         return $business;
     }
 
-    public function apiGetBusinessStates($countryName)
+    public function apiGetBusinessStates($input)
     {
-        $cities = $this->where('country', $countryName)->where('is_blocked', 0)->distinct()->pluck('state');
-        return $cities;
+        $states = $this->where('country', $input['countryName'])->distinct()->pluck('state');
+        return $states;
     }
 }
