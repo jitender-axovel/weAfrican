@@ -78,42 +78,9 @@ class UserBusiness extends Model
 
     public function apiGetBusinessesByCategory($input)
     {
-        /*//dd($input);
-        $distance_unit = 111.045;
-        $radius = 50.0;
-        $latpoint = $input['latitude'];
-        $lngpoint = $input['longitude'];
-        $st = $input['state'];
-        $catId = $input['categoryId'];
+        $business = DB::select("SELECT * , p.distance_unit * DEGREES( ACOS( COS( RADIANS( p.latpoint ) ) * COS( RADIANS('laitude' ) ) * COS( RADIANS( p.longpoint ) - RADIANS( 'longitude' ) ) + SIN( RADIANS( p.latpoint ) ) * SIN( RADIANS( 'latitude' ) ) ) ) AS distance_in_km FROM user_businesses AS z JOIN (SELECT ".$input['latitude']." AS latpoint, ".$input['longitude']." AS longpoint, ".$input['radius']." AS radius, 111.045 AS distance_unit) AS p ON 1 =1 WHERE z.latitude BETWEEN p.latpoint - ( p.radius / p.distance_unit ) AND p.latpoint + ( p.radius / p.distance_unit ) AND z.longitude BETWEEN p.longpoint - ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND p.longpoint + ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND z.state = '".$input['state']."' AND z.bussiness_category_id = ".$input['categoryId']." AND z.is_blocked = 0");
 
-        $business = UserBusiness::select(DB::raw("*66,latitude,longitude,
-                ($distance_unit
-                 * DEGREES(ACOS(COS(RADIANS($latpoint))
-                 * COS(RADIANS('latitude'))
-                 * COS(RADIANS($lngpoint) - RADIANS('longitude'))
-                 + SIN(RADIANS($latpoint))
-                 * SIN(RADIANS('latitude')))) 
-            
-       ) AS distance")
-    )
-    ->whereBetween('latitude',array('$latpoint  - ($radius /$distance_unit)','$latpoint  + ($radius /$distance_unit)'))
-    ->whereBetween('longitude',array('$lngpoint - ($radius / ($distance_unit * COS(RADIANS($latpoint))))','$lngpoint + ($radius / ($distance_unit * COS(RADIANS($latpoint)))))'))
-    ->where('bussiness_category_id', '=', $catId)
-    ->where('state', '=',  $st)
-    ->orderBy("distance")
-    ->skip($input['index'])
-    ->take($input['limit'])
-    ->setBindings([$latpoint, $lngpoint, $distance_unit,  $radius, $catId, $st])
-    ->get();*/
-    if(isset($input['latitude']) && isset($input['longitude']))
-    {
-
-    }
-    if(isset($input['state']))
-    {
-         $business = $this->where('bussiness_category_id',$input['categoryId'])->where('state', $input['state'])->where('is_blocked', 0)->get();
-    }
-    return $business;
+        return $business;
     }
 
     public function apiPostUserBusiness(Request $request)

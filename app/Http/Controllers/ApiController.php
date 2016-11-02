@@ -660,7 +660,7 @@ class ApiController extends Controller
      * Url: api/get/business/states/{countryName}
      * Request type: Post
      *
-     * @param  string $countryName
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBusinessStates(Request $request)
