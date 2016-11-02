@@ -144,14 +144,25 @@ class ApiController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBusinessesByCategory(Request $request)
-    {   
+    {  
         $input = $request->input();
-        if($input == NULL)
-        {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        $validator = Validator::make($input, [
+                'userId' => 'required',
+                'categoryId' => 'required',
+                'state' => 'required',
+                'index' => 'required',
+                'limit' => 'required',
+        ]);
+
+       if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
         }
 
-        $response = $this->userBusiness ->apiGetBusinessesByCategory($input);
+        $response = $this->userBusiness->apiGetBusinessesByCategory($input);
         if(count($response))
             return response()->json(['status' => 'success','response' =>$response]);
         else
@@ -529,16 +540,32 @@ class ApiController extends Controller
      * Author:Divya
      * Function: Get all events details.
      * Url: api/post/user/business-events
-     * Request type: Get
+     * Request type: Post
      *
-     * @param  Void
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBusinessEvents()
+    public function getBusinessEvents(Request $request)
     {  
-        $response = $this->businessEvent->apiGetBusinessEvents();
+        $input = $request->input();
+        $validator = Validator::make($input, [
+                'userId' => 'required',
+                'state' => 'required',
+                'index' => 'required',
+                'limit' => 'required',
+        ]);
+
+       if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+
+        $response = $this->businessEvent->apiGetBusinessEvents($input);
         
-        if($response != NULL && $response->count())
+        if(count($response))
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Event.']);
