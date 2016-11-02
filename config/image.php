@@ -14,6 +14,7 @@ return array(
      |.....................................................................
      |
      */
+    'api_image_path' => str_replace('\\','/',public_path()). '/uploads/apiImages/',
     'logo_image_path' => str_replace('\\','/',public_path()). '/uploads/images/logo/',
     'category_image_path' => str_replace('\\','/',public_path()). '/uploads/images/categories/',
     'banner_image_path' => str_replace('\\','/',public_path()). '/uploads/images/banners/',
@@ -54,7 +55,5 @@ return array(
 
     'large_thumbnail_height' => '600',
     'large_thumbnail_width' => '800'
-    
-
 
 );
