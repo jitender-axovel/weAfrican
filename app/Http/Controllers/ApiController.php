@@ -152,7 +152,7 @@ class ApiController extends Controller
         }
 
         $response = $this->userBusiness ->apiGetBusinessesByCategory($input);
-        if($response->count())
+        if(count($response))
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Business.']);
