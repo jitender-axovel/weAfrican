@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', $pageTitle)
 @section('content')
 <div class="main-container row">
     <div class="col-md-10 col-md-offset-1">
@@ -83,6 +84,10 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group col-md-12">
+                        <label for="address" class="col-md-2 control-label">Location:</label>
+                        <div id="map"></div>
+                    </div>
                     <div class="form-group">
                         <label for="address" class="col-md-2 control-label">Address:</label>
                         <div class="col-md-4">
@@ -95,7 +100,7 @@
                         </div>
                         <label for="city" class="col-md-2 control-label">City:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="city" value="{{ old('city') }}">
+                            <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}">
                             @if ($errors->has('city'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('city') }}</strong>
@@ -106,7 +111,7 @@
                     <div class="form-group">
                         <label for="state" class="col-md-2 control-label">State:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="state" value="{{ old('state') }}">
+                            <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}">
                             @if ($errors->has('state'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('state') }}</strong>
@@ -115,7 +120,7 @@
                         </div>
                         <label for="country" class="col-md-2 control-label">Country:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="country" value="{{ old('country') }}" >
+                            <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}" >
                             @if ($errors->has('country'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('country') }}</strong>
@@ -126,7 +131,7 @@
                     <div class="form-group">
                         <label for="pin_code" class="col-md-2 required control-label">Pin Code: (format:110075)</label>
                         <div class="col-md-4">
-                            <input type="text" pattern="[0-9]{6}" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
+                            <input type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
                             @if ($errors->has('pin_code'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('pin_code') }}</strong>
@@ -245,6 +250,20 @@
     </div>
 </div>
 @endsection
+@section('header-scripts')
+    <script type="text/javascript">
+
+        var latitude;
+        var longitude;
+        //var ip = {{$ip}};
+
+        jQuery.get('http://freegeoip.net/json/182.69.46.215', function (response){
+            //alert(response.latitude);
+            latitude = parseFloat(response.latitude);
+            longitude = parseFloat(response.longitude);
+        }, "jsonp");
+    </script>
+@endsection
 @section('scripts')
 <script type="text/javascript">
     function readURL(input) {
@@ -260,5 +279,78 @@
     $("#business_logo").change(function(){
         readURL(this);
     });
+    //GeoLocation Map Script
+    var gecoder;
+    function initMap() {
+        setTimeout(function() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: latitude, lng: longitude},
+              zoom: 6
+            });
+
+            var infoWindow = new google.maps.InfoWindow({map: map});
+
+            var pos = {
+                lat: latitude,
+                lng: longitude
+            };
+            writeAddressName(pos);
+            /*var result = codeLatLng(latitude,longitude);
+            alert($result);*/
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+        }, 1000);
+    }
+
+    function writeAddressName(latLng) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+          "location": latLng
+        },
+        function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK){
+                console.log(results)
+                for (var i=0; i<results[0].address_components.length; i++) {
+                pincode = results[0].address_components[i];
+
+                    for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+                        //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+
+                        if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                            //this is the object you are looking for
+                            city = results[0].address_components[i];
+                            document.getElementById("city").value = city.long_name;  
+                        }
+                        if (results[0].address_components[i].types[b] == "country") {
+                            //this is the object you are looking for
+                            country = results[0].address_components[i];
+                            document.getElementById("country").value = country.long_name;  
+                        }
+                        if (results[0].address_components[i].types[b] == "postal_code") {
+                            //this is the object you are looking for
+                            pinCode = results[0].address_components[i];
+                            document.getElementById("pin_code").value = pinCode.long_name;
+                            
+                        }
+                        if (results[0].address_components[i].types[b] == "locality") {
+                            //this is the object you are looking for
+                            state = results[0].address_components[i];
+                            document.getElementById("state").value = state.long_name;
+                            break;
+                        }
+                    }
+                }
+            } else
+                document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
+        }
 </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&callback=initMap"></script>
 @endsection

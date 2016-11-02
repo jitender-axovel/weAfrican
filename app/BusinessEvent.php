@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use App\UserBusiness;
 use Validator;
 use DB;
 
@@ -46,9 +47,17 @@ class BusinessEvent extends Model
         return $this->hasOne('App\UserBusiness','id');
     }
 
-    public function apiGetBusinessEvents()
+    public function apiGetBusinessEvents($input)
     {
-        $events = $this->where('is_blocked',0)->get();
+        if(isset($input['latitude']) && isset($input['longitude']) && isset($input['radius']))
+        {
+            $userIds = DB::select("SELECT z.user_id FROM user_businesses AS z JOIN (SELECT ".$input['latitude']." AS latpoint, ".$input['longitude']." AS longpoint, ".$input['radius']." AS radius, 111.045 AS distance_unit) AS p ON 1 = 1  WHERE z.latitude BETWEEN p.latpoint - ( p.radius / p.distance_unit ) AND p.latpoint + ( p.radius / p.distance_unit ) AND z.longitude BETWEEN p.longpoint - ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND p.longpoint + ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND z.state = '".$input['state']."' AND z.is_blocked = 0 AND z.user_id != ".$input['userId']." LIMIT ".$input['index'].", ".$input['limit']." ");
+        } else {
+            $userIds = UserBusiness::whereCountry($input['country'])->whereState($input['state'])->whereIsBlocked(0)->whereNotIn('user_id',[$input['userId']])->skip($input['index'])->limit($input['limit'])->get()->toArray();
+        }
+
+        $events = $this->whereIn('user_id', array_column($userIds, 'user_id'))->whereIsBlocked(0)->get();
+
         return $events;
     }
 

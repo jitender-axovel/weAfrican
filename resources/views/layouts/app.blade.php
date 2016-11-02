@@ -7,11 +7,11 @@
     <div class="top-container container-fluid">
 		@include('includes.header')
 		    @include('includes.top-menu')
-    	<div class="main-content">
-    		@yield('content')
-    	</div>
-    		@yield('scripts')
-	    @include('includes.footer')
+            	<div class="main-content">
+            		@yield('content')
+            	</div>
+            @include('includes.footer')
+        @yield('scripts')
     </div>
 </body>
 </html>

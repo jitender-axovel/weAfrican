@@ -39,7 +39,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/service', 'ApiController@postUserService');
 	Route::post('post/user/delete/service', 'ApiController@postDeleteService');
 	Route::post('check/otp' ,'ApiController@checkOtp');
-	Route::get('get/business-events' ,'ApiController@getBusinessEvents');
+	Route::post('post/business-events' ,'ApiController@getBusinessEvents');
 	Route::post('post/fcm/id' ,'ApiController@postFcmId');
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
