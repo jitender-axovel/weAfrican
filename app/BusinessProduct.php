@@ -11,9 +11,9 @@ class BusinessProduct extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'title', 'slug', 'description', 'price', 'image'];
+    protected $fillable = ['user_id', 'business_id', 'title', 'slug', 'description', 'price', 'image'];
 
-    public static $updatable = ['id' => "", 'user_id' => "", 'title' => "", 'slug' => "", 'description' => "", 'price' => "", 'image' => ""];
+    public static $updatable = ['id' => "", 'business_id' => "", 'user_id' => "", 'title' => "", 'slug' => "", 'description' => "", 'price' => "", 'image' => ""];
 
     public static $validater = array(
     	'title' => 'required|unique:business_products|max:255',

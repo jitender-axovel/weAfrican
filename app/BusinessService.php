@@ -11,9 +11,9 @@ class BusinessService extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'title', 'slug', 'description'];
+    protected $fillable = ['user_id', 'business_id', 'title', 'slug', 'description'];
 
-    public static $updatable = ['user_id' => "", 'title' => "", 'slug' => "", 'description' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "" , 'title' => "", 'slug' => "", 'description' => ""];
 
     public static $validater = array(
     	'title' => 'required|unique:business_services|max:255',

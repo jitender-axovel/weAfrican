@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\BusinessService;
-use Auth;
-use Validator;
+use App\UserBusiness;
 use App\Helper;
+use Validator;
+use Auth;
+
 
 class BusinessServicesController extends Controller
 {
@@ -51,9 +53,12 @@ class BusinessServicesController extends Controller
 
         $input = $request->input();
 
+        $business = UserBusiness::whereUserId(Auth::id())->first();
+
         $service = new BusinessService();
 
         $service->user_id = Auth::id();
+        $service->business_id = $business->id;
         $service->title = $input['title'];
         $service->description = $input['description'];
         $service->slug = Helper::slug($input['title'], $service->id);

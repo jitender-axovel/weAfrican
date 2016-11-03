@@ -90,6 +90,17 @@
                         @endif
                     </div>
                 </div>
+                 <div class="form-group ">
+                    <label for="description" class="col-md-2 required control-label">Description</label>
+                    <div class="col-md-6">
+                        <textarea required type="text" class="form-control" name="description"></textarea>
+                        @if($errors->has('description'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('description') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
                  <div class="form-group">
                     <label for="banner" class="col-md-2 required control-label">Banner Image</label>
                     <div class="col-md-4">

@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Auth;
-use App\Helper;
 use App\BusinessProduct;
+use App\UserBusiness;
+use App\Helper;
+use Auth;
 use Validator;
 
 class BusinessProductsController extends Controller
@@ -69,9 +69,12 @@ class BusinessProductsController extends Controller
 
         $input = $request->input();
 
+        $businessId = UserBusiness::whereUserId(Auth::id())->first();
+
         $product = new BusinessProduct();
 
         $product->user_id = Auth::id();
+        $product->business_id = $businessId->id;
         $product->title = $input['title'];
         $product->description = $input['description'];
         $product->price = $input['price'];
