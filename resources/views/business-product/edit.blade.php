@@ -40,7 +40,7 @@
                 <div class="form-group ">
                     <label for="description" class="col-md-2 required control-label">Description</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="description" value="{{ $product->description }}" required >
+                        <textarea required type="text" class="form-control" name="description">{{ $product->description }}</textarea>
                         @if($errors->has('description'))
                         <span class="help-block">
                         <strong>{{ $errors->first('description') }}</strong>
