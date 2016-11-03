@@ -18,6 +18,7 @@ class CreateCmsPagesTable extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->longText('content')->nullable();
+            $table->boolean('is_show_on_mobile')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

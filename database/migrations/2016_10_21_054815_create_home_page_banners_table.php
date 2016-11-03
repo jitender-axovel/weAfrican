@@ -17,6 +17,8 @@ class CreateHomePageBannersTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('business_id')->unsigned();
+            $table->foreign('business_id')->references('id')->on('user_businesses');
             $table->integer('subscription_plan_id')->unsigned();
             $table->foreign('subscription_plan_id')->references('id')->on('subscription_plans');
             $table->string('image')->nullable();
