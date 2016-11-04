@@ -12,6 +12,10 @@ use App\BusinessEvent;
 use App\UserBusiness;
 use App\BusinessService;
 use App\BusinessReview;
+use App\BusinessFollower;
+use App\BusinessNotification;
+use App\UserConversation;
+use App\CmsPage;
 use Validator;
 use DB;
 
@@ -33,6 +37,8 @@ class ApiController extends Controller
         $this->userBusiness = new UserBusiness();
         $this->businessService = new BusinessService();
         $this->businessReviews = new BusinessReview();
+        $this->userConversation = new UserConversation();
+        $this->cmsPages = new CmsPage();
     }
 
     /**
@@ -539,7 +545,7 @@ class ApiController extends Controller
     /**
      * Author:Divya
      * Function: Get all events details.
-     * Url: api/post/user/business-events
+     * Url: api/get/user/business-events
      * Request type: Post
      *
      * @param  \Illuminate\Http\Request  $request
@@ -667,16 +673,17 @@ class ApiController extends Controller
      /**
      * Author:Divya
      * Function: get business details of user by business id
-     * Url: api/get/user/business/details/{businessId}
+     * Url: api/get/user/business/details
      * Request type: Post
      *
      * @param  int $businessId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBusinessDetails($businessId)
+    public function getUserBusinessDetails(Request $request)
     {  
-        $response = $this->userBusiness->apiGetUserBusinessDetails($businessId);
-        if($response != NULL && $response->count())
+        $input = $request->input();
+        $response = $this->userBusiness->apiGetUserBusinessDetails($input);
+        if($response != NULL)
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any business details.']);
@@ -698,5 +705,202 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not found any state']);
+    }
+
+    /**
+     * Author:Divya
+     * Function: get search business by using search term
+     * Url: api/get/searchBusinesses
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSearchBusinesses(Request $request)
+    {  
+       
+         $validator = Validator::make($request->all(), UserBusiness::$searchValidator );
+
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+
+        $input = $request->input();
+
+        $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
+
+        $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
+
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not found any Business']);
+    }
+
+     /**
+     * Author:Divya
+     * Function: get search events by using search term
+     * Url: api/get/searchEvents
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSearchEvents(Request $request)
+    {  
+        
+        $validator = Validator::make($request->all(), UserBusiness::$searchValidator );
+
+       if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+        $input = $request->input();
+
+        $businessIds = UserBusiness::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+
+        $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->get();
+
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not found any events']);
+    }
+    /**
+     * Author:Divya
+     * Function: get cms pages
+     * Url: api/get/cmsPages
+     * Request type: Get
+     *
+     * @param  void
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCmsPages()
+    {  
+        $response = $this->cmsPages->apiGetCmsPages();
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not found any events']);
+    }
+    /**
+     * Author:Divya
+     * Function: blocked/unblocked Notifications
+     * Url: api/block/notification
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function blockNotification(Request $request)
+    {
+        $input = $request->input();
+        $user = User::find($input['userId']);
+        $user->is_notify = !$user->is_notify;
+        $user->save();
+
+        if ($user->is_notify) {
+            return response()->json(['status' => 'success','response' => 'User unblocked notification successfully']);
+            
+        } else {
+            return response()->json(['status' => 'success','response' => 'User blocked notification successfully']);
+        }
+    }
+    /**
+     * Author:Divya
+     * Function: get app notification
+     * Url: api/get/app/notification
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAppNotification(Request $request)
+    {
+        $input = $request->input();
+        $businessIds = BusinessFollower::whereUserId($input['userId'])->pluck('business_id');
+        if($businessIds)
+        {
+            $notifications = BusinessNotification::whereIn('business_id',$businessIds)->skip($input['index'])->take($input['limit'])->get();
+            return response()->json(['status' => 'success','response' => $notifications]);
+        } else {
+            return response()->json(['status' => 'success','response' => 'There is no notification.']);
+        }
+    }
+      /**
+     * Author:Divya
+     * Function:save user conversation/message
+     * Url: api/post/user/message
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postUserMessage(Request $request)
+    {
+        $input = $request->input();
+        $response = $this->userConversation->apiPostUserMessage($input);
+
+        if($response)
+        {
+            return response()->json(['status' => 'success','response' => 'True']);
+        } else {
+            return response()->json(['status' => 'exception','response' => 'False']);
+        }
+    }
+      /**
+     * Author:Divya
+     * Function:get single user conversation/message
+     * Url: api/get/user/message
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserMessage(Request $request)
+    {
+        $input = $request->input();
+        $response = $this->userConversation->apiGetUserMessage($input);
+
+        if($response)
+        {
+            return response()->json(['status' => 'success','response' => $response]);
+        } else {
+            return response()->json(['status' => 'exception','response' => 'could not find any message']);
+        }
+    }
+      /**
+     * Author:Divya
+     * Function:get single user conversation/message
+     * Url: api/get/user/all/messages
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserAllMessages(Request $request)
+    {
+        $input = $request->input();
+        $response = $this->userConversation->apiGetUserAllMessages($input);
+
+        if($response)
+        {
+            return response()->json(['status' => 'success','response' => $response]);
+        } else {
+            return response()->json(['status' => 'exception','response' => 'could not find any message']);
+        }
+    }
+    public function uploadBusinessBanner(Request $request)
+    {
+        $input = $request->input();
+        $response = $this->userBusiness->apiUploadBusinessBanner($input);
+        return $response;
     }
 }

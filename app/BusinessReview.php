@@ -13,7 +13,7 @@ class BusinessReview extends Model
 
     public function apiGetBusinessReview($businessId)
     {
-    	$reviews = $this->where('business_id', $businessId)->where('is_blocked', 0)->get();
+    	$reviews = $this->where('business_reviews.business_id', $businessId)->where('business_reviews.is_blocked', 0)->join('users','business_reviews.user_id', '=', 'users.id')->get();
     	return $reviews;
     }
 }

@@ -6,12 +6,24 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\BusinessProduct;
 use App\UserBusiness;
+use App\BusinessNotification;
 use App\Helper;
 use Auth;
 use Validator;
 
 class BusinessProductsController extends Controller
 {
+    /**
+     * Author:Divya
+     * Create a controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        
+        $this->businessNotification = new BusinessNotification();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +62,7 @@ class BusinessProductsController extends Controller
         }
 
         if($request->file('product_image')->isValid()) {
-            $file = $key = md5(uniqid(rand(), true));
+            $file = md5(uniqid(rand(), true));
             $ext = $request->file('product_image')->getClientOriginalExtension();
             $image = $file.'.'.$ext;
             $fileName=$request->file('product_image')->move(config('image.product_image_path'), $image);
@@ -69,12 +81,12 @@ class BusinessProductsController extends Controller
 
         $input = $request->input();
 
-        $businessId = UserBusiness::whereUserId(Auth::id())->first();
+        $business = UserBusiness::whereUserId(Auth::id())->first();
 
         $product = new BusinessProduct();
 
         $product->user_id = Auth::id();
-        $product->business_id = $businessId->id;
+        $product->business_id = $business->id;
         $product->title = $input['title'];
         $product->description = $input['description'];
         $product->price = $input['price'];
@@ -82,6 +94,9 @@ class BusinessProductsController extends Controller
         $product->slug = Helper::slug($input['title'], $product->id);
 
         $product->save();
+
+        $source = 'product';
+        $this->businessNotification->saveNotification($business->id, $source);
 
         return redirect('business-product')->with('success', 'New Product created successfully');
 }

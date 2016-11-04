@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('otp')->nullable();
             $table->string('password')->nullable();
             $table->boolean('is_blocked')->default(0);
+            $table->boolean('is_notify')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

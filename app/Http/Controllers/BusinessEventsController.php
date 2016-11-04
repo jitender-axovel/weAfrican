@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\BusinessEvent;
 use App\EventBanner;
 use App\UserBusiness;
+use App\BusinessNotification;
 use App\User;
 use App\Helper;
 use Validator;
@@ -15,6 +16,17 @@ use DB;
 
 class BusinessEventsController extends Controller
 {
+     /**
+     * Author:Divya
+     * Create a controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        
+        $this->businessNotification = new BusinessNotification();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -93,6 +105,9 @@ class BusinessEventsController extends Controller
       
         $event->slug = Helper::slug($event->name, $event->id);
         $event->save();
+        
+        $source = 'event';
+        $this->businessNotification->saveNotification($business->id, $source);
 
         return redirect('business-event')->with('success', 'New Event created successfully');
     }
