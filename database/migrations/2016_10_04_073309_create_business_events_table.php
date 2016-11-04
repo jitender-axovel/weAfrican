@@ -17,9 +17,12 @@ class CreateBusinessEventsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('business_id')->unsigned();
+            $table->foreign('business_id')->references('id')->on('user_businesses');
             $table->string('name');
             $table->string('keywords');
             $table->string('slug')->nullable();
+            $table->longtext('description');
             $table->string('organizer_name');
             $table->string('address');
             $table->datetime('start_date_time');

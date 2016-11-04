@@ -6,12 +6,26 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\BusinessService;
-use Auth;
-use Validator;
+use App\UserBusiness;
+use App\BusinessNotification;
 use App\Helper;
+use Validator;
+use Auth;
+
 
 class BusinessServicesController extends Controller
 {
+    /**
+     * Author:Divya
+     * Create a controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        
+        $this->businessNotification = new BusinessNotification();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -51,14 +65,20 @@ class BusinessServicesController extends Controller
 
         $input = $request->input();
 
+        $business = UserBusiness::whereUserId(Auth::id())->first();
+
         $service = new BusinessService();
 
         $service->user_id = Auth::id();
+        $service->business_id = $business->id;
         $service->title = $input['title'];
         $service->description = $input['description'];
         $service->slug = Helper::slug($input['title'], $service->id);
 
         $service->save();
+
+        $source = 'service';
+        $this->businessNotification->saveNotification($business->id, $source);
 
         return redirect('business-service')->with('success', 'New Service created successfully');
     }

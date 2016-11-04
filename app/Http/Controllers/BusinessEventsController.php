@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\BusinessEvent;
 use App\EventBanner;
 use App\UserBusiness;
+use App\BusinessNotification;
 use App\User;
 use App\Helper;
 use Validator;
@@ -15,6 +16,17 @@ use DB;
 
 class BusinessEventsController extends Controller
 {
+     /**
+     * Author:Divya
+     * Create a controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        
+        $this->businessNotification = new BusinessNotification();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -76,19 +88,26 @@ class BusinessEventsController extends Controller
             }
         }
         
+        $business = UserBusiness::whereUserId(Auth::id())->first();
+
         $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
+
         $event['user_id'] = Auth::id();
+        $event['business_id'] = $business->id;
+        $event['description'] = $input['description'];
         $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
         $event['banner'] = $image;
-       
-          
+         
         $event = BusinessEvent::create($event);
 
         $event->save();
       
         $event->slug = Helper::slug($event->name, $event->id);
         $event->save();
+        
+        $source = 'event';
+        $this->businessNotification->saveNotification($business->id, $source);
 
         return redirect('business-event')->with('success', 'New Event created successfully');
     }
@@ -156,6 +175,7 @@ class BusinessEventsController extends Controller
         }
 
         $input = array_intersect_key($input, BusinessEvent::$updatable);
+        $input['description'] = $input['description'];
         $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 

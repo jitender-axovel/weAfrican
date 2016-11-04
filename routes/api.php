@@ -39,12 +39,22 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/service', 'ApiController@postUserService');
 	Route::post('post/user/delete/service', 'ApiController@postDeleteService');
 	Route::post('check/otp' ,'ApiController@checkOtp');
-	Route::post('post/business-events' ,'ApiController@getBusinessEvents');
+	Route::post('get/business-events' ,'ApiController@getBusinessEvents');
 	Route::post('post/fcm/id' ,'ApiController@postFcmId');
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
 	Route::post('get/business/reviews/{businessId}' ,'ApiController@getBusinessReviews');
-	Route::post('get/user/business/details/{businessId}' ,'ApiController@getUserBusinessDetails');
+	Route::post('get/user/business/details' ,'ApiController@getUserBusinessDetails');
 	Route::get('get/business/states' ,'ApiController@getBusinessStates');
+	Route::post('get/searchBusinesses' ,'ApiController@getSearchBusinesses');
+	Route::post('get/searchEvent' ,'ApiController@getSearchEvents');
+	Route::get('get/cmsPages' ,'ApiController@getCmsPages');
+	Route::post('block/notification' ,'ApiController@blockNotification');
+	Route::post('get/app/notification' ,'ApiController@getAppNotification');
+	Route::post('post/user/message' ,'ApiController@postUserMessage');
+	Route::post('get/user/message' ,'ApiController@getUserMessage');
+	Route::post('get/user/all/messages' ,'ApiController@getUserAllMessages');
+	Route::post('upload/business/banner', 'ApiController@uploadBusinessBanner');
+
 
 });

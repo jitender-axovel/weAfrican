@@ -54,7 +54,7 @@
                             <select required name="bussiness_category_id" required>
                                 <option value="" selected>Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" @if($category->title == $category->title){{ 'selected'}} @else @endif  >{{ $category->title }}</option>
+                                    <option value="{{ $category->id }}" @if($category->title == $category->title){{ 'selected'}} @endif  >{{ $category->title }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('bussiness_category_id'))

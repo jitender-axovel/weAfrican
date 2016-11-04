@@ -13,13 +13,14 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'name', 'keywords', 'slug', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
+    protected $fillable = ['user_id', 'business_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
 
-    public static $updatable = ['user_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
 
     public static $validater = array(
         'name' => 'required|max:255',
     	'keywords' => 'required|max:255',
+        'description' => 'required',
     	'organizer_name' => 'required',
     	'address' => 'required',
         'start_date_time' => 'required',
@@ -30,6 +31,7 @@ class BusinessEvent extends Model
     public static $updateValidater = array(
     	'name' => 'required|max:255',
         'keywords' => 'required|max:255',
+        'description' => 'required',
         'organizer_name' => 'required',
         'address' => 'required',
         'start_date_time' => 'required',
@@ -75,26 +77,31 @@ class BusinessEvent extends Model
             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']); 
         }
 
+       $validator = Validator::make($input, [
+            'businessId' => 'required',
+            'name' => 'required',
+            'keywords' => 'required',
+            'description' => 'required',
+            'organizerName' => 'required',
+            'address' => 'required',
+            'startDateTime' => 'required',
+            'endDateTime' => 'required',
+            ]);
+
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+
         if(isset($input['eventId'])){
 
-            $validator = Validator::make($input, [
-                'name' => 'required',
-                'keywords' => 'required',
-                'organizerName' => 'required',
-                'address' => 'required',
-                'startDateTime' => 'required',
-                'endDateTime' => 'required',
-                ]);
-
-            if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
-            }
-
             $input['user_id'] = $input['userId'];
-            $input['id'] = $input['eventId'];
             $input['organizer_name'] = $input['organizerName'];
-            $input['start_date_time'] = $input['startDateTime'];
-            $input['end_date_time'] = $input['endDateTime'];
+            $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['startDateTime']));
+            $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
 
             if(isset($input['eventBanner'])) {
                 $input['banner'] =  $input['eventBanner'];
@@ -106,26 +113,18 @@ class BusinessEvent extends Model
 
             return response()->json(['status' => 'success','response' => "Event updated successfully."]);
         }else{
-              $validator = Validator::make($input, [
-                'name' => 'required|max:255',
-                'keywords' => 'required|max:255',
-                'organizerName' => 'required',
-                'address' => 'required',
-                'startDateTime' => 'required',
-                'endDateTime' => 'required',
-                'eventBanner' => 'required',
-                ]);
-
-            if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
-            }
-
+            
             $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
             $event['user_id'] = $input['userId'];
+            $event['business_id'] = $input['businessId'];
             $event['organizer_name'] = $input['organizerName'];
-            $input['start_date_time'] = $input['startDateTime'];
-            $input['end_date_time'] = $input['endDateTime'];
-            $input['banner'] = $input['eventBanner'];
+            $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['startDateTime']));
+            $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
+
+            if(isset($input['eventBanner'])) {
+                $input['banner'] =  $input['eventBanner'];
+            } 
+            
             $event = BusinessEvent::create($event);
             $event->save();
 

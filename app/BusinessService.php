@@ -11,9 +11,9 @@ class BusinessService extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'title', 'slug', 'description'];
+    protected $fillable = ['user_id', 'business_id', 'title', 'slug', 'description'];
 
-    public static $updatable = ['user_id' => "", 'title' => "", 'slug' => "", 'description' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "" , 'title' => "", 'slug' => "", 'description' => ""];
 
     public static $validater = array(
     	'title' => 'required|unique:business_services|max:255',
@@ -39,16 +39,22 @@ class BusinessService extends Model
             return json_encode(['status' =>'exception','response'=> 'Input parameters are missing']); 
         }
 
-        if(isset($input['serviceId']))
-        {   
-            $validator = Validator::make($input, [
+          $validator = Validator::make($input, [
             'title' => 'required|max:255',
             'description' => 'required',
             ]);
 
-            if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
+          if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
             }
+        }
+
+        if(isset($input['serviceId']))
+        {   
+          
 
             $input['user_id'] = $input['userId'];
             $input['id'] = $input['serviceId'];
@@ -61,17 +67,10 @@ class BusinessService extends Model
 
         }else{
 
-            $validator = Validator::make($input, [
-                'title' => 'required|unique:business_services|max:255',
-                'description' => 'required',
-                ]);
-
-            if ($validator->fails()) {
-                return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
-            }
-
             $service = array_intersect_key($request->input(), BusinessService::$updatable);
+            
             $service['user_id'] = $input['userId'];
+            $service['business_id'] = $input['businessId'];
 
             $service = BusinessService::create($service);
             $service->save();
