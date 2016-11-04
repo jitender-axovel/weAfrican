@@ -17,6 +17,7 @@ class CreateSubscriptionPlansTable extends Migration
             $table->increments('id');
             $table->string('title')->unique();
             $table->string('slug');
+            $table->enum('type', ['business', 'events', 'search']);
             $table->string('coverage');
             $table->integer('price');
             $table->integer('validity_period');

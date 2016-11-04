@@ -19,6 +19,8 @@ class CreateBusinessNotificationsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')->references('id')->on('user_businesses');
+            $table->string('source');
+            $table->string('message');
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
