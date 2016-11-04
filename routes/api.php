@@ -47,7 +47,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/business/details' ,'ApiController@getUserBusinessDetails');
 	Route::get('get/business/states' ,'ApiController@getBusinessStates');
 	Route::post('get/searchBusinesses' ,'ApiController@getSearchBusinesses');
-	Route::post('get/searchEvent' ,'ApiController@getSearchEvents');
+	Route::post('get/searchEvents' ,'ApiController@getSearchEvents');
 	Route::get('get/cmsPages' ,'ApiController@getCmsPages');
 	Route::post('block/notification' ,'ApiController@blockNotification');
 	Route::post('get/app/notification' ,'ApiController@getAppNotification');
