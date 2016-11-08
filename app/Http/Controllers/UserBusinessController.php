@@ -120,7 +120,7 @@ class UserBusinessController extends Controller
             
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
-            $business['business_id']=substr($input['full_name'],0,3).rand(0,999);
+            $business['business_id']=substr($input['full_name'],0,3).rand(100,999);
             $business['user_id'] = $user->id;
             if(isset($fileName)){
                 $business['business_logo'] = $image;

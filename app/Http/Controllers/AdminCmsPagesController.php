@@ -66,7 +66,7 @@ class AdminCmsPagesController extends Controller
         $cmsPage = CmsPage::find($id);
         $pageTitle = 'We African - Edit ' . $cmsPage->title;
 
-        return view('admin.cms.edit', compact('cmsPage', 'page'));
+        return view('admin.cms.edit', compact('cmsPage', 'pageTitle'));
     }
 
     /**
@@ -86,7 +86,13 @@ class AdminCmsPagesController extends Controller
             return back()->with('error', "Sorry, could not update page's content.");
         }
 
+        if(isset($input['is_show_on_mobile']))
+            $input['is_show_on_mobile'] = 1;
+        else
+            $input['is_show_on_mobile'] = 0;
+
         $cmsPage->content = $input['content'];
+        $cmsPage->is_show_on_mobile = $input['is_show_on_mobile'];
 
         if($cmsPage->save()) {
             return redirect('admin/cms')->with('success', $cmsPage->title . ' updated successfully.');
