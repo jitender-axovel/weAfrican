@@ -264,11 +264,11 @@ class UserBusiness extends Model
             
         $business = array_intersect_key($input, UserBusiness::$updatable);
         $business['banner'] = $image;
-
+      return response()->json(['status' => 'success','response' => 'uploaded']);
 
         $userbusiness = $this->where('id',$input['businessId'])->update($business);
 
-        return response()->json(['status' => 'success','response' => $userbusiness]);
+
 
           
         if($userbusiness)
