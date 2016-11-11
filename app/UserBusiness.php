@@ -260,6 +260,8 @@ class UserBusiness extends Model
         $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
         shell_exec($command);
 
+return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
+
             
         $business = array_intersect_key($input, UserBusiness::$updatable);
         $business['banner'] = $image;
