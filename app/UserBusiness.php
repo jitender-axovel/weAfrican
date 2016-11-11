@@ -245,7 +245,7 @@ class UserBusiness extends Model
 
         $success = file_put_contents($file, $data);
       
-        $img = base64_encode(file_get_contents($file));
+   /*     $img = base64_encode(file_get_contents($file));*/
 
         $input['banner'] =  $image; 
         return response()->json(['status' => 'success','response' => $image]); 
