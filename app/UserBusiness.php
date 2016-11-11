@@ -230,51 +230,42 @@ class UserBusiness extends Model
     public function apiUploadBusinessBanner($input)
     {
         $data = $input['banner'];
-    
 
-    $img = str_replace('data:image/jpeg;base64,', '', $data);
+        $img = str_replace('data:image/jpeg;base64,', '', $data);
+        $img = str_replace(' ', '+', $img);
 
-    $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
 
-    $data = base64_decode($img);
+        $fileName = md5(uniqid(rand(), true));
 
-    $file = config('image.business_banner_path').'abc.png';
-    
-    $success = file_put_contents($file, $data);
-    dd('File'.$file,'Success'.$success);
+        $image = $fileName.'.'.'png';
+        $file = config('image.business_banner_path').$image;
 
-    $img=base64_encode(file_get_contents($file));
-         
-        /*$im = imagecreatefromstring($data); 
-         dd($in)
-        if ($im !== false) {
-            $file = md5(uniqid(rand(), true));
-            $image = $file.'.'.'png';
-            imagepng($im, config('image.business_banner_path').$image) ;
-            $input['banner'] =  $image; 
-            imagedestroy($im); 
+        $success = file_put_contents($file, $data);
+      
+        $img = base64_encode(file_get_contents($file));
 
-            $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
-            shell_exec($command);
-        } else { 
-            return response()->json(['status' => 'failure','response' => "unable to create image."]);
-        }
+        $input['banner'] =  $image; 
             
-            $business = array_intersect_key($input, UserBusiness::$updatable);
+        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
+        shell_exec($command);
 
-            $userbusiness = $this->where('id',$input['businessId'])->update($business);
+        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/medium/'.$image;
+        shell_exec($command);
+
+        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
+        shell_exec($command);
+
+            
+        $business = array_intersect_key($input, UserBusiness::$updatable);
+
+        $userbusiness = $this->where('id',$input['businessId'])->update($business);
           
-            if($userbusiness)
+        if($userbusiness)
 
-                return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
-            else
-                return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);*/
+            return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
+        else
+            return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
     }
 
     public function apiPostUploadDocuments($input)
