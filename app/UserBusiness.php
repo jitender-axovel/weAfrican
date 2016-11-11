@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -231,6 +230,7 @@ class UserBusiness extends Model
     public function apiUploadBusinessBanner($input)
     {
         $data = $input['banner'];
+        dd($data);
         $data = base64_decode($data); 
         $im = imagecreatefromstring($data); 
 
