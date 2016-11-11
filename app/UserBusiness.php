@@ -240,16 +240,9 @@ class UserBusiness extends Model
 
         $image = $fileName.'.'.'png';
 
-
         $file = config('image.business_banner_path').$image;
 
         $success = file_put_contents($file, $data);
-
-
-      
-   /*     $img = base64_encode(file_get_contents($file));*/
-
-
             
         $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
         shell_exec($command);
@@ -259,12 +252,8 @@ class UserBusiness extends Model
 
         $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
         shell_exec($command);
-     
-
-        $userbusiness = $this->where('id',$input['businessId'])->update(['banner' => $image]);
           
-        if($userbusiness)
-
+        if($this->where('id',$input['businessId'])->update(['banner' => $image]))
             return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
         else
             return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
