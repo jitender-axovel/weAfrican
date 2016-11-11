@@ -248,7 +248,7 @@ class UserBusiness extends Model
    /*     $img = base64_encode(file_get_contents($file));*/
 
         $input['banner'] =  $image; 
-        return response()->json(['status' => 'success','response' => $image]); 
+       
             
         $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
         shell_exec($command);
