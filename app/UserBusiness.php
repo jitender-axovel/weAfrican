@@ -244,6 +244,8 @@ class UserBusiness extends Model
         $file = config('image.business_banner_path').$image;
 
         $success = file_put_contents($file, $data);
+
+         return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
       
    /*     $img = base64_encode(file_get_contents($file));*/
 
@@ -261,7 +263,7 @@ class UserBusiness extends Model
             
         $business = array_intersect_key($input, UserBusiness::$updatable);
         $business['banner']=$image;
-     
+
 
         $userbusiness = $this->where('id',$input['businessId'])->update($business);
           
