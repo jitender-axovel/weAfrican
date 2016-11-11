@@ -230,9 +230,23 @@ class UserBusiness extends Model
     public function apiUploadBusinessBanner($input)
     {
         $data = $input['banner'];
-        $data = base64_decode($data); 
-        $im = imagecreatefromstring($data); 
+    
 
+    $img = str_replace('data:image/jpeg;base64,', '', $data);
+
+    $img = str_replace(' ', '+', $img);
+
+    $data = base64_decode($img);
+
+    $file = config('image.business_banner_path').'abc.png';
+    
+    $success = file_put_contents($file, $data);
+    dd('File'.$file,'Success'.$succes);
+
+    $img=base64_encode(file_get_contents($file));
+         
+        /*$im = imagecreatefromstring($data); 
+         dd($in)
         if ($im !== false) {
             $file = md5(uniqid(rand(), true));
             $image = $file.'.'.'png';
@@ -249,7 +263,7 @@ class UserBusiness extends Model
             $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
             shell_exec($command);
         } else { 
-            dd('An error occurred.'); 
+            return response()->json(['status' => 'failure','response' => "unable to create image."]);
         }
             
             $business = array_intersect_key($input, UserBusiness::$updatable);
@@ -260,7 +274,7 @@ class UserBusiness extends Model
 
                 return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
             else
-                return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
+                return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);*/
     }
 
     public function apiPostUploadDocuments($input)
