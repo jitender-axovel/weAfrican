@@ -247,20 +247,21 @@ class UserBusiness extends Model
       
    /*     $img = base64_encode(file_get_contents($file));*/
 
-        $input['banner'] =  $image; 
-       
+
             
-        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
+        /*$command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
         shell_exec($command);
 
         $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/medium/'.$image;
         shell_exec($command);
 
         $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
-        shell_exec($command);
+        shell_exec($command);*/
 
             
         $business = array_intersect_key($input, UserBusiness::$updatable);
+        $business['banner']=$image;
+     
 
         $userbusiness = $this->where('id',$input['businessId'])->update($business);
           
