@@ -12,6 +12,13 @@
 				<div class="form-group">
 					<textarea class="form-control" name="content" rows="15">{{ $cmsPage->content ? $cmsPage->content : old('content') }}</textarea>
 				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Show in App</label>
+                    <div class="col-md-4">
+                        <input type="checkbox" name="is_show_on_mobile" value="{{ $cmsPage->is_show_on_mobile}}" {{ $cmsPage->is_show_on_mobile ? "checked" : "" }}>
+
+                    </div>
+				</div>
 				<button type="submit" class="btn btn-success btn-block" id="btn-login">Update Content</button>
 				</div>
 			</form>

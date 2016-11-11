@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CmsPage extends Model
 {
-    protected $fillable = ['title', 'slug', 'content'];
+    protected $fillable = ['title', 'slug', 'content', 'is_show_on_mobile'];
 
     public function apiGetCmsPages()
     {

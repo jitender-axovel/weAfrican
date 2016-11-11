@@ -648,7 +648,8 @@ class ApiController extends Controller
      */
     public function postUploadDocuments(Request $request)
     {  
-        $response = $this->userBusiness->apiPostUploadDocuments($request);
+        $input = $request->input();
+        $response = $this->userBusiness->apiPostUploadDocuments($input);
         return $response;
     }
 
@@ -788,7 +789,7 @@ class ApiController extends Controller
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
-            return response()->json(['status' => 'exception','response' => 'Could not found any events']);
+            return response()->json(['status' => 'exception','response' => 'Could not found any cms pages']);
     }
     /**
      * Author:Divya

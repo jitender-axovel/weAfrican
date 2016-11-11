@@ -264,25 +264,41 @@ class UserBusiness extends Model
                 return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
     }
 
-    public function apiPostUploadDocuments(Request $request)
+    public function apiPostUploadDocuments($input)
     {
         $input = $request->input();
-        if($input == NULL)
-        {
-            return response()->json(['status' => 'success','response' => 'Input parmeters are missing.']);
+        $data = $input['business_proof'];
+        $data1 = $input['identity_proof'];
+
+        $data = base64_decode($data); 
+        $data1 = base64_decode($data1); 
+        $im = imagecreatefromstring($data); 
+        $im1 = imagecreatefromstring($data1); 
+
+        if ($im !== false && $im1 !== false) {
+            $file = md5(uniqid(rand(), true));
+            $image = $file.'.'.'png';
+            imagepng($im, config('image.document_path').$image);
+            $input['business_proof'] =  $image; 
+            $file1 = md5(uniqid(rand(), true));
+            $image1 = $file1.'.'.'png';
+            imagepng($im1, config('image.document_path').$image1);
+            $input['identity_proof'] =  $image1; 
+            imagedestroy($im); 
+            imagedestroy($im1); 
+
+        } else { 
+            return response()->json(['status' => 'failure','response' => "An error occurred.Could not save image"]);
         }
+            
+            $business = array_intersect_key($input, UserBusiness::$updatable);
 
-        $check = $this->where('id',$input['businessId'])->first();
-        if($check){
-            $input['business_proof'] = $input['businessProof'];
-            $input['identity_proof'] = $input['identityProof'];
-
-            $this->where('id',$input['businessId'])->update(['identity_proof' => $input['identityProof'], 'business_proof' => $input['businessProof']]);
-
-            return response()->json(['status' => 'success','response' => "Documents uploaded successfully."]);
-        }else {
-            return response()->json(['status' => 'exception','response' => "Documents does not uploaded  successfully."]);
-        }
+            $userbusiness = $this->where('id',$input['business_id'])->update($business);
+          
+            if($userbusiness)
+                return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
+            else
+                return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
     }
 
     public function apiGetUserBusinessDetails($input)
