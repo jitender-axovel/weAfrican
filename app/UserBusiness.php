@@ -241,7 +241,7 @@ class UserBusiness extends Model
     $file = config('image.business_banner_path').'abc.png';
     
     $success = file_put_contents($file, $data);
-    dd('File'.$file,'Success'.$succes);
+    dd('File'.$file,'Success'.$success);
 
     $img=base64_encode(file_get_contents($file));
          
