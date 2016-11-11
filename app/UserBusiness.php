@@ -239,6 +239,8 @@ class UserBusiness extends Model
         $fileName = md5(uniqid(rand(), true));
 
         $image = $fileName.'.'.'png';
+             return response()->json(['status' => 'success','response' => $image]);       
+
         $file = config('image.business_banner_path').$image;
 
         $success = file_put_contents($file, $data);
