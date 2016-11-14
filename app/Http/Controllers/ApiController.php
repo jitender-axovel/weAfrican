@@ -16,13 +16,13 @@ use App\BusinessFollower;
 use App\BusinessNotification;
 use App\UserConversation;
 use App\CmsPage;
+use App\EventCategory;
 use Validator;
 use DB;
 
 class ApiController extends Controller
 {
     /**
-     * Author:Divya
      * Create a controller instance.
      *
      * @return void
@@ -31,6 +31,7 @@ class ApiController extends Controller
     {
     	$this->user = new User();
         $this->category = new BussinessCategory();
+        $this->eventCategory = new EventCategory();
         $this->subscriptionPlan = new SubscriptionPlan();
         $this->businessProduct = new BusinessProduct();
         $this->businessEvent = new BusinessEvent();
@@ -42,7 +43,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Register User/Login User.
      * Url: api/login
      * Request type: Post
@@ -57,7 +57,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Get Business category.
      * Url: api/get/bussiness-categories
      * Request type: Get
@@ -72,6 +71,23 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any category ']);
+    }
+
+     /**
+     * Function: Get Business category.
+     * Url: api/get/bussiness-categories
+     * Request type: Get
+     *
+     * @param  Void
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getEventCategories()
+    {
+        $response = $this->eventCategory->apiGetEventCategory();
+        if($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any  event category ']);
     }
 
     /**
@@ -216,7 +232,8 @@ class ApiController extends Controller
      */
     public function postUserEvent(Request $request)
     {   
-        $response = $this->businessEvent->apiPostUserEvent($request);
+        $input = $request->input();
+        $response = $this->businessEvent->apiPostUserEvent($input);
         return $response;
     }
 

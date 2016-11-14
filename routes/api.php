@@ -19,8 +19,6 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['api']], function (){ 
 	Route::post('login', 'ApiController@login');
-	Route::get('get/business-categories', 'ApiController@getCategories');
-	Route::get('get/subscription-plans', 'ApiController@getSubscriptionPlans');
 	Route::post('get/user/business-products', 'ApiController@getUserBusinessProducts');
 	Route::post('get/user/business-events', 'ApiController@getUserBusinessEvents');
 	Route::post('get/category/businesses', 'ApiController@getBusinessesByCategory');
@@ -44,11 +42,9 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
 	Route::post('get/business/reviews/{businessId}' ,'ApiController@getBusinessReviews');
-	Route::post('get/user/business/details' ,'ApiController@getUserBusinessDetails');
-	Route::get('get/business/states' ,'ApiController@getBusinessStates');
+	Route::post('get/user/business/details' ,'ApiController@getUserBusinessDetails');	
 	Route::post('get/searchBusinesses' ,'ApiController@getSearchBusinesses');
 	Route::post('get/searchEvents' ,'ApiController@getSearchEvents');
-	Route::get('get/cmsPages' ,'ApiController@getCmsPages');
 	Route::post('block/notification' ,'ApiController@blockNotification');
 	Route::post('get/app/notification' ,'ApiController@getAppNotification');
 	Route::post('post/user/message' ,'ApiController@postUserMessage');
@@ -56,5 +52,11 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/all/messages' ,'ApiController@getUserAllMessages');
 	Route::post('upload/business/banner', 'ApiController@uploadBusinessBanner');
 
+	//Get request api
+	Route::get('get/business-categories', 'ApiController@getCategories');
+	Route::get('get/subscription-plans', 'ApiController@getSubscriptionPlans');
+	Route::get('get/business/states' ,'ApiController@getBusinessStates');
+	Route::get('get/cmsPages' ,'ApiController@getCmsPages');
+	Route::get('get/event-categories', 'ApiController@getEventCategories');
 
 });
