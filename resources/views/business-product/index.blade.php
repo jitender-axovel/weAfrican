@@ -48,6 +48,7 @@
                         </td>
                     <tr>
                 @endforeach
+
             @else
                 <tr>
                     <td>No products found</td>
@@ -56,6 +57,7 @@
             </tbody>
         </table>
     </div>
+     {{ $products->links()}}
 </div>
 @endsection
 @section('scripts')

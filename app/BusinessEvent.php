@@ -41,6 +41,11 @@ class BusinessEvent extends Model
         'banner' => 'image|mimes:jpg,png,jpeg',
     	);
 
+    public function category()
+    {
+        return $this->belongsTo('App\EventCategory','event_category_id');
+    }
+
     public function participations()
     {
         return $this->hasMany('App\EventParticipant','event_id');

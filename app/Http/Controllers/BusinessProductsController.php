@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 use App\Http\Requests;
 use App\BusinessProduct;
@@ -32,7 +33,7 @@ class BusinessProductsController extends Controller
     public function index()
     {
         $pageTitle = "Business Products";
-        $products = BusinessProduct::where('user_id',Auth::id())->where('is_blocked',0)->get();
+        $products = BusinessProduct::where('user_id',Auth::id())->where('is_blocked',0)->paginate(10);
         return view('business-product.index', compact('products','pageTitle'));
     }
 

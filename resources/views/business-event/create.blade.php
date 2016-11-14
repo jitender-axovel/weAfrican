@@ -20,6 +20,22 @@
         <div class="panel panel-default document">
             <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
+                 <div class="form-group required">
+                    <label for="category" class="col-md-2 control-label">Select Category:</label>
+                    <div class="col-md-4">
+                        <select required name="event_category_id" required>
+                            <option value="" selected>Select Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" @if($category->title == $category->title){{ 'selected'}} @endif  >{{ $category->title }}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('event_category_id'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('event_category_id') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
                 <div class="form-group ">
                     <label for="name" class="col-md-2 required control-label"> Name of Event</label>
                     <div class="col-md-4">

@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
+use Illuminate\Pagination\Paginator;
 use App\Http\Requests;
 use App\BusinessService;
 use App\UserBusiness;
@@ -34,7 +33,7 @@ class BusinessServicesController extends Controller
     public function index()
     {
         $pageTitle = "Business Services";
-        $services = BusinessService::where('user_id',Auth::id())->where('is_blocked',0)->get();
+        $services = BusinessService::where('user_id',Auth::id())->where('is_blocked',0)->paginate(10);
         return view('business-service.index', compact('services','pageTitle'));
     }
 
