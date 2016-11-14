@@ -54,6 +54,7 @@
             </tbody>
         </table>
     </div>
+    {{ $services->links() }}
 </div>
 @endsection
 @section('scripts')

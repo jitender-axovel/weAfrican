@@ -21,6 +21,22 @@
                 {{csrf_field()}}
                 {{ method_field('PUT') }}
                 <div class="form-group ">
+                    <label for="category" class="col-md-2 required control-label">Category</label>
+                    <div class="col-md-4">
+                        <select required name="event_category_id" required>
+                            <option value="" selected>Select Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" @if($event->category->title == $category->title){{ 'selected'}} @else @endif  >{{ $category->title }}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('event_category_id'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('event_category_id') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group ">
                     <label for="name" class="col-md-2 required control-label">Event Name</label>
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="name" value="{{ $event->name }}" required>

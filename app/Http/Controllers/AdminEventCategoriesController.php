@@ -1,17 +1,17 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Facades\Input;
 
-use App\Http\Requests;
-use App\BussinessCategory;
+use App\EventCategory;
 use App\Helper;
 use Validator;
 
-class AdminBussinessCategoriesController extends Controller
+class AdminEventCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +20,9 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Admin - Business Categories';
-        $categories = BussinessCategory::get();
-        return view('admin.categories.index', compact('pageTitle', 'categories'));
+        $pageTitle = 'Admin - Event Categories';
+        $categories = EventCategory::get();
+        return view('admin.event-categories.index', compact('pageTitle', 'categories'));
     }
 
     /**
@@ -32,8 +32,8 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function create()
     {
-        $pageTitle = "Admin - Create Business Category";
-        return view('admin.categories.create', compact('pageTitle'));
+        $pageTitle = "Admin - Create Event Category";
+        return view('admin.event-categories.create', compact('pageTitle'));
     }
 
     /**
@@ -44,17 +44,17 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), BussinessCategory::$validater );
+        $validator = Validator::make($request->all(), EventCategory::$validater );
 
         if ($validator->fails()) {
-            return redirect('admin/bussiness/category/create')->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput();
         }
 
-        if($request->file('category_image')->isValid()) {
+        if($request->file('image')->isValid()) {
             $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('category_image')->getClientOriginalExtension();
+            $ext = $request->file('image')->getClientOriginalExtension();
             $image = $file.'.'.$ext;
-            $fileName=$request->file('category_image')->move(config('image.category_image_path'), $image);
+            $fileName=$request->file('image')->move(config('image.category_image_path'), $image);
 
             $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
@@ -65,13 +65,13 @@ class AdminBussinessCategoriesController extends Controller
             $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
             shell_exec($command);
         } else {
-            return redirect('admin/bussiness/category/create')->with('Error', 'Category image is not uploaded. Please try again');
+            return back()->with('Error', 'Category image is not uploaded. Please try again');
         }
 
         $input = $request->input();
 
         if($input['title'] == $input['confirm_title']) {
-            $category = new BussinessCategory();
+            $category = new EventCategory();
 
             $category->title = $input['title'];
             $category->description = $input['description'];
@@ -80,9 +80,9 @@ class AdminBussinessCategoriesController extends Controller
 
             $category->save();
 
-            return redirect('admin/bussiness/category')->with('success', 'New Bussiness category created successfully');
+            return redirect('admin/category/event/')->with('success', 'New Bussiness category created successfully');
         } else {
-            return redirect('admin/bussiness/category/create')->with('error', 'Title and confirm title should be same');
+            return back()->with('error', 'Title and confirm title should be same');
         }
     }
 
@@ -105,9 +105,9 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = "Admin - Edit Bussiness Category";
-        $category = BussinessCategory::find($id);
-        return view('admin.categories.edit',compact('pageTitle','category'));
+        $pageTitle = "Admin - Edit Event Category";
+        $category = EventCategory::find($id);
+        return view('admin.event-categories.edit',compact('pageTitle','category'));
     }
 
     /**
@@ -119,18 +119,19 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BussinessCategory::$updateValidater);
+        
+        $validator = Validator::make($request->all(), EventCategory::$updateValidater);
 
         if ($validator->fails()) {
-            return redirect('admin/bussiness/category/'.$id.'/edit')->withErrors($validator)->withInput();
+            return redirect('admin/category/event/'.$id.'/edit')->withErrors($validator)->withInput();
         }
 
-        if ($request->hasFile('category_image') ){
-        if ($request->file('category_image') && $request->file('category_image')->isValid()) {
+         if ($request->hasFile('image') ){
+        if ($request->file('image') && $request->file('image')->isValid()) {
             $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('category_image')->getClientOriginalExtension();
+            $ext = $request->file('image')->getClientOriginalExtension();
             $image = $file.'.'.$ext;
-            $fileName = $request->file('category_image')->move(config('image.category_image_path'),$image );
+            $fileName = $request->file('image')->move(config('image.category_image_path'),$image );
             
            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
@@ -142,25 +143,27 @@ class AdminBussinessCategoriesController extends Controller
             shell_exec($command);
             
         } else {
-            return redirect('admin/bussiness/category')->with('Error', 'Business Category image is not uploaded.Please try again');
+            return redirect('admin/category/event')->with('Error', 'Event Category image is not uploaded.Please try again');
         }
-}
+    }
+
         $input = $request->input();
 
         if($input['title'] == $input['confirm_title'])
         {
-            $category = array_intersect_key($input, BussinessCategory::$updatable);
+
+            $event = array_intersect_key($input, EventCategory::$updatable);
            
            
             if(isset($fileName)) {
-               $category['image'] =  $file.'.'.$ext;
+               $event['image'] =  $file.'.'.$ext;
                  
-                $category = BussinessCategory::where('id',$id)->update($category);
+                $event = EventCategory::where('id',$id)->update($event);
             } else {
-                $category = BussinessCategory::where('id',$id)->update($category);
+                $event = EventCategory::where('id',$id)->update($event);
             }
 
-            return redirect('admin/bussiness/category')->with('success', ' Business Category updated successfully');
+            return redirect('admin/category/event')->with('success', ' Business Category updated successfully');
         } else {
             return back()->with('error', 'Title and confirm title should be same');
         }
@@ -174,33 +177,33 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $category = BussinessCategory::findOrFail($id);
+        $category = EventCategory::findOrFail($id);
 
         if($category->delete()){
             $response = array(
                 'status' => 'success',
-                'message' => 'Business Category deleted  successfully',
+                'message' => 'Event Category deleted  successfully',
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'message' => 'Business Category can not be deleted.Please try again',
+                'message' => 'Event Category can not be deleted.Please try again',
             );
         }
 
         return json_encode($response);
     }
-
+    
     public function block($id)
     {
-        $category = BussinessCategory::find($id);
+        $category = EventCategory::find($id);
         $category->is_blocked = !$category->is_blocked;
         $category->save();
 
         if ($category->is_blocked) {
-            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been blocked successfully');
+            return redirect('admin/category/event')->with('success', 'Event Category has been blocked successfully');
         } else {
-            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been unblocked');
+            return redirect('admin/category/event')->with('success', 'Event Category has been unblocked');
         }
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use App\Http\Requests;
-
+use App\EventCategory;
 use App\BusinessEvent;
 use App\EventBanner;
 use App\UserBusiness;
@@ -35,7 +36,7 @@ class BusinessEventsController extends Controller
     public function index()
     {
         $pageTitle = "Business Event";
-        $events = BusinessEvent::whereUserId(Auth::id())->withCount('participations')->get();
+        $events = BusinessEvent::whereUserId(Auth::id())->withCount('participations')->paginate(10);
         return view('business-event.index', compact('pageTitle', 'events'));
     }
     /**
@@ -47,8 +48,8 @@ class BusinessEventsController extends Controller
     {
         $pageTitle = "Business Event -create";
         $business = UserBusiness::where('user_id', Auth::id())->first();
-        
-        return view('business-event.create', compact('pageTitle', 'business'));
+        $categories = EventCategory::where('is_blocked', 0)->get();
+        return view('business-event.create', compact('pageTitle', 'business', 'categories'));
     }
 
     /**
@@ -94,6 +95,7 @@ class BusinessEventsController extends Controller
 
         $event['user_id'] = Auth::id();
         $event['business_id'] = $business->id;
+        $event['event_category_id'] =$input['event_category_id'];
         $event['description'] = $input['description'];
         $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
@@ -133,7 +135,8 @@ class BusinessEventsController extends Controller
     {
         $pageTitle = "Business Product-Edit";
         $event = BusinessEvent::find($id);
-        return view('business-event.edit',compact('pageTitle','event'));
+        $categories = EventCategory::where('is_blocked',0)->get();
+        return view('business-event.edit',compact('pageTitle','event', 'categories'));
     }
 
     /**
@@ -175,7 +178,7 @@ class BusinessEventsController extends Controller
         }
 
         $input = array_intersect_key($input, BusinessEvent::$updatable);
-        $input['description'] = $input['description'];
+        
         $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 
