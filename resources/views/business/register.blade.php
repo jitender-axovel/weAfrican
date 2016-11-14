@@ -86,7 +86,7 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="address" class="col-md-2 control-label">Location:</label>
-                        <div id="us5" style="width: 500px; height: 400px;"></div>
+                        <div id="map"></div>
                     </div>
                     <div class="form-group">
                         <label for="address" class="col-md-2 control-label">Address:</label>
@@ -251,10 +251,6 @@
 </div>
 @endsection
 @section('header-scripts')
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places"></script>
-<script src="{{ asset('js/dist/locationpicker.jquery.js') }}" type="text/javascript"></script>
- <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-
     <script type="text/javascript">
 
         var latitude;
@@ -278,40 +274,83 @@
           }
         reader.readAsDataURL(input.files[0]);
       }
-    };
+    }
     
     $("#business_logo").change(function(){
         readURL(this);
     });
-
-
     //GeoLocation Map Script
-        
-    function updateControls(addressComponents) {
-        $('#us5-street1').val(addressComponents.addressLine1);
-        $('#us5-city').val(addressComponents.city);
-        $('#us5-state').val(addressComponents.stateOrProvince);
-        $('#us5-zip').val(addressComponents.postalCode);
-        $('#us5-country').val(addressComponents.country);
+    var gecoder;
+    function initMap() {
+        setTimeout(function() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: latitude, lng: longitude},
+              zoom: 6
+            });
+
+            var infoWindow = new google.maps.InfoWindow({map: map});
+
+            var pos = {
+                lat: latitude,
+                lng: longitude
+            };
+            writeAddressName(pos);
+            /*var result = codeLatLng(latitude,longitude);
+            alert($result);*/
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+        }, 1000);
     }
 
-    $("#us5").locationpicker({
-        location: {
-            latitude: 42.00,
-            longitude: -73.82480799999996
+    function writeAddressName(latLng) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+          "location": latLng
         },
-        radius: 300,
-        onchanged: function (currentLocation, radius, isMarkerDropped) {
-            var addressComponents = $(this).locationpicker('map').location.addressComponents;
+        function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK){
+                console.log(results)
+                for (var i=0; i<results[0].address_components.length; i++) {
+                pincode = results[0].address_components[i];
 
-            updateControls(addressComponents);
-        },
-        oninitialized: function (component) {
-            var addressComponents = $(component).locationpicker('map').location.addressComponents;
-            updateControls(addressComponents);
+                    for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+                        //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+
+                        if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                            //this is the object you are looking for
+                            city = results[0].address_components[i];
+                            document.getElementById("city").value = city.long_name;  
+                        }
+                        if (results[0].address_components[i].types[b] == "country") {
+                            //this is the object you are looking for
+                            country = results[0].address_components[i];
+                            document.getElementById("country").value = country.long_name;  
+                        }
+                        if (results[0].address_components[i].types[b] == "postal_code") {
+                            //this is the object you are looking for
+                            pinCode = results[0].address_components[i];
+                            document.getElementById("pin_code").value = pinCode.long_name;
+                            
+                        }
+                        if (results[0].address_components[i].types[b] == "locality") {
+                            //this is the object you are looking for
+                            state = results[0].address_components[i];
+                            document.getElementById("state").value = state.long_name;
+                            break;
+                        }
+                    }
+                }
+            } else
+                document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+            });
         }
-    });
 
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
+        }
 </script>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&callback=initMap"></script>
 @endsection
