@@ -13,11 +13,12 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'business_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
+    protected $fillable = ['user_id', 'business_id', 'event_category_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner' ];
 
-    public static $updatable = ['user_id' => "", 'business_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "", 'event_category_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => ""];
 
     public static $validater = array(
+        'event_category_id' => 'required',
         'name' => 'required|max:255',
     	'keywords' => 'required|max:255',
         'description' => 'required',
@@ -29,6 +30,7 @@ class BusinessEvent extends Model
     	);
 
     public static $updateValidater = array(
+        'event_category_id' => 'required',
     	'name' => 'required|max:255',
         'keywords' => 'required|max:255',
         'description' => 'required',

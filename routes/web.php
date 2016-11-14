@@ -80,5 +80,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('get/message/{senderId}', 'AdminUserConversationsController@getMessage');
 		Route::delete('business/banner/{id}', 'AdminBusinessBannersController@deleteBusinessBanner');
 		Route::delete('event/banner/{id}', 'AdminBannersController@deleteEventBanner');
+		Route::get('category/event/block/{id}', 'AdminEventCategoriesController@block');
+
+		Route::resource('category/event', 'AdminEventCategoriesController');
 	});
 });

@@ -1,12 +1,13 @@
 <?php
 
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BussinessCategory extends Model
+class EventCategory extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
     protected $dates = ['deleted_at'];
 
     protected $fillable = ['title', 'slug', 'description', 'image'];
@@ -14,9 +15,9 @@ class BussinessCategory extends Model
     public static $updatable = ['title' => "", 'slug' => "", 'description' => "", 'image' => ""];
 
     public static $validater = array(
-    	'title' => 'required|unique:bussiness_categories|max:255',
+    	'title' => 'required|unique:event_categories|max:255',
     	'description' => 'required',
-    	'category_image' => 'required',
+    	'image' => 'required',
     	);
 
     public static $updateValidater = array(
@@ -24,17 +25,17 @@ class BussinessCategory extends Model
     	'description' => 'required',
     	);
 
-    public function businesses()
+    public function events()
     {
-        return $this->hasMany('App\UserBusiness');
+        return $this->hasMany('App\BusinessEvent');
     }
     
-    public function getBusinesses()
+    public function getEvents()
     {
-        return $this->businesses()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
+        return $this->events()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
     }
 
-    public function apiGetCategory()
+    public function apiGetEventCategory()
     {
     	$categories = $this->where('is_blocked',0)->get();
        	return $categories;
