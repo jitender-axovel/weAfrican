@@ -99,10 +99,6 @@ class UserBusiness extends Model
     public function apiPostUserBusiness(Request $request)
     {
         $input = $request->input();
-        if($input == NULL)
-        {
-             return json_encode(['status' =>'exception','response'=> 'Input parameters are missing']);  
-        }
 
         $user = $this->where('user_id',$input['userId'])->first();
 
@@ -135,6 +131,33 @@ class UserBusiness extends Model
         }
 
         if(!$user){
+
+            if(isset($input['businessLogo']) && !empty($input['businessLogo']))
+            {
+                $data = $input['businessLogo'];
+
+                $img = str_replace('data:image/jpeg;base64,', '', $data);
+                $img = str_replace(' ', '+', $img);
+
+                $data = base64_decode($img);
+
+                $fileName = md5(uniqid(rand(), true));
+
+                $image = $fileName.'.'.'png';
+
+                $file = config('image.logo_image_path').$image;
+
+                $success = file_put_contents($file, $data);
+                    
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
+                shell_exec($command);
+            }
             
             $check =User::where('id',$input['userId'])->update(['user_role_id' => 3]);
             $user = User::where('id',$input['userId'])->first();
@@ -150,29 +173,9 @@ class UserBusiness extends Model
             $business['about_us'] = $input['aboutUs'];
             $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
-            /*if(isset($input['businessLogo'])) {
-                $data = $input['businessLogo'];
-                $data = base64_decode($data); 
-                $im = imagecreatefromstring($data); 
-
-                if ($im !== false) {
-                    $file = md5(uniqid(rand(), true));
-                    $image = $file.'.'.'png';
-                    imagepng($im, config('image.logo_image_path').$image) ;
-                    $business['business_logo'] =  $image; 
-                    imagedestroy($im); 
-                } else { 
-                    dd('An error occurred.'); 
-                }
+            if(isset($image)){
+                $business['business_logo'] = $image;
             }
-           $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);*/
 
             $business = UserBusiness::create($business);
             $business->save(); 
@@ -183,6 +186,33 @@ class UserBusiness extends Model
             }
         } else {
 
+            if(isset($input['businessLogo']) && !empty($input['businessLogo']))
+            {
+                $data = $input['businessLogo'];
+
+                $img = str_replace('data:image/jpeg;base64,', '', $data);
+                $img = str_replace(' ', '+', $img);
+
+                $data = base64_decode($img);
+
+                $fileName = md5(uniqid(rand(), true));
+
+                $image = $fileName.'.'.'png';
+
+                $file = config('image.logo_image_path').$image;
+
+                $success = file_put_contents($file, $data);
+                    
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
+                shell_exec($command);
+            }
+
             $input['user_id'] = $input['userId'];
             $input['bussiness_category_id'] = $input['categoryId'];
             $input['pin_code'] = $input['pinCode'];
@@ -191,36 +221,15 @@ class UserBusiness extends Model
             $input['about_us'] = $input['aboutUs'];
             $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
-           /* if(isset($input['businessLogo'])){ 
-                $data = $input['businessLogo'];
-                $data = base64_decode($data); 
-                $im = imagecreatefromstring($data); 
-
-                if ($im !== false) {
-                    $file = md5(uniqid(rand(), true));
-                    $image = $file.'.'.'png';
-                    imagepng($im, config('image.logo_image_path').$image) ;
-                    $input['business_logo'] =  $image; 
-                    imagedestroy($im); 
-                } else { 
-                    dd('An error occurred.'); 
-                }
+            if(isset($image)){
+                $input['business_logo'] = $image;
             }
-           $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);*/
     
             $business = array_intersect_key($input, UserBusiness::$updatable);
 
             $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
           
             if($userbusiness)
-
                 return response()->json(['status' => 'success','response' => "Business updated successfully."]);
             else
                 return response()->json(['status' => 'success','response' => "Business can not updated successfully."]);
@@ -229,29 +238,32 @@ class UserBusiness extends Model
 
     public function apiUploadBusinessBanner($input)
     {
-        $data = $input['banner'];
+        if(isset($input['banner']) && !empty($input['banner']))
+        {
+            $data = $input['banner'];
 
-        $img = str_replace('data:image/jpeg;base64,', '', $data);
-        $img = str_replace(' ', '+', $img);
+            $img = str_replace('data:image/jpeg;base64,', '', $data);
+            $img = str_replace(' ', '+', $img);
 
-        $data = base64_decode($img);
+            $data = base64_decode($img);
 
-        $fileName = md5(uniqid(rand(), true));
+            $fileName = md5(uniqid(rand(), true));
 
-        $image = $fileName.'.'.'png';
+            $image = $fileName.'.'.'png';
 
-        $file = config('image.business_banner_path').$image;
+            $file = config('image.banner_image_path').'business/'.$image;
 
-        $success = file_put_contents($file, $data);
-            
-        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/small/'.$image;
-        shell_exec($command);
+            $success = file_put_contents($file, $data);
+                
+            $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/small/'.$image;
+            shell_exec($command);
 
-        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/medium/'.$image;
-        shell_exec($command);
+            $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/medium/'.$image;
+            shell_exec($command);
 
-        $command = 'ffmpeg -i '.config('image.business_banner_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.business_banner_path').'thumbnails/large/'.$image;
-        shell_exec($command);
+            $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/large/'.$image;
+            shell_exec($command);
+        }
           
         if($this->where('id',$input['businessId'])->update(['banner' => $image]))
             return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
