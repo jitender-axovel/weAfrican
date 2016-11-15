@@ -48,20 +48,20 @@ class BusinessProduct extends Model
             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']); 
         }
 
-        // $validator = Validator::make($input, [
-        //     'title' => 'required',
-        //     'description' => 'required',
-        //     'price' => 'required|integer',
-        //     'productImage' => 'image|mimes:jpg,png,jpeg',
-        // ]);
+        $validator = Validator::make($input, [
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'productImage' => 'image|mimes:jpg,png,jpeg',
+        ]);
 
-        // if($validator->fails()){
-        //     if(count($validator->errors()) <= 1){
-        //             return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
-        //     } else{
-        //         return response()->json(['status' => 'exception','response' => 'All fields are required']);   
-        //     }
-        // }
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
 
         if(isset($input['productId'])){
 
