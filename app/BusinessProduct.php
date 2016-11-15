@@ -48,7 +48,6 @@ class BusinessProduct extends Model
             'title' => 'required',
             'description' => 'required',
             'price' => 'required',
-            'productImage' => 'image|mimes:jpg,png,jpeg',
         ]);
 
         if($validator->fails()){
