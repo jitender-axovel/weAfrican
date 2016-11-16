@@ -14,13 +14,13 @@ return array(
      |.....................................................................
      |
      */
-    'api_image_path' => str_replace('\\','/',public_path()). '/uploads/apiImages/',
     'logo_image_path' => str_replace('\\','/',public_path()). '/uploads/images/logo/',
     'category_image_path' => str_replace('\\','/',public_path()). '/uploads/images/categories/',
     'banner_image_path' => str_replace('\\','/',public_path()). '/uploads/images/banners/',
     'product_image_path' => str_replace('\\','/',public_path()). '/uploads/images/products/',
     'document_path' => str_replace('\\','/',public_path()). '/uploads/documents/',
-    'business_banner_path' => str_replace('\\','/',public_path()). '/uploads/images/business_banners/',
+    'user_image_path' => str_replace('\\','/',public_path()). '/uploads/user_images/',
+
     /*
      |.....................................................................
      |  images urls
@@ -29,11 +29,11 @@ return array(
      */
 
     'logo_image_url' => '/uploads/images/logo/',
-    'business_banner_url' => '/uploads/images/business_banners/',
     'category_image_url' => '/uploads/images/categories/',
     'banner_image_url' => '/uploads/images/banners/',
     'product_image_url' => '/uploads/images/products/',
     'document_url' => '/uploads/documents/',
+    'user_image_url' => '/uploads/images/user_images/',
 
     /*
      |.....................................................................

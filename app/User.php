@@ -20,7 +20,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp'];
+        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp', 'image'];
 
     /**
     * The attributes that are updatable.
@@ -28,7 +28,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => ""];
+        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => ""];
 
     /**
     * The attributes that should be hidden for arrays.
@@ -110,6 +110,74 @@ class User extends Authenticatable
                 return 2;
         }else {
             return 0;
+        }
+    }
+
+    public function apiPostUserDetails(Request $request)
+    {
+        $input = $request->input();
+
+        $validator = Validator::make($input, [
+                'userId' => 'required',
+                'fullName' => 'string',
+        ]);
+
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+
+        $user = $this->where('id',$input['userId'])->first();
+
+        if($user){
+
+            if(isset($input['image']) && !empty($input['image']))
+            {
+                $data = $input['image'];
+
+                $img = str_replace('data:image/jpeg;base64,', '', $data);
+                $img = str_replace(' ', '+', $img);
+
+                $data = base64_decode($img);
+
+                $fileName = md5(uniqid(rand(), true));
+
+                $image = $fileName.'.'.'png';
+
+                $file = config('image.user_image_path').$image;
+
+                $success = file_put_contents($file, $data);
+                    
+                $command = 'ffmpeg -i '.config('image.user_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.user_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.user_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.user_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.user_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.user_image_path').'thumbnails/large/'.$image;
+                shell_exec($command);
+            }
+            
+            $user = array_intersect_key($input, User::$updatable);
+
+            $user['slug'] = Helper::slug($input['fullName'], $input['userId']);
+
+            $user['full_name'] = $input['fullName'];
+            if(isset($image))
+                $user['image'] = $image;
+
+
+            $user = $this->where('id',$input['userId'])->update($user);
+          
+            if($user)
+                return response()->json(['status' => 'success','response' => "User details updated successfully."]);
+            else
+                return response()->json(['status' => 'failure','response' => "System error:User can not updated successfully.Please try again."]);
+        }else{
+            return response()->json(['status' => 'exception','response' => "User not found!!"]);
         }
     }
 }

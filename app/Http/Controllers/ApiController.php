@@ -73,7 +73,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Could not find any category ']);
     }
 
-     /**
+    /**
      * Function: Get Business category.
      * Url: api/get/bussiness-categories
      * Request type: Get
@@ -91,7 +91,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Get all Subscription plans.
      * Url: api/get/subscription-plans
      * Request type: Get
@@ -109,7 +108,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Get Business Products of user.
      * Url: api/get/user/business-products
      * Request type: Post
@@ -133,7 +131,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Get Business Events of user.
      * Url: api/get/user/business-events
      * Request type: Post
@@ -157,7 +154,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Get Businesses according to category Id.
      * Url: api/get/category/businesses
      * Request type: Get
@@ -192,7 +188,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: create and update User Business Details.
      * Url: api/post/user/business
      * Request type: Post
@@ -207,7 +202,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: create and update User Product Details.
      * Url: api/post/user/product
      * Request type: Post
@@ -222,7 +216,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: create and update User Event Details.
      * Url: api/post/user/event
      * Request type: Post
@@ -238,7 +231,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: delete product.
      * Url: api/post/user/delete/product
      * Request type: Post
@@ -264,7 +256,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: delete event.
      * Url: api/post/user/delete/event
      * Request type: Post
@@ -290,7 +281,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post event participants
      * Url: api/post/event/participants
      * Request type: Post
@@ -311,7 +301,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post business like and dislikes
      * Url: api/post/business/likes
      * Request type: Post
@@ -351,7 +340,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post business rating
      * Url: api/post/business/rating
      * Request type: Post
@@ -380,7 +368,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post business reviews
      * Url: api/post/business/reviews
      * Request type: Post
@@ -408,7 +395,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post business followers
      * Url: api/post/business/followers
      * Request type: Post
@@ -437,7 +423,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post business favourites
      * Url: api/post/business/favourites
      * Request type: Post
@@ -466,7 +451,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Get services of Business user.
      * Url: api/get/business-services
      * Request type: Post
@@ -490,7 +474,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: create and update service Details of business user.
      * Url: api/post/user/service
      * Request type: Post
@@ -505,8 +488,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
-     * Function: delete product.
+     * Function: delete Service.
      * Url: api/post/user/delete/service
      * Request type: Post
      *
@@ -531,7 +513,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Check Otp.
      * Url: api/check/otp
      * Request type: Post
@@ -560,8 +541,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
-     * Function: Get all events details.
+     * Function: search events by lat,long/country,state.
      * Url: api/get/user/business-events
      * Request type: Post
      *
@@ -595,7 +575,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Save user fcm registration Ids.
      * Url: api/post/fcm/id
      * Request type: Post
@@ -625,7 +604,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Post app feedback.
      * Url: api/post/app/feedback
      * Request type: Post
@@ -655,7 +633,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: Upload document(identity & business proof)
      * Url: api/post/upload/documents
      * Request type: Post
@@ -671,7 +648,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: get all business reviews by business id
      * Url: api/get/business/reviews/{businessId}
      * Request type: Post
@@ -688,13 +664,12 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Could not find any review.']);
     }
 
-     /**
-     * Author:Divya
-     * Function: get business details of user by business id
+    /**
+     * Function: get business user details by business id
      * Url: api/get/user/business/details
      * Request type: Post
      *
-     * @param  int $businessId
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUserBusinessDetails(Request $request)
@@ -707,10 +682,8 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Could not find any business details.']);
     }
     /**
-     * Author:Divya
      * Function: get business states according to countryName
-     * Url: api/get/business/states/{countryName}
-     * Request type: Post
+     * Url: api/get/business/states
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -726,7 +699,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Author:Divya
      * Function: get search business by using search term
      * Url: api/get/searchBusinesses
      * Request type: Post
@@ -760,7 +732,6 @@ class ApiController extends Controller
     }
 
      /**
-     * Author:Divya
      * Function: get search events by using search term
      * Url: api/get/searchEvents
      * Request type: Post
@@ -792,7 +763,6 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Could not found any events']);
     }
     /**
-     * Author:Divya
      * Function: get cms pages
      * Url: api/get/cmsPages
      * Request type: Get
@@ -809,7 +779,6 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'Could not found any cms pages']);
     }
     /**
-     * Author:Divya
      * Function: blocked/unblocked Notifications
      * Url: api/block/notification
      * Request type: Post
@@ -832,7 +801,6 @@ class ApiController extends Controller
         }
     }
     /**
-     * Author:Divya
      * Function: get app notification
      * Url: api/get/app/notification
      * Request type: Post
@@ -852,8 +820,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' => 'There is no notification.']);
         }
     }
-      /**
-     * Author:Divya
+    /**
      * Function:save user conversation/message
      * Url: api/post/user/message
      * Request type: Post
@@ -873,8 +840,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'False']);
         }
     }
-      /**
-     * Author:Divya
+    /**
      * Function:get single user conversation/message
      * Url: api/get/user/message
      * Request type: Post
@@ -894,8 +860,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'could not find any message']);
         }
     }
-      /**
-     * Author:Divya
+    /**
      * Function:get single user conversation/message
      * Url: api/get/user/all/messages
      * Request type: Post
@@ -915,10 +880,34 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception','response' => 'could not find any message']);
         }
     }
+
+    /**
+     * Function:to upload business banner
+     * Url: api/upload/business/banner
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function uploadBusinessBanner(Request $request)
     {
         $input = $request->input();
         $response = $this->userBusiness->apiUploadBusinessBanner($input);
+        return $response;
+    }
+
+    /**
+     * Function: save user basic details
+     * Url: api/post/user/details
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function postUserDetails(Request $request)
+    {
+        $response = $this->user->apiPostUserDetails($request);
         return $response;
     }
 }

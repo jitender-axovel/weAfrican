@@ -51,6 +51,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/message' ,'ApiController@getUserMessage');
 	Route::post('get/user/all/messages' ,'ApiController@getUserAllMessages');
 	Route::post('upload/business/banner', 'ApiController@uploadBusinessBanner');
+	Route::post('post/user/details', 'ApiController@postUserDetails');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');

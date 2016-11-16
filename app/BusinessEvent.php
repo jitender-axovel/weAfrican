@@ -106,6 +106,33 @@ class BusinessEvent extends Model
 
         if(isset($input['eventId'])){
 
+            if(isset($input['eventBanner']) && !empty($input['eventBanner']))
+            {
+                $data = $input['eventBanner'];
+
+                $img = str_replace('data:image/jpeg;base64,', '', $data);
+                $img = str_replace(' ', '+', $img);
+
+                $data = base64_decode($img);
+
+                $fileName = md5(uniqid(rand(), true));
+
+                $image = $fileName.'.'.'png';
+
+                $file = config('image.banner_image_path').'event/'.$image;
+
+                $success = file_put_contents($file, $data);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'event/thumbnails/small/'.$image;
+                shell_exec($command); 
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'/event/'.$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'event/thumbnails/medium/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'event/thumbnails/large/'.$image;
+                shell_exec($command);
+            }
+
             $input['user_id'] = $input['userId'];
             $input['business_id'] = $input['businessId'];   
             $input['event_category_id'] = $input['eventCategoryId'];
@@ -114,16 +141,46 @@ class BusinessEvent extends Model
             $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['startDateTime']));
             $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
 
-            if(isset($input['eventBanner'])) {
-                $input['banner'] =  $input['eventBanner'];
+            if(isset($image)) {
+                $input['banner'] =  $image;
             } 
             
             $event = array_intersect_key($input, BusinessEvent::$updatable);
            
             $event = BusinessEvent::where('id', $input['eventId'])->update($event);
 
-            return response()->json(['status' => 'success','response' => "Event updated successfully."]);
+            if($event)
+                return response()->json(['status' => 'success','response' => "Event updated successfully."]);
+            else
+                return response()->json(['status' => 'failure','response' => "Event could not updated successfully.Please try again."]);
         }else{
+
+            if(isset($input['eventBanner']) && !empty($input['eventBanner']))
+            {
+                $data = $input['eventBanner'];
+
+                $img = str_replace('data:image/jpeg;base64,', '', $data);
+                $img = str_replace(' ', '+', $img);
+
+                $data = base64_decode($img);
+
+                $fileName = md5(uniqid(rand(), true));
+
+                $image = $fileName.'.'.'png';
+
+                $file = config('image.banner_image_path').'event/'.$image;
+
+                $success = file_put_contents($file, $data);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'event/thumbnails/small/'.$image;
+                shell_exec($command); 
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'/event/'.$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'event/thumbnails/medium/'.$image;
+                shell_exec($command);
+
+                $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'event/thumbnails/large/'.$image;
+                shell_exec($command);
+            }
             
             $event = array_intersect_key($input, BusinessEvent::$updatable);
             $event['user_id'] = $input['userId'];
@@ -134,8 +191,8 @@ class BusinessEvent extends Model
             $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['startDateTime']));
             $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
 
-            if(isset($input['eventBanner'])) {
-                $input['banner'] =  $input['eventBanner'];
+            if(isset($image)) {
+                $input['banner'] =  $image;
             } 
             
             $event = BusinessEvent::create($event);
@@ -143,11 +200,10 @@ class BusinessEvent extends Model
 
             $event->slug = Helper::slug($event->name, $event->id);
 
-            if($event->save()){
+            if($event->save())
                 return response()->json(['status' => 'success','response' => $event]);
-            } else {
+            else 
                 return response()->json(['status' => 'failure','response' => 'System Error:Product could not be created .Please try later.']);
-            }
         }
     }
 
