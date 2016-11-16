@@ -232,7 +232,7 @@ class UserBusiness extends Model
             if($userbusiness)
                 return response()->json(['status' => 'success','response' => "Business updated successfully."]);
             else
-                return response()->json(['status' => 'success','response' => "Business can not updated successfully."]);
+                return response()->json(['status' => 'failure','response' => "Business can not updated successfully.Please try again"]);
         }
     }
 
