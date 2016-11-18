@@ -52,6 +52,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/all/messages' ,'ApiController@getUserAllMessages');
 	Route::post('upload/business/banner', 'ApiController@uploadBusinessBanner');
 	Route::post('post/user/details', 'ApiController@postUserDetails');
+	Route::post('get/user/details', 'ApiController@getUserDetails');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');
@@ -59,5 +60,6 @@ Route::group(['middleware' => ['api']], function (){
 	Route::get('get/business/states' ,'ApiController@getBusinessStates');
 	Route::get('get/cmsPages' ,'ApiController@getCmsPages');
 	Route::get('get/event-categories', 'ApiController@getEventCategories');
+
 
 });

@@ -180,4 +180,12 @@ class User extends Authenticatable
             return response()->json(['status' => 'exception','response' => "User not found!!"]);
         }
     }
+
+    public function apiGetUserDetails(Request $request)
+    {
+        $input = $request->input();
+        $user = $this->where('id',$input['userId'])->first();
+        return $user;
+    }
+
 }

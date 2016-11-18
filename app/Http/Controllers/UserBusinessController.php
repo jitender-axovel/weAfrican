@@ -80,7 +80,7 @@ class UserBusinessController extends Controller
         }
 
         $input = $request->input();
-        
+
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 

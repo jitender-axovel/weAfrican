@@ -910,4 +910,24 @@ class ApiController extends Controller
         $response = $this->user->apiPostUserDetails($request);
         return $response;
     }
+
+    /**
+     * Function: get user basic details
+     * Url: api/get/user/details
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function getUserDetails(Request $request)
+    {
+        $response = $this->user->apiGetUserDetails($request);
+        if($response)
+        {
+            return response()->json(['status' => 'success','response' => $response]);
+        } else {
+            return response()->json(['status' => 'exception','response' => 'could not find user details.']);
+        }
+    }
 }
