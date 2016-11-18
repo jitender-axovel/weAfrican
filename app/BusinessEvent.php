@@ -26,6 +26,8 @@ class BusinessEvent extends Model
     	'address' => 'required',
         'start_date_time' => 'required',
         'end_date_time' => 'required',
+        'city' => 'required',
+        'address' => 'required',
         'banner' => 'required|image|mimes:jpg,png,jpeg',
     	);
 
@@ -38,6 +40,8 @@ class BusinessEvent extends Model
         'address' => 'required',
         'start_date_time' => 'required',
         'end_date_time' => 'required',
+        'city' => 'required',
+        'address' => 'required',
         'banner' => 'image|mimes:jpg,png,jpeg',
     	);
 

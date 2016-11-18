@@ -30,7 +30,7 @@
                         </div>
                         <label for="country_code" class="col-md-2 control-label">Country Code:</label>
                         <div class="col-md-4">
-                            <input required type="number" min="0"
+                            <input required type="text"
                                 class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
                             @if ($errors->has('country_code'))
                                 <span class="help-block">
@@ -88,10 +88,12 @@
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div id="map"></div>
                     </div>
+                    <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
+                    <input type="hidden" id="longitude" class="form-control" name="longitude" value ="{{ old('longitude') }}">
                     <div class="form-group">
                         <label for="address" class="col-md-2 control-label">Address:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="address" value="{{ old('address') }}">
+                            <input type="text" id="address"class="form-control" name="address" value="{{ old('address') }}">
                             @if ($errors->has('address'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('address') }}</strong>
@@ -111,7 +113,7 @@
                     <div class="form-group">
                         <label for="state" class="col-md-2 control-label">State:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}">
+                            <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}" readonly="true">
                             @if ($errors->has('state'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('state') }}</strong>
@@ -120,7 +122,7 @@
                         </div>
                         <label for="country" class="col-md-2 control-label">Country:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}" >
+                            <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}" readonly="true">
                             @if ($errors->has('country'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('country') }}</strong>
@@ -131,7 +133,7 @@
                     <div class="form-group">
                         <label for="pin_code" class="col-md-2 required control-label">Pin Code: (format:110075)</label>
                         <div class="col-md-4">
-                            <input type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
+                            <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}" readonly="true">
                             @if ($errors->has('pin_code'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('pin_code') }}</strong>
@@ -251,21 +253,23 @@
 </div>
 @endsection
 @section('header-scripts')
+    <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
+    <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
     <script type="text/javascript">
+        var lat;
+        var long;
+        var ip = "{{$ip}}";
 
-        var latitude;
-        var longitude;
-        //var ip = {{$ip}};
-
-        jQuery.get('http://freegeoip.net/json/182.69.46.215', function (response){
-            //alert(response.latitude);
-            latitude = parseFloat(response.latitude);
-            longitude = parseFloat(response.longitude);
+        jQuery.get('http://freegeoip.net/json/'+ip, function (response){
+            //alert(response.longitude);
+            lat = parseFloat(response.latitude);
+            long = parseFloat(response.longitude);
         }, "jsonp");
     </script>
 @endsection
 @section('scripts')
 <script type="text/javascript">
+    //Image preview jQuery
     function readURL(input) {
       if (input.files && input.files[0]) {
           var reader = new FileReader();
@@ -279,78 +283,36 @@
     $("#business_logo").change(function(){
         readURL(this);
     });
-    //GeoLocation Map Script
-    var gecoder;
-    function initMap() {
-        setTimeout(function() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: latitude, lng: longitude},
-              zoom: 6
-            });
 
-            var infoWindow = new google.maps.InfoWindow({map: map});
-
-            var pos = {
-                lat: latitude,
-                lng: longitude
-            };
-            writeAddressName(pos);
-            /*var result = codeLatLng(latitude,longitude);
-            alert($result);*/
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
-            map.setCenter(pos);
-        }, 1000);
+    //GeoLocation Map Script(locationPicker with jquery)
+    function updateControls(addressComponents) {
+        $('#us5-street1').val(addressComponents.addressLine1);
+        $('#city').val(addressComponents.city);
+        $('#state').val(addressComponents.stateOrProvince);
+        $('#pin_code').val(addressComponents.postalCode);
+        $('#country').val(addressComponents.country);
     }
-
-    function writeAddressName(latLng) {
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-          "location": latLng
+    $('#map').locationpicker({
+        location: {
+            latitude: 28.6667,
+            longitude: 77.2167
         },
-        function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK){
-                console.log(results)
-                for (var i=0; i<results[0].address_components.length; i++) {
-                pincode = results[0].address_components[i];
-
-                    for (var b=0;b<results[0].address_components[i].types.length;b++) {
-
-                        //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
-
-                        if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                            //this is the object you are looking for
-                            city = results[0].address_components[i];
-                            document.getElementById("city").value = city.long_name;  
-                        }
-                        if (results[0].address_components[i].types[b] == "country") {
-                            //this is the object you are looking for
-                            country = results[0].address_components[i];
-                            document.getElementById("country").value = country.long_name;  
-                        }
-                        if (results[0].address_components[i].types[b] == "postal_code") {
-                            //this is the object you are looking for
-                            pinCode = results[0].address_components[i];
-                            document.getElementById("pin_code").value = pinCode.long_name;
-                            
-                        }
-                        if (results[0].address_components[i].types[b] == "locality") {
-                            //this is the object you are looking for
-                            state = results[0].address_components[i];
-                            document.getElementById("state").value = state.long_name;
-                            break;
-                        }
-                    }
-                }
-            } else
-                document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
-            });
+        radius: 100,
+        inputBinding: {
+                    latitudeInput: $('#latitude'),
+                    longitudeInput: $('#longitude'),
+                    radiusInput: $('#us3-radius'),
+                    locationNameInput: $('#address')
+        },
+        enableAutocomplete: true,
+        onchanged: function (currentLocation, radius, isMarkerDropped) {
+            var addressComponents = $(this).locationpicker('map').location.addressComponents;
+            updateControls(addressComponents);
+        },
+        oninitialized: function (component) {
+            var addressComponents = $(component).locationpicker('map').location.addressComponents;
+            updateControls(addressComponents);
         }
-
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
-        }
+    });
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&callback=initMap"></script>
 @endsection
