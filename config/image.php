@@ -19,7 +19,7 @@ return array(
     'banner_image_path' => str_replace('\\','/',public_path()). '/uploads/images/banners/',
     'product_image_path' => str_replace('\\','/',public_path()). '/uploads/images/products/',
     'document_path' => str_replace('\\','/',public_path()). '/uploads/documents/',
-    'user_image_path' => str_replace('\\','/',public_path()). '/uploads/user_images/',
+    'user_image_path' => str_replace('\\','/',public_path()). '/uploads/images/user_images/',
 
     /*
      |.....................................................................
