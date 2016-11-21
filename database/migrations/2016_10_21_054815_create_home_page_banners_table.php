@@ -25,8 +25,8 @@ class CreateHomePageBannersTable extends Migration
             $table->string('country');
             $table->string('state');
             $table->string('city');
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
+            $table->decimal('latitude', 9, 6)->nullable();
+            $table->decimal('longitude', 9, 6)->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();

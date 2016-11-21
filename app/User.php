@@ -166,6 +166,7 @@ class User extends Authenticatable
             $user['slug'] = Helper::slug($input['fullName'], $input['userId']);
 
             $user['full_name'] = $input['fullName'];
+            
             if(isset($image))
                 $user['image'] = $image;
 
