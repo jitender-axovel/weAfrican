@@ -34,8 +34,8 @@ class CreateBusinessEventsTable extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->integer('pin_code')->nullable();
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
+            $table->decimal('latitude', 9, 6)->nullable();
+            $table->decimal('longitude', 9, 6)->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();

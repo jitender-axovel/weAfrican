@@ -41,8 +41,8 @@ class CreateUserBusinessesTable extends Migration
             $table->boolean('is_business_proof_validate')->default(false);
             $table->boolean('is_agree_to_terms');
             $table->boolean('is_blocked')->default(false);
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
+            $table->decimal('latitude', 9, 6)->nullable();
+            $table->decimal('longitude', 9, 6)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
