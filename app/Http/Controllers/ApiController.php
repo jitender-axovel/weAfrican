@@ -396,9 +396,9 @@ class ApiController extends Controller
         $response = DB::table('business_reviews')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'review' => $input['review']]);
 
         if($response)
-            return response()->json(['status' => 'success','response' => $response]);
+            return response()->json(['status' => 'success','response' => 'Review Posted']);
          else
-            return response()->json(['status' => 'success','response' => 'User review could not saved.Please try again.']);
+            return response()->json(['status' => 'success','response' => 'Unable to post review.Please try again.']);
     }
 
     /**
