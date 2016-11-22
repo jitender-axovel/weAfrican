@@ -41,7 +41,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/fcm/id' ,'ApiController@postFcmId');
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
 	Route::post('post/upload/documents' ,'ApiController@postUploadDocuments');
-	Route::post('get/business/reviews/{businessId}' ,'ApiController@getBusinessReviews');
+	Route::post('get/business/reviews' ,'ApiController@getBusinessReviews');
 	Route::post('get/user/business/details' ,'ApiController@getUserBusinessDetails');	
 	Route::post('get/searchBusinesses' ,'ApiController@getSearchBusinesses');
 	Route::post('get/searchEvents' ,'ApiController@getSearchEvents');
