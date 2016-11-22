@@ -378,20 +378,27 @@ class ApiController extends Controller
     public function postBusinessReviews(Request $request)
     {
         $input = $request->input();
-        if($input == NULL)
-        {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+
+        $validator = Validator::make($input, [
+            'userId' => 'required',
+            'businessId' => 'required',
+            'review' => 'required',
+        ]);
+
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
         }
-        $check = DB::table('business_reviews')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
-        if($check)
-        {   
-            return response()->json(['status' => 'success','response' => 'User already reviewed on this business']);
 
-        } else {
+        $response = DB::table('business_reviews')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'review' => $input['review']]);
 
-            DB::table('business_reviews')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'review' => $input['review']]);
-            return response()->json(['status' => 'success','response' => 'User review save successfully.']);
-       }
+        if($response)
+            return response()->json(['status' => 'success','response' => $response]);
+         else
+            return response()->json(['status' => 'success','response' => 'User review could not saved.Please try again.']);
     }
 
     /**
