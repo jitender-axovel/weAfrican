@@ -29,7 +29,7 @@ class CreateUserBusinessesTable extends Migration
             $table->string('country')->nullable();
             $table->integer('pin_code')->nullable();
             $table->bigInteger('mobile_number');
-            $table->bigInteger('secondary_phone_number')->nullable();
+            $table->string('secondary_phone_number')->nullable();
             $table->string('email');
             $table->string('website')->nullable();
             $table->string('working_hours')->nullable();

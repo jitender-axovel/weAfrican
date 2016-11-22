@@ -652,12 +652,13 @@ class ApiController extends Controller
      * Url: api/get/business/reviews/{businessId}
      * Request type: Post
      *
-     * @param  int $businessId
+     * @param   \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBusinessReviews($businessId)
+    public function getBusinessReviews(Request $request)
     {  
-        $response = $this->businessReviews->apiGetBusinessReview($businessId);
+        $input = $request->input();
+        $response = $this->businessReviews->apiGetBusinessReview($input);
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else

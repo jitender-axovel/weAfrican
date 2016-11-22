@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->foreign('user_role_id')->references('id')->on('user_roles');
             $table->unsignedInteger('country_code')->nullable();
             $table->unsignedBigInteger('mobile_number');
-            $table->unsignedInteger('otp')->nullable();
+            $table->unsignedInteger('otp')->default('1234')->nullable();
             $table->string('password')->nullable();
             $table->boolean('is_blocked')->default(0);
             $table->boolean('is_notify')->default(false);
