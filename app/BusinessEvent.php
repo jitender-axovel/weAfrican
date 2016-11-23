@@ -137,13 +137,18 @@ class BusinessEvent extends Model
                 shell_exec($command);
             }
 
+            $start = $input['startDateTime'];
+            $startDate = str_replace('/', '-', $start);
+            $end = $input['endDateTime'];
+            $endDate = str_replace('/', '-', $end);
+
             $input['user_id'] = $input['userId'];
             $input['business_id'] = $input['businessId'];   
             $input['event_category_id'] = $input['eventCategoryId'];
             $input['organizer_name'] = $input['organizerName'];
             $input['pin_code'] = $input['pincode'];
-            $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['startDateTime']));
-            $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
+            $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($startDate));
+            $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($endDate));
 
             if(isset($image)) {
                 $input['banner'] =  $image;
@@ -186,14 +191,20 @@ class BusinessEvent extends Model
                 shell_exec($command);
             }
             
+            $start = $input['startDateTime'];
+            $startDate = str_replace('/', '-', $start);
+            $end = $input['endDateTime'];
+            $endDate = str_replace('/', '-', $end);
+
             $event = array_intersect_key($input, BusinessEvent::$updatable);
             $event['user_id'] = $input['userId'];
             $event['business_id'] = $input['businessId'];
             $event['event_category_id'] = $input['eventCategoryId'];
             $event['organizer_name'] = $input['organizerName'];
             $event['pin_code'] = $input['pincode'];
-            $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['startDateTime']));
-            $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
+
+            $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($startDate));
+            $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($endDate));
 
             if(isset($image)) {
                 $event['banner'] =  $image;
