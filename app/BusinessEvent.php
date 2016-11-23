@@ -196,7 +196,7 @@ class BusinessEvent extends Model
             $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['endDateTime']));
 
             if(isset($image)) {
-                $input['banner'] =  $image;
+                $event['banner'] =  $image;
             } 
             
             $event = BusinessEvent::create($event);
