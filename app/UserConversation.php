@@ -32,11 +32,47 @@ class UserConversation extends Model
 
     public function apiGetUserMessage($input)
     {
-    	return $this->whereSenderId($input['senderId'])->whereReceiverId($input['receiverId'])->orderBy('id','desc')->first();
+    	return $this->whereSenderId($input['senderId'])->whereReceiverId($input['receiverId'])->where('id', '>', $input['id'])->orderBy('id','asc')->get();
     }
 
     public function apiGetUserAllMessages($input)
     {
     	return  $this->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->skip($input['index'])->limit($input['limit'])->get();
+    }
+
+    public function apiGetChatUsers($input)
+    {
+        $senderIds = $this->where('receiver_id', $input['userID'])->pluck('sender_id', 'id')->toArray();
+        $receiverIds = $this->where('sender_id', $input['userID'])->pluck('receiver_id', 'id')->toArray();
+
+        $userIds = array_unique (array_merge ($senderIds, $receiverIds));
+
+        $response = array();
+        $object = array();
+
+        foreach ($userIds as $key => $id) {
+            $message = $this->where(['sender_id' => $id, 'receiver_id' => $input['userID']])->orWhere(['sender_id' => $input['userID'], 'receiver_id' => $id])->orderBy('id', 'DESC')->first();
+
+            $object['message'] = $message->message;
+            if ($message->sender_id == $input['userID']) {
+                $object['sender_id'] = $message->sender->id;
+                $object['receiver_id'] = $message->receiver->id;
+                $object['userName'] = $message->receiver->full_name;
+                $object['avatar'] = $message->receiver->image;
+            } else {
+                $object['sender_id'] = $message->sender->id; 
+                $object['receiver_id'] = $message->receiver->id;
+                $object['userName'] = $message->sender->full_name;
+                $object['avatar'] = $message->sender->image;
+            }
+
+            $response[] = $object;
+        }
+        return $response;
+    }
+
+    public function apiGetPreviousMessages($input)
+    {
+        return  $this->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->where('id', '<', $input['index'])->limit($input['limit'])->get();
     }
 }
