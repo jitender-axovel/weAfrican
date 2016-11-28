@@ -54,6 +54,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/details', 'ApiController@postUserDetails');
 	Route::post('get/user/details', 'ApiController@getUserDetails');
 	Route::post('get/chat/users' , 'ApiController@getChatUsers');
+	Route::post('get/previous/messages', 'ApiController@getPreviousMessages');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');

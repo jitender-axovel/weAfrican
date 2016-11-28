@@ -957,4 +957,23 @@ class ApiController extends Controller
         else
             return response()->json(['status' => 'exception', 'response' => 'Could not find any chat user.']);
     }
+
+      /**
+     * Function: to get previous messages 
+     * Url: api/get/previous/messages
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPreviousMessages(Request $request)
+    {
+        $input = $request->input();
+
+        $response = $this->userConversation->apiGetPreviousMessages($input);
+        if ($response)
+            return response()->json(['status' => 'success', 'response' => $response]);
+        else
+            return response()->json(['status' => 'exception', 'response' => 'Could not find any chat user.']);
+    }
 }

@@ -55,13 +55,15 @@ class UserConversation extends Model
 
             $object['message'] = $message->message;
             if ($message->sender_id == $input['userID']) {
+                $object['sender_id'] = $message->sender->id;
+                $object['receiver_id'] = $message->receiver->id;
                 $object['userName'] = $message->receiver->full_name;
                 $object['avatar'] = $message->receiver->image;
-                $object['role'] = 'sender';
             } else {
+                $object['sender_id'] = $message->sender->id; 
+                $object['receiver_id'] = $message->receiver->id;
                 $object['userName'] = $message->sender->full_name;
                 $object['avatar'] = $message->sender->image;
-                $object['role'] = 'receiver';
             }
 
             $response[] = $object;
@@ -69,5 +71,8 @@ class UserConversation extends Model
         return $response;
     }
 
-   
+    public function apiGetPreviousMessages($input)
+    {
+        return  $this->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->where('id', '<', $input['index'])->limit($input['limit'])->get();
+    }
 }
