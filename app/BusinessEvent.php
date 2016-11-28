@@ -13,9 +13,9 @@ class BusinessEvent extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'business_id', 'event_category_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner', 'city', 'state', 'country', 'pin_code', 'latitude', 'longitude' ];
+    protected $fillable = ['user_id', 'business_id', 'event_category_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner', 'city', 'state', 'country', 'pin_code', 'latitude', 'longitude', 'start_date', 'end_date' ];
 
-    public static $updatable = ['user_id' => "", 'business_id' => "", 'event_category_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'latitude' => "", 'longitude' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "", 'event_category_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'latitude' => "", 'longitude' => "", 'start_date' => "", 'end_date' => ""];
 
     public static $validater = array(
         'event_category_id' => 'required',
@@ -137,18 +137,13 @@ class BusinessEvent extends Model
                 shell_exec($command);
             }
 
-            $start = $input['startDateTime'];
-            $startDate = str_replace('/', '-', $start);
-            $end = $input['endDateTime'];
-            $endDate = str_replace('/', '-', $end);
-
             $input['user_id'] = $input['userId'];
             $input['business_id'] = $input['businessId'];   
             $input['event_category_id'] = $input['eventCategoryId'];
             $input['organizer_name'] = $input['organizerName'];
             $input['pin_code'] = $input['pincode'];
-            $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($startDate));
-            $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($endDate));
+            $input['start_date'] = $input['startDateTime'];
+            $input['end_date'] = $input['endDateTime'];
 
             if(isset($image)) {
                 $input['banner'] =  $image;
@@ -190,11 +185,6 @@ class BusinessEvent extends Model
                 $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'event/thumbnails/large/'.$image;
                 shell_exec($command);
             }
-            
-            $start = $input['startDateTime'];
-            $startDate = str_replace('/', '-', $start);
-            $end = $input['endDateTime'];
-            $endDate = str_replace('/', '-', $end);
 
             $event = array_intersect_key($input, BusinessEvent::$updatable);
             $event['user_id'] = $input['userId'];
@@ -203,8 +193,8 @@ class BusinessEvent extends Model
             $event['organizer_name'] = $input['organizerName'];
             $event['pin_code'] = $input['pincode'];
 
-            $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($startDate));
-            $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($endDate));
+            $event['start_date'] = $input['startDateTime'];
+            $event['end_date'] = $input['endDateTime'];
 
             if(isset($image)) {
                 $event['banner'] =  $image;
