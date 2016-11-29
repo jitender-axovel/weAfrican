@@ -592,15 +592,18 @@ class ApiController extends Controller
     public function postFcmId(Request $request)
     {  
         $input = $request->input();
-        
+
+        if ($input['fcmRegId'] == DB::table('fcm_users')->where('user_id', $input['userId'])->pluck('fcm_reg_id')->first()) {
+            return response()->json(['status' => 'success','response' =>'Fcm registration id updated successfully.']);
+        }
+
         $check = DB::table('fcm_users')->where('user_id', $input['userId'])->pluck('user_id')->first();
         
         if ($check){
-           
-            $response = DB::table('fcm_users')->where('user_id', $check)->update(['fcm_reg_id' => $input['fcmRegId'], 'user_role_id' => $input['roleId']]);
-           
+            $response = DB::table('fcm_users')->where('user_id', $input['userId'])->update(['fcm_reg_id' => $input['fcmRegId']]);
+
             if ($response)
-                return response()->json(['status' => 'success','response' =>'This Fcm registration id updated successfully.']);
+                return response()->json(['status' => 'success','response' =>'Fcm registration id updated successfully.']);
             else
                 return response()->json(['status' => 'failure','response' =>'System Error:Unable to update Fcm registration id for this user.']);
 
