@@ -593,11 +593,12 @@ class ApiController extends Controller
     {  
         $input = $request->input();
         
-        $check = DB::table('fcm_users')->where('user_id', $input['userId'])->first();
+        $check = DB::table('fcm_users')->where('user_id', $input['userId'])->pluck('user_id')->first();
         
-        if($check){
-            $response = DB::table('fcm_users')->where('id', $input['userId'])->update(['fcm_reg_id' => $input['fcmRegId'], 'user_role_id' => $input['roleId']]);
-
+        if ($check){
+           
+            $response = DB::table('fcm_users')->where('user_id', $check)->update(['fcm_reg_id' => $input['fcmRegId'], 'user_role_id' => $roleId]);
+           
             if ($response)
                 return response()->json(['status' => 'success','response' =>'This Fcm registration id updated successfully.']);
             else
