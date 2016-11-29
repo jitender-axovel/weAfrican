@@ -592,17 +592,20 @@ class ApiController extends Controller
     public function postFcmId(Request $request)
     {  
         $input = $request->input();
-        if($input == NULL){
-            return response()->json(['status' => 'exception','response' =>'Input parameters are missing.']);
-        }
         
-        $response = DB::table('fcm_users')->where('user_id', $input['userId'])->where('fcm_reg_id', $input['fcmRegId'])->first();
+        $check = DB::table('fcm_users')->where('user_id', $input['userId'])->first();
         
-        if($response){
-            return response()->json(['status' => 'success','response' =>'This Fcm registration id for this user already exist in database.']);
-        }
-        else{
-            $response = DB::table('fcm_users')->insert(['user_id' => $input['userId'], 'fcm_reg_id' => $input['fcmRegId']]);
+        if($check){
+            $response = $DB::table('fcm_users')->where('id', $input['userId'])->update(['fcm_reg_id' => $input['fcmRegId']]);
+
+            if ($response)
+                return response()->json(['status' => 'success','response' =>'This Fcm registration id updated successfully.']);
+            else
+                return response()->json(['status' => 'failure','response' =>'System Error:Unable to update Fcm registration id for this user.']);
+
+        } else {
+            $response = DB::table('fcm_users')->insert(['user_id' => $input['userId'], 'user_role_id' => $input['roleId'], 'fcm_reg_id' => $input['fcmRegId']]);
+
             if($response)
                 return response()->json(['status' => 'success','response' =>' Fcm registration id for this user save successfully.']);
             else
