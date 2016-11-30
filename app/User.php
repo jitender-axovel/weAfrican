@@ -63,8 +63,12 @@ class User extends Authenticatable
                 'countryCode' => 'required',
             ]);
 
-            if ($validator->fails()) {
-               return json_encode(['status' => 'error','response' => 'All fields are required.']);  
+            if($validator->fails()){
+                if(count($validator->errors()) <= 1){
+                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+                } else{
+                    return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+                }
             }
            
             $user['full_name'] = $request->input('fullName');
@@ -96,7 +100,7 @@ class User extends Authenticatable
                 return response()->json(['status' => 'success','response' => Auth::user()]);
             }
             else{
-                return response()->json(['status' => 'failure', 'response' => 'No data found !!!']);
+                return response()->json(['status' => 'failure', 'response' => 'Can not login using this mobile number!!!']);
             }
         }
     }
