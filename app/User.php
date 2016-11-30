@@ -86,14 +86,17 @@ class User extends Authenticatable
             }
         } else{
 
-            $user = $this->where('mobile_number',$request->input('mobileNumber'))->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
+            $user->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
 
-            if (Auth::attempt(['mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 0])) {
+            if ($user->is_blocked) {
                 // Authentication passed...
-                return response()->json(['status' => 'success','response' => Auth::user()]);
-                
-            } else if (Auth::attempt(['full_name' => $request->input('fullName'), 'mobile_number' => $request->input('mobileNumber'), 'password' => $request->input('mobileNumber'), 'is_blocked' => 1])){
                 return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
+                
+            } else if (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
+                return response()->json(['status' => 'success','response' => Auth::user()]);
+            }
+            else{
+                return response()->json(['status' => 'failure', 'response' => 'No data found !!!']);
             }
         }
     }
