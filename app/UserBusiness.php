@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use Validator;
+use App\User;
 use Auth;
 use DB;
 
@@ -100,139 +101,146 @@ class UserBusiness extends Model
     {
         $input = $request->input();
 
-        $user = $this->where('user_id',$input['userId'])->first();
+        $check = User::where('id', $input['userId'])->first();
 
-        $validator = Validator::make($input, [
-                'userId' => 'required',
-                'categoryId' => 'required',
-                'title' => 'required',
-                'keywords' =>'required',
-                'email' => 'required|email|max:255',
-                'pinCode' => 'required|max:10',
-                'country' => 'string',
-                'state' => 'string',
-                'city' => 'string',
-                'aboutUs' => 'string',
-                'address' => 'string',
-                'website' => 'string',
-                'secondaryPhoneNumber' => 'numeric',
-                'workingHours' => 'required|string',
-                'mobileNumber' => 'required',
-                'latitude' => 'required',
-                'longitude' => 'required',
-        ]);
+        if ($check){
 
-        if($validator->fails()){
-            if(count($validator->errors()) <= 1){
-                    return response()->json(['status' => 'exception','response' => $validator->errors()]);   
-            } else{
-                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
-            }
-        }
+            $user = $this->where('user_id',$input['userId'])->first();
 
-        if(!$user){
+            $validator = Validator::make($input, [
+                    'userId' => 'required',
+                    'categoryId' => 'required',
+                    'title' => 'required',
+                    'keywords' =>'required',
+                    'email' => 'required|email|max:255',
+                    'pinCode' => 'required|max:10',
+                    'country' => 'string',
+                    'state' => 'string',
+                    'city' => 'string',
+                    'aboutUs' => 'string',
+                    'address' => 'string',
+                    'website' => 'string',
+                    'secondaryPhoneNumber' => 'numeric',
+                    'workingHours' => 'required|string',
+                    'mobileNumber' => 'required|numeric',
+                    'latitude' => 'required',
+                    'longitude' => 'required',
+            ]);
 
-            if(isset($input['businessLogo']) && !empty($input['businessLogo']))
-            {
-                $data = $input['businessLogo'];
-
-                $img = str_replace('data:image/jpeg;base64,', '', $data);
-                $img = str_replace(' ', '+', $img);
-
-                $data = base64_decode($img);
-
-                $fileName = md5(uniqid(rand(), true));
-
-                $image = $fileName.'.'.'png';
-
-                $file = config('image.logo_image_path').$image;
-
-                $success = file_put_contents($file, $data);
-                    
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                shell_exec($command);
-
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
-                shell_exec($command);
-
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
-                shell_exec($command);
-            }
-            
-            $check =User::where('id',$input['userId'])->update(['user_role_id' => 3]);
-            $user = User::where('id',$input['userId'])->first();
-            $business = array_intersect_key($input, UserBusiness::$updatable);
-
-            $business['user_id'] = $input['userId'];
-            $business['business_id']= substr($user->full_name,0,3).rand(0,999);
-            $business['bussiness_category_id'] = $input['categoryId'];
-            $business['pin_code'] = $input['pinCode'];
-            $business['mobile_number'] = $input['mobileNumber'];
-            $business['working_hours'] = $input['workingHours'];
-            $business['is_agree_to_terms'] = 1;
-            $business['about_us'] = $input['aboutUs'];
-            $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
-
-            if(isset($image)){
-                $business['business_logo'] = $image;
+            if($validator->fails()){
+                if(count($validator->errors()) <= 1){
+                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+                } else{
+                    return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+                }
             }
 
-            $business = UserBusiness::create($business);
-            $business->save(); 
-            if($business){
-                return response()->json(['status' => 'success','response' => $business]);
+            if(!$user){
+
+                if(isset($input['businessLogo']) && !empty($input['businessLogo']))
+                {
+                    $data = $input['businessLogo'];
+
+                    $img = str_replace('data:image/jpeg;base64,', '', $data);
+                    $img = str_replace(' ', '+', $img);
+
+                    $data = base64_decode($img);
+
+                    $fileName = md5(uniqid(rand(), true));
+
+                    $image = $fileName.'.'.'png';
+
+                    $file = config('image.logo_image_path').$image;
+
+                    $success = file_put_contents($file, $data);
+                        
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
+                    shell_exec($command);
+                }
+                
+                $check =User::where('id',$input['userId'])->update(['user_role_id' => 3]);
+                $user = User::where('id',$input['userId'])->first();
+                $business = array_intersect_key($input, UserBusiness::$updatable);
+
+                $business['user_id'] = $input['userId'];
+                $business['business_id']= substr($user->full_name,0,3).rand(0,999);
+                $business['bussiness_category_id'] = $input['categoryId'];
+                $business['pin_code'] = $input['pinCode'];
+                $business['mobile_number'] = $input['mobileNumber'];
+                $business['working_hours'] = $input['workingHours'];
+                $business['is_agree_to_terms'] = 1;
+                $business['about_us'] = $input['aboutUs'];
+                $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+
+                if(isset($image)){
+                    $business['business_logo'] = $image;
+                }
+
+                $business = UserBusiness::create($business);
+                $business->save(); 
+                if($business){
+                    return response()->json(['status' => 'success','response' => $business]);
+                } else {
+                    return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
+                }
             } else {
-                return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
+
+                if(isset($input['businessLogo']) && !empty($input['businessLogo']))
+                {
+                    $data = $input['businessLogo'];
+
+                    $img = str_replace('data:image/jpeg;base64,', '', $data);
+                    $img = str_replace(' ', '+', $img);
+
+                    $data = base64_decode($img);
+
+                    $fileName = md5(uniqid(rand(), true));
+
+                    $image = $fileName.'.'.'png';
+
+                    $file = config('image.logo_image_path').$image;
+
+                    $success = file_put_contents($file, $data);
+                        
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
+                    shell_exec($command);
+                }
+
+                $input['user_id'] = $input['userId'];
+                $input['bussiness_category_id'] = $input['categoryId'];
+                $input['pin_code'] = $input['pinCode'];
+                $input['mobile_number'] = $input['mobileNumber'];
+                $input['working_hours'] = $input['workingHours'];
+                $input['about_us'] = $input['aboutUs'];
+                $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+
+                if(isset($image)){
+                    $input['business_logo'] = $image;
+                }
+        
+                $business = array_intersect_key($input, UserBusiness::$updatable);
+
+                $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
+              
+                if($userbusiness)
+                    return response()->json(['status' => 'success','response' => "Business updated successfully."]);
+                else
+                    return response()->json(['status' => 'failure','response' => "Business can not updated successfully.Please try again"]);
             }
         } else {
-
-            if(isset($input['businessLogo']) && !empty($input['businessLogo']))
-            {
-                $data = $input['businessLogo'];
-
-                $img = str_replace('data:image/jpeg;base64,', '', $data);
-                $img = str_replace(' ', '+', $img);
-
-                $data = base64_decode($img);
-
-                $fileName = md5(uniqid(rand(), true));
-
-                $image = $fileName.'.'.'png';
-
-                $file = config('image.logo_image_path').$image;
-
-                $success = file_put_contents($file, $data);
-                    
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                shell_exec($command);
-
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
-                shell_exec($command);
-
-                $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
-                shell_exec($command);
-            }
-
-            $input['user_id'] = $input['userId'];
-            $input['bussiness_category_id'] = $input['categoryId'];
-            $input['pin_code'] = $input['pinCode'];
-            $input['mobile_number'] = $input['mobileNumber'];
-            $input['working_hours'] = $input['workingHours'];
-            $input['about_us'] = $input['aboutUs'];
-            $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
-
-            if(isset($image)){
-                $input['business_logo'] = $image;
-            }
-    
-            $business = array_intersect_key($input, UserBusiness::$updatable);
-
-            $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
-          
-            if($userbusiness)
-                return response()->json(['status' => 'success','response' => "Business updated successfully."]);
-            else
-                return response()->json(['status' => 'failure','response' => "Business can not updated successfully.Please try again"]);
+            return response()->json(['status' => 'exception','response' => "User Does not exist."]);
         }
     }
 
