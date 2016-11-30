@@ -175,8 +175,8 @@ class UserBusiness extends Model
                 $business['mobile_number'] = $input['mobileNumber'];
                 $business['working_hours'] = $input['workingHours'];
                 $business['is_agree_to_terms'] = 1;
-                $business['about_us'] = $input['aboutUs'];
-                $business['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+                $business['about_us'] = isset($input['aboutUs']) ? $input['aboutUs'] : '';
+                $business['secondary_phone_number'] = isset($input['secondaryPhoneNumber']) ? $input['secondaryPhoneNumber'] : '';
 
                 if(isset($image)){
                     $business['business_logo'] = $image;
