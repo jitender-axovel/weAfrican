@@ -42,8 +42,8 @@ class UserConversation extends Model
 
     public function apiGetChatUsers($input)
     {
-        $senderIds = $this->where('receiver_id', $input['userID'])->pluck('sender_id', 'id')->toArray();
-        $receiverIds = $this->where('sender_id', $input['userID'])->pluck('receiver_id', 'id')->toArray();
+        $senderIds = $this->where('receiver_id', $input['userId'])->pluck('sender_id', 'id')->toArray();
+        $receiverIds = $this->where('sender_id', $input['userId'])->pluck('receiver_id', 'id')->toArray();
 
         $userIds = array_unique (array_merge ($senderIds, $receiverIds));
 
@@ -51,10 +51,10 @@ class UserConversation extends Model
         $object = array();
 
         foreach ($userIds as $key => $id) {
-            $message = $this->where(['sender_id' => $id, 'receiver_id' => $input['userID']])->orWhere(['sender_id' => $input['userID'], 'receiver_id' => $id])->orderBy('id', 'DESC')->first();
+            $message = $this->where(['sender_id' => $id, 'receiver_id' => $input['userId']])->orWhere(['sender_id' => $input['userId'], 'receiver_id' => $id])->orderBy('id', 'DESC')->first();
 
             $object['message'] = $message->message;
-            if ($message->sender_id == $input['userID']) {
+            if ($message->sender_id == $input['userId']) {
                 $object['sender_id'] = $message->sender->id;
                 $object['receiver_id'] = $message->receiver->id;
                 $object['userName'] = $message->receiver->full_name;
