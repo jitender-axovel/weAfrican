@@ -37,7 +37,7 @@ class UserConversation extends Model
 
     public function apiGetUserAllMessages($input)
     {
-    	return  $this->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->skip($input['index'])->limit($input['limit'])->get();
+    	return  $this->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->orderBy('created_at', 'desc')->skip($input['index'])->limit($input['limit'])->get();
     }
 
     public function apiGetChatUsers($input)
