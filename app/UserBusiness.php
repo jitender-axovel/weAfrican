@@ -101,7 +101,7 @@ class UserBusiness extends Model
     {
         $input = $request->input();
 
-        $check = User::where('id', $input['userId'])->first();
+        $check = User::where('id', $input['userId'])->whereNotIn('user_role_id', ['1,2'])->first();
 
         if ($check){
 
