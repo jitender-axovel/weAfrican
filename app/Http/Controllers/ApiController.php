@@ -888,7 +888,7 @@ class ApiController extends Controller
         $input = $request->input();
         $response = $this->userConversation->apiGetUserAllMessages($input);
 
-        if($response)
+        if ($response != NULL && $response->count())
         {
             return response()->json(['status' => 'success','response' => $response]);
         } else {
