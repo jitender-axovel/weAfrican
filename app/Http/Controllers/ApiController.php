@@ -848,9 +848,9 @@ class ApiController extends Controller
         $input = $request->input();
         $response = $this->userConversation->apiPostUserMessage($input);
 
-        if($response)
+        if ($response != NULL && $response->count())
         {
-            return response()->json(['status' => 'success','response' => 'True']);
+            return response()->json(['status' => 'success','response' => $response]);
         } else {
             return response()->json(['status' => 'exception','response' => 'False']);
         }
@@ -868,7 +868,7 @@ class ApiController extends Controller
         $input = $request->input();
         $response = $this->userConversation->apiGetUserMessage($input);
 
-        if($response)
+        if ($response != NULL && $response->count())
         {
             return response()->json(['status' => 'success','response' => $response]);
         } else {
@@ -981,6 +981,6 @@ class ApiController extends Controller
         if ($response)
             return response()->json(['status' => 'success', 'response' => $response]);
         else
-            return response()->json(['status' => 'exception', 'response' => 'Could not find any chat user.']);
+            return response()->json(['status' => 'exception', 'response' => 'Could not find any messages.']);
     }
 }
