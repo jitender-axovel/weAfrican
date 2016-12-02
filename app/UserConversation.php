@@ -55,7 +55,7 @@ class UserConversation extends Model
 
             $object['message'] = $message->message;
             if ($message->sender_id == $input['userId']) {
-                $object['friend_id'] =$$message->receiver->id;
+                $object['friend_id'] = $message->receiver->id;
                 $object['sender_id'] = $message->sender->id;
                 $object['receiver_id'] = $message->receiver->id;
                 $object['userName'] = $message->receiver->full_name;
