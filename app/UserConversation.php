@@ -75,6 +75,6 @@ class UserConversation extends Model
 
     public function apiGetPreviousMessages($input)
     {
-        return  $this->where('id', '<', $input['index'])->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->limit($input['limit'])->orderBy('id', 'desc')->get();
+        return  $this->where('id', '<', $input['index'])->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->orderBy('id', 'desc')->limit($input['limit'])->get();
     }
 }
