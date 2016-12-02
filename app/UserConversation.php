@@ -61,7 +61,7 @@ class UserConversation extends Model
                 $object['userName'] = $message->receiver->full_name;
                 $object['avatar'] = $message->receiver->image;
             } else {
-                $object['friend_id'] = $message-> $message->sender->id;
+                $object['friend_id'] = $message->sender->id;
                 $object['sender_id'] = $message->sender->id; 
                 $object['receiver_id'] = $message->receiver->id;
                 $object['userName'] = $message->sender->full_name;
