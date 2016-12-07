@@ -56,9 +56,9 @@
         <li>
             <a href="{{url('admin/app-feedback')}}">App feedbacks</a>
         </li>
-       <!--  <li>
+        <li>
             <a href="{{url('admin/fcm-notification')}}">Fcm Notification</a>
-        </li> -->
+        </li>
         <li>
             <a href="{{ url('admin/cms') }}">Manage CMS Pages</a>
         </li>
