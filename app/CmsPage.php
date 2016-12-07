@@ -8,9 +8,9 @@ class CmsPage extends Model
 {
     protected $fillable = ['title', 'slug', 'content', 'is_show_on_mobile'];
 
-    public function apiGetCmsPages()
+    public function apiGetCmsPages($slug)
     {
-    	$cmsPages = $this->whereIsShowOnMobile('1')->get();
+    	$cmsPages = $this->whereSlug($slug)->first();
     	return $cmsPages;
     }
 }

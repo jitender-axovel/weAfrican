@@ -788,9 +788,9 @@ class ApiController extends Controller
      * @param  void
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCmsPages()
+    public function getCmsPages($slug)
     {  
-        $response = $this->cmsPages->apiGetCmsPages();
+        $response = $this->cmsPages->apiGetCmsPages($slug);
         if($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
