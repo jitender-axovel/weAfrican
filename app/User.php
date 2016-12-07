@@ -1,12 +1,13 @@
 <?php
 namespace App;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
-
 use Auth;
 use Validator;
+use App\UserBusiness;
 use App\Helper;
 
 class User extends Authenticatable
@@ -53,7 +54,7 @@ class User extends Authenticatable
             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
         }
 
-        $user = $this->where('mobile_number', $request->input('mobileNumber'))->first();
+        $user = $this->where('mobile_number', $request->input('mobileNumber'))->whereIn('user_role_id',[3,4])->first();
 
         if (!$user){
 
@@ -97,7 +98,15 @@ class User extends Authenticatable
                 return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
                 
             } else if (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
-                return response()->json(['status' => 'success','response' => Auth::user()]);
+
+                $checkBusiness = UserBusiness::whereUserId($user->id)->first();
+                
+                $response = Auth::user();
+
+                if ($checkBusiness)
+                    $response['businessId'] = $checkBusiness->id;
+                
+;                return response()->json(['status' => 'success','response' => $response]);
             }
             else{
                 return response()->json(['status' => 'failure', 'response' => 'Can not login using this mobile number!!!']);
