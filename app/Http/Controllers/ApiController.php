@@ -311,32 +311,36 @@ class ApiController extends Controller
     public function postBusinessLikes(Request $request)
     {   
         $input = $request->input();
-        if($input == NULL)
-        {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
-        }
 
         $check = DB::table('business_likes')->where('user_id',$input['userId'])->where('business_id',$input['businessId'])->pluck('id')->first();
-        if($check)
+
+        if ($check)
         {
-            if(isset($input['like'])!= NULL){
-                DB::table('business_likes')->where('id',$check)->update(['is_like' => $input['like'], 'is_dislike' => 0 ]);
-                return response()->json(['status' => 'success','response' => 'User updated like status for business']);
+            if (isset($input['like']))
+            {
+                DB::table('business_likes')->where('id',$check)->update(['is_like' => $input['like']]);
+                return response()->json(['status' => 'success','response' => 1]);
 
             } else {
-                DB::table('business_likes')->where('id',$check)->update(['is_like' => 0, 'is_dislike' => $input['dislike'] ]);
-                return response()->json(['status' => 'success','response' => 'User updated dislike status for business']);
+
+                DB::table('business_likes')->where('id',$check)->update(['is_dislike' => $input['dislike']]);
+                return response()->json(['status' => 'success','response' => 1]);
             }
-        } else{
-            if(isset($input['like'])!= NULL){
-                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_like' => $input['like'], 'is_dislike' => 0 ]);
-                return response()->json(['status' => 'success','response' => 'User like business']);
+
+        } else {
+
+            if (isset($input['like']))
+            {
+                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_like' => $input['like']]);
+                return response()->json(['status' => 'success','response' => 1]);
+
             } else {
-                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_like' => 0, 'is_dislike' => $input['dislike'] ]);
-                return response()->json(['status' => 'success','response' => 'User dislike business']);
+
+                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_dislike' => $input['dislike']]);
+                return response()->json(['status' => 'success','response' => 1]);
             }
         }
-        return response()->json(['status' => 'failure','response' => 'System Error']);
+        return response()->json(['status' => 'failure','response' => 'System Error:Please try again.']);
     }
 
     /**
@@ -350,12 +354,10 @@ class ApiController extends Controller
     public function postBusinessRating(Request $request)
     {
         $input = $request->input();
-        if($input == NULL)
-        {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
-        }
+     
         $check = DB::table('business_ratings')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
-        if($check)
+
+        if ($check)
         {   
             DB::table('business_ratings')->where('id', $check)->update(['rating' => $input['rating'] ]); 
             return response()->json(['status' => 'success','response' => 'Business rating Updated successfully']);
@@ -412,20 +414,18 @@ class ApiController extends Controller
     public function postBusinessFollowers(Request $request)
     {
         $input = $request->input();
-        if($input == NULL)
-        {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
-        }
+
         $check = DB::table('business_followers')->where('user_id', $input['userId'])->where('business_id', $input['businessId'])->pluck('id')->first();
+
         if($check)
         {   
             DB::table('business_followers')->where('id', $check)->delete();
-            return response()->json(['status' => 'success','response' => 'User unfollow this business successfully']);
+            return response()->json(['status' => 'success','response' => 0]);
 
         } else {
 
             DB::table('business_followers')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId']]);
-            return response()->json(['status' => 'success','response' => 'User follow this business successfully']);
+            return response()->json(['status' => 'success','response' => 1]);
        }
     }
 
@@ -759,24 +759,27 @@ class ApiController extends Controller
         
         $validator = Validator::make($request->all(), UserBusiness::$searchValidator );
 
-       if($validator->fails()){
-            if(count($validator->errors()) <= 1){
-                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
-            } else{
+        if ($validator->fails())
+        {
+            if (count($validator->errors()) <= 1){
+                return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else {
                 return response()->json(['status' => 'exception','response' => 'All fields are required']);   
             }
         }
+
         $input = $request->input();
 
-        $businessIds = UserBusiness::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+        $businessIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
 
-        $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->get();
+        $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
 
-        if($response != NULL && $response->count())
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not found any events']);
     }
+    
     /**
      * Function: get cms pages
      * Url: api/get/cmsPages

@@ -208,22 +208,22 @@ class BusinessEvent extends Model
             if($event->save())
                 return response()->json(['status' => 'success','response' => $event]);
             else 
-                return response()->json(['status' => 'failure','response' => 'System Error:Product could not be created .Please try later.']);
+                return response()->json(['status' => 'failure','response' => 'System Error:Event could not be created .Please try later.']);
         }
     }
 
-    public function apiPostEventParticipants($input)
+    public function apiPostEventAttendingUsers($input)
     {
         $check = DB::table('event_participants')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->first();
 
         if($check)
         {
             DB::table('event_participants')->where('user_id',$input['userId'])->where('event_id',$input['eventId'])->delete();
-            return response()->json(['status' => 'success','response' => "User does not attending event."]);
+            return response()->json(['status' => 'success','response' => 0]);
 
         } else{
             $event = DB::table('event_participants')->insert(['user_id' => $input['userId'], 'event_id' => $input['eventId'] ]);
-            return response()->json(['status' => 'success','response' => "User attending event"]);
+            return response()->json(['status' => 'success','response' => 1]);
         }
     }
 }
