@@ -779,7 +779,7 @@ class ApiController extends Controller
         else
             return response()->json(['status' => 'exception','response' => 'Could not found any events']);
     }
-    
+
     /**
      * Function: get cms pages
      * Url: api/get/cmsPages
@@ -981,7 +981,8 @@ class ApiController extends Controller
         $input = $request->input();
 
         $response = $this->userConversation->apiGetPreviousMessages($input);
-        if ($response)
+        
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success', 'response' => $response]);
         else
             return response()->json(['status' => 'exception', 'response' => 'Could not find any messages.']);
