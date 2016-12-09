@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
-
 use App\User;
 use App\BussinessCategory;
 use App\SubscriptionPlan;
@@ -723,24 +723,31 @@ class ApiController extends Controller
      */
     public function getSearchBusinesses(Request $request)
     {  
-       
-         $validator = Validator::make($request->all(), UserBusiness::$searchValidator );
+        $validator = Validator::make($request->all(), UserBusiness::$searchValidator);
 
-        if($validator->fails()){
-            if(count($validator->errors()) <= 1){
-                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
-            } else{
+        if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
+                return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else {
                 return response()->json(['status' => 'exception','response' => 'All fields are required']);   
             }
         }
 
         $input = $request->input();
 
-        $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
+        if (isset($input['categoryId'])) {
+            $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->orWhere('bussiness_category_id', '=', $input['categoryId'])->pluck('id');
 
-        $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
+            $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
 
-        if($response != NULL && $response->count())
+        } else {
+
+            $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
+
+            $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
+        }
+
+        if ($response != null && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not found any Business']);
@@ -755,13 +762,11 @@ class ApiController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSearchEvents(Request $request)
-    {  
-        
+    {    
         $validator = Validator::make($request->all(), UserBusiness::$searchValidator );
 
-        if ($validator->fails())
-        {
-            if (count($validator->errors()) <= 1){
+        if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
                 return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
             } else {
                 return response()->json(['status' => 'exception','response' => 'All fields are required']);   
@@ -770,11 +775,20 @@ class ApiController extends Controller
 
         $input = $request->input();
 
-        $businessIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+        if (isset($input['categoryId'])) {
 
-        $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+            $businessIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->orWhere('event_category_id', '=', $input['categoryId'])->pluck('id');
 
-        if ($response != NULL && $response->count())
+            $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+
+        } else {
+
+            $businessIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+
+            $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+        }
+
+        if ($response != null && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not found any events']);
