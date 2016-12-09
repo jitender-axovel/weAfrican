@@ -32,7 +32,10 @@ class UserConversation extends Model
 
     public function apiGetUserMessage($input)
     {
-    	return $this->whereSenderId($input['senderId'])->whereReceiverId($input['receiverId'])->where('id', '>', $input['id'])->orderBy('id','asc')->get();
+        if ($input['id'] == -1)
+            return null;
+        else
+    	   return $this->whereSenderId($input['senderId'])->whereReceiverId($input['receiverId'])->where('id', '>', $input['id'])->orderBy('id','asc')->get();
     }
 
     public function apiGetUserAllMessages($input)
@@ -78,6 +81,6 @@ class UserConversation extends Model
 
         $ids = $this->where(['sender_id' => $input['senderId'], 'receiver_id' => $input['receiverId']])->orWhere(['sender_id' => $input['receiverId'], 'receiver_id' => $input['senderId']])->pluck('id');
 
-       return $this->whereIn('id', $ids)->where('id', '<', $input['index'])->orderBy('id', 'asc')->take($input['limit'])->get();
+       return $this->whereIn('id', $ids)->where('id', '<', $input['index'])->orderBy('id', 'desc')->take($input['limit'])->get();
     }
 }
