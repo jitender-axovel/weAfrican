@@ -737,9 +737,10 @@ class ApiController extends Controller
 
         if (isset($input['categoryId'])) {
            $ids = UserBusiness::whereBussinessCategoryId($input['categoryId'])->pluck('id');
-
+           
             if ($ids->count()) {
-                $businessIds = UserBusiness::WhereIn('id', '=', $ids)->orwhere('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
+                
+                $businessIds = UserBusiness::WhereIn('id', $ids)->orwhere('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
 
                 $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
             } else {
@@ -784,6 +785,7 @@ class ApiController extends Controller
         if (isset($input['categoryId'])) {
 
             $ids = BusinessEvent::whereEventCategoryId($input['categoryId'])->pluck('id');
+
             if ($ids->count()) {
 
                 $businessIds = BusinessEvent::whereIn('id', $ids)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
