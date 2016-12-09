@@ -733,13 +733,19 @@ class ApiController extends Controller
             }
         }
 
-        $input = $request->input();
+        $input = $request->input(); 
 
         if (isset($input['categoryId'])) {
-            $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->orWhere('bussiness_category_id', '=', $input['categoryId'])->pluck('id');
+           $ids = UserBusiness::whereBussinessCategoryId($input['categoryId'])->pluck('id');
 
-            $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
+            if ($ids->count()) {
+                $businessIds = UserBusiness::WhereIn('id', '=', $ids)->orwhere('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
 
+                $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
+            } else {
+                $response = null;
+            }
+            
         } else {
 
             $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
@@ -777,9 +783,15 @@ class ApiController extends Controller
 
         if (isset($input['categoryId'])) {
 
-            $businessIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->orWhere('event_category_id', '=', $input['categoryId'])->pluck('id');
+            $ids = BusinessEvent::whereEventCategoryId($input['categoryId'])->pluck('id');
+            if ($ids->count()) {
 
-            $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+                $businessIds = BusinessEvent::whereIn('id', $ids)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+
+                $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+            } else {
+                $response = null;
+            }
 
         } else {
 
