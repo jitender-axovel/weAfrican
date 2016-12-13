@@ -1,6 +1,6 @@
 <?php
-
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -11,6 +11,7 @@ use DB;
 class BusinessEvent extends Model
 {
 	use SoftDeletes;
+
     protected $dates = ['deleted_at'];
 
     protected $fillable = ['user_id', 'business_id', 'event_category_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner', 'city', 'state', 'country', 'pin_code', 'latitude', 'longitude', 'start_date', 'end_date' ];
@@ -29,7 +30,7 @@ class BusinessEvent extends Model
         'city' => 'required',
         'address' => 'required',
         'banner' => 'required|image|mimes:jpg,png,jpeg',
-    	);
+	);
 
     public static $updateValidater = array(
         'event_category_id' => 'required',
@@ -43,7 +44,7 @@ class BusinessEvent extends Model
         'city' => 'required',
         'address' => 'required',
         'banner' => 'image|mimes:jpg,png,jpeg',
-    	);
+	);
 
     public function category()
     {
@@ -62,12 +63,10 @@ class BusinessEvent extends Model
 
     public function apiGetBusinessEvents($input)
     {
-
-        if(isset($input['latitude']) && isset($input['longitude']) && isset($input['radius']))
-        { 
-            $events = DB::select("SELECT * , p.distance_unit * DEGREES( ACOS( COS( RADIANS( p.latpoint ) ) * COS( RADIANS(z.latitude ) ) * COS( RADIANS( p.longpoint ) - RADIANS( z.longitude ) ) + SIN( RADIANS( p.latpoint ) ) * SIN( RADIANS( z.latitude ) ) ) ) AS distance_in_km FROM business_events AS z JOIN (SELECT ".$input['latitude']." AS latpoint, ".$input['longitude']." AS longpoint, ".$input['radius']." AS radius, 111.045 AS distance_unit) AS p ON 1 =1 WHERE z.latitude BETWEEN p.latpoint - ( p.radius / p.distance_unit ) AND p.latpoint + ( p.radius / p.distance_unit ) AND z.longitude BETWEEN p.longpoint - ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND p.longpoint + ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND z.state = '".$input['state']."' AND z.event_category_id = ".$input['eventCategoryId']." AND z.is_blocked = 0 AND z.user_id != ".$input['userId']." ORDER BY distance_in_km DESC LIMIT ".$input['index'].", ".$input['limit']." ");
+        if (isset($input['latitude']) && isset($input['longitude']) && isset($input['radius'])) { 
+            $events = DB::select("SELECT z.*, users.mobile_number , p.distance_unit * DEGREES( ACOS( COS( RADIANS( p.latpoint ) ) * COS( RADIANS(z.latitude ) ) * COS( RADIANS( p.longpoint ) - RADIANS( z.longitude ) ) + SIN( RADIANS( p.latpoint ) ) * SIN( RADIANS( z.latitude ) ) ) ) AS distance_in_km FROM business_events AS z JOIN (SELECT ".$input['latitude']." AS latpoint, ".$input['longitude']." AS longpoint, ".$input['radius']." AS radius, 111.045 AS distance_unit) AS p ON 1 =1 JOIN users on users.id = z.user_id WHERE z.latitude BETWEEN p.latpoint - ( p.radius / p.distance_unit ) AND p.latpoint + ( p.radius / p.distance_unit ) AND z.longitude BETWEEN p.longpoint - ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND p.longpoint + ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND z.state = '".$input['state']."' AND z.event_category_id = ".$input['eventCategoryId']." AND z.is_blocked = 0 AND z.user_id != ".$input['userId']." ORDER BY distance_in_km DESC LIMIT ".$input['index'].", ".$input['limit']." ");
         } else {
-            $events = $this->whereEventCategoryId($input['eventCategoryId'])->whereCountry($input['country'])->whereState($input['state'])->whereIsBlocked(0)->whereNotIn('user_id',[$input['userId']])->skip($input['index'])->limit($input['limit'])->get();
+            $events = DB::table('business_events')->select('business_events.*','users.mobile_number')->Where('event_category_id', $input['eventCategoryId'])->whereCountry($input['country'])->whereState($input['state'])->whereNotIn('user_id',[$input['userId']])->join('users','users.id', '=', 'business_events.user_id')->skip($input['index'])->limit($input['limit'])->get();
         }
 
         return $events;
@@ -98,20 +97,20 @@ class BusinessEvent extends Model
             'pincode' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            ]);
+        ]);
 
-        if($validator->fails()){
-            if(count($validator->errors()) <= 1){
-                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
-            } else{
+        if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
+                return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else {
                 return response()->json(['status' => 'exception','response' => 'All fields are required']);   
             }
         }
 
-        if(isset($input['eventId'])){
+        if (isset($input['eventId'])) {
 
-            if(isset($input['eventBanner']) && !empty($input['eventBanner']))
-            {
+            if (isset($input['eventBanner']) && !empty($input['eventBanner'])) {
+
                 $data = $input['eventBanner'];
 
                 $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -145,7 +144,7 @@ class BusinessEvent extends Model
             $input['start_date'] = $input['startDateTime'];
             $input['end_date'] = $input['endDateTime'];
 
-            if(isset($image)) {
+            if (isset($image)) {
                 $input['banner'] =  $image;
             } 
             
