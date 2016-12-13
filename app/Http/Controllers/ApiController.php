@@ -58,7 +58,7 @@ class ApiController extends Controller
 
     /**
      * Function: Get Business category.
-     * Url: api/get/bussiness-categories
+     * Url: api/get/event-categories
      * Request type: Get
      *
      * @param  Void
@@ -74,7 +74,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Function: Get Business category.
+     * Function: Get Event category.
      * Url: api/get/bussiness-categories
      * Request type: Get
      *
@@ -549,7 +549,7 @@ class ApiController extends Controller
 
     /**
      * Function: search events by lat,long/country,state.
-     * Url: api/get/user/business-events
+     * Url: api/get/business-events
      * Request type: Post
      *
      * @param  \Illuminate\Http\Request  $request
@@ -565,7 +565,7 @@ class ApiController extends Controller
                 'limit' => 'required',
         ]);
 
-       if($validator->fails()){
+        if ($validator->fails()){
             if(count($validator->errors()) <= 1){
                     return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
             } else{
@@ -783,23 +783,25 @@ class ApiController extends Controller
         $input = $request->input();
 
         if (isset($input['categoryId'])) {
-
             $ids = BusinessEvent::whereEventCategoryId($input['categoryId'])->pluck('id');
 
             if ($ids->count()) {
+                $eventIds = BusinessEvent::whereIn('id', $ids)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+                $search1 = BusinessEvent::whereIn('id',$eventIds)->where('name', 'LIKE', '%'.$input['term'].'%')->pluck('id');
+                $search2 =BusinessEvent::whereIn('id', $eventIds)->where('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
+                $searchIds = $search1->merge($search2);
 
-                $businessIds = BusinessEvent::whereIn('id', $ids)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
-
-                $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+                $response = BusinessEvent::select('business_events.*','users.mobile_number')->join('users', 'users.id', '=','business_events.user_id')->whereIn('business_events.id', $searchIds)->get();    
+                
             } else {
                 $response = null;
             }
 
         } else {
 
-            $businessIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
+            $eventIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
 
-            $response = BusinessEvent::whereIn('business_id',$businessIds)->where('name', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+            $response = BusinessEvent::select('business_events.*', 'users.mobile_number')->join('users', 'users.id', '=', 'business_events.id')->whereIn('business_events.id',$eventIds)->where('business_events.name', 'LIKE', '%'.$input['term'].'%')->orWhere('business_events.keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
         }
 
         if ($response != null && $response->count())

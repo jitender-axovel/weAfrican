@@ -1,11 +1,12 @@
 <?php
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
-use Validator;
 use App\User;
+use Validator;
 use Auth;
 use DB;
 
@@ -23,6 +24,7 @@ class UserBusiness extends Model
         'index' => 'required',
         'limit' => 'required',
         'term' => 'required',
+        'categoryId' => 'numeric',
     );
 
     public function category()
@@ -87,8 +89,7 @@ class UserBusiness extends Model
 
     public function apiGetBusinessesByCategory($input)
     {
-        if(isset($input['latitude']) && isset($input['longitude']) && isset($input['radius']))
-        {
+        if (isset($input['latitude']) && isset($input['longitude']) && isset($input['radius'])) {
             $business = DB::select("SELECT * , p.distance_unit * DEGREES( ACOS( COS( RADIANS( p.latpoint ) ) * COS( RADIANS(z.latitude ) ) * COS( RADIANS( p.longpoint ) - RADIANS( z.longitude ) ) + SIN( RADIANS( p.latpoint ) ) * SIN( RADIANS( z.latitude ) ) ) ) AS distance_in_km FROM user_businesses AS z JOIN (SELECT ".$input['latitude']." AS latpoint, ".$input['longitude']." AS longpoint, ".$input['radius']." AS radius, 111.045 AS distance_unit) AS p ON 1 =1 WHERE z.latitude BETWEEN p.latpoint - ( p.radius / p.distance_unit ) AND p.latpoint + ( p.radius / p.distance_unit ) AND z.longitude BETWEEN p.longpoint - ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND p.longpoint + ( p.radius / ( p.distance_unit * COS( RADIANS( p.latpoint ) ) ) ) AND z.state = '".$input['state']."' AND z.bussiness_category_id = ".$input['categoryId']." AND z.is_blocked = 0 AND z.user_id != ".$input['userId']." ORDER BY distance_in_km DESC LIMIT ".$input['index'].", ".$input['limit']." ");
         } else {
             $business = $this->whereBussinessCategoryId($input['categoryId'])->whereCountry($input['country'])->whereState($input['state'])->whereIsBlocked(0)->whereNotIn('user_id',[$input['userId']])->skip($input['index'])->limit($input['limit'])->get();
@@ -100,10 +101,9 @@ class UserBusiness extends Model
     public function apiPostUserBusiness(Request $request)
     {
         $input = $request->input();
-
         $check = User::where('id', $input['userId'])->whereNotIn('user_role_id', ['1,2'])->first();
 
-        if ($check){
+        if ($check) {
 
             $user = $this->where('user_id',$input['userId'])->first();
 
@@ -127,18 +127,18 @@ class UserBusiness extends Model
                     'longitude' => 'required',
             ]);
 
-            if($validator->fails()){
-                if(count($validator->errors()) <= 1){
+            if ($validator->fails()) {
+                if (count($validator->errors()) <= 1) {
                         return response()->json(['status' => 'exception','response' => $validator->errors()]);   
-                } else{
+                } else {
                     return response()->json(['status' => 'exception','response' => 'All fields are required']);   
                 }
             }
 
-            if(!$user){
+            if (!$user) {
 
-                if(isset($input['businessLogo']) && !empty($input['businessLogo']))
-                {
+                if (isset($input['businessLogo']) && !empty($input['businessLogo'])) {
+
                     $data = $input['businessLogo'];
 
                     $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -164,7 +164,7 @@ class UserBusiness extends Model
                     shell_exec($command);
                 }
                 
-                $check =User::where('id',$input['userId'])->update(['user_role_id' => 3]);
+                $check = User::where('id',$input['userId'])->update(['user_role_id' => 3]);
                 $user = User::where('id',$input['userId'])->first();
                 $business = array_intersect_key($input, UserBusiness::$updatable);
 
@@ -178,21 +178,22 @@ class UserBusiness extends Model
                 $business['about_us'] = isset($input['aboutUs']) ? $input['aboutUs'] : '';
                 $business['secondary_phone_number'] = isset($input['secondaryPhoneNumber']) ? $input['secondaryPhoneNumber'] : '';
 
-                if(isset($image)){
+                if (isset($image)) {
                     $business['business_logo'] = $image;
                 }
 
                 $business = UserBusiness::create($business);
                 $business->save(); 
-                if($business){
+                if ($business) {
                     return response()->json(['status' => 'success','response' => $business]);
                 } else {
                     return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
                 }
+
             } else {
 
-                if(isset($input['businessLogo']) && !empty($input['businessLogo']))
-                {
+                if (isset($input['businessLogo']) && !empty($input['businessLogo'])) {
+
                     $data = $input['businessLogo'];
 
                     $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -226,7 +227,7 @@ class UserBusiness extends Model
                 $input['about_us'] = $input['aboutUs'];
                 $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
 
-                if(isset($image)){
+                if (isset($image)) {
                     $input['business_logo'] = $image;
                 }
         
@@ -234,7 +235,7 @@ class UserBusiness extends Model
 
                 $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
               
-                if($userbusiness)
+                if ($userbusiness)
                     return response()->json(['status' => 'success','response' => "Business updated successfully."]);
                 else
                     return response()->json(['status' => 'failure','response' => "Business can not updated successfully.Please try again"]);
@@ -246,8 +247,8 @@ class UserBusiness extends Model
 
     public function apiUploadBusinessBanner($input)
     {
-        if(isset($input['banner']) && !empty($input['banner']))
-        {
+        if (isset($input['banner']) && !empty($input['banner'])) {
+
             $data = $input['banner'];
 
             $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -273,7 +274,7 @@ class UserBusiness extends Model
             shell_exec($command);
         }
           
-        if($this->where('id',$input['businessId'])->update(['banner' => $image]))
+        if ($this->where('id',$input['businessId'])->update(['banner' => $image]))
             return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
         else
             return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
@@ -306,14 +307,14 @@ class UserBusiness extends Model
             return response()->json(['status' => 'failure','response' => "An error occurred.Could not save image"]);
         }
             
-            $business = array_intersect_key($input, UserBusiness::$updatable);
+        $business = array_intersect_key($input, UserBusiness::$updatable);
 
-            $userbusiness = $this->where('id',$input['business_id'])->update($business);
-          
-            if($userbusiness)
-                return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
-            else
-                return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
+        $userbusiness = $this->where('id',$input['business_id'])->update($business);
+      
+        if ($userbusiness)
+            return response()->json(['status' => 'success','response' => "Business Banner uploaded successfully."]);
+        else
+            return response()->json(['status' => 'success','response' => "Business banner can not uploaded successfully."]);
     }
 
     public function apiGetUserBusinessDetails($input)
