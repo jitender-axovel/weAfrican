@@ -28,7 +28,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/delete/product', 'ApiController@postDeleteProduct');
 	Route::post('post/user/delete/event', 'ApiController@postDeleteEvent');
 	Route::post('post/event/participants', 'ApiController@postEventParticipants');
-	Route::post('post/business/likes', 'ApiController@postBusinessLikes');
+	Route::post('post/business/express/{like}', 'ApiController@postBusinessLikes');
 	Route::post('post/business/rating', 'ApiController@postBusinessRating');
 	Route::post('post/business/reviews', 'ApiController@postBusinessReviews');
 	Route::post('post/business/followers', 'ApiController@postBusinessFollowers');
@@ -55,6 +55,8 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/details', 'ApiController@getUserDetails');
 	Route::post('get/chat/users' , 'ApiController@getChatUsers');
 	Route::post('get/previous/messages', 'ApiController@getPreviousMessages');
+	Route::post('get/user/business/status', 'ApiController@getUserBusinessStatus');
+	Route::post('get/user/attending/event/status', 'ApiController@getUserEventAttendingStatus');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');

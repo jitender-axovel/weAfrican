@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
-
 use App\UserConversation;
 use DB;
 
 class AdminUserConversationsController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -18,9 +18,9 @@ class AdminUserConversationsController extends Controller
     {
         $pageTitle = 'Admin - Review';
         $users = UserConversation::select(DB::raw('distinct(sender_id), receiver_id'))->get();
-        
         return view('admin.conversations.index', compact('pageTitle', 'users'));
     }
+
     /**
      * Display the specified resource.
      *

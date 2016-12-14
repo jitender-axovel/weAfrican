@@ -15,6 +15,7 @@ use App\BusinessReview;
 use App\BusinessFollower;
 use App\BusinessNotification;
 use App\UserConversation;
+use App\EventParticipant;
 use App\CmsPage;
 use App\EventCategory;
 use Validator;
@@ -1018,7 +1019,7 @@ class ApiController extends Controller
             return response()->json(['status' => 'exception', 'response' => 'Could not find any chat user.']);
     }
 
-      /**
+    /**
      * Function: to get previous messages 
      * Url: api/get/previous/messages
      * Request type: Post
@@ -1036,5 +1037,44 @@ class ApiController extends Controller
             return response()->json(['status' => 'success', 'response' => $response]);
         else
             return response()->json(['status' => 'exception', 'response' => 'Could not find any messages.']);
+    }
+
+    /**
+     * Function: To get user like/dislike and following status on particular business
+     * Url: api/get/user/business/status
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserBusinessStatus(Request $request)
+    {
+        $input = $request->input();
+        $response['like'] = BusinessLike::whereUserId($input['userId'])->whereBusinessId($input['businessId'])->where('is_like', 1)->count();
+        $response['dislike'] = BusinessLike::whereUserId($input['userId'])->whereBusinessId($input['businessId'])->where('is_dislike', 1)->count();
+        $response['follower'] = BusinessFollower::whereUserId($input['userId'])->whereBusinessId($input['businessId'])->count();
+        
+        if ($response != NULL && count($response))
+            return response()->json(['status' => 'success', 'response' => $response]);
+        else
+            return response()->json(['status' => 'exception', 'response' => 'Could not find any data for status.']);
+    }
+
+    /**
+     * Function: To get attending event status of user on particular event 
+     * Url: api/get/user/attending/event/status
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserEventAttendingStatus(Request $request)
+    {
+        $input = $request->input();
+        $response = EventParticipant::whereUserId($input['userId'])->whereEventId($input['eventId'])->count();
+        if ($response != NULL && count($response))
+            return response()->json(['status' => 'success', 'response' => $response]);
+        else
+            return response()->json(['status' => 'exception', 'response' => 0]);
     }
 }
