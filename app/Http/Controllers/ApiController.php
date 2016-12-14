@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
+use App\BusinessLike;
 use App\BussinessCategory;
 use App\SubscriptionPlan;
 use App\BusinessProduct;
@@ -67,7 +67,7 @@ class ApiController extends Controller
     public function getCategories()
     {
         $response = $this->category->apiGetCategory();
-        if($response != NULL && $response->count())
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any category ']);
@@ -84,7 +84,7 @@ class ApiController extends Controller
     public function getEventCategories()
     {
         $response = $this->eventCategory->apiGetEventCategory();
-        if($response != NULL && $response->count())
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any  event category ']);
@@ -101,7 +101,7 @@ class ApiController extends Controller
     public function getSubscriptionPlans()
     {
         $response = $this->subscriptionPlan->apiGetSubscriptionPlans();
-        if($response != NULL && $response->count())
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Subscription Plan ']);
@@ -118,13 +118,12 @@ class ApiController extends Controller
     public function getUserBusinessProducts(Request $request)
     {   
         $input = $request->input();
-        if($input == NULL)
-        {
+        if ($input == NULL) {
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
         $response = $this->businessProduct->apiGetUserBusinessProducts($input);
-        if($response != NULL && $response->count())
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Product.']);
@@ -141,13 +140,12 @@ class ApiController extends Controller
     public function getUserBusinessEvents(Request $request)
     {   
         $input = $request->input();
-        if($input == NULL)
-        {
+        if ($input == NULL) {
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
         $response = $this->businessEvent->apiGetUserBusinessEvents($input);
-        if($response != NULL && $response->count())
+        if ($response != NULL && $response->count())
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Event.']);
@@ -172,16 +170,16 @@ class ApiController extends Controller
                 'limit' => 'required',
         ]);
 
-       if($validator->fails()){
-            if(count($validator->errors()) <= 1){
+       if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
                     return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
-            } else{
+            } else {
                 return response()->json(['status' => 'exception','response' => 'All fields are required']);   
             }
         }
 
         $response = $this->userBusiness->apiGetBusinessesByCategory($input);
-        if(count($response))
+        if (count($response))
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Business.']);
@@ -241,14 +239,13 @@ class ApiController extends Controller
     public function postDeleteProduct(Request $request)
     {   
         $input = $request->input();
-        if($input == NULL)
-        {
+        if ($input == NULL) {
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
         $product = BusinessProduct::where('user_id',$input['userId'])->where('id',$input['productId'])->first();
 
-        if($product && $product->delete()){
+        if ($product && $product->delete()) {
             return response()->json(['status' => 'success', 'response' => 'Product deleted successfully.']);
         } else {
             return response()->json(['status' => 'exception', 'response' => 'Product could not be deleted.Please try again.']);
@@ -266,18 +263,17 @@ class ApiController extends Controller
     public function postDeleteEvent(Request $request)
     {   
         $input = $request->input();
-        if($input == NULL)
-        {
+        if ($input == NULL) {
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
         $event = BusinessEvent::where('user_id',$input['userId'])->where('id',$input['eventId'])->first();
 
-        if($event && $event->delete()){
+        if ($event && $event->delete())
             return response()->json(['status' => 'success', 'response' => 'Event deleted successfully.']);
-        } else {
+        else
             return response()->json(['status' => 'exception', 'response' => 'Event could not be deleted.Please try again.']);
-        }
+
     }
 
     /**
@@ -291,8 +287,7 @@ class ApiController extends Controller
     public function postEventParticipants(Request $request)
     {   
         $input = $request->input();
-        if($input == NULL)
-        {
+        if ($input == NULL) {
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
 
@@ -301,45 +296,65 @@ class ApiController extends Controller
     }
 
     /**
-     * Function: Post business like and dislikes
+     * Function: Post business like 
      * Url: api/post/business/likes
      * Request type: Post
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postBusinessLikes(Request $request)
+    public function postBusinessLikes(Request $request, $status)
     {   
         $input = $request->input();
 
-        $check = DB::table('business_likes')->where('user_id',$input['userId'])->where('business_id',$input['businessId'])->pluck('id')->first();
+        $check = BusinessLike::where('user_id',$input['userId'])->where('business_id',$input['businessId'])->first();
 
-        if ($check)
-        {
-            if (isset($input['like']))
-            {
-                DB::table('business_likes')->where('id',$check)->update(['is_like' => $input['like']]);
-                return response()->json(['status' => 'success','response' => 1]);
+        $response = ['is_like' => null, 'is_dislike' => null, 'result' => 0, 'Total_likes' => null, 'Total_dislikes' => null];
+
+        if ($check) {
+            if ($status == 'like') {
+
+                $response['is_like'] = ($check->is_like) ? null: 1;
+                ($check->is_dislike) ? ($response['result'] = 1) : '';
 
             } else {
 
-                DB::table('business_likes')->where('id',$check)->update(['is_dislike' => $input['dislike']]);
-                return response()->json(['status' => 'success','response' => 1]);
+                $response['is_dislike'] = ($check->is_dislike) ? null: 1;
+                ($check->is_like) ? ($response['result'] = 1) : '';
+                
+            }
+
+            if ($response['is_like'] == null && $response['is_dislike'] == null) {
+
+                $check->delete();
+                $response['Total_likes'] = BusinessLike::where('business_id', $input['businessId'])->count('is_like');
+                $response['Total_dislikes'] = BusinessLike::where('business_id',$input['businessId'])->count('is_dislike');
+                $response['result'] = 0;
+                $response = array_except($response,['is_like', 'is_dislike']);
+
+                return response()->json(['status' => 'success','response' => $response]);
+
+            } elseif ($check->update(['is_like' => $response['is_like'], 'is_dislike' => $response['is_dislike']])) {
+
+                $response['Total_likes'] = BusinessLike::where('business_id', $input['businessId'])->count('is_like');
+                $response['Total_dislikes'] = BusinessLike::where('business_id',$input['businessId'])->count('is_dislike');
+                $response = array_except($response,['is_like', 'is_dislike']);
+                return response()->json(['status' => 'success','response' => $response]);
             }
 
         } else {
 
-            if (isset($input['like']))
-            {
-                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_like' => $input['like']]);
-                return response()->json(['status' => 'success','response' => 1]);
+            ($status == 'like') ? ($response['is_like'] = 1) : ($response['is_dislike'] =1);
+            $response['result'] = 1;
 
-            } else {
-
-                DB::table('business_likes')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'is_dislike' => $input['dislike']]);
-                return response()->json(['status' => 'success','response' => 1]);
+            if (BusinessLike::insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'] , 'is_like' => $response['is_like'], 'is_dislike' => $response['is_dislike']])) {
+                $response['Total_likes'] = BusinessLike::where('business_id', $input['businessId'])->count('is_like');
+                $response['Total_dislikes'] = BusinessLike::where('business_id',$input['businessId'])->count('is_dislike');
+                $response = array_except($response,['is_like', 'is_dislike']);
+                return response()->json(['status' => 'success','response' => $response]);
             }
         }
+
         return response()->json(['status' => 'failure','response' => 'System Error:Please try again.']);
     }
 
@@ -796,7 +811,7 @@ class ApiController extends Controller
                 $search2 =BusinessEvent::whereIn('id', $eventIds)->where('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
                 $searchIds = $search1->merge($search2);
 
-                $response = BusinessEvent::select('business_events.*','users.mobile_number')->join('users', 'users.id', '=','business_events.user_id')->whereIn('business_events.id', $searchIds)->get();    
+                $response = BusinessEvent::select('business_events.*','users.mobile_number')->join('users', 'users.id', '=','business_events.user_id')->whereIn('business_events.id', $searchIds)->skip($input['index'])->take($input['limit'])->get();    
                 
             } else {
                 $response = null;
