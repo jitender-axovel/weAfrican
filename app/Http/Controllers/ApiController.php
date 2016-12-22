@@ -765,7 +765,7 @@ class ApiController extends Controller
                 $search2 = UserBusiness::whereIn('id', $businessIds)->Where('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
                 $searchIds = $search1->merge($search2);
 
-                $response = UserBusiness::whereIn('id', $searchIds)->skip($input['index'])->take($input['limit'])->get();
+                $response = UserBusiness::whereIn('id', $searchIds)->skip($input['index'])->take($input['limit'])->orderBy('created_at', 'asc')->get();
 
             } else {
                 $response = null;
@@ -775,7 +775,7 @@ class ApiController extends Controller
 
             $businessIds = UserBusiness::where('title', 'LIKE', '%'.$input['term'].'%')->orWhere('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
 
-            $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->get();
+            $response = UserBusiness::whereIn('id', $businessIds)->whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->skip($input['index'])->take($input['limit'])->orderBy('created_at', 'asc')->get();
         }
 
         if ($response != null && $response->count())
