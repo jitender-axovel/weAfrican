@@ -815,7 +815,7 @@ class ApiController extends Controller
                 $search2 =BusinessEvent::whereIn('id', $eventIds)->where('keywords', 'LIKE', '%'.$input['term'].'%')->pluck('id');
                 $searchIds = $search1->merge($search2);
 
-                $response = BusinessEvent::select('business_events.*','users.mobile_number')->join('users', 'users.id', '=','business_events.user_id')->whereIn('business_events.id', $searchIds)->skip($input['index'])->take($input['limit'])->get();    
+                $response = BusinessEvent::select('business_events.*','users.mobile_number')->join('users', 'users.id', '=','business_events.user_id')->whereIn('business_events.id', $searchIds)->skip($input['index'])->take($input['limit'])->orderBy('created_at', 'asc')->get();    
                 
             } else {
                 $response = null;
@@ -825,7 +825,7 @@ class ApiController extends Controller
 
             $eventIds = BusinessEvent::whereState($input['state'])->whereCountry($input['country'])->where('user_id', '!=',$input['userId'])->pluck('id');
 
-            $response = BusinessEvent::select('business_events.*', 'users.mobile_number')->join('users', 'users.id', '=', 'business_events.id')->whereIn('business_events.id',$eventIds)->where('business_events.name', 'LIKE', '%'.$input['term'].'%')->orWhere('business_events.keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->get();
+            $response = BusinessEvent::select('business_events.*', 'users.mobile_number')->join('users', 'users.id', '=', 'business_events.id')->whereIn('business_events.id',$eventIds)->where('business_events.name', 'LIKE', '%'.$input['term'].'%')->orWhere('business_events.keywords', 'LIKE', '%'.$input['term'].'%')->skip($input['index'])->take($input['limit'])->orderBy('created_at', 'asc')->get();
         }
 
         if ($response != null && $response->count())
