@@ -412,9 +412,10 @@ class ApiController extends Controller
         }
 
         $response = DB::table('business_reviews')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId'], 'review' => $input['review']]);
+        $reviewCount = BusinessReview::whereBusinessId($input['businessId'])->count();
 
         if($response)
-            return response()->json(['status' => 'success','response' => 'Review Posted']);
+            return response()->json(['status' => 'success','response' => $reviewCount]);
          else
             return response()->json(['status' => 'success','response' => 'Unable to post review.Please try again.']);
     }
@@ -436,12 +437,14 @@ class ApiController extends Controller
         if($check)
         {   
             DB::table('business_followers')->where('id', $check)->delete();
-            return response()->json(['status' => 'success','response' => 0]);
+            $followerCount = BusinessFollower::whereBusinessId($input['businessId'])->count();
+            return response()->json(['status' => 'success','response' => $followerCount]);
 
         } else {
 
             DB::table('business_followers')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId']]);
-            return response()->json(['status' => 'success','response' => 1]);
+            $followerCount = BusinessFollower::whereBusinessId($input['businessId'])->count();
+            return response()->json(['status' => 'success','response' => $followerCount]);
        }
     }
 
