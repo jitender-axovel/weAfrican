@@ -437,14 +437,16 @@ class ApiController extends Controller
         if($check)
         {   
             DB::table('business_followers')->where('id', $check)->delete();
-            $followerCount = BusinessFollower::whereBusinessId($input['businessId'])->count();
-            return response()->json(['status' => 'success','response' => $followerCount]);
+            $response['count'] = BusinessFollower::whereBusinessId($input['businessId'])->count();
+            $response['follower'] = 0;
+            return response()->json(['status' => 'success','response' => $response]);
 
         } else {
 
             DB::table('business_followers')->insert(['user_id' => $input['userId'], 'business_id' => $input['businessId']]);
-            $followerCount = BusinessFollower::whereBusinessId($input['businessId'])->count();
-            return response()->json(['status' => 'success','response' => $followerCount]);
+            $response['count'] = BusinessFollower::whereBusinessId($input['businessId'])->count();
+            $response['follower'] = 1;
+            return response()->json(['status' => 'success','response' => $response]);
        }
     }
 
