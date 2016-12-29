@@ -186,11 +186,15 @@ class User extends Authenticatable
             if(isset($image))
                 $user['image'] = $image;
 
-
             $user = $this->where('id',$input['userId'])->update($user);
+            
+            $response = array();
+
+            $response['response'] = "User details updated successfully.";
+            $response['imageName'] = $image;
           
             if($user)
-                return response()->json(['status' => 'success','response' => "User details updated successfully."]);
+                return response()->json(['status' => 'success','response' => $response]);
             else
                 return response()->json(['status' => 'failure','response' => "System error:User can not updated successfully.Please try again."]);
         }else{
