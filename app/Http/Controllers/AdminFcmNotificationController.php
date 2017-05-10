@@ -28,9 +28,9 @@ class AdminFcmNotificationController extends Controller
     {
     	$input = $request->input();
         
-    	$sendUsers = $input['sendmsg'];
+    	//$sendUsers = $input['sendmsg'];
 	    $resp = "<tr id='header'><td>FCM Response [".date("h:i:sa")."]</td></tr>";
-	    $userCount = count($sendUsers);
+	    //$userCount = count($sendUsers);
 		$msg = $input['message'];
 		$respJson = '{"Message":"'.$msg.'"}';
 		$registation_ids = array();
@@ -70,7 +70,7 @@ class AdminFcmNotificationController extends Controller
         // echo  json_encode($fields);
 		// Update your Google Cloud Messaging API Key
 		if (!defined('FIREBASE_API_KEY')) {
-			define("FIREBASE_API_KEY", "AIzaSyAOTq4b4RmXSFeqUkLWK2Mf6tJdniweNV4"); 		
+			define("FIREBASE_API_KEY", "AAAAL_uNtq4:APA91bGp3ruskX7LbIlIFvHuo0-wy4Ku31RpQKIJA80eqPuckaHyOIgB0TUunhjN4p9qKWSBq59mewGcXhUSdt54FuDXvQ4M5M-W_naLdxBCK2nArpTGq_U4H8ThmEaFk-9rFuDUQckzj61DkJoKc8XP0Y4-crk5lg"); 		
 		}
         $headers = array(
             'Authorization: key=' . FIREBASE_API_KEY,
