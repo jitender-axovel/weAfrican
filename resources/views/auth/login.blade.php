@@ -66,10 +66,12 @@
                             <button type="submit" class="btn btn-primary">
                                 Login
                             </button>
-
+                            <?php //Remove Forgot Password/* ?>
+                            <?php /* ?>
                             <a class="btn btn-link" href="{{ url('/password/reset') }}">
                                 Forgot Your Password?
                             </a>
+                            <?php *///Remove Forgot Password ?>
                         </div>
                     </div>
                 </form>
