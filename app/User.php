@@ -21,7 +21,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp', 'image'];
+        'full_name', 'user_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp', 'image'];
 
     /**
     * The attributes that are updatable.
@@ -29,7 +29,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => ""];
+        'full_name' => "", 'user_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => ""];
 
     /**
     * The attributes that should be hidden for arrays.
@@ -77,6 +77,7 @@ class User extends Authenticatable
             $user['country_code'] = $request->input('countryCode');
             $user['password'] = bcrypt($request->input('mobileNumber'));
             $user['user_role_id'] = 4;
+            //$user['otp'] = rand(1000, 9999);
 
             $user = array_intersect_key($user, User::$updatable);
 

@@ -84,6 +84,17 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group required">
+                        <label for="user_name" class="col-md-2 control-label">Username:</label>
+                        <div class="col-md-4">
+                            <input required type="text" class="form-control" name="user_name" value="{{ old('user_name') }}">
+                            @if ($errors->has('user_name'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('user_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
                     <div class="form-group col-md-12">
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div id="map"></div>

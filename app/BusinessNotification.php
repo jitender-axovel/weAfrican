@@ -19,5 +19,6 @@ class BusinessNotification extends Model
         $notification->source = $source;
         $notification->message = $business->title." "."created new"." ".$source.".";
         $notification->save();
+        //$user_id = BusinessFollower::where('business_id =',$businessId)->get();
     }
 }

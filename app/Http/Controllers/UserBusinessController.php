@@ -13,7 +13,9 @@ use App\User;
 use Auth;
 use Validator;
 use App\Helper;
-use session;
+use Illuminate\Support\Facades\Hash;
+//use session;
+use Session;
 
 class UserBusinessController extends Controller
 {
@@ -66,6 +68,7 @@ class UserBusinessController extends Controller
             'title' => 'required',
             'keywords' =>'required',
             'email' => 'required|email|max:255|unique:user_businesses',
+            'user_name' => 'required|max:255|unique:users',
             'mobile_number' => 'required|numeric|unique:users',
             'pin_code' => 'regex:/\b\d{6}\b/',
             'country' => 'string',
@@ -111,6 +114,7 @@ class UserBusinessController extends Controller
             $user = array_intersect_key($request->input(), User::$updatable);
             $user['user_role_id'] = 3;
             $user['password'] = bcrypt($input['mobile_number']);
+            $user['otp'] = rand(1000, 9999);
             
             $user = User::create($user);
             $user->save();
@@ -131,13 +135,7 @@ class UserBusinessController extends Controller
             $value = $request->session()->get('key');
             if($business)
             {
-                if (Auth::attempt(['full_name' => $request->input('full_name'), 'mobile_number' => $request->input('mobile_number'), 'user_role_id' => 3 ,'password' => $request->input('mobile_number')])) {
-                // Authentication passed...
-                    return redirect()->intended('upload');
-                } else {
-                    $errors = new MessageBag(['email' => ['These credentials do not match our records.']]);
-                    return back()->withErrors($errors)->withInput(Input::except('password'));
-                }
+                return redirect('login')->with('success', 'You have been successfully registered. Please enter username and password to login!');
             }else{
                 return back()->with('error', 'Business could not created successfully.Please try again'); 
             }    
@@ -148,19 +146,60 @@ class UserBusinessController extends Controller
 
     public function otp()
     {
+        Session::put('otp_verify',false);
         $pageTitle = "Otp";
         return view('business.otp', compact('pageTitle'));
     }
 
+
+    public function resendotp()
+    {
+        $user_name = Session::get('username');
+        $password = Session::get('password');
+        $user = User::whereUserName($user_name)->first();
+        if($user && Hash::check($password, $user->password) )
+        {
+            $user->otp = rand(1000,9999);
+            $user->save();
+            Session::put('otp',$user->otp);
+            //Send OTP SMS to the registered mobile number
+            return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number');
+        }else
+        {
+            return redirect('login')->with('warning', 'Your login session has been expired, Please try to login again!');
+        }
+    }
     public function checkOtp(Request $request)
     {
-
+        $user_name = Session::get('username');
+        $password = Session::get('password');
+        if(Session::get('otp')==$request->input('otp'))
+        {
+            if(Auth::attempt(['user_name' => $user_name,'password' => $password]))
+            {
+                if(Auth::check())
+                {
+                    return redirect()->intended('upload');
+                }else
+                {
+                    return redirect()->intended('logout');
+                }
+                //dd(Session::get('username'));
+            }else
+            {
+                return redirect()->intended('logout');
+            }
+            
+        }else
+        {
+            return back()->with('error', 'Please Enter the valid OTP');
+        }
     }
 
     public function uploadForm()
     {
-        $pageTitle = "Upload Document";
-        return view('business.upload', compact('pageTitle'));
+            $pageTitle = "Upload Document";
+            return view('business.upload', compact('pageTitle'));
     }
 
     public function uploadDocument(Request $request)

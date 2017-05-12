@@ -3,21 +3,24 @@
 @section('content')
 <div class="main-container row">
     <div class="col-md-8 col-md-offset-2">
+        @include('notification')
+        
         <div class="panel panel-default">
             <div class="panel-heading">Enter details to continue</div>
             <div class="panel-body">
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                     {{ csrf_field() }}
 
-                     <div class="form-group{{ $errors->has('full_name') ? ' has-error' : '' }}">
-                        <label for="full_name" class="col-md-4 control-label">Name</label>
+                   
+                    <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }}">
+                        <label for="user_name" class="col-md-4 control-label">Username</label>
 
                         <div class="col-md-6">
-                            <input id="full_name" type="text" class="form-control" name="full_name" value="{{ old('full_name') }}" autofocus>
+                            <input id="user_name" type="text" class="form-control" name="user_name" value="{{ old('user_name') }}" autofocus>
 
-                            @if ($errors->has('full_name'))
+                            @if ($errors->has('user_name'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('full_name') }}</strong>
+                                    <strong>{{ $errors->first('user_name') }}</strong>
                                 </span>
                             @endif
                         </div>

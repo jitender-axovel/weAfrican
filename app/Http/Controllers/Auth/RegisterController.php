@@ -64,6 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        dd($data['otp']);
         $user = User::create([
             'full_name' => $data['full_name'],
             'slug' => Helper::slug('full_name'),

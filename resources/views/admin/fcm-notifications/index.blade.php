@@ -13,34 +13,6 @@
                     <option value="3">All Users</option>
             </select>
         </section>
-        <?php /*?><table id="users_list" class="display">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>User Name</th>
-                    <th>User Role</th>
-                    <th>Send Message?</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if($fcmUsers)
-                    @foreach($fcmUsers as $fcmUser)
-                    <tr>
-                        <td>{{$fcmUser->id}}</td>
-                        <td>{{$fcmUser->full_name}}</td>
-                        <td>{{$fcmUser->user_role_id}}</td>   
-                        <td>
-                            <ul class="list-inline">
-                                <li>
-                                   <span class="wrapper"><input type="checkbox" name="sendmsg[]" value="{{ $fcmUser->fcm_reg_id}}"/></span>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                    @endforeach
-                @endif
-            </tbody>
-        </table><?php */?>
     </div>
     <div class="col-md-5 message-section">
         <p class="header">Type your message</p>
@@ -63,22 +35,19 @@
 	
     function sendMsg(){
    
-
-    var msgLength = $.trim($("textarea").val()).length;
-    <?php /*?>var checkedCB = $("input[type='checkbox']:checked").length;
-    if( checkedCB == 0){
-    	alert("You must select atleast one User to send message");
-    }else <?php */?>if(msgLength == 0){
-    	alert("You left the message field blank, please fill it");
-    }else{
-        var cus = document.getElementById('select_type');
-        var custid = cus.options[cus.selectedIndex].value;
-    	var formData = $(".wrapper").find("input").serialize() + "&message=" + $("textarea").val() + "&type=" +custid;	
-    	$.ajax({type: "POST",data: formData, url: "{{url('admin/send/notification')}}", success:function(res){
-    		$(".greetblock").slideUp(1000);
-    		$(".serverresponse").prepend(res).hide().fadeIn(2000);
-    	}});
-    }
+        var msgLength = $.trim($("textarea").val()).length;
+        
+        if(msgLength == 0){
+        	alert("You left the message field blank, please fill it");
+        }else{
+             var cus = document.getElementById('select_type');
+            var custid = cus.options[cus.selectedIndex].value;
+        	var formData = $(".wrapper").find("input").serialize() + "&message=" + $("textarea").val() + "&type=" +custid;	
+        	$.ajax({type: "POST",data: formData, url: "{{url('admin/send/notification')}}", success:function(res){
+        		$(".greetblock").slideUp(1000);
+        		$(".serverresponse").prepend(res).hide().fadeIn(2000);
+        	}});
+        }
     }
     $(function(){
     	$(".serverresponse").hide()
