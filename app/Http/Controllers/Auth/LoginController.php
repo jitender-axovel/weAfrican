@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+
 use Validator;
 use Auth;
+use Session;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -20,7 +24,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+   
 
     /**
      * Where to redirect users after login / registration.
@@ -39,10 +43,29 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 
-    public function username()
-    {    
-        return 'full_name';
+    public function showLoginForm()
+    {
+        return view('auth.login');
     }
-
-    
+    public function login(Request $request)
+    {
+        Session::put('username', $request->user_name);
+        Session::put('password', $request->password);
+        $user = User::whereUserName($request->user_name)->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            $user->otp = rand(1000, 9999);
+            $user->save();
+            Session::put('otp', $user->otp);
+            // Send OTP SMS To registered Mobile Number
+            return view('business.otp', compact('pageTitle'));
+        } else {
+            return redirect()->back()
+            ->withErrors(['password' => 'credentials does not match']);
+        }
+    }
+    public function logout()
+    {
+        auth()->logout();
+        return redirect()->intended('/');
+    }
 }
