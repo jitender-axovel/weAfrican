@@ -1,0 +1,1 @@
+Your one time password is this  {{ $user->otp }}
