@@ -15,6 +15,9 @@ use Validator;
 use App\Helper;
 use Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendOtp;
+
 
 class UserBusinessController extends Controller
 {
@@ -179,6 +182,7 @@ class UserBusinessController extends Controller
             $user->otp = rand(1000, 9999);
             $user->save();
             Session::put('otp', $user->otp);
+             Mail::to('madhav@gmail.com')->send(new SendOtp($user));
             //Send OTP SMS to the registered mobile number
             return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number');
         } else {
