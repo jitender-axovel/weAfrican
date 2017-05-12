@@ -1,48 +1,3 @@
-<<<<<<< HEAD
-<?php
-
-namespace App;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-class EventCategory extends Model
-{
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
-
-    protected $fillable = ['title', 'slug', 'description', 'image'];
-
-    public static $updatable = ['title' => "", 'slug' => "", 'description' => "", 'image' => ""];
-
-    public static $validater = [
-        'title' => 'required|unique:event_categories|max:255',
-        'description' => 'required',
-        'image' => 'required',
-        ];
-
-    public static $updateValidater = [
-        'title' => 'required',
-        'description' => 'required',
-        ];
-
-    public function events()
-    {
-        return $this->hasMany('App\BusinessEvent');
-    }
-    
-    public function getEvents()
-    {
-        return $this->events()->where('is_blocked', 0)->orderBy('sort_order', 'asc')->get();
-    }
-
-    public function apiGetEventCategory()
-    {
-        $categories = $this->where('is_blocked', 0)->get();
-        return $categories;
-    }
-}
-=======
 <?php
 
 namespace App;
@@ -86,4 +41,3 @@ class EventCategory extends Model
        	return $categories;
     }
 }
->>>>>>> 8c39c53ea005b053df66154f2fe2a9daa6de81c2

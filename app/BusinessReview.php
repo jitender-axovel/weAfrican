@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-<?php
-
-namespace App;
-
-use Illuminate\Database\Eloquent\Model;
-
-class BusinessReview extends Model
-{
-    
-    protected $fillable = ['user_id', 'business_id', 'review'];
-
-    public static $updatable = ['user_id' => "", 'business_id' => "", 'review' => ""];
-
-    public function apiGetBusinessReview($input)
-    {
-        $reviews = $this->where('business_reviews.business_id', $input['businessId'])->where('business_reviews.is_blocked', 0)->join('users', 'business_reviews.user_id', '=', 'users.id')->get();
-        return $reviews;
-    }
-}
-=======
 <?php
 
 namespace App;
@@ -38,4 +17,3 @@ class BusinessReview extends Model
     	return $reviews;
     }
 }
->>>>>>> 8c39c53ea005b053df66154f2fe2a9daa6de81c2

@@ -1,28 +1,3 @@
-<<<<<<< HEAD
-<?php
-
-namespace App;
-
-use Illuminate\Database\Eloquent\Model;
-
-class EventBanner extends Model
-{
-    protected $fillable = ['user_id', 'subscription_plan_id', 'country', 'state', 'city','image', 'latitude', 'longitude'];
-
-    public static $updatable = ['user_id' => "", 'subscription_plan_id' => "", 'country' => "", 'state' => "", 'city' => "", 'image' => "", 'latitude' => "", 'longitude' => ""];
-
-
-    public function business()
-    {
-        return $this->belongsTo('App\UserBusiness', 'user_id', 'user_id');
-    }
-
-    public function subscription()
-    {
-        return $this->belongsTo('App\SubscriptionPlan', 'subscription_plan_id', 'id');
-    }
-}
-=======
 <?php
 
 namespace App;
@@ -46,4 +21,3 @@ class EventBanner extends Model
         return $this->belongsTo('App\SubscriptionPlan','subscription_plan_id','id');
     }
 }
->>>>>>> 8c39c53ea005b053df66154f2fe2a9daa6de81c2

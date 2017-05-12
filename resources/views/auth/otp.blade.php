@@ -3,6 +3,7 @@
 @section('content')
 <div class="main-container row">
     <div class="col-md-8 col-md-offset-2">
+        @include('notification')
         <div class="panel panel-default">
             <div class="panel-heading">Enter Otp to continue</div>
             <div class="panel-body">
