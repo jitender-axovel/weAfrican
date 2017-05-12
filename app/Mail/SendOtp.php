@@ -11,7 +11,7 @@ class SendOtp extends Mailable
 {
     use Queueable, SerializesModels;
 
-    use user;
+    public $user;
 
     /**
      * Create a new message instance.
