@@ -17,7 +17,7 @@ class AdminCmsPagesController extends Controller
      */
     public function index()
     {
-        $cmsPages = CmsPage::get();
+        $cmsPages  = CmsPage::get();
         $pageTitle = 'We African - Admin';
 
         return view('admin.cms.index', compact('cmsPages', 'pageTitle'));
@@ -63,7 +63,7 @@ class AdminCmsPagesController extends Controller
      */
     public function edit($id)
     {
-        $cmsPage = CmsPage::find($id);
+        $cmsPage   = CmsPage::find($id);
         $pageTitle = 'We African - Edit ' . $cmsPage->title;
 
         return view('admin.cms.edit', compact('cmsPage', 'pageTitle'));
@@ -82,19 +82,20 @@ class AdminCmsPagesController extends Controller
 
         $cmsPage = CmsPage::find($id);
 
-        if(!$cmsPage) {
+        if (!$cmsPage) {
             return back()->with('error', "Sorry, could not update page's content.");
         }
 
-        if(isset($input['is_show_on_mobile']))
+        if (isset($input['is_show_on_mobile'])) {
             $input['is_show_on_mobile'] = 1;
-        else
+        } else {
             $input['is_show_on_mobile'] = 0;
+        }
 
-        $cmsPage->content = $input['content'];
+        $cmsPage->content           = $input['content'];
         $cmsPage->is_show_on_mobile = $input['is_show_on_mobile'];
 
-        if($cmsPage->save()) {
+        if ($cmsPage->save()) {
             return redirect('admin/cms')->with('success', $cmsPage->title . ' updated successfully.');
         } else {
             return back()->with('error', $cmsPage->title . ' could not be updated successfully.');

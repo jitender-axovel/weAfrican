@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
@@ -33,8 +34,8 @@ class BusinessProductsController extends Controller
     public function index()
     {
         $pageTitle = "Business Products";
-        $products = BusinessProduct::where('user_id',Auth::id())->where('is_blocked',0)->paginate(10);
-        return view('business-product.index', compact('products','pageTitle'));
+        $products  = BusinessProduct::where('user_id', Auth::id())->where('is_blocked', 0)->paginate(10);
+        return view('business-product.index', compact('products', 'pageTitle'));
     }
 
     /**
@@ -56,17 +57,17 @@ class BusinessProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), BusinessProduct::$validater );
+        $validator = Validator::make($request->all(), BusinessProduct::$validater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        if($request->file('product_image')->isValid()) {
-            $file = md5(uniqid(rand(), true));
-            $ext = $request->file('product_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName=$request->file('product_image')->move(config('image.product_image_path'), $image);
+        if ($request->file('product_image')->isValid()) {
+            $file     = md5(uniqid(rand(), true));
+            $ext      = $request->file('product_image')->getClientOriginalExtension();
+            $image    = $file.'.'.$ext;
+            $fileName =$request->file('product_image')->move(config('image.product_image_path'), $image);
 
             $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
@@ -86,13 +87,13 @@ class BusinessProductsController extends Controller
 
         $product = new BusinessProduct();
 
-        $product->user_id = Auth::id();
+        $product->user_id     = Auth::id();
         $product->business_id = $business->id;
-        $product->title = $input['title'];
+        $product->title       = $input['title'];
         $product->description = $input['description'];
-        $product->price = $input['price'];
-        $product->image = $image;
-        $product->slug = Helper::slug($input['title'], $product->id);
+        $product->price       = $input['price'];
+        $product->image       = $image;
+        $product->slug        = Helper::slug($input['title'], $product->id);
 
         $product->save();
 
@@ -100,7 +101,7 @@ class BusinessProductsController extends Controller
         $this->businessNotification->saveNotification($business->id, $source);
 
         return redirect('business-product')->with('success', 'New Product created successfully');
-}
+    }
 
     /**
      * Display the specified resource.
@@ -122,8 +123,8 @@ class BusinessProductsController extends Controller
     public function edit($id)
     {
         $pageTitle = "Business Product-Edit";
-        $product = BusinessProduct::find($id);
-        return view('business-product.edit',compact('pageTitle','product'));
+        $product   = BusinessProduct::find($id);
+        return view('business-product.edit', compact('pageTitle', 'product'));
     }
 
     /**
@@ -135,17 +136,17 @@ class BusinessProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BusinessProduct::$updateValidater);
+        $validator = Validator::make($request->all(), BusinessProduct::$updateValidater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
         if ($request->file('product_image')) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('product_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName = $request->file('product_image')->move(config('image.product_image_path'),$image );
+            $file     = $key = md5(uniqid(rand(), true));
+            $ext      = $request->file('product_image')->getClientOriginalExtension();
+            $image    = $file.'.'.$ext;
+            $fileName = $request->file('product_image')->move(config('image.product_image_path'), $image);
             
             $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
@@ -161,11 +162,11 @@ class BusinessProductsController extends Controller
 
         $input = array_intersect_key($input, BusinessProduct::$updatable);
 
-        if(isset($fileName)) {
+        if (isset($fileName)) {
             $input['image'] =  $file.'.'.$ext;
-            $product = BusinessProduct::where('id',$id)->update($input);
+            $product        = BusinessProduct::where('id', $id)->update($input);
         } else {
-            $product = BusinessProduct::where('id',$id)->update($input);
+            $product = BusinessProduct::where('id', $id)->update($input);
         }
 
             return redirect('business-product')->with('success', 'Product updated successfully');
@@ -181,16 +182,16 @@ class BusinessProductsController extends Controller
     {
         $product = BusinessProduct::findOrFail($id);
 
-        if($product->delete()){
-            $response = array(
+        if ($product->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Product deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Product can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);

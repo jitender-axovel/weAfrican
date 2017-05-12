@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use App\Http\Requests;
@@ -10,7 +11,6 @@ use App\BusinessNotification;
 use App\Helper;
 use Validator;
 use Auth;
-
 
 class BusinessServicesController extends Controller
 {
@@ -25,6 +25,7 @@ class BusinessServicesController extends Controller
         
         $this->businessNotification = new BusinessNotification();
     }
+    
     /**
      * Display a listing of the resource.
      *
@@ -33,8 +34,8 @@ class BusinessServicesController extends Controller
     public function index()
     {
         $pageTitle = "Business Services";
-        $services = BusinessService::where('user_id',Auth::id())->where('is_blocked',0)->paginate(10);
-        return view('business-service.index', compact('services','pageTitle'));
+        $services  = BusinessService::where('user_id', Auth::id())->where('is_blocked', 0)->paginate(10);
+        return view('business-service.index', compact('services', 'pageTitle'));
     }
 
     /**
@@ -56,7 +57,7 @@ class BusinessServicesController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), BusinessService::$validater );
+        $validator = Validator::make($request->all(), BusinessService::$validater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -68,11 +69,11 @@ class BusinessServicesController extends Controller
 
         $service = new BusinessService();
 
-        $service->user_id = Auth::id();
+        $service->user_id     = Auth::id();
         $service->business_id = $business->id;
-        $service->title = $input['title'];
+        $service->title       = $input['title'];
         $service->description = $input['description'];
-        $service->slug = Helper::slug($input['title'], $service->id);
+        $service->slug        = Helper::slug($input['title'], $service->id);
 
         $service->save();
 
@@ -102,8 +103,8 @@ class BusinessServicesController extends Controller
     public function edit($id)
     {
         $pageTitle = "Business Service-Edit";
-        $service = BusinessService::find($id);
-        return view('business-service.edit',compact('pageTitle','service'));
+        $service   = BusinessService::find($id);
+        return view('business-service.edit', compact('pageTitle', 'service'));
     }
 
     /**
@@ -115,7 +116,7 @@ class BusinessServicesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BusinessService::$updateValidater);
+        $validator = Validator::make($request->all(), BusinessService::$updateValidater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -125,7 +126,7 @@ class BusinessServicesController extends Controller
 
         $input = array_intersect_key($input, BusinessService::$updatable);
 
-        $service = BusinessService::where('id',$id)->update($input);
+        $service = BusinessService::where('id', $id)->update($input);
       
 
             return redirect('business-service')->with('success', 'Service updated successfully');
@@ -141,16 +142,16 @@ class BusinessServicesController extends Controller
     {
         $service = BusinessService::findOrFail($id);
 
-        if($service->delete()){
-            $response = array(
+        if ($service->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Service deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Service can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);

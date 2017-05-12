@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
@@ -20,7 +21,7 @@ class AdminUsersController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Users';
-        $users = User::get();
+        $users     = User::get();
         return view('admin.users.index', compact('pageTitle', 'users'));
     }
 
@@ -52,7 +53,7 @@ class AdminUsersController extends Controller
             'city' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg,gif',
             'secondary_phone_number' => 'required|numeric',
-        ]);
+         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)
@@ -61,13 +62,12 @@ class AdminUsersController extends Controller
 
         $input = $request->input();
         
-        if ($request->hasFile('business_logo') ){
-            if ($request->file('business_logo')->isValid())
-            {
-                $file = $key = md5(uniqid(rand(), true));
-                $ext = $request->file('business_logo')->
+        if ($request->hasFile('business_logo')) {
+            if ($request->file('business_logo')->isValid()) {
+                $file  = $key = md5(uniqid(rand(), true));
+                $ext   = $request->file('business_logo')->
                     getClientOriginalExtension();
-                $image = $file.'.'.$ext; 
+                $image = $file.'.'.$ext;
 
                 $fileName = $request->file('business_logo')->move(config('image.logo_image_path'), $image);
 
@@ -76,26 +76,24 @@ class AdminUsersController extends Controller
             }
         }
 
-        User::where('id',$input['id'])->update(['user_role_id' => 3]);
+        User::where('id', $input['id'])->update(['user_role_id' => 3]);
         $user = User::where('id', $input['id'])->first();
     
         $business = array_intersect_key($input, UserBusiness::$updatable);
 
-        $business['business_id']=substr($user->full_name,0,3).rand(0,999);
-        $business['user_id'] = $user->id;
+        $business['business_id']       =substr($user->full_name, 0, 3).rand(0, 999);
+        $business['user_id']           = $user->id;
         $business['is_agree_to_terms'] = 1;
 
-        if(isset($fileName)){
+        if (isset($fileName)) {
             $business['business_logo'] = $image;
         }
 
         $business = UserBusiness::create($business);
         $business->save();
 
-        if($business)
-        {
-            return redirect('admin/users')->with('success', 'User Business created successfully.'); 
-               
+        if ($business) {
+            return redirect('admin/users')->with('success', 'User Business created successfully.');
         } else {
             return back()->with('error', 'User business could not be created.Please try again');
         }
@@ -110,11 +108,10 @@ class AdminUsersController extends Controller
     public function show($id)
     {
         $pageTitle = "Admin - Add Bussiness user";
-        $user = User::find($id);
+        $user      = User::find($id);
 
         $categories = BussinessCategory::where('is_blocked', 0)->get();
         return view('admin.users.create', compact('pageTitle', 'categories', 'user'));
-       
     }
 
     /**
@@ -126,7 +123,7 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         $pageTitle = 'Admin - Edit User';
-        $user = User::find($id);
+        $user      = User::find($id);
         return view('admin.users.edit', compact('pageTitle', 'user'));
     }
 
@@ -159,30 +156,30 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if($user->delete()){
-            $response = array(
+        if ($user->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => ' User deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => ' User can not be deleted.Please try again',
-            );
+            ];
         }
         return json_encode($response);
     }
 
     public function block($id)
     {
-        $user = User::find($id);
+        $user             = User::find($id);
         $user->is_blocked = !$user->is_blocked;
         $user->save();
        
-        if($user->is_blocked){ 
+        if ($user->is_blocked) {
             return redirect('admin/users')->with('success', 'User blocked successfully');
-        } else { 
+        } else {
             return redirect('admin/users')->with('success', 'User unblocked successfully');
-        }   
+        }
     }
 }

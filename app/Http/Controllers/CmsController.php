@@ -12,9 +12,9 @@ class CmsController extends Controller
 {
     public function index($slug)
     {
-    	$cmsPage = CmsPage::where('slug', $slug)->first();
-    	$page = $cmsPage->title;
-        $flag = 1;
-    	return view('cms.index', compact('cmsPage', 'page' , 'flag'));
+        $cmsPage = CmsPage::where('slug', $slug)->first();
+        $page    = $cmsPage->title;
+        $flag    = 1;
+        return view('cms.index', compact('cmsPage', 'page', 'flag'));
     }
 }

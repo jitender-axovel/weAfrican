@@ -7,11 +7,12 @@ use DB;
 
 class Helper extends Model
 {
-    public static function slug($name, $id = null) {
+    public static function slug($name, $id = null)
+    {
         
             $name = trim($name);
             
-            $table = array(
+            $table = [
 
                 'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
 
@@ -30,9 +31,9 @@ class Helper extends Model
                 'Ŕ'=>'R', 'ŕ'=>'r', '/' => '', ' ' => '-', '.' => '', '"' => '', ',' => '', "'" => '', ':' => '',
                 ';' => '', '<' => '', '>' => '', '?' => ''
 
-            );
+            ];
 
-            $name = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $name);
+            $name = preg_replace(['/\s{2,}/', '/[\t\n]/'], ' ', $name);
 
             $name = strtolower(strtr($name, $table));
 
@@ -41,6 +42,5 @@ class Helper extends Model
             }
 
             return $name;
-
     }
 }

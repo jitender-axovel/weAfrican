@@ -10,7 +10,7 @@ class CmsPage extends Model
 
     public function apiGetCmsPages($slug)
     {
-    	$cmsPages = $this->whereSlug($slug)->first();
-    	return $cmsPages;
+        $cmsPages = $this->whereSlug($slug)->first();
+        return $cmsPages;
     }
 }

@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRole extends Model
 {
-	/**
+    /**
     * The attributes that are mass assignable.
     *
     * @var array
     */
-	protected $fillable = ['name'];
-	
+    protected $fillable = ['name'];
+    
     public function user()
     {
-    	return $this->hasMany('App\User');
+        return $this->hasMany('App\User');
     }
 }

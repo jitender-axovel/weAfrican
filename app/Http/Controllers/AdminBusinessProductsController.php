@@ -17,7 +17,7 @@ class AdminBusinessProductsController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Products';
-        $products = BusinessProduct::select('business_products.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses','business_products.user_id' , '=', 'user_businesses.user_id')->get();
+        $products  = BusinessProduct::select('business_products.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses', 'business_products.user_id', '=', 'user_businesses.user_id')->get();
         return view('admin.products.index', compact('pageTitle', 'products'));
     }
 
@@ -86,16 +86,16 @@ class AdminBusinessProductsController extends Controller
     {
         $product = BusinessProduct::findOrFail($id);
 
-        if($product->delete()){
-            $response = array(
+        if ($product->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Product deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Product can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -103,7 +103,7 @@ class AdminBusinessProductsController extends Controller
 
     public function block($id)
     {
-        $product = BusinessProduct::find($id);
+        $product             = BusinessProduct::find($id);
         $product->is_blocked = !$product->is_blocked;
         $product->save();
 

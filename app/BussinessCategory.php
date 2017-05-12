@@ -1,28 +1,29 @@
 <?php
 
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BussinessCategory extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
     protected $dates = ['deleted_at'];
 
     protected $fillable = ['title', 'slug', 'description', 'image'];
 
     public static $updatable = ['title' => "", 'slug' => "", 'description' => "", 'image' => ""];
 
-    public static $validater = array(
-    	'title' => 'required|unique:bussiness_categories|max:255',
-    	'description' => 'required',
-    	'category_image' => 'required',
-    	);
+    public static $validater = [
+        'title' => 'required|unique:bussiness_categories|max:255',
+        'description' => 'required',
+        'category_image' => 'required',
+        ];
 
-    public static $updateValidater = array(
-    	'title' => 'required',
-    	'description' => 'required',
-    	);
+    public static $updateValidater = [
+        'title' => 'required',
+        'description' => 'required',
+        ];
 
     public function businesses()
     {
@@ -31,12 +32,12 @@ class BussinessCategory extends Model
     
     public function getBusinesses()
     {
-        return $this->businesses()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
+        return $this->businesses()->where('is_blocked', 0)->orderBy('sort_order', 'asc')->get();
     }
 
     public function apiGetCategory()
     {
-    	$categories = $this->where('is_blocked',0)->get();
-       	return $categories;
+        $categories = $this->where('is_blocked', 0)->get();
+        return $categories;
     }
 }

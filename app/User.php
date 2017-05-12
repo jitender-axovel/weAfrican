@@ -21,7 +21,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'full_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp', 'image'];
+        'full_name', 'user_name', 'country_code', 'mobile_number', 'password', 'user_role_id', 'slug', 'otp', 'image'];
 
     /**
     * The attributes that are updatable.
@@ -29,7 +29,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'full_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => ""];
+        'full_name' => "", 'user_name' => "", 'password' => "", 'slug' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => ""];
 
     /**
     * The attributes that should be hidden for arrays.
@@ -49,34 +49,33 @@ class User extends Authenticatable
     public function apiLogin(Request $request)
     {
         $input = $request->input();
-        if($input == NULL)
-        {
-            return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+        if ($input == null) {
+            return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);
         }
 
-        $user = $this->where('mobile_number', $request->input('mobileNumber'))->whereIn('user_role_id',[3,4])->first();
+        $user = $this->where('mobile_number', $request->input('mobileNumber'))->whereIn('user_role_id', [3,4])->first();
 
-        if (!$user){
-
+        if (!$user) {
             $validator = Validator::make($request->input(), [
                 'fullName' => 'required',
                 'mobileNumber' => 'required|numeric|unique:users,mobile_number',
                 'countryCode' => 'required',
             ]);
 
-            if($validator->fails()){
-                if(count($validator->errors()) <= 1){
-                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
-                } else{
-                    return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            if ($validator->fails()) {
+                if (count($validator->errors()) <= 1) {
+                        return response()->json(['status' => 'exception','response' => $validator->errors()]);
+                } else {
+                    return response()->json(['status' => 'exception','response' => 'All fields are required']);
                 }
             }
            
-            $user['full_name'] = $request->input('fullName');
+            $user['full_name']     = $request->input('fullName');
             $user['mobile_number'] = $request->input('mobileNumber');
-            $user['country_code'] = $request->input('countryCode');
-            $user['password'] = bcrypt($request->input('mobileNumber'));
-            $user['user_role_id'] = 4;
+            $user['country_code']  = $request->input('countryCode');
+            $user['password']      = bcrypt($request->input('mobileNumber'));
+            $user['user_role_id']  = 4;
+            //$user['otp'] = rand(1000, 9999);
 
             $user = array_intersect_key($user, User::$updatable);
 
@@ -84,31 +83,29 @@ class User extends Authenticatable
 
             $user['slug'] = Helper::slug($user->full_name, $user->id);
 
-            if($user->save()){
+            if ($user->save()) {
                 return response()->json(['status' => 'success','response' => $user]);
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
             }
-        } else{
-
-            $user->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
+        } else {
+            $user->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'), $user->id)]);
 
             if ($user->is_blocked) {
                 // Authentication passed...
                 return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
-                
-            } else if (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
-
+            } elseif (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
                 $checkBusiness = UserBusiness::whereUserId($user->id)->first();
                 
                 $response = Auth::user();
 
-                if ($checkBusiness)
+                if ($checkBusiness) {
                     $response['businessId'] = $checkBusiness->id;
+                }
                 
-;                return response()->json(['status' => 'success','response' => $response]);
-            }
-            else{
+                ;
+                return response()->json(['status' => 'success','response' => $response]);
+            } else {
                 return response()->json(['status' => 'failure', 'response' => 'Can not login using this mobile number!!!']);
             }
         }
@@ -117,14 +114,14 @@ class User extends Authenticatable
     public function apiCheckOtp($input)
     {
         $check = $this->where('mobile_number', $input['mobileNumber'])->first();
-        if($check)
-        { 
+        if ($check) {
             $otp = $this->where('mobile_number', $input['mobileNumber'])->where('otp', $input['otp'])->first();
-            if($otp)
+            if ($otp) {
                 return 1;
-            else
+            } else {
                 return 2;
-        }else {
+            }
+        } else {
             return 0;
         }
     }
@@ -138,20 +135,18 @@ class User extends Authenticatable
                 'fullName' => 'string',
         ]);
 
-        if($validator->fails()){
-            if(count($validator->errors()) <= 1){
-                    return response()->json(['status' => 'exception','response' => $validator->errors()]);   
-            } else{
-                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+        if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
+                    return response()->json(['status' => 'exception','response' => $validator->errors()]);
+            } else {
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);
             }
         }
 
-        $user = $this->where('id',$input['userId'])->first();
+        $user = $this->where('id', $input['userId'])->first();
 
-        if($user){
-
-            if(isset($input['image']) && !empty($input['image']))
-            {
+        if ($user) {
+            if (isset($input['image']) && !empty($input['image'])) {
                 $data = $input['image'];
 
                 $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -183,21 +178,23 @@ class User extends Authenticatable
 
             $user['full_name'] = $input['fullName'];
             
-            if(isset($image))
+            if (isset($image)) {
                 $user['image'] = $image;
+            }
 
-            $user = $this->where('id',$input['userId'])->update($user);
+            $user = $this->where('id', $input['userId'])->update($user);
 
-            $response = array();
+            $response = [];
 
-            $response['response'] = "User details updated successfully.";
+            $response['response']  = "User details updated successfully.";
             $response['imageName'] = (isset($image)) ? $image :'';
           
-            if($user)
+            if ($user) {
                 return response()->json(['status' => 'success','response' => $response]);
-            else
+            } else {
                 return response()->json(['status' => 'failure','response' => "System error:User can not updated successfully.Please try again."]);
-        }else{
+            }
+        } else {
             return response()->json(['status' => 'exception','response' => "User not found!!"]);
         }
     }
@@ -205,8 +202,7 @@ class User extends Authenticatable
     public function apiGetUserDetails(Request $request)
     {
         $input = $request->input();
-        $user = $this->where('id',$input['userId'])->first();
+        $user  = $this->where('id', $input['userId'])->first();
         return $user;
     }
-
 }

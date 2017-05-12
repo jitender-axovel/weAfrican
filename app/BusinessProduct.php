@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
@@ -8,35 +9,35 @@ use Validator;
 
 class BusinessProduct extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
     protected $dates = ['deleted_at'];
 
     protected $fillable = ['user_id', 'business_id', 'title', 'slug', 'description', 'price', 'image'];
 
     public static $updatable = ['id' => "", 'business_id' => "", 'user_id' => "", 'title' => "", 'slug' => "", 'description' => "", 'price' => "", 'image' => ""];
 
-    public static $validater = array(
-    	'title' => 'required|unique:business_products|max:255',
-    	'description' => 'required',
+    public static $validater = [
+        'title' => 'required|unique:business_products|max:255',
+        'description' => 'required',
         'price' => 'required|integer',
         'product_image' => 'required|image|mimes:jpg,png,jpeg',
-    	);
+        ];
 
-    public static $updateValidater = array(
-    	'title' => 'required',
-    	'description' => 'required',
+    public static $updateValidater = [
+        'title' => 'required',
+        'description' => 'required',
         'price' => 'required|integer',
         'product_image' => 'image|mimes:jpg,png,jpeg',
-    	);
+        ];
 
     public function product_business()
     {
-        return $this->hasOne('App\UserBusiness','user_id');
+        return $this->hasOne('App\UserBusiness', 'user_id');
     }
 
     public function apiGetUserBusinessProducts($input)
     {
-        $products = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();
+        $products = $this->where('user_id', $input['userId'])->where('is_blocked', 0)->get();
         return $products;
     }
 
@@ -50,18 +51,16 @@ class BusinessProduct extends Model
             'price' => 'required',
         ]);
 
-        if($validator->fails()){
-            if(count($validator->errors()) <= 1){
-                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
-            } else{
-                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+        if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);
+            } else {
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);
             }
         }
 
-        if(isset($input['productId'])){
-
-            if(isset($input['productImage']) && !empty($input['productImage']))
-            {
+        if (isset($input['productId'])) {
+            if (isset($input['productImage']) && !empty($input['productImage'])) {
                 $data = $input['productImage'];
 
                 $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -90,23 +89,22 @@ class BusinessProduct extends Model
             $product = array_intersect_key($input, BusinessProduct::$updatable);
 
             $product['user_id'] = $input['userId'];
-            $product['id'] = $input['productId'];
+            $product['id']      = $input['productId'];
 
-            if(isset($image)) {
+            if (isset($image)) {
                 $product['image'] =  $image;
-                $product = BusinessProduct::where('id', $input['productId'])->where('user_id', $input['userId'])->update($product);
+                $product          = BusinessProduct::where('id', $input['productId'])->where('user_id', $input['userId'])->update($product);
             } else {
                 $product = BusinessProduct::where('id', $input['productId'])->where('user_id', $input['userId'])->update($product);
             }
 
-            if($product)
+            if ($product) {
                 return response()->json(['status' => 'success','response' => "Product updated successfully."]);
-            else
+            } else {
                 return response()->json(['status' => 'failure','response' => "Product could not updated successfully.Please try again."]);
-        }else{
-             
-            if(isset($input['productImage']) && !empty($input['productImage']))
-            {
+            }
+        } else {
+            if (isset($input['productImage']) && !empty($input['productImage'])) {
                 $data = $input['productImage'];
 
                 $img = str_replace('data:image/jpeg;base64,', '', $data);
@@ -133,11 +131,11 @@ class BusinessProduct extends Model
             }
 
 
-            $product = array_intersect_key($request->input(), BusinessProduct::$updatable);
-            $product['user_id'] = $input['userId'];
+            $product                = array_intersect_key($request->input(), BusinessProduct::$updatable);
+            $product['user_id']     = $input['userId'];
             $product['business_id'] = $input['businessId'];
 
-            if(isset($image)){
+            if (isset($image)) {
                 $product['image'] = $image;
             }
 
@@ -146,7 +144,7 @@ class BusinessProduct extends Model
 
             $product->slug = Helper::slug($product->title, $product->id);
 
-            if($product->save()){
+            if ($product->save()) {
                 return response()->json(['status' => 'success','response' => $product]);
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:Product could not be created .Please try later.']);

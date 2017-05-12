@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use App\Http\Requests;
@@ -36,7 +37,7 @@ class BusinessEventsController extends Controller
     public function index()
     {
         $pageTitle = "Business Event";
-        $events = BusinessEvent::whereUserId(Auth::id())->withCount('participations')->paginate(10);
+        $events    = BusinessEvent::whereUserId(Auth::id())->withCount('participations')->paginate(10);
         return view('business-event.index', compact('pageTitle', 'events'));
     }
     /**
@@ -46,8 +47,8 @@ class BusinessEventsController extends Controller
      */
     public function create()
     {
-        $pageTitle = "Business Event -create";
-        $business = UserBusiness::where('user_id', Auth::id())->first();
+        $pageTitle  = "Business Event -create";
+        $business   = UserBusiness::where('user_id', Auth::id())->first();
         $categories = EventCategory::where('is_blocked', 0)->get();
         return view('business-event.create', compact('pageTitle', 'business', 'categories'));
     }
@@ -60,7 +61,7 @@ class BusinessEventsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), BusinessEvent::$validater );
+        $validator = Validator::make($request->all(), BusinessEvent::$validater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -68,18 +69,17 @@ class BusinessEventsController extends Controller
 
         $input = $request->input();
 
-        if ($request->hasFile('banner') ){
-            if ($request->file('banner')->isValid())
-            {
-                $file = $key = md5(uniqid(rand(), true));
-                $ext = $request->file('banner')->
+        if ($request->hasFile('banner')) {
+            if ($request->file('banner')->isValid()) {
+                $file  = $key = md5(uniqid(rand(), true));
+                $ext   = $request->file('banner')->
                     getClientOriginalExtension();
-                $image = $file.'.'.$ext; 
+                $image = $file.'.'.$ext;
                 
                 $fileName = $request->file('banner')->move(config('image.banner_image_path').'event/', $image);
 
                 $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'event/thumbnails/small/'.$image;
-                shell_exec($command); 
+                shell_exec($command);
 
                 $command = 'ffmpeg -i '.config('image.banner_image_path').'/event/'.$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'event/thumbnails/medium/'.$image;
                 shell_exec($command);
@@ -93,13 +93,13 @@ class BusinessEventsController extends Controller
 
         $event = array_intersect_key($request->input(), BusinessEvent::$updatable);
 
-        $event['user_id'] = Auth::id();
-        $event['business_id'] = $business->id;
+        $event['user_id']           = Auth::id();
+        $event['business_id']       = $business->id;
         $event['event_category_id'] =$input['event_category_id'];
-        $event['description'] = $input['description'];
-        $event['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
-        $event['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
-        $event['banner'] = $image;
+        $event['description']       = $input['description'];
+        $event['start_date_time']   = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
+        $event['end_date_time']     = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
+        $event['banner']            = $image;
          
         $event = BusinessEvent::create($event);
 
@@ -133,10 +133,10 @@ class BusinessEventsController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = "Business Product-Edit";
-        $event = BusinessEvent::find($id);
-        $categories = EventCategory::where('is_blocked',0)->get();
-        return view('business-event.edit',compact('pageTitle','event', 'categories'));
+        $pageTitle  = "Business Product-Edit";
+        $event      = BusinessEvent::find($id);
+        $categories = EventCategory::where('is_blocked', 0)->get();
+        return view('business-event.edit', compact('pageTitle', 'event', 'categories'));
     }
 
     /**
@@ -148,7 +148,7 @@ class BusinessEventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BusinessEvent::$updateValidater);
+        $validator = Validator::make($request->all(), BusinessEvent::$updateValidater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -156,18 +156,17 @@ class BusinessEventsController extends Controller
 
         $input = $request->input();
 
-        if ($request->hasFile('banner') ){
-            if ($request->file('banner')->isValid())
-            {
-                $file = $key = md5(uniqid(rand(), true));
-                $ext = $request->file('banner')->
+        if ($request->hasFile('banner')) {
+            if ($request->file('banner')->isValid()) {
+                $file  = $key = md5(uniqid(rand(), true));
+                $ext   = $request->file('banner')->
                     getClientOriginalExtension();
-                $image = $file.'.'.$ext; 
+                $image = $file.'.'.$ext;
                 
                 $fileName = $request->file('banner')->move(config('image.banner_image_path').'event/', $image);
 
                 $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'event/thumbnails/small/'.$image;
-                shell_exec($command); 
+                shell_exec($command);
                 
                 $command = 'ffmpeg -i '.config('image.banner_image_path').'event/'.$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.banner_image_path').'event/thumbnails/medium/'.$image;
                 shell_exec($command);
@@ -180,13 +179,13 @@ class BusinessEventsController extends Controller
         $input = array_intersect_key($input, BusinessEvent::$updatable);
         
         $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
-        $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
+        $input['end_date_time']   = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 
-        if(isset($fileName)) {
+        if (isset($fileName)) {
             $input['banner'] =  $image;
-            $event = BusinessEvent::where('id',$id)->update($input);
+            $event           = BusinessEvent::where('id', $id)->update($input);
         } else {
-            $event = BusinessEvent::where('id',$id)->update($input);
+            $event = BusinessEvent::where('id', $id)->update($input);
         }
 
         return redirect('business-event')->with('success', 'Event updated successfully');
@@ -202,16 +201,16 @@ class BusinessEventsController extends Controller
     {
         $event = BusinessEvent::findOrFail($id);
 
-        if($event->delete()){
-            $response = array(
+        if ($event->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Event deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Event can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -226,14 +225,13 @@ class BusinessEventsController extends Controller
         
         $input = array_intersect_key($input, User::$downloadable);
 
-        if($limit == '') {
-            $users = User::select($input)->leftJoin('event_participants', 'users.id', '=', 'event_participants.user_id')->where('event_participants.event_id',$eventId)->get()->toArray();
-
+        if ($limit == '') {
+            $users = User::select($input)->leftJoin('event_participants', 'users.id', '=', 'event_participants.user_id')->where('event_participants.event_id', $eventId)->get()->toArray();
         } else {
-            $users = User::select($input)->leftJoin('event_participants', 'users.id', '=', 'event_participants.user_id')->where('event_participants.event_id',$eventId)->skip($index)->take($limit)->get()->toArray();
+            $users = User::select($input)->leftJoin('event_participants', 'users.id', '=', 'event_participants.user_id')->where('event_participants.event_id', $eventId)->skip($index)->take($limit)->get()->toArray();
         }
 
-        $delimiter=";";
+        $delimiter =";";
 
         $filename = "export".time().".csv";
 
@@ -243,9 +241,9 @@ class BusinessEventsController extends Controller
         $f = fopen('php://output', 'w');
         fputcsv($f, $input, $delimiter);
 
-        foreach ($users as $line) { 
+        foreach ($users as $line) {
             // generate csv lines from the inner arrays
-            fputcsv($f, $line, $delimiter); 
+            fputcsv($f, $line, $delimiter);
         }
     }
 }

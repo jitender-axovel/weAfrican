@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
@@ -15,10 +16,10 @@ class AdminBusinessEventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function index()
+    public function index()
     {
         $pageTitle = 'Business Event- Admin';
-        $events = BusinessEvent::select('business_events.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses','business_events.user_id' , '=', 'user_businesses.user_id')->withCount('participations')->get();
+        $events    = BusinessEvent::select('business_events.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses', 'business_events.user_id', '=', 'user_businesses.user_id')->withCount('participations')->get();
         return view('admin.events.index', compact('pageTitle', 'events'));
     }
 
@@ -62,7 +63,6 @@ e     */
      */
     public function edit($id)
     {
-     
     }
 
     /**
@@ -74,7 +74,6 @@ e     */
      */
     public function update(Request $request, $id)
     {
-       
     }
 
     /**
@@ -85,31 +84,31 @@ e     */
      */
     public function block($id)
     {
-        $event = BusinessEvent::find($id);
+        $event             = BusinessEvent::find($id);
         $event->is_blocked = !$event->is_blocked;
         $event->save();
 
-        if ($event->is_blocked) { 
+        if ($event->is_blocked) {
             return back()->with('success', 'Business Event blocked successfully');
         } else {
             return back()->with('success', 'Business Event unblocked successfully');
-        }   
+        }
     }
 
     public function destroy($id)
     {
         $event = BusinessEvent::findOrFail($id);
 
-        if($event->delete()){
-            $response = array(
+        if ($event->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Business Event deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Business Event can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);

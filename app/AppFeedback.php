@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AppFeedback extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = ['user_id','feedback'];
 

@@ -19,7 +19,7 @@ class UserSubscriptionPlansController extends Controller
     public function index()
     {
         $pageTitle = "Subscription Plans";
-        $plans = UserSubscriptionPlan::where('user_subscription_plans.user_id',Auth::id())->leftJoin('subscription_plans','subscription_plans.id', '=', 'user_subscription_plans.subscription_plan_id')->get();
+        $plans     = UserSubscriptionPlan::where('user_subscription_plans.user_id', Auth::id())->leftJoin('subscription_plans', 'subscription_plans.id', '=', 'user_subscription_plans.subscription_plan_id')->get();
         return view('subscription-plan.index', compact('pageTitle', 'plans'));
     }
 
@@ -53,9 +53,8 @@ class UserSubscriptionPlansController extends Controller
     public function show($id)
     {
         $pageTitle = "Subscription Plan";
-        $plan = UserSubscriptionPlan::find($id);
+        $plan      = UserSubscriptionPlan::find($id);
         return view('subscription-plan.show', compact('pageTitle', 'plan'));
-        
     }
 
     /**

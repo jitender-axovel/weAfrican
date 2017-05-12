@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
@@ -17,7 +18,7 @@ class AdminBusinessServicesController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Service';
-        $services = BusinessService::select('business_services.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses','business_services.user_id' , '=', 'user_businesses.user_id')->get();
+        $services  = BusinessService::select('business_services.*', 'user_businesses.business_id', 'user_businesses.title as business_name')->leftJoin('user_businesses', 'business_services.user_id', '=', 'user_businesses.user_id')->get();
         return view('admin.services.index', compact('pageTitle', 'services'));
     }
 
@@ -86,16 +87,16 @@ class AdminBusinessServicesController extends Controller
     {
         $service = BusinessService::findOrFail($id);
 
-        if($service->delete()){
-            $response = array(
+        if ($service->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Service deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Service can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -103,7 +104,7 @@ class AdminBusinessServicesController extends Controller
 
     public function block($id)
     {
-        $service = BusinessService::find($id);
+        $service             = BusinessService::find($id);
         $service->is_blocked = !$service->is_blocked;
         $service->save();
 

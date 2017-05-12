@@ -24,7 +24,7 @@ class AdminMiddleware
             }
         }
 
-        if(Auth::user()->user_role_id !== 1 && Auth::user()->user_role_id !== 2) {
+        if (Auth::user()->user_role_id !== 1 && Auth::user()->user_role_id !== 2) {
             return redirect('/');
         }
 

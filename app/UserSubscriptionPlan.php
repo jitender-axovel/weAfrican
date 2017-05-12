@@ -8,4 +8,3 @@ class UserSubscriptionPlan extends Model
 {
     
 }
-

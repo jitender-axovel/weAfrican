@@ -17,7 +17,7 @@ class AdminBusinessReviewsController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Admin - Review';
+        $pageTitle  = 'Admin - Review';
         $businesses = UserBusiness::get();
         return view('admin.reviews.index', compact('pageTitle', 'businesses'));
     }
@@ -30,7 +30,7 @@ class AdminBusinessReviewsController extends Controller
     public function show($id)
     {
         $pageTitle = 'Admin - View Reviews';
-        $reviews = BusinessReview::where('business_id', $id)->get();
+        $reviews   = BusinessReview::where('business_id', $id)->get();
         return view('admin.reviews.view', compact('pageTitle', 'reviews'));
     }
 
@@ -44,16 +44,16 @@ class AdminBusinessReviewsController extends Controller
     {
         $review = BusinessReview::findOrFail($id);
 
-        if($review->delete()){
-            $response = array(
+        if ($review->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Review deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Review can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -61,7 +61,7 @@ class AdminBusinessReviewsController extends Controller
 
     public function block($id)
     {
-        $review = BusinessReview::find($id);
+        $review             = BusinessReview::find($id);
         $review->is_blocked = !$review->is_blocked;
         $review->save();
 

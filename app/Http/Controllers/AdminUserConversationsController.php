@@ -17,7 +17,7 @@ class AdminUserConversationsController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Review';
-        $users = UserConversation::select(DB::raw('distinct(sender_id), receiver_id'))->get();
+        $users     = UserConversation::select(DB::raw('distinct(sender_id), receiver_id'))->get();
         return view('admin.conversations.index', compact('pageTitle', 'users'));
     }
 
@@ -29,7 +29,7 @@ class AdminUserConversationsController extends Controller
      */
     public function getConversations($senderId, $receiverId)
     {
-        $pageTitle = 'Admin - View';
+        $pageTitle     = 'Admin - View';
         $conversations = UserConversation::where(['sender_id' => $senderId, 'receiver_id' => $receiverId])->orWhere(['sender_id' => $receiverId, 'receiver_id' => $senderId])->get();
 
         return view('admin.conversations.view', compact('pageTitle', 'conversations'));
@@ -37,7 +37,7 @@ class AdminUserConversationsController extends Controller
 
     public function getMessage($id)
     {
-        $message = UserConversation::select('message')->where('id',$id)->first();
+        $message = UserConversation::select('message')->where('id', $id)->first();
         return response()->json(['status' => 'success','response' => $message]);
     }
 }

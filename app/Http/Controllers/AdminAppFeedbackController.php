@@ -17,7 +17,7 @@ class AdminAppFeedbackController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Service';
-        $feedbacks = AppFeedback::select('app_feedbacks.*', 'users.full_name', 'users.mobile_number', 'users.country_code')->leftJoin('users','app_feedbacks.user_id' , '=', 'users.id')->get();
+        $feedbacks = AppFeedback::select('app_feedbacks.*', 'users.full_name', 'users.mobile_number', 'users.country_code')->leftJoin('users', 'app_feedbacks.user_id', '=', 'users.id')->get();
         return view('admin.app-feedback.index', compact('pageTitle', 'feedbacks'));
     }
 
@@ -31,16 +31,16 @@ class AdminAppFeedbackController extends Controller
     {
         $feedback = AppFeedback::findOrFail($id);
 
-        if($feedback->delete()){
-            $response = array(
+        if ($feedback->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Feedback deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Feedback can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -48,7 +48,7 @@ class AdminAppFeedbackController extends Controller
 
     public function block($id)
     {
-       	$feedback = AppFeedback::find($id);
+        $feedback             = AppFeedback::find($id);
         $feedback->is_blocked = !$feedback->is_blocked;
         $feedback->save();
 

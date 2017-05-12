@@ -20,7 +20,7 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Admin - Business Categories';
+        $pageTitle  = 'Admin - Business Categories';
         $categories = BussinessCategory::get();
         return view('admin.categories.index', compact('pageTitle', 'categories'));
     }
@@ -44,17 +44,17 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), BussinessCategory::$validater );
+        $validator = Validator::make($request->all(), BussinessCategory::$validater);
 
         if ($validator->fails()) {
             return redirect('admin/bussiness/category/create')->withErrors($validator)->withInput();
         }
 
-        if($request->file('category_image')->isValid()) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('category_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName=$request->file('category_image')->move(config('image.category_image_path'), $image);
+        if ($request->file('category_image')->isValid()) {
+            $file     = $key = md5(uniqid(rand(), true));
+            $ext      = $request->file('category_image')->getClientOriginalExtension();
+            $image    = $file.'.'.$ext;
+            $fileName =$request->file('category_image')->move(config('image.category_image_path'), $image);
 
             $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
@@ -70,13 +70,13 @@ class AdminBussinessCategoriesController extends Controller
 
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title']) {
+        if ($input['title'] == $input['confirm_title']) {
             $category = new BussinessCategory();
 
-            $category->title = $input['title'];
+            $category->title       = $input['title'];
             $category->description = $input['description'];
-            $category->image = $image;
-            $category->slug = Helper::slug($input['title'], $category->id);
+            $category->image       = $image;
+            $category->slug        = Helper::slug($input['title'], $category->id);
 
             $category->save();
 
@@ -106,8 +106,8 @@ class AdminBussinessCategoriesController extends Controller
     public function edit($id)
     {
         $pageTitle = "Admin - Edit Bussiness Category";
-        $category = BussinessCategory::find($id);
-        return view('admin.categories.edit',compact('pageTitle','category'));
+        $category  = BussinessCategory::find($id);
+        return view('admin.categories.edit', compact('pageTitle', 'category'));
     }
 
     /**
@@ -119,45 +119,43 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),BussinessCategory::$updateValidater);
+        $validator = Validator::make($request->all(), BussinessCategory::$updateValidater);
 
         if ($validator->fails()) {
             return redirect('admin/bussiness/category/'.$id.'/edit')->withErrors($validator)->withInput();
         }
 
-        if ($request->hasFile('category_image') ){
-        if ($request->file('category_image') && $request->file('category_image')->isValid()) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('category_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName = $request->file('category_image')->move(config('image.category_image_path'),$image );
+        if ($request->hasFile('category_image')) {
+            if ($request->file('category_image') && $request->file('category_image')->isValid()) {
+                $file     = $key = md5(uniqid(rand(), true));
+                $ext      = $request->file('category_image')->getClientOriginalExtension();
+                $image    = $file.'.'.$ext;
+                $fileName = $request->file('category_image')->move(config('image.category_image_path'), $image);
             
-           $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+                   $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
-            
-        } else {
-            return redirect('admin/bussiness/category')->with('Error', 'Business Category image is not uploaded.Please try again');
+                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
+                shell_exec($command);
+            } else {
+                return redirect('admin/bussiness/category')->with('Error', 'Business Category image is not uploaded.Please try again');
+            }
         }
-}
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title'])
-        {
+        if ($input['title'] == $input['confirm_title']) {
             $category = array_intersect_key($input, BussinessCategory::$updatable);
            
            
-            if(isset($fileName)) {
-               $category['image'] =  $file.'.'.$ext;
+            if (isset($fileName)) {
+                $category['image'] =  $file.'.'.$ext;
                  
-                $category = BussinessCategory::where('id',$id)->update($category);
+                $category = BussinessCategory::where('id', $id)->update($category);
             } else {
-                $category = BussinessCategory::where('id',$id)->update($category);
+                $category = BussinessCategory::where('id', $id)->update($category);
             }
 
             return redirect('admin/bussiness/category')->with('success', ' Business Category updated successfully');
@@ -176,16 +174,16 @@ class AdminBussinessCategoriesController extends Controller
     {
         $category = BussinessCategory::findOrFail($id);
 
-        if($category->delete()){
-            $response = array(
+        if ($category->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Business Category deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Business Category can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -193,7 +191,7 @@ class AdminBussinessCategoriesController extends Controller
 
     public function block($id)
     {
-        $category = BussinessCategory::find($id);
+        $category             = BussinessCategory::find($id);
         $category->is_blocked = !$category->is_blocked;
         $category->save();
 

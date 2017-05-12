@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+
 use Illuminate\Http\Request;
 
 use Closure;
@@ -19,7 +20,7 @@ class BeforeMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $ip = $request->ip();
+        $ip       = $request->ip();
         $cmsPages = CmsPage::get();
         view()->share('cmsPages', $cmsPages);
         view()->share('ip', $ip);

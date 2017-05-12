@@ -14,16 +14,16 @@ class EventCategory extends Model
 
     public static $updatable = ['title' => "", 'slug' => "", 'description' => "", 'image' => ""];
 
-    public static $validater = array(
-    	'title' => 'required|unique:event_categories|max:255',
-    	'description' => 'required',
-    	'image' => 'required',
-    	);
+    public static $validater = [
+        'title' => 'required|unique:event_categories|max:255',
+        'description' => 'required',
+        'image' => 'required',
+        ];
 
-    public static $updateValidater = array(
-    	'title' => 'required',
-    	'description' => 'required',
-    	);
+    public static $updateValidater = [
+        'title' => 'required',
+        'description' => 'required',
+        ];
 
     public function events()
     {
@@ -32,12 +32,12 @@ class EventCategory extends Model
     
     public function getEvents()
     {
-        return $this->events()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
+        return $this->events()->where('is_blocked', 0)->orderBy('sort_order', 'asc')->get();
     }
 
     public function apiGetEventCategory()
     {
-    	$categories = $this->where('is_blocked',0)->get();
-       	return $categories;
+        $categories = $this->where('is_blocked', 0)->get();
+        return $categories;
     }
 }

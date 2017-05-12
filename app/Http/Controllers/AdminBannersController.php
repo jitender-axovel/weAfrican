@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
@@ -69,8 +70,8 @@ class AdminBannersController extends Controller
     public function edit($id)
     {
         $pageTitle = "Edit Banner - Admin";
-        $banner = BusinessBanner::find($id);
-        return view('admin.banners.edit',compact('banner','pageTitle'));
+        $banner    = BusinessBanner::find($id);
+        return view('admin.banners.edit', compact('banner', 'pageTitle'));
     }
 
     /**
@@ -96,7 +97,7 @@ class AdminBannersController extends Controller
 
         $input = array_intersect_key($request->input(), BusinessBanner::$updatable);
 
-        if ($banners->update($input)){
+        if ($banners->update($input)) {
             return redirect('admin/banner')->with('success', 'Banner Updated successfully');
         } else {
             return back()->with('error', 'Banner could not be updated. Please try again.');
@@ -113,15 +114,15 @@ class AdminBannersController extends Controller
     {
         $banner = HomePageBanner::findOrFail($id);
         if ($banner->delete()) {
-            $response = array(
+            $response = [
                 'status' => 'success',
                 'message' => ' Home Banner deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => ' Home Banner can not be deleted.Please try again',
-            );
+            ];
         }
         return json_encode($response);
     }
@@ -136,15 +137,15 @@ class AdminBannersController extends Controller
     {
         $banner = BusinessBanner::findOrFail($id);
         if ($banner->delete()) {
-            $response = array(
+            $response = [
                 'status' => 'success',
                 'message' => ' Business Banner deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Business Banner can not be deleted.Please try again',
-            );
+            ];
         }
         return json_encode($response);
     }
@@ -159,22 +160,22 @@ class AdminBannersController extends Controller
     {
         $banner = EventBanner::findOrFail($id);
         if ($banner->delete()) {
-            $response = array(
+            $response = [
                 'status' => 'success',
                 'message' => ' Event Banner deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Event Banner can not be deleted.Please try again',
-            );
+            ];
         }
         return json_encode($response);
     }
 
     public function blockHomeBanner($id)
     {
-        $banner = HomePageBanner::find($id);
+        $banner             = HomePageBanner::find($id);
         $banner->is_blocked = !$banner->is_blocked;
         $banner->save();
 
@@ -187,7 +188,7 @@ class AdminBannersController extends Controller
 
     public function blockBusinessBanner($id)
     {
-        $banner = BusinessBanner::find($id);
+        $banner             = BusinessBanner::find($id);
         $banner->is_blocked = !$banner->is_blocked;
         $banner->save();
 
@@ -200,7 +201,7 @@ class AdminBannersController extends Controller
 
     public function blockEventBanner($id)
     {
-        $banner = EventBanner::find($id);
+        $banner             = EventBanner::find($id);
         $banner->is_blocked = !$banner->is_blocked;
         $banner->save();
 

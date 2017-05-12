@@ -11,26 +11,27 @@ use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {
-	public function index() {
+    public function index()
+    {
         return view('admin.dashboard');
     }
 
-    public function login(){
+    public function login()
+    {
         $pageTitle = 'Admin-login';
 
-    	if (Auth::check() && (Auth::user()->user_role_id == 1)) {
+        if (Auth::check() && (Auth::user()->user_role_id == 1)) {
             return redirect('admin/dashboard');
-        }
-        elseif(Auth::check()) {
+        } elseif (Auth::check()) {
             return redirect('/');
         }
         
-    	return view('admin.login', compact('pageTitle'));
+        return view('admin.login', compact('pageTitle'));
     }
 
     public function postLogin(Request $request)
     {
-    	if (Auth::attempt(['mobile_number' => $request->input('mobile_number'), 'password' => $request->input('password'), 'user_role_id' => 1])) {
+        if (Auth::attempt(['mobile_number' => $request->input('mobile_number'), 'password' => $request->input('password'), 'user_role_id' => 1])) {
             // Authentication passed...
             return redirect()->intended('admin/dashboard');
         } else {
@@ -41,6 +42,5 @@ class AdminController extends Controller
 
     public function logout()
     {
-
     }
 }

@@ -17,10 +17,10 @@ class AdminSubscriptionPlansController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   public function index()
+    public function index()
     {
-        $pageTitle = 'Subscription Plan- Admin';
-        $subscriptions = SubscriptionPlan::orderBy('id','DESC')->get();
+        $pageTitle     = 'Subscription Plan- Admin';
+        $subscriptions = SubscriptionPlan::orderBy('id', 'DESC')->get();
         return view('admin.subscriptions.index', compact('pageTitle', 'subscriptions'));
     }
 
@@ -64,9 +64,9 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = "Edit Subscription Plan - Admin";
+        $pageTitle    = "Edit Subscription Plan - Admin";
         $subscription = SubscriptionPlan::find($id);
-        return view('admin.subscriptions.edit',compact('subscription','pageTitle'));
+        return view('admin.subscriptions.edit', compact('subscription', 'pageTitle'));
     }
 
     /**
@@ -80,7 +80,7 @@ class AdminSubscriptionPlansController extends Controller
     {
         $subscription = SubscriptionPlan::find($id);
 
-        if(!$subscription) {
+        if (!$subscription) {
             return back()->with('error', 'Sorry, the plan you requested is not found');
         }
 
@@ -107,14 +107,14 @@ class AdminSubscriptionPlansController extends Controller
      */
     public function block($id)
     {
-        $subscription = SubscriptionPlan::find($id);
+        $subscription             = SubscriptionPlan::find($id);
         $subscription->is_blocked = !$subscription->is_blocked;
         $subscription->save();
 
-        if ($subscription->is_blocked) { 
+        if ($subscription->is_blocked) {
             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan blocked successfully');
         } else {
             return redirect('admin/subscription/plan')->with('success', 'Subscription Plan unblocked successfully');
-        }   
+        }
     }
 }

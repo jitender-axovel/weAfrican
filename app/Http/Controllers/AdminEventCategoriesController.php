@@ -20,7 +20,7 @@ class AdminEventCategoriesController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Admin - Event Categories';
+        $pageTitle  = 'Admin - Event Categories';
         $categories = EventCategory::get();
         return view('admin.event-categories.index', compact('pageTitle', 'categories'));
     }
@@ -44,17 +44,17 @@ class AdminEventCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), EventCategory::$validater );
+        $validator = Validator::make($request->all(), EventCategory::$validater);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        if($request->file('image')->isValid()) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName=$request->file('image')->move(config('image.category_image_path'), $image);
+        if ($request->file('image')->isValid()) {
+            $file     = $key = md5(uniqid(rand(), true));
+            $ext      = $request->file('image')->getClientOriginalExtension();
+            $image    = $file.'.'.$ext;
+            $fileName =$request->file('image')->move(config('image.category_image_path'), $image);
 
             $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
             shell_exec($command);
@@ -70,13 +70,13 @@ class AdminEventCategoriesController extends Controller
 
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title']) {
+        if ($input['title'] == $input['confirm_title']) {
             $category = new EventCategory();
 
-            $category->title = $input['title'];
+            $category->title       = $input['title'];
             $category->description = $input['description'];
-            $category->image = $image;
-            $category->slug = Helper::slug($input['title'], $category->id);
+            $category->image       = $image;
+            $category->slug        = Helper::slug($input['title'], $category->id);
 
             $category->save();
 
@@ -106,8 +106,8 @@ class AdminEventCategoriesController extends Controller
     public function edit($id)
     {
         $pageTitle = "Admin - Edit Event Category";
-        $category = EventCategory::find($id);
-        return view('admin.event-categories.edit',compact('pageTitle','category'));
+        $category  = EventCategory::find($id);
+        return view('admin.event-categories.edit', compact('pageTitle', 'category'));
     }
 
     /**
@@ -126,41 +126,38 @@ class AdminEventCategoriesController extends Controller
             return redirect('admin/category/event/'.$id.'/edit')->withErrors($validator)->withInput();
         }
 
-         if ($request->hasFile('image') ){
-        if ($request->file('image') && $request->file('image')->isValid()) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName = $request->file('image')->move(config('image.category_image_path'),$image );
+        if ($request->hasFile('image')) {
+            if ($request->file('image') && $request->file('image')->isValid()) {
+                $file     = $key = md5(uniqid(rand(), true));
+                $ext      = $request->file('image')->getClientOriginalExtension();
+                $image    = $file.'.'.$ext;
+                $fileName = $request->file('image')->move(config('image.category_image_path'), $image);
             
-           $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+                   $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
-            
-        } else {
-            return redirect('admin/category/event')->with('Error', 'Event Category image is not uploaded.Please try again');
+                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
+                shell_exec($command);
+            } else {
+                return redirect('admin/category/event')->with('Error', 'Event Category image is not uploaded.Please try again');
+            }
         }
-    }
 
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title'])
-        {
-
+        if ($input['title'] == $input['confirm_title']) {
             $event = array_intersect_key($input, EventCategory::$updatable);
            
            
-            if(isset($fileName)) {
-               $event['image'] =  $file.'.'.$ext;
+            if (isset($fileName)) {
+                $event['image'] =  $file.'.'.$ext;
                  
-                $event = EventCategory::where('id',$id)->update($event);
+                $event = EventCategory::where('id', $id)->update($event);
             } else {
-                $event = EventCategory::where('id',$id)->update($event);
+                $event = EventCategory::where('id', $id)->update($event);
             }
 
             return redirect('admin/category/event')->with('success', ' Business Category updated successfully');
@@ -179,16 +176,16 @@ class AdminEventCategoriesController extends Controller
     {
         $category = EventCategory::findOrFail($id);
 
-        if($category->delete()){
-            $response = array(
+        if ($category->delete()) {
+            $response = [
                 'status' => 'success',
                 'message' => 'Event Category deleted  successfully',
-            );
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'message' => 'Event Category can not be deleted.Please try again',
-            );
+            ];
         }
 
         return json_encode($response);
@@ -196,7 +193,7 @@ class AdminEventCategoriesController extends Controller
     
     public function block($id)
     {
-        $category = EventCategory::find($id);
+        $category             = EventCategory::find($id);
         $category->is_blocked = !$category->is_blocked;
         $category->save();
 
