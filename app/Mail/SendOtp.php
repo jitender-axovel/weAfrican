@@ -30,6 +30,6 @@ class SendOtp extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.otp');
+        return $this->view('email.otp');
     }
 }
