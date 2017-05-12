@@ -13,7 +13,7 @@
                     <option value="3">All Users</option>
             </select>
         </section>
-        <table id="users_list" class="display">
+        <?php /*?><table id="users_list" class="display">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -40,7 +40,7 @@
                     @endforeach
                 @endif
             </tbody>
-        </table>
+        </table><?php */?>
     </div>
     <div class="col-md-5 message-section">
         <p class="header">Type your message</p>
@@ -65,14 +65,15 @@
    
 
     var msgLength = $.trim($("textarea").val()).length;
-    var checkedCB = $("input[type='checkbox']:checked").length;
+    <?php /*?>var checkedCB = $("input[type='checkbox']:checked").length;
     if( checkedCB == 0){
     	alert("You must select atleast one User to send message");
-    }else if(msgLength == 0){
+    }else <?php */?>if(msgLength == 0){
     	alert("You left the message field blank, please fill it");
     }else{
          var cus = document.getElementById('select_type');
-    var custid = cus.options[cus.selectedIndex].value;
+        var custid = cus.options[cus.selectedIndex].value;
+        alert(custid);
     	var formData = $(".wrapper").find("input").serialize() + "&message=" + $("textarea").val() + "&type=" +custid;	
     	$.ajax({type: "POST",data: formData, url: "{{url('admin/send/notification')}}", success:function(res){
     		$(".greetblock").slideUp(1000);
