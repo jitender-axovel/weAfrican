@@ -51,19 +51,51 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-        Session::put('username', $request->full_name);
-        Session::put('password', $request->password);
-        $user = User::whereMobileNumber($request->password)->first();
-        if ($user && Hash::check($request->password, $user->password)) {
-            $user->otp = rand(1000, 9999);
-            $user->save();
-            Session::put('otp', $user->otp);
-            Mail::to('madhav@gmail.com')->send(new SendOtp($user));
-            // Send OTP SMS To registered Mobile Number
-            return view('business.otp', compact('pageTitle'));
-        } else {
+        //Session::put('username', $request->full_name);
+        //Session::put('password', $request->password);
+        $user = User::whereEmail($request->email)->first();
+        if($user)
+        {
+            if ($user && Hash::check($request->password, $user->password)) {
+                if($user->user_role_id==3)
+                {
+                    if($user->is_verified==1)
+                    {
+                        if(Auth::attempt(['email' => $request->email,'password' => $request->password]))
+                        {
+                            if (Auth::check()) {
+                                return redirect()->intended('upload');
+                            }else
+                            {
+                                return redirect('login')->with('error', 'Something goes wrong. Please try again!');
+                            }
+                        }else
+                        {
+                            return redirect()->back()->withErrors(['password' => 'Credential dos\'nt match!']);
+                        }
+                    }else
+                    {
+                        Session::put('is_login', true);
+                        Session::put('mobile_number', $user->mobile_number);
+                        Session::put('password', $request->password);
+                        $user->otp = rand(1000,9999);
+                        $user->save();
+                        Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                        return redirect('otp')->with('success', 'Please enter the OTP to verify your mobile number to proceed to logged in!');
+                    }
+                }else
+                {
+                    return redirect('login')->with('error', 'You are not authorized to access!');
+                }
+            }else
+            {
+                return redirect()->back()
+            ->withErrors(['password' => 'Please enter a Valid Password']);
+            }
+        }else
+        {
             return redirect()->back()
-            ->withErrors(['password' => 'credentials does not match']);
+            ->withErrors(['email' => 'Email does not match']);
         }
     }
     public function logout()
