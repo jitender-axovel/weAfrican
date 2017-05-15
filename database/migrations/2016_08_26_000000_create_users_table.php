@@ -22,7 +22,9 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('country_code')->nullable();
             $table->unsignedBigInteger('mobile_number');
             $table->unsignedInteger('otp')->default('1234')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
+            $table->boolean('is_verified')->default(0);
             $table->boolean('is_blocked')->default(0);
             $table->boolean('is_notify')->default(false);
             $table->string('image')->nullable();
