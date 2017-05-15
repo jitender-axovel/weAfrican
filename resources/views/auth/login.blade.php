@@ -10,7 +10,20 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                     {{ csrf_field() }}
 
-                     <div class="form-group{{ $errors->has('full_name') ? ' has-error' : '' }}">
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <label for="email" class="col-md-4 control-label">Email</label>
+
+                        <div class="col-md-6">
+                            <input id="email" type="text" class="form-control" name="email" value="{{ old('email') }}" autofocus>
+
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                     <!-- <div class="form-group{{ $errors->has('full_name') ? ' has-error' : '' }}">
                         <label for="full_name" class="col-md-4 control-label">Name</label>
 
                         <div class="col-md-6">
@@ -22,7 +35,7 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
+                    </div> -->
 
                  <!--    <div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
                         <label for="mobile_number" class="col-md-4 control-label">Phone Number</label>
@@ -39,7 +52,7 @@
                     </div> -->
 
                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label for="password" class="col-md-4 control-label">Mobile Number</label>
+                        <label for="password" class="col-md-4 control-label">Password</label>
 
                         <div class="col-md-6">
                             <input id="password" type="text" class="form-control" name="password">
@@ -52,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <div class="checkbox">
                                 <label>
@@ -60,7 +73,7 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <div class="col-md-8 col-md-offset-4">
