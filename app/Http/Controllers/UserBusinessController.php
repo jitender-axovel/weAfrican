@@ -70,6 +70,8 @@ class UserBusinessController extends Controller
             'title' => 'required',
             'keywords' =>'required',
             'email' => 'required|email|max:255|unique:user_businesses',
+            'password' => 'required|min:5|max:255',
+            'confirm_password' => 'required|min:5|max:255|same:password',
             'mobile_number' => 'required|numeric|unique:users',
             'pin_code' => 'regex:/\b\d{6}\b/',
             'country' => 'string',
@@ -113,8 +115,10 @@ class UserBusinessController extends Controller
                 }
             }
             $user = array_intersect_key($request->input(), User::$updatable);
+            $user['email'] = $input['email'];
             $user['user_role_id'] = 3;
-            $user['password'] = bcrypt($input['mobile_number']);
+            $user['password'] = bcrypt($input['password']);
+            $user['otp'] = rand(1000,9999);
             
             $user = User::create($user);
             $user->save();
@@ -135,7 +139,10 @@ class UserBusinessController extends Controller
             $value = $request->session()->get('key');
             if($business)
             {
-                return redirect('login')->with('success', 'You have been successfully registered. Please enter username and password to login!');
+                Session::put('mobile_number', $input['mobile_number']);
+                Session::put('is_login', false);
+                Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                return redirect('otp')->with('success', 'You have been successfully registered. Please enter the OTP!');
             }else{
                 return back()->with('error', 'Business could not created successfully.Please try again'); 
             }    
@@ -153,19 +160,31 @@ class UserBusinessController extends Controller
 
     public function checkOtp(Request $request)
     {
-        $user_name = Session::get('username');
-        $password  = Session::get('password');
-        if (Session::get('otp')==$request->input('otp')) {
-            if (Auth::attempt(['mobile_number' => $password,'password' => $password])) {
-                if (Auth::check()) {
-                    $user = User::whereId(Auth::id())->update(['full_name'=>$user_name]);
-                    return redirect()->intended('upload');
-                } else {
-                    return redirect()->intended('logout');
+        $mobile_number = Session::get('mobile_number');
+        $is_login = Session::get('is_login');
+        $password = Session::get('password');
+        $user = User::whereMobileNumber($mobile_number)->first();
+        if($user->otp==$request->input('otp')){
+            $user->is_verified = 1;
+            $user->save();
+            Session::forget('mobile_number');Session::forget('is_login');Session::forget('password');
+            if($is_login)
+            {
+                if(Auth::attempt(['email' => $user->email,'password' => $password]))
+                {
+                    if (Auth::check()) {
+                        return redirect()->intended('upload');
+                    }else
+                    {
+                        return redirect('login')->with('error', 'Something goes wrong. Please try again!');
+                    }
+                }else
+                {
+                    return redirect('login')->with('error', 'Credential dos\'nt match!');
                 }
-                //dd(Session::get('username'));
-            } else {
-                return redirect()->intended('logout');
+            }else
+            {
+                return redirect('login')->with('success', 'Your mobile number is successfully verified. Please enter username and password to login!');
             }
         } else {
             return redirect('otp')->with('error', 'Please Enter the valid OTP');
@@ -174,14 +193,14 @@ class UserBusinessController extends Controller
 
     public function resendotp()
     {
-        $user_name = Session::get('username');
-        $password  = Session::get('password');
+        $mobile_number = Session::get('mobile_number');
+        //$password  = Session::get('password');
         //dd($password);
-        $user      = User::whereMobileNumber($password)->first();
-        if ($user && Hash::check($password, $user->password)) {
+        $user= User::whereMobileNumber($mobile_number)->first();
+        if ($user) {
             $user->otp = rand(1000, 9999);
             $user->save();
-            Session::put('otp', $user->otp);
+            //Session::put('otp', $user->otp);
              Mail::to('madhav@gmail.com')->send(new SendOtp($user));
             //Send OTP SMS to the registered mobile number
             return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number');
