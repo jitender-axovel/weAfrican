@@ -84,6 +84,26 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group required">
+                        <label for="password" class="col-md-2 control-label">Password:</label>
+                        <div class="col-md-4">
+                            <input required type="password" class="form-control" name="password" value="">
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <label for="confirm_password" class="col-md-2 control-label">Confirm Password:</label>
+                        <div class="col-md-4">
+                            <input required type="password" class="form-control" name="confirm_password" value="">
+                            @if ($errors->has('confirm_password'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('confirm_password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
                     <div class="form-group col-md-12">
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div id="map"></div>
@@ -260,10 +280,11 @@
         var long;
         var ip = "{{$ip}}";
 
-        jQuery.get('http://freegeoip.net/json/'+ip, function (response){
+        jQuery.get('http://freegeoip.net/json/'+"103.212.147.94", function (response){
             //alert(response.longitude);
             lat = parseFloat(response.latitude);
             long = parseFloat(response.longitude);
+            buildMap(lat,long)
         }, "jsonp");
     </script>
 @endsection
@@ -292,27 +313,29 @@
         $('#pin_code').val(addressComponents.postalCode);
         $('#country').val(addressComponents.country);
     }
-    $('#map').locationpicker({
-        location: {
-            latitude: 28.6667,
-            longitude: 77.2167
-        },
-        radius: 100,
-        inputBinding: {
-                    latitudeInput: $('#latitude'),
-                    longitudeInput: $('#longitude'),
-                    radiusInput: $('#us3-radius'),
-                    locationNameInput: $('#address')
-        },
-        enableAutocomplete: true,
-        onchanged: function (currentLocation, radius, isMarkerDropped) {
-            var addressComponents = $(this).locationpicker('map').location.addressComponents;
-            updateControls(addressComponents);
-        },
-        oninitialized: function (component) {
-            var addressComponents = $(component).locationpicker('map').location.addressComponents;
-            updateControls(addressComponents);
-        }
-    });
+    function buildMap(lat,long){
+        $('#map').locationpicker({
+            location: {
+                latitude: lat,
+                longitude: long
+            },
+            radius: 100,
+            inputBinding: {
+                        latitudeInput: $('#latitude'),
+                        longitudeInput: $('#longitude'),
+                        radiusInput: $('#us3-radius'),
+                        locationNameInput: $('#address')
+            },
+            enableAutocomplete: true,
+            onchanged: function (currentLocation, radius, isMarkerDropped) {
+                var addressComponents = $(this).locationpicker('map').location.addressComponents;
+                updateControls(addressComponents);
+            },
+            oninitialized: function (component) {
+                var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                updateControls(addressComponents);
+            }
+        });
+    }
 </script>
 @endsection
