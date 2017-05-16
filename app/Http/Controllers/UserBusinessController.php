@@ -141,8 +141,14 @@ class UserBusinessController extends Controller
             {
                 Session::put('mobile_number', $input['mobile_number']);
                 Session::put('is_login', false);
-                Mail::to('madhav@gmail.com')->send(new SendOtp($user));
-                return redirect('otp')->with('success', 'You have been successfully registered. Please enter the OTP!');
+                $res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));
+                if($res->success==true)
+                {
+                    return redirect('otp')->with('success', 'You have been successfully registered. Please enter the OTP!');
+                }else
+                {
+                    return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
+                }
             }else{
                 return back()->with('error', 'Business could not created successfully.Please try again'); 
             }    
@@ -164,7 +170,8 @@ class UserBusinessController extends Controller
         $is_login = Session::get('is_login');
         $password = Session::get('password');
         $user = User::whereMobileNumber($mobile_number)->first();
-        if($user->otp==$request->input('otp')){
+        $res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));
+        if($res->success==true){
             $user->is_verified = 1;
             $user->save();
             Session::forget('mobile_number');Session::forget('is_login');Session::forget('password');
@@ -187,23 +194,23 @@ class UserBusinessController extends Controller
                 return redirect('login')->with('success', 'Your mobile number is successfully verified. Please enter Email and Password to login!');
             }
         } else {
-            return redirect('otp')->with('error', 'Please Enter the valid OTP');
+            return redirect('otp')->with('error', $res->message.'! Please Enter the valid OTP');
         }
     }
 
     public function resendotp()
     {
         $mobile_number = Session::get('mobile_number');
-        //$password  = Session::get('password');
-        //dd($password);
         $user= User::whereMobileNumber($mobile_number)->first();
         if ($user) {
-            $user->otp = rand(1000, 9999);
-            $user->save();
-            //Session::put('otp', $user->otp);
-             Mail::to('madhav@gmail.com')->send(new SendOtp($user));
-            //Send OTP SMS to the registered mobile number
-            return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number');
+            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
+            if($res->success==true)
+            {
+                return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number');
+            }else
+            {
+                return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
+            }
         } else {
             return redirect('login')->with('warning', 'Your login session has been expired, Please try to login again!');
         }
@@ -255,6 +262,79 @@ class UserBusinessController extends Controller
         $business = UserBusiness::where('user_id',Auth::id())->update($input);
 
         return redirect('register-business/'.Auth::id())->with('success', 'Document Uploaded successfully');
+    }
+
+    /**
+     * Send the Verification Code to the Registerd Mobile Number
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function sendVerificationCode($country_code,$mobile_number)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.authy.com/protected/json/phones/verification/start?via=sms&country_code=".$country_code."&phone_number=".$mobile_number."&locale=en",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache",
+            "x-authy-api-key: SKunwdncmh5Xq5o2a6LweCDe7f7zKvbh",
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+        if ($err) {
+          return "cURL Error #:" . $err;
+        } else {
+          return $response;
+        }
+    }
+
+    /**
+     * Verify the OTP 
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyVerificationCode($country_code,$mobile_number,$verification_code)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://api.authy.com/protected/json/phones/verification/check?country_code=".$country_code."&phone_number=".$mobile_number."&verification_code=".$verification_code,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache",
+            "x-authy-api-key: SKunwdncmh5Xq5o2a6LweCDe7f7zKvbh"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+          return "cURL Error #:" . $err;
+        } else {
+          return $response;
+        }
     }
 
     /**
