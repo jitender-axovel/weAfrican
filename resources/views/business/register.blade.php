@@ -33,7 +33,7 @@
                             <input required type="text"
                                 class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
                             <span class="help-block">
-                                <strong>Please Enter the contry code. Ex: 91</strong>
+                                <strong>Please Enter the country code. Ex: 91</strong>
                             </span>
                             @if ($errors->has('country_code'))
                                 <span class="help-block">
