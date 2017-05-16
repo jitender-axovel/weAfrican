@@ -141,6 +141,7 @@ class UserBusinessController extends Controller
             {
                 Session::put('mobile_number', $input['mobile_number']);
                 Session::put('is_login', false);
+                Mail::send('email.register',$user, 'madhav@gmail.com');
                 $res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));
                 if($res->success==true)
                 {
