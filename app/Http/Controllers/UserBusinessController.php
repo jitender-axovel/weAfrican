@@ -16,7 +16,7 @@ use App\Helper;
 use Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\SendOtp;
+use App\Mail\NewRegisterBusiness;
 
 
 class UserBusinessController extends Controller
@@ -141,7 +141,7 @@ class UserBusinessController extends Controller
             {
                 Session::put('mobile_number', $input['mobile_number']);
                 Session::put('is_login', false);
-                Mail::send('email.register',$user, 'madhav@gmail.com');
+                Mail::to('madhav@gmail.com')->send(new NewRegisterBusiness($user));
                 $res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));
                 if($res->success==true)
                 {
