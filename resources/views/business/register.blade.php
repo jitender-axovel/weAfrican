@@ -32,9 +32,12 @@
                         <div class="col-md-4">
                             <input required type="text"
                                 class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
+                            <span class="help-block">
+                                <strong>Please Enter the contry code. Ex: 91</strong>
+                            </span>
                             @if ($errors->has('country_code'))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('country_code') }}</strong>
+                                <strong>Please Enter the contry code. Ex: 91{{ $errors->first('country_code') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -229,7 +232,7 @@
                         Logo Preview:
                         </label>
                         <div class="col-md-4">
-                            <img src="#" alt=""  id="preview">
+                            <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                         </div>
                     </div>
                     <div class="form-group">
