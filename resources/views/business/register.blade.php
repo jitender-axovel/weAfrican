@@ -283,7 +283,7 @@
         var long;
         var ip = "{{$ip}}";
 
-        jQuery.get('http://freegeoip.net/json/'+"103.212.147.94", function (response){
+        jQuery.get('http://freegeoip.net/json/'+ip, function (response){
             //alert(response.longitude);
             lat = parseFloat(response.latitude);
             long = parseFloat(response.longitude);
