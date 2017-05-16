@@ -184,7 +184,7 @@ class UserBusinessController extends Controller
                 }
             }else
             {
-                return redirect('login')->with('success', 'Your mobile number is successfully verified. Please enter username and password to login!');
+                return redirect('login')->with('success', 'Your mobile number is successfully verified. Please enter Email and Password to login!');
             }
         } else {
             return redirect('otp')->with('error', 'Please Enter the valid OTP');
