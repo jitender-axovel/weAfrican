@@ -80,8 +80,14 @@ class LoginController extends Controller
                         Session::put('password', $request->password);
                         $user->otp = rand(1000,9999);
                         $user->save();
-                        Mail::to('madhav@gmail.com')->send(new SendOtp($user));
-                        return redirect('otp')->with('success', 'Please enter the OTP to verify your mobile number to proceed to logged in!');
+                        $res = json_decode(app('App\Http\Controllers\UserBusinessController')->sendVerificationCode($user->country_code,$user->mobile_number));
+                        if($res->success==true)
+                        {
+                            return redirect('otp')->with('success', 'Please enter the OTP to verify your mobile number to proceed to logged in!');
+                        }else
+                        {
+                            return redirect('login')->with('warning', $res->message.'! Please try again!');
+                        }
                     }
                 }else
                 {
