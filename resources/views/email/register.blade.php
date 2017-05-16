@@ -265,7 +265,7 @@ img {
       <td valign="middle" style='vertical-align: middle;'>
                           <div class='contentEditableContainer contentTextEditable'>
                             <div class='contentEditable' style='text-align: left;font-weight: light; color:#555555;font-size:26;line-height: 39px;font-family: Helvetica Neue;'>
-                              <h1 class='big'><a target='_blank' href="[CLIENTS.WEBSITE]" style='color:#444444'>Company</a></h1>
+                              <h1 class='big'><a target='_blank' href="[CLIENTS.WEBSITE]" style='color:#444444'>WeAfrican</a></h1>
                             </div>
                           </div>
                         </td>
@@ -313,7 +313,7 @@ img {
                         <td>
                           <div class='contentEditableContainer contentTextEditable'>
                             <div class='contentEditable' style='text-align: left;'>
-                              <h2 style='font-size:16px;'>Sub Feature 2</h2>
+                              <h2 style='font-size:16px;'>New User</h2>
                               <br>
                               <p>Hello Admin,<br>A new business user has been registerd to the WeAfrican WeEnd
                               <br>
