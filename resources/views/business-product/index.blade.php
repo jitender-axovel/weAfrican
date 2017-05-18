@@ -32,9 +32,12 @@
                         <td>{{$product->title}}</td>
                         <td>{{$product->description}}</td>
                         <td>{{$product->price}}</td>
-                        <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product->image)}}"/></td>
+                        <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[0])}}"/></td>
                         <td>
                             <ul class="list-inline">
+                                <li>
+                                    <a href="{{url('business-product/'.$product->id)}}"><button type="button" class="btn btn-success" title="Edit Product"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
+                                </li>
                                 <li>
                                     <a href="{{url('business-product/'.$product->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Product"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                                 </li>
