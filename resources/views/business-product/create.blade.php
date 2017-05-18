@@ -51,8 +51,8 @@
                 <div class="form-group">
                     <label for="address" class="col-md-2 required control-label">Image</label>
                     <div class="col-md-4">
-                        <input type="file" name="product_image" id="product_image" required>
-                        @if($errors->has('product_image'))
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image1" required>
+                        @if($errors->has('product_image.0'))
 	                        <span class="help-block">
 	                        <strong>{{ $errors->first('product_image') }}</strong>
 	                        </span>
@@ -60,7 +60,67 @@
                     </div>
                     <label for="city" class="col-md-2 control-label">Image Preview</label>
                     <div class="col-md-4">
-                        <img src="#" alt=""  id="preview">
+                        <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <div class="col-md-4">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image2">
+                        @if($errors->has('product_image.1'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('product_image') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <label for="city" class="col-md-2 control-label">Image Preview</label>
+                    <div class="col-md-4">
+                        <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <div class="col-md-4">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image3">
+                        @if($errors->has('product_image.2'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('product_image') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <label for="city" class="col-md-2 control-label">Image Preview</label>
+                    <div class="col-md-4">
+                        <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <div class="col-md-4">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image4">
+                        @if($errors->has('product_image.3'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('product_image') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <label for="city" class="col-md-2 control-label">Image Preview</label>
+                    <div class="col-md-4">
+                        <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview4">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <div class="col-md-4">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image5">
+                        @if($errors->has('product_image.4'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first('product_image') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <label for="city" class="col-md-2 control-label">Image Preview</label>
+                    <div class="col-md-4">
+                        <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview5">
                     </div>
                 </div>
                 <div class="form-group">
@@ -77,18 +137,17 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            $('#preview').attr('src', e.target.result);
-          }
-        reader.readAsDataURL(input.files[0]);
-      }
+    function previewImg(img)
+    {
+        var id = img.id[img.id.length -1];
+        input = "#preview"+img.id[img.id.length -1];
+        if (img.files && img.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#preview'+id).attr('src', e.target.result);
+            }
+            reader.readAsDataURL(img.files[0]);
+        }
     }
-    
-    $("#product_image").change(function(){
-        readURL(this);
-    });
 </script>
 @endsection
