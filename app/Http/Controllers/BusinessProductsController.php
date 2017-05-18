@@ -61,24 +61,36 @@ class BusinessProductsController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
+        $image = "";
+        if ($request->hasFile('product_image')) {
+            $files = $request->file('product_image');
+            foreach($files as $file){
+                if($file->isValid())
+                {
+                    $file2 = md5(uniqid(rand(), true));
+                    $extension = $file->getClientOriginalExtension();
+                    $img_name = $file2.'.'.$extension;
+                    $image .= $file2.'.'.$extension.'|';
+                    $fileName=$file->move(config('image.product_image_path'), $img_name);
 
-        if($request->file('product_image')->isValid()) {
-            $file = md5(uniqid(rand(), true));
-            $ext = $request->file('product_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName=$request->file('product_image')->move(config('image.product_image_path'), $image);
+                    $command = 'ffmpeg -i '.config('image.product_image_path').$img_name.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$img_name;
+                    shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+                    $command = 'ffmpeg -i '.config('image.product_image_path').$img_name.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/medium/'.$img_name;
+                    shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
-        } else {
-            return back()->with('Error', 'Category image is not uploaded. Please try again');
+                    $command = 'ffmpeg -i '.config('image.product_image_path').$img_name.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/large/'.$img_name;
+                    shell_exec($command);
+                }else
+                {
+                    return back()->with('Error', 'Product image is not uploaded. Please try again');
+                }
+            }
+        }else
+        {
+            return back()->with('Error', 'Product image is not uploaded. Please try again');
         }
+        
 
         $input = $request->input();
 
@@ -110,7 +122,9 @@ class BusinessProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $pageTitle = "Business Product-View";
+        $product = BusinessProduct::find($id);
+        return view('business-product.view',compact('pageTitle','product'));
     }
 
     /**
@@ -141,34 +155,42 @@ class BusinessProductsController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        if ($request->file('product_image')) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('product_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName = $request->file('product_image')->move(config('image.product_image_path'),$image );
-            
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+        $product = BusinessProduct::where('id',$id)->get();
+        $img = explode('|',($product[0]->image));
+        if ($request->hasFile('product_image')) {
+            $files = $request->file('product_image');
+            $i=0;
+            foreach($files as $file){
+                if($file->isValid())
+                {
+                    $file2 = md5(uniqid(rand(), true));
+                    $extension = $file->getClientOriginalExtension();
+                    $img_name = $file2.'.'.$extension;
+                    $img[$i] = $file2.'.'.$extension;
+                    $fileName=$file->move(config('image.product_image_path'), $img_name);
 
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+                    $command = 'ffmpeg -i '.config('image.product_image_path').$img_name.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/small/'.$img_name;
+                    shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.product_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
+                    $command = 'ffmpeg -i '.config('image.product_image_path').$img_name.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/medium/'.$img_name;
+                    shell_exec($command);
+
+                    $command = 'ffmpeg -i '.config('image.product_image_path').$img_name.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.product_image_path').'thumbnails/large/'.$img_name;
+                    shell_exec($command);
+                }else
+                {
+                    return back()->with('Error', 'Product image is not uploaded. Please try again');
+                }
+                $i++;
+            }
         }
 
         $input = $request->input();
 
         $input = array_intersect_key($input, BusinessProduct::$updatable);
-
-        if(isset($fileName)) {
-            $input['image'] =  $file.'.'.$ext;
-            $product = BusinessProduct::where('id',$id)->update($input);
-        } else {
-            $product = BusinessProduct::where('id',$id)->update($input);
-        }
-
-            return redirect('business-product')->with('success', 'Product updated successfully');
+        $input['image'] =  implode("|",$img);
+        $product = BusinessProduct::where('id',$id)->update($input);
+        return redirect('business-product')->with('success', 'Product updated successfully');
     }
 
     /**
