@@ -25,7 +25,13 @@
 				<td>{{ $product->title}}  </td>
 				<td>{{ $product->description}}</td>
                 <td>{{ $product->price}}</td>
-                <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product->image)}}"/></td>
+                <td>
+                	@if(explode('|',$product->image)[0]!="")
+                		<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|',$product->image)[0])}}"/>
+                	@else
+                		<img src="{{asset('images/no-image.jpg')}}"/>
+                	@endif
+                </td>
 				<td>{{ date_format(date_create($product->created_at), 'd M,Y') }}</td>
 				<td>
 					<a href="{{ URL::to('admin/product/block/'.$product->id) }}">
