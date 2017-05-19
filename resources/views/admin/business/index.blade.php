@@ -9,13 +9,15 @@
 		<thead>
 			<tr>
 				<th>Business ID</th>
+				<th>Name</th>
 				<th>Business Name</th>
 				<th>Mobile Number</th>
-				<th>Likes</th>
+				<th>Document Verified</th>
+				<!-- <th>Likes</th>
 				<th>Dislikes</th>
 				<th>Favourites</th>
 				<th>Followers</th>
-				<th>Ratings</th>
+				<th>Ratings</th> -->
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -24,13 +26,27 @@
 			@foreach($businesses as $business)
 			<tr>
 				<td>{{ $business->business_id}}</td>
+				<td>{{ $business->user->full_name}} </td>
 				<td>{{ $business->title}} </td>
 				<td>{{ $business->mobile_number}}</td>
-				<td>{{ $business->getLikes()}}</td>
+				<td>
+					@if($business->is_identity_proof_validate==1)
+						Identity Proof: Verified
+					@else
+						Identity Proof: Not Verified
+					@endif
+					<br>
+					@if($business->is_business_proof_validate==1)
+						Business Proof: Verified
+					@else
+						Business Proof: Not Verified
+					@endif
+				</td>
+				<!-- <td>{{ $business->getLikes()}}</td>
 				<td>{{ $business->getDislikes()}}</td>
 				<td>{{ $business->getFavourites()}}</td>
 				<td>{{ $business->getFollowers()}}</td>
-				<td>{{ (int)$business->getRatings()}}</td>
+				<td>{{ (int)$business->getRatings()}}</td> -->
 				<td>{{ date_format(date_create($business->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
