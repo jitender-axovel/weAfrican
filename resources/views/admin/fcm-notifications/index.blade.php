@@ -45,9 +45,10 @@
     <div class="col-md-5 message-section">
         <p class="header">Type your message</p>
         <textarea cols="15" rows="5" value="txtarea"></textarea>
-        <button onclick="sendMsg()">Send Message</button>
+        <button class="btn btn-success" onclick="sendMsg()">Send Message</button>
     </div>
     <div class="col-md-12 serverresponse hidediv">
+
         <center><button id="sendmsg">Send Message Again</button></center>
     </div>
     <script type="text/javascript">
