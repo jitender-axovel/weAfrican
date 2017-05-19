@@ -10,6 +10,7 @@
 				<th>Name</th>
 				<th>Mobile No.</th>
 				<th>Role</th>
+				<th>Mobile Verified</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
@@ -20,6 +21,13 @@
 				<td>{{ $user->full_name}}</td>
 				<td>{{ '+' . $user->country_code . '-' . $user->mobile_number }}</td>
 				<td>{{ $user->role->name }}</td>
+				<td>
+					@if($user->is_verified==0)
+						Not Verified
+					@else
+						Verified
+					@endif
+				</td>
 				<td>{{ date_format(date_create($user->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
@@ -41,6 +49,12 @@
 						<li>
 							<a class="btn btn-warning" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
 						</li>
+						<li>
+							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" onsubmit="deleteUser('{{$user->id}}', '{{$user->full_name}}',this)">
+								{{csrf_field()}}
+								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+							</form>
+						</li>
 					</ul>
 				</td>
 			</tr>
@@ -51,5 +65,58 @@
 		$(document).ready( function () {
 		    $('#users_list').DataTable();
 		} );
+	</script>
+@endsection
+@section('scripts')
+	<script type="text/javascript">
+		function deleteUser(id, name, form)
+		{
+			event.preventDefault();
+			swal({
+				title: "Are you sure?",
+				text: "You want to delete "+name,
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Yes, delete it!",
+				cancelButtonText: "No, cancel pls!",
+				closeOnConfirm: false,
+				closeOnCancel: false,
+				allowEscapeKey: false,
+			},
+			function(isConfirm){
+				if(isConfirm) {
+					$.ajax({
+						url: $(form).attr('action'),
+            			data: $(form).serialize(),
+						type: 'DELETE',
+						success: function(data) {
+							data = JSON.parse(data);
+							if(data['status']) {
+								swal({
+									title: data['message'],
+									text: "Press ok to continue",
+									type: "success",
+									showCancelButton: false,
+									confirmButtonColor: "#DD6B55",
+									confirmButtonText: "Ok",
+									closeOnConfirm: false,
+									allowEscapeKey: false,
+								},
+								function(isConfirm){
+									if(isConfirm) {
+										window.location.reload();
+									}
+								});
+							} else {
+								swal("Error", data['message'], "error");
+							}
+						}
+					});
+				} else {
+					swal("Cancelled", name+"'s record will not be deleted.", "error");
+				}
+			});
+		}
 	</script>
 @endsection
