@@ -59,7 +59,11 @@
 						</div>
 					</fieldset>
 				</div>
-				<button type="submit" class="btn btn-success btn-block" id="btn-login">Update Category</button>
+				<div class="form-group">
+					<div class="col-md-4 col-md-offset-1">
+						<button type="submit" class="btn btn-success" id="btn-login">Update Category</button>
+					</div>
+				</div>
 			</form>
 		</div>
 	</div>
