@@ -59,8 +59,8 @@
 			        <dd>{{ $business->email }}</dd>
 			        <dt>Primary Mobile Number</dt>
 			        <dd>{{ $business->mobile_number }}</dd>
-			        <dt>Secondary Mobile Number</dt>
-			        <dd>{{ $business->secondary_phone_number }}</dd>
+			        <!-- <dt>Secondary Mobile Number</dt>
+			        <dd>{{ $business->secondary_phone_number }}</dd> -->
 			        <dt>Website</dt>
 			        <dd>{{ $business->website }}</dd>
 			        <dt>Working Hours</dt>

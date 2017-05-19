@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-2">
-                <button type="submit" class="btn btn-success btn-block" id="btn-login">Update Subscription</button>
+                <button type="submit" class="btn btn-success" id="btn-login">Update Subscription</button>
             </div>
         </form>
     </div>

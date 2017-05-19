@@ -42,7 +42,11 @@
 						@endif
 					</div>
 				</div>
-				<button type="submit" class="btn btn-success btn-block">Update Banner</button>
+				<div class="form-group">
+					<div class="col-me-4">
+						<button type="submit" class="btn btn-success">Update Banner</button>
+					</div>
+				</div>
 			</form>
 		</div>
 	</div>

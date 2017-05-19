@@ -19,7 +19,11 @@
 
                     </div>
 				</div>
-				<button type="submit" class="btn btn-success btn-block" id="btn-login">Update Content</button>
+				<div class="form-group">
+					<div class="ol-md-4">
+						<button type="submit" class="btn btn-success" id="btn-login">Update Content</button>
+					</div>
+				</div>
 				</div>
 			</form>
 		</div>

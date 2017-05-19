@@ -131,7 +131,7 @@
                         </span>
                     @endif
                 </div>
-                <label for="secondary_phone_number" class="col-md-2 control-label">
+                <!-- <label for="secondary_phone_number" class="col-md-2 control-label">
                 Secondary Mobile Number:(format:99-99-999999)
                 </label>
                 <div class="col-md-4">
@@ -141,7 +141,7 @@
                         <strong>{{ $errors->first('secondary_phone_number') }}</strong>
                         </span>
                     @endif
-                </div>
+                </div> -->
             </div>
             <div class="form-group">
                 <label for="about_us" class="col-md-2 control-label">About us</label>
