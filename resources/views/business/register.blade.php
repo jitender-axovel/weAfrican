@@ -16,7 +16,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Register Your Business for Free</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
+                <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
                     <div class="form-group required">
                         <label for="full_name" class="col-md-2 control-label">Full Name:</label>
@@ -28,7 +28,7 @@
                                 </span>
                             @endif
                         </div>
-                        <label for="country_code" class="col-md-2 control-label">Country Code:</label>
+                       <!--  <label for="country_code" class="col-md-2 control-label">Country Code:</label>
                         <div class="col-md-4">
                             <input required type="text"
                                 class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
@@ -40,7 +40,7 @@
                                 <strong>Please Enter the contry code. Ex: 91{{ $errors->first('country_code') }}</strong>
                                 </span>
                             @endif
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-group required">
                         <label for="title" class="col-md-2 control-label">Business Name:</label>
@@ -54,7 +54,7 @@
                         </div>
                         <label for="category" class="col-md-2 control-label">Category:</label>
                         <div class="col-md-4">
-                            <select required name="bussiness_category_id" required>
+                            <select name="bussiness_category_id" class="form-control selectpicker" required>
                                 <option value="" selected>Select Category</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" @if($category->title == $category->title){{ 'selected'}} @endif  >{{ $category->title }}</option>
@@ -67,27 +67,27 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group required">
-                        <label for="keywords" class="col-md-2 control-label">Business Keywords:</label>
-                        <div class="col-md-4">
-                            <input required type="text" class="form-control" name="keywords" value="{{ old('keywords') }}">
+                    <div class="form-group ">
+                        <label for="keywords" class="col-md-2 required control-label">Business Keywords:</label>
+                        <div class="col-md-4" data-tip="Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.">
+                            <input required type="text" class="form-control" name="keywords" placeholder="Ex. Software developer, Gas Supplier , Baby Cloths, Electronics" value="{{ old('keywords') }}">
                             @if ($errors->has('keywords'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('keywords') }}</strong>
                                 </span>
                             @endif
                         </div>
-                        <label for="email" class="col-md-2 control-label">Business Email:</label>
+                        <label for="website" class="col-md-2 control-label">Website:</label>
                         <div class="col-md-4">
-                            <input required type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="email" value="{{ old('email') }}">
-                            @if ($errors->has('email'))
+                            <input type="text" class="form-control" name="website" value="{{ old('website') }}">
+                            @if ($errors->has('website'))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
+                                <strong>{{ $errors->first('website') }}</strong>
                                 </span>
                             @endif
                         </div>
                     </div>
-                    <div class="form-group required">
+                    <!-- <div class="form-group required">
                         <label for="password" class="col-md-2 control-label">Password:</label>
                         <div class="col-md-4">
                             <input required type="password" class="form-control" name="password" value="">
@@ -106,14 +106,14 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group col-md-12">
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div id="map"></div>
                     </div>
                     <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
                     <input type="hidden" id="longitude" class="form-control" name="longitude" value ="{{ old('longitude') }}">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="address" class="col-md-2 control-label">Address:</label>
                         <div class="col-md-4">
                             <input type="text" id="address"class="form-control" name="address" value="{{ old('address') }}">
@@ -133,10 +133,10 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="state" class="col-md-2 control-label">State:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}" readonly="true">
+                            <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}">
                             @if ($errors->has('state'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('state') }}</strong>
@@ -145,7 +145,7 @@
                         </div>
                         <label for="country" class="col-md-2 control-label">Country:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}" readonly="true">
+                            <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}" >
                             @if ($errors->has('country'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('country') }}</strong>
@@ -156,33 +156,30 @@
                     <div class="form-group">
                         <label for="pin_code" class="col-md-2 required control-label">Pin Code: (format:110075)</label>
                         <div class="col-md-4">
-                            <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}" readonly="true">
+                            <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}">
                             @if ($errors->has('pin_code'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('pin_code') }}</strong>
                                 </span>
                             @endif
                         </div>
-                        <label for="website" class="col-md-2 control-label">Website:</label>
+                        <label for="mobile_number" class="col-md-2 required control-label">Mobile Number:(format:99-99-999999)</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="website" value="{{ old('website') }}">
-                            @if ($errors->has('website'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('website') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <label for="mobile_number" class="col-md-2 control-label">Primary Mobile Number:(format:99-99-999999)</label>
-                        <div class="col-md-4">
-                            <input required type="text" maxlength="10" minlength="10" pattern="[0-9]{10}" class="form-control" name="mobile_number" value="{{ old('mobile_number') }}">
+                            <input type="text" class="form-control code" name="country_code" value="{{ old('country_code') }}" />
+
+                            <input  type="text" maxlength="10" minlength="10" pattern="[0-9]{10}" class="form-control mobile" name="mobile_number" value="{{ old('mobile_number') }}" required>
+                              <span class="help-block">
+                                <strong>Please enter mobile no. with country code</strong>
+                            </span>
                             @if ($errors->has('mobile_number'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('mobile_number') }}</strong>
                                 </span>
                             @endif
                         </div>
+                    </div>
+                    <div class="form-group required">
+                        
                         <!-- <label for="secondary_phone_number" class="col-md-2 control-label">
                         Secondary Mobile Number:
                         <span>(format:99-99-999999)</span>
@@ -235,6 +232,41 @@
                             <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                         </div>
                     </div>
+                    <div>
+                        <legend>Login Information</legend>
+                    </div>
+                     <div class="form-group required">
+                        <label for="email" class="col-md-2 control-label">Email:</label>
+                        <div class="col-md-4">
+                            <input required type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="email" value="{{ old('email') }}">
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="password" class="col-md-2 control-label">Password:</label>
+                        <div class="col-md-4">
+                            <input required type="password" class="form-control" name="password" value="">
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <label for="confirm_password" class="col-md-2 control-label">Confirm Password:</label>
+                        <div class="col-md-4">
+                            <input required type="password" class="form-control" name="confirm_password" value="">
+                            @if ($errors->has('confirm_password'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('confirm_password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="checkbox" class="col-md-2 control-label"></label>
                         <div class="col-md-10">
@@ -244,8 +276,8 @@
                     <div class="form-group">
                         <div class="col-md-12 col-md-offset-2">
                             <button type="submit" class="btn btn-primary">
-                            Submit
-                            </button>
+                                Submit
+                            </button>`
                         </div>
                     </div>
                 </form>
@@ -259,13 +291,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Terms & Conditions</h4>
+                <h5 class="modal-title">Terms & Conditions</h5>
             </div>
             <div class="modal-body">
                 @if($term->content)
-                {!! $term->content !!}
+                    {!! $term->content !!}
                 @else
-                <p class="text-center">{{ $term->title }}'s page content is still being prepared.</p>
+                    <p class="text-center">{{ $term->title }}'s page content is still being prepared.</p>
                 @endif
             </div>
             <div class="modal-footer">
@@ -278,6 +310,7 @@
 @section('header-scripts')
     <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
     <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script type="text/javascript">
         var lat;
         var long;
@@ -293,6 +326,7 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
+
     //Image preview jQuery
     function readURL(input) {
       if (input.files && input.files[0]) {
@@ -340,5 +374,159 @@
             }
         });
     }
+
+    //Bootstarp validation on form
+    $(document).ready(function() {
+        $('#register-form').bootstrapValidator({
+            // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                    full_name: {
+                        validators: {
+                                stringLength: {
+                                min: 2,
+                            },
+                                notEmpty: {
+                                message: 'Please supply your full name'
+                            }
+                        }
+                    },
+                    title: {
+                        validators: {
+                            stringLength: {
+                                min: 2,
+                                max:20
+                            },
+                            notEmpty: {
+                                message: 'Please supply your business name'
+                            }
+                        }
+                    },
+                    bussiness_category_id: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select your category'
+                            }
+                        }
+                    },
+                    keywords: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your business keywords'
+                            }
+                        }
+                    },
+                    address: {
+                        validators: {
+                             stringLength: {
+                                min: 8,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your address'
+                            }
+                        }
+                    },
+                    city: {
+                        validators: {
+                             stringLength: {
+                                min: 4,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your city'
+                            }
+                        }
+                    },
+                    state: {
+                        validators: {
+                             stringLength: {
+                                min: 4,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your state'
+                            }
+                        }
+                    },
+                    country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your country'
+                            }
+                        }
+                    },
+                    pin_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your pin code'
+                            }
+                        }
+                    },
+                    country_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply country code.'
+                            }
+                        }
+                    },
+                    mobile_number: {
+                        validators: {
+                            numeric: {
+                                message: 'The mobile number can consist only numbers.'
+                            },
+                            notEmpty: {
+                                message: 'Please supply mobile number.'
+                            }
+                        }
+                    }, 
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your email address'
+                            },
+                            emailAddress: {
+                                message: 'Please supply a valid email address'
+                            }
+                        }
+                    },                  
+                    password: {
+                        validators: {
+                            identical: {
+                                field: 'confirm_password',
+                                message: 'Confirm your password below - type same password please'
+                            }
+                        }
+                    },
+                    confirm_password: {
+                        validators: {
+                            identical: {
+                                field: 'password',
+                                message: 'The password and its confirm are not the same'
+                            }
+                        }
+                    }, 
+                }
+            })
+            .on('success.form.bv', function(e) {
+                $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
+                    $('#reg_form').data('bootstrapValidator').resetForm();
+
+                // Prevent form submission
+                e.preventDefault();
+
+                // Get the form instance
+                var $form = $(e.target);
+
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+
+                // Use Ajax to submit form data
+                $.post($form.attr('action'), $form.serialize(), function(result) {
+                    console.log(result);
+                }, 'json');
+            });
+        });
 </script>
 @endsection
