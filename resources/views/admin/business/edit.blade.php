@@ -154,7 +154,7 @@
 						@endif
 					</div>
 				</div>
-				<button type="submit" class="btn btn-success btn-block" id="btn-login">Update User Business</button>
+				<button type="submit" class="btn btn-success" id="btn-login">Update User Business</button>
 			</form>
 		</div>
 	</div>

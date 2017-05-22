@@ -25,9 +25,10 @@
 		<tbody>
 			@foreach($businesses as $business)
 			<tr>
-				<td>{{ $business->business_id}}</td>
+				<td>{{ $business->business_id}} </td>
 				<td>{{ $business->user->full_name}} </td>
 				<td>{{ $business->title}} </td>
+				
 				<td>{{ $business->mobile_number}}</td>
 				<td>
 					@if($business->is_identity_proof_validate==1)
