@@ -64,7 +64,14 @@ class LoginController extends Controller
                         if(Auth::attempt(['email' => $request->email,'password' => $request->password]))
                         {
                             if (Auth::check()) {
-                                return redirect()->intended('upload');
+                                $business = $user->business;
+                                if((isset($business->identity_proof) and $business->identity_proof!=NULL) and (isset($business->is_business_proof_validate) and $business->is_business_proof_validate!=NULL))
+                                {
+                                    return redirect()->intended('register-business/'.$user->id);
+                                }else
+                                {
+                                    return redirect()->intended('upload');
+                                }
                             }else
                             {
                                 return redirect('login')->with('error', 'Something goes wrong. Please try again!');
