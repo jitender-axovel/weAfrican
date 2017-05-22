@@ -15,7 +15,6 @@ class UsersTableSeeder extends Seeder
         
         DB::table('users')->insert([[
             'full_name' => 'Jitender Singla',
-            'user_name' => 'jitender-singla',
             'slug' => 'jitender-singla-1',
             'user_role_id' => 1,
             'country_code' => 91,
@@ -27,7 +26,6 @@ class UsersTableSeeder extends Seeder
         ],
         [
             'full_name' => 'Richa',
-            'user_name' => 'richa',
             'slug' => 'richa-2',
             'user_role_id' => 4,
             'country_code' => 91,
@@ -38,7 +36,6 @@ class UsersTableSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
         ],[
             'full_name' => 'Arun',
-            'user_name' => 'arun',
             'slug' => 'arun-3',
             'user_role_id' => 4,
             'country_code' => 91,
@@ -49,7 +46,6 @@ class UsersTableSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
         ],[
             'full_name' => 'Nikhil',
-            'user_name' => 'nikhil',
             'slug' => 'nikhil-4',
             'user_role_id' => 4,
             'country_code' => 91,
