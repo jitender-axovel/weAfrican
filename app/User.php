@@ -209,4 +209,9 @@ class User extends Authenticatable
         return $user;
     }
 
+    public function business()
+    {
+        return $this->hasOne('App\UserBusiness');
+    }
+
 }
