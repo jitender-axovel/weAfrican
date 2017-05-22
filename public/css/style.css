@@ -156,3 +156,58 @@ footer .available .list-inline > li {padding-right: 0;}
 	.download-section .list-inline img {height: auto; width: 200px;}
 }
 #map {height: 300px;width:500px;}
+
+/* Register Page */
+.form-control.code {
+    float: left;
+    width: 10%;
+}
+.form-control.mobile {
+    float: right;
+    width: 80%;
+}
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 25px;
+}
+[data-tip] {
+	position:relative;
+
+}
+[data-tip]:before {
+	content:'';
+	/* hides the tooltip when not hovered */
+	display:none;
+	content:'';
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid #1a1a1a;	
+	position:absolute;
+	top:30px;
+	left:35px;
+	z-index:8;
+	font-size:0;
+	line-height:0;
+	width:0;
+	height:0;
+}
+[data-tip]::after {
+    background: #222 none repeat scroll 0 0;
+    border-radius: 3px;
+    color: #fff;
+    content: attr(data-tip);
+    display: none;
+    font-size: 13px;
+    height: 30px;
+    left: 0;
+    line-height: 18px;
+    overflow-wrap: normal;
+    padding: 5px 8px;
+    position: absolute;
+    top: 35px;
+    white-space: nowrap;
+    z-index: 9;
+}
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+	display:block;
+}
