@@ -159,7 +159,7 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if($user->delete()){
+        if($user->forceDelete()){
             $response = array(
                 'status' => 'success',
                 'message' => ' User deleted  successfully',
