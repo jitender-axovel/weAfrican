@@ -178,7 +178,7 @@
                     <img src="#" alt=""  id="preview">
                 </div>
             </div>
-				<button type="submit" class="btn btn-success btn-block" id="btn-login">Create User Business</button>
+				<button type="submit" class="btn btn-success" id="btn-login">Create User Business</button>
 			</form>
 		</div>
 	</div>

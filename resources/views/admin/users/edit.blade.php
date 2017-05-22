@@ -20,7 +20,7 @@
 						@endif
 					</div>
 				</div>
-				<button type="submit" class="btn btn-success btn-block" id="btn-login">Save User</button>
+				<button type="submit" class="btn btn-success" id="btn-login">Save User</button>
 			</form>
 		</div>
 	</div>
