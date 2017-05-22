@@ -81,8 +81,15 @@ class UserBusinessController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator)
+            $messages = $validator->messages();
+            if ($messages->has('email'))
+            {
+                return back()->with('error', 'You are already registered with us , <a href="#">Please click here to Login</a>')->withInput();
+            }else
+            {
+                return back()->withErrors($validator)
                          ->withInput();
+            }
         }
 
         $input = $request->input();
@@ -145,7 +152,9 @@ class UserBusinessController extends Controller
                 $res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));
                 if($res->success==true)
                 {
-                    return redirect('otp')->with('success', 'You have been successfully registered. Please enter the OTP!');
+                    $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                    $words = explode(" ", $mobile);
+                    return redirect('otp')->with('success', 'You have been successfully registered. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
                 }else
                 {
                     return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
@@ -207,7 +216,9 @@ class UserBusinessController extends Controller
             $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
             if($res->success==true)
             {
-                return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number');
+                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                $words = explode(" ", $mobile);
+                return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
             }else
             {
                 return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
