@@ -16,7 +16,7 @@ class CreateUserConversationsTable extends Migration
         Schema::create('user_conversations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('sender_id')->unsigned();
-            $table->foreign('sender_id')->references('id')->on('users');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('receiver_id')->unsigned();
             $table->foreign('receiver_id')->references('id')->on('users');
             $table->string('message');

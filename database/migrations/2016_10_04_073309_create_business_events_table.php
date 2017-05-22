@@ -16,7 +16,7 @@ class CreateBusinessEventsTable extends Migration
         Schema::create('business_events', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')->references('id')->on('user_businesses');
             $table->integer('event_category_id')->unsigned();

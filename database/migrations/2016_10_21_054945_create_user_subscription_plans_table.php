@@ -16,7 +16,7 @@ class CreateUserSubscriptionPlansTable extends Migration
         Schema::create('user_subscription_plans', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('subscription_plan_id')->unsigned();
             $table->foreign('subscription_plan_id')->references('id')->on('subscription_plans');
             $table->date('subscription_date');
