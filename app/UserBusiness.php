@@ -28,7 +28,7 @@ class UserBusiness extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User')->withTrashed();;
+        return $this->belongsTo('App\User')->withTrashed();
     }
 
     public function category()
