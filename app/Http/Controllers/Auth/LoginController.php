@@ -83,7 +83,9 @@ class LoginController extends Controller
                         $res = json_decode(app('App\Http\Controllers\UserBusinessController')->sendVerificationCode($user->country_code,$user->mobile_number));
                         if($res->success==true)
                         {
-                            return redirect('otp')->with('success', 'Please enter the OTP to verify your mobile number to proceed to logged in!');
+                            $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                            $words = explode(" ", $mobile);
+                            return redirect('otp')->with('success', 'Please enter the OTP to verify your mobile number to proceed to logged in! OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
                         }else
                         {
                             return redirect('login')->with('warning', $res->message.'! Please try again!');
