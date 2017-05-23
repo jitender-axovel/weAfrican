@@ -137,7 +137,7 @@
                 <div class="form-group">
                         <label for="state" class="col-md-2 control-label">State:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="state" name="state" value="{{ $event->state }}" readonly="true">
+                            <input type="text" class="form-control" id="state" name="state" value="{{ $event->state }}">
                             @if ($errors->has('state'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('state') }}</strong>
@@ -146,7 +146,7 @@
                         </div>
                         <label for="country" class="col-md-2 control-label">Country:</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" id="country" name="country" value="{{ $event->country }}" readonly="true">
+                            <input type="text" class="form-control" id="country" name="country" value="{{ $event->country }}">
                             @if ($errors->has('country'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('country') }}</strong>
@@ -157,7 +157,7 @@
                      <div class="form-group">
                         <label for="pin_code" class="col-md-2 required control-label">Pin Code: (format:110075)</label>
                         <div class="col-md-4">
-                            <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ $event->pin_code }}" readonly="true">
+                            <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ $event->pin_code }}">
                             @if ($errors->has('pin_code'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('pin_code') }}</strong>
