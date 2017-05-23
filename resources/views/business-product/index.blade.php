@@ -3,6 +3,7 @@
 @section('content')
 <div class="main-container row register-business">
     <h5 class="text-left">Product Details</h5>
+    <p class="text-left">You can add multiple products.</p> 
     @include('notification')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
