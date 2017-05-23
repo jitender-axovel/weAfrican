@@ -189,7 +189,7 @@
                 Logo Preview:
                 </label>
                 <div class="col-md-4">
-                    <img src="#" alt=""  id="preview">
+                    <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                 </div>
             </div>
             <div class="form-group">
@@ -216,7 +216,7 @@
                Banner Preview:
                 </label>
                 <div class="col-md-4">
-                    <img src="#" alt=""  id="bannerPreview">
+                    <img src="{{asset('images/no-image.jpg')}}" alt=""  id="bannerPreview">
                 </div>
             </div>
             <div class="form-group">
