@@ -19,7 +19,7 @@
                 {{csrf_field()}}
                 <div class="col-md-6 form-group">
                     <label>Please upload Identity Proof here</label>
-                    <input required type="file" name="identity_proof" id="identity_proof" required>
+                    <input required type="file" name="identity_proof" id="identity_proof">
                     @if($errors->has('identity_proof'))
                     <span class="help-block">
                     <strong>{{ $errors->first('identity_proof') }}</strong>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     <label>Please upload Business Proof here</label>
-                    <input required type="file" name="business_proof" id="business_proof" required>
+                    <input required type="file" name="business_proof" id="business_proof">
                     @if($errors->has('business_proof'))
                     <span class="help-block">
                     <strong>{{ $errors->first('business_proof') }}</strong>
