@@ -126,25 +126,25 @@ class AdminBussinessCategoriesController extends Controller
         }
 
         if ($request->hasFile('category_image') ){
-        if ($request->file('category_image') && $request->file('category_image')->isValid()) {
-            $file = $key = md5(uniqid(rand(), true));
-            $ext = $request->file('category_image')->getClientOriginalExtension();
-            $image = $file.'.'.$ext;
-            $fileName = $request->file('category_image')->move(config('image.category_image_path'),$image );
-            
-           $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+            if ($request->file('category_image') && $request->file('category_image')->isValid()) {
+                $file = $key = md5(uniqid(rand(), true));
+                $ext = $request->file('category_image')->getClientOriginalExtension();
+                $image = $file.'.'.$ext;
+                $fileName = $request->file('category_image')->move(config('image.category_image_path'),$image );
+                
+               $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
+                shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
+                shell_exec($command);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
-            
-        } else {
-            return redirect('admin/bussiness/category')->with('Error', 'Business Category image is not uploaded.Please try again');
+                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
+                shell_exec($command);
+                
+            } else {
+                return redirect('admin/bussiness/category')->with('Error', 'Business Category image is not uploaded.Please try again');
+            }
         }
-}
         $input = $request->input();
 
         if($input['title'] == $input['confirm_title'])

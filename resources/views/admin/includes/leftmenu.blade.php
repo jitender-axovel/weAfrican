@@ -15,6 +15,12 @@
                 <li>
                     <a href="{{url('admin/bussiness/category')}}">List Categories</a>
                 </li>
+                <li>
+                    <a href="{{url('admin/bussiness/sub-category/create')}}">Create New Sub-Category</a>
+                </li>
+                <li>
+                    <a href="{{url('admin/bussiness/sub-category')}}">List Sub-Categories</a>
+                </li>
             </ul>
         </li>
         <li>

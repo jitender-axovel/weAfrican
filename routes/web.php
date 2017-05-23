@@ -61,6 +61,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('business', 'AdminUserBusinessesController');
 		Route::get('bussiness/category/block/{id}', 'AdminBussinessCategoriesController@block');
 		Route::resource('bussiness/category', 'AdminBussinessCategoriesController');
+		Route::get('bussiness/sub-category/block/{id}', 'AdminBussinessSubcategoriesController@block');
+		Route::resource('bussiness/sub-category', 'AdminBussinessSubcategoriesController');
 		Route::get('event/block/{id}', 'AdminBusinessEventsController@block');
 		Route::resource('event', 'AdminBusinessEventsController');
 		Route::get('business/identity/proof/validate/{id}','AdminUserBusinessesController@identityProofVerfied');

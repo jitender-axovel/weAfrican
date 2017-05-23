@@ -1,56 +1,44 @@
 @extends('admin.layouts.adminapp')
 @section('title', $pageTitle)
 @section('content')
-	<h2>Users</h2>
+	<h2>Sub-Categories</h2>
 	<hr>
 	@include('notification')
-	<table id="users_list" class="display">
+	<table id="categories_list" class="display">
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th>Mobile No.</th>
-				<th>Role</th>
-				<th>Mobile Verified</th>
+				<th>Main Category</th>
+				<th>Sub Category</th>
+				<th>Icon</th>
 				<th>Created On</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($users as $user)
+			@foreach($categories as $category)
 			<tr>
-				<td>{{ $user->full_name}}</td>
-				<td>{{ '+' . $user->country_code . '-' . $user->mobile_number }}</td>
-				<td>{{ $user->role->name }}</td>
+				<td>{{ $category->category->title }}</td>
+				<td>{{ $category->title}}</td>
 				<td>
-					@if($user->is_verified==0)
-						Not Verified
-					@else
-						Verified
-					@endif
+					<img src="{{ asset(config('image.subcategory_image_url').'thumbnails/small/'.$category->image) }}" class="responsive">
 				</td>
-				<td>{{ date_format(date_create($user->created_at), 'd M,Y') }}</td>
+				<td>{{ date_format(date_create($category->created_at), 'd M,Y') }}</td>
 				<td>
 					<ul class="list-inline">
-						@if($user->user_role_id == 4)
 						<li>
-							<a class="btn btn-info" href="{{url('admin/users/'.$user->id)}}" title="Add business"><i class="fa fa-user-plus" aria-hidden="true"></i>
-							</a>
-						</li>
-						@endif
-						<li>
-							<a href="{{ url('admin/user/blocked/'.$user->id) }}">
-			                    @if($user->is_blocked)
+							<a href="{{ URL::to('admin/bussiness/sub-category/block/'.$category->id) }}">
+			                    @if($category->is_blocked)
 			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
-			                	@else
-			                		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
-			            		@endif
-			        		</a>
+		                    	@else
+		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                		@endif
+		                    </a>
 						</li>
 						<li>
-							<a class="btn btn-warning" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
+							<a class="btn btn-warning" href="{{ url('admin/bussiness/sub-category/'.$category->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
 						</li>
 						<li>
-							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" onsubmit="deleteCategory('{{$user->id}}', '{{$user->full_name}}', event,this)">
+							<form action="{{ url('admin/bussiness/sub-category/'.$category->id) }}" method="POST" onsubmit="deleteCategory('{{$category->id}}', '{{$category->title}}', event,this)">
 								{{csrf_field()}}
 								{{ method_field('DELETE') }}
 								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
@@ -64,7 +52,7 @@
 	</table>
 	<script type="text/javascript">
 		$(document).ready( function () {
-		    $('#users_list').DataTable();
+		    $('#categories_list').DataTable();
 		} );
 	</script>
 @endsection
