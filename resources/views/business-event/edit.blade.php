@@ -184,7 +184,7 @@
                     </div>
                     <label for="city" class="col-md-2 control-label">Banner Preview</label>
                     <div class="col-md-4">
-                        <img src="#" alt=""  id="preview">
+                        <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                     </div>
                 </div>
                 <div class="form-group">
