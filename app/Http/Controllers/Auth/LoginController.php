@@ -65,7 +65,7 @@ class LoginController extends Controller
                         {
                             if (Auth::check()) {
                                 $business = $user->business;
-                                if((isset($business->identity_proof) and $business->identity_proof!=NULL) and (isset($business->business_proof) and $business->business_proof!=NULL))
+                                if((isset($business->identity_proof) and $business->identity_proof!=NULL) or (isset($business->business_proof) and $business->business_proof!=NULL))
                                 {
                                     return redirect()->intended('register-business/'.$user->id);
                                 }else
