@@ -18,6 +18,10 @@ Route::group(['middleware' => ['before']], function(){
 	Route::get('logout', 'Auth\LoginController@logout');
 
 	Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
+	
+	Route::get('{status}-page', function ($status) {
+    	return view('errors.'.$status);
+	});
 
 	Route::resource('register-business', 'UserBusinessController');
 	Route::get('resend-otp', 'UserBusinessController@resendotp');
