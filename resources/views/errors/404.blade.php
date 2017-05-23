@@ -1,10 +1,51 @@
-@extends('layouts.app')
-@section('content')
-    <div class="main-container row">
-        <div class="col-md-8 col-md-offset-2">
-        	<h1 class="text-bold">Oops!</h1>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Be right back.</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+
+        <style>
+            html, body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                color: #B0BEC5;
+                display: table;
+                font-weight: 100;
+                font-family: 'Lato', sans-serif;
+            }
+
+            .container {
+                text-align: center;
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .content {
+                text-align: center;
+                display: inline-block;
+            }
+
+            .title {
+                font-size: 72px;
+                margin-bottom: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="content">
+                <h1 class="text-bold">Oops!</h1>
         	<h3>looks like you are on a wrong page.</h3>
-        	<a href="{{ url('/') }}" class="btn btn-danger btn-lg"><i class="fa fa-home"></i>&nbsp;Go to HomePage</a>
+        	<a href="http://192.241.153.62/weAfrican/public/" class="btn btn-danger btn-lg"><i class="fa fa-home"></i>&nbsp;Go to HomePage</a>
+            </div>
         </div>
-    </div>
-@endsection
+    </body>
+</html>
+
