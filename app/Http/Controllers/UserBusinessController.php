@@ -477,4 +477,59 @@ class UserBusinessController extends Controller
     {
         //
     }
+
+    /**
+     * Show the form for Updating a User Mobile Number.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function changeMobile()
+    {
+        $pageTitle = "Change Mobile Number";
+        $categories = BussinessCategory::where('is_blocked',0)->get();
+        $term = CmsPage::where('slug', 'terms-and-conditions')->first();
+        return view('business.change', compact('categories','pageTitle', 'term'));
+    }
+
+    /**
+     * Update Mobile number
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateMobile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'mobile_number' => 'required|numeric',
+            'password' => 'required|min:5|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+        $input = $request->input();
+        $mobile_number = Session::get('mobile_number');
+        $is_login = Session::get('is_login');
+        $password = Session::get('password');
+        if($password!=$input['password'])
+        {
+            return back()->with('error.password', 'Password dosn\'t match. Please enter a valid password to continue !');
+        }else
+        {
+            $user = User::whereMobileNumber($mobile_number)->first();
+            $user->mobile_number = $input['mobile_number'];
+            $user->save();
+            $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
+            if($res->success==true)
+            {
+                Session::put('mobile_number',$input['mobile_number']);
+                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                $words = explode(" ", $mobile);
+                return redirect('otp')->with('success', 'You have been successfully registered. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
+            }else
+            {
+                return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
+            }
+        }
+    }
 }

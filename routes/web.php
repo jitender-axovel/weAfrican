@@ -23,6 +23,8 @@ Route::group(['middleware' => ['before']], function(){
 	Route::get('resend-otp', 'UserBusinessController@resendotp');
 	Route::get('otp', 'UserBusinessController@otp');
 	Route::post('check-otp', 'UserBusinessController@checkOtp');
+	Route::resource('change-mobile', 'UserBusinessController@changeMobile');
+	Route::post('update-mobile', 'UserBusinessController@updateMobile');
 
 	Route::group(['middleware' => ['auth']], function() {
 
