@@ -50,9 +50,10 @@
 							<a class="btn btn-warning" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
 						</li>
 						<li>
-							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" onsubmit="deleteUser('{{$user->id}}', '{{$user->full_name}}',this)">
+							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" onsubmit="deleteCategory('{{$user->id}}', '{{$user->full_name}}', event,this)">
 								{{csrf_field()}}
-								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+								{{ method_field('DELETE') }}
+								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
 							</form>
 						</li>
 					</ul>
@@ -69,12 +70,13 @@
 @endsection
 @section('scripts')
 	<script type="text/javascript">
-		function deleteUser(id, name, form)
-		{
+		function deleteCategory(id, title, event,form)
+		{   
+
 			event.preventDefault();
 			swal({
 				title: "Are you sure?",
-				text: "You want to delete "+name,
+				text: "You want to delete "+title,
 				type: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#DD6B55",
@@ -114,7 +116,7 @@
 						}
 					});
 				} else {
-					swal("Cancelled", name+"'s record will not be deleted.", "error");
+					swal("Cancelled", title+"'s record will not be deleted.", "error");
 				}
 			});
 		}
