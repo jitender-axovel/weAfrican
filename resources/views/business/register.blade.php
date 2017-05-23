@@ -390,6 +390,10 @@
                                 stringLength: {
                                 min: 2,
                             },
+                            regexp: {
+                                regexp: /^[a-zA-Z\s]+$/,
+                                message: 'The Full name can only consist of alphabetical and space'
+                            },
                                 notEmpty: {
                                 message: 'Please supply your full name'
                             }
