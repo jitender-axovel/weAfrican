@@ -448,7 +448,7 @@
                 <div class="col-md-10">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <input name="option_day[0]" value="0" checked="checked" id="open_0_radio" class="opt_day" type="radio">&nbsp;Open
+                            <input name="option_day[0]" value="0" id="open_0_radio" class="opt_day" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[0]" value="1" class="opt_day" id="close_0_radio" type="radio">&nbsp;Closed
@@ -494,7 +494,7 @@
                 <div class="col-md-10">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <input name="option_day[1]" value="0" checked="checked" id="open_1_radio" class="opt_day" type="radio">&nbsp;Open
+                            <input name="option_day[1]" value="0" id="open_1_radio" class="opt_day" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[1]" value="1" class="opt_day" id="close_1_radio" type="radio">&nbsp;Closed
@@ -540,7 +540,7 @@
                 <div class="col-md-10">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <input name="option_day[2]" value="0" checked="checked" id="open_2_radio" class="opt_day" type="radio">&nbsp;Open
+                            <input name="option_day[2]" value="0" id="open_2_radio" class="opt_day" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[2]" value="1" class="opt_day" id="close_2_radio" type="radio">&nbsp;Closed
@@ -586,7 +586,7 @@
                 <div class="col-md-10">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <input name="option_day[3]" value="0" checked="checked" id="open_3_radio" class="opt_day" type="radio">&nbsp;Open
+                            <input name="option_day[3]" value="0" id="open_3_radio" class="opt_day" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[3]" value="1" class="opt_day" id="close_3_radio" type="radio">&nbsp;Closed
@@ -632,7 +632,7 @@
                 <div class="col-md-10">
                     <div class="col-md-12">
                         <div class="col-md-4">
-                            <input name="option_day[4]" value="0" checked="checked" id="open_4_radio" class="opt_day" type="radio">&nbsp;Open
+                            <input name="option_day[4]" value="0" id="open_4_radio" class="opt_day" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[4]" value="1" class="opt_day" id="close_4_radio" type="radio">&nbsp;Closed
@@ -681,7 +681,7 @@
                             <input name="option_day[5]" value="0" class="opt_day" id="open_5_radio" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
-                            <input name="option_day[5]" value="1" checked="checked" id="close_5_radio" class="opt_day" type="radio">&nbsp;Closed
+                            <input name="option_day[5]" value="1" id="close_5_radio" class="opt_day" type="radio">&nbsp;Closed
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[5]" value="2" class="opt_day" id="hour24_5_radio" type="radio">&nbsp;24 Hours Open
@@ -727,7 +727,7 @@
                             <input name="option_day[6]" value="0" class="opt_day" id="open_6_radio" type="radio">&nbsp;Open
                         </div>
                         <div class="col-md-4">
-                            <input name="option_day[6]" value="1" checked="checked" id="close_6_radio" class="opt_day" type="radio">&nbsp;Closed
+                            <input name="option_day[6]" value="1" id="close_6_radio" class="opt_day" type="radio">&nbsp;Closed
                         </div>
                         <div class="col-md-4">
                             <input name="option_day[6]" value="2" class="opt_day" id="hour24_6_radio" type="radio">&nbsp;24 Hours Open
