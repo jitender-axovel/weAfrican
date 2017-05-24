@@ -46,6 +46,11 @@ class UserBusiness extends Model
         return $this->likes()->where('is_like', 1)->count();
     }
 
+    public function getLikesList()
+    {
+        return $this->likes()->where('is_like', 1)->get();
+    }
+
     public function getDislikes()
     {
         return $this->likes()->where('is_dislike', 1)->count();
