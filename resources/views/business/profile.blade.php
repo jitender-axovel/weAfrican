@@ -64,7 +64,9 @@
 			        <dt>Website</dt>
 			        <dd>{{ $business->website }}</dd>
 			        <dt>Working Hours</dt>
-			        <dd>{{ $business->working_hours }}</dd>
+			        <dd>
+			        	{!! nl2br(e($business->working_hours)) !!}
+			        </dd>
 			        <dt></dt>
 			     </dl>    
 		    </div>

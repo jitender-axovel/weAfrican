@@ -18,6 +18,13 @@
             <div class="panel-body">
                 <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
+                    <input type="hidden" name="working_hours" id="working_hours" value="MON  :   10:00 AM to 06:00 PM
+TUE  :   10:00 AM to 06:00 PM
+WED  :   10:00 AM to 06:00 PM
+THU  :   10:00 AM to 06:00 PM
+FRI  :   10:00 AM to 06:00 PM
+SAT  :   Closed
+SUN  :   Closed">
                     <div class="form-group required">
                         <label for="full_name" class="col-md-2 control-label">Full Name:</label>
                         <div class="col-md-4">
@@ -28,19 +35,6 @@
                                 </span>
                             @endif
                         </div>
-                       <!--  <label for="country_code" class="col-md-2 control-label">Country Code:</label>
-                        <div class="col-md-4">
-                            <input required type="text"
-                                class="form-control" name="country_code" value="{{ old('country_code') }}" autofocus >
-                            <span class="help-block">
-                                <strong>Please Enter the country code. Ex: 91</strong>
-                            </span>
-                            @if ($errors->has('country_code'))
-                                <span class="help-block">
-                                <strong>Please Enter the contry code. Ex: 91{{ $errors->first('country_code') }}</strong>
-                                </span>
-                            @endif
-                        </div> -->
                     </div>
                     <div class="form-group required">
                         <label for="title" class="col-md-2 control-label">Business Name:</label>
@@ -87,26 +81,6 @@
                             @endif
                         </div>
                     </div>
-                    <!-- <div class="form-group required">
-                        <label for="password" class="col-md-2 control-label">Password:</label>
-                        <div class="col-md-4">
-                            <input required type="password" class="form-control" name="password" value="">
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        <label for="confirm_password" class="col-md-2 control-label">Confirm Password:</label>
-                        <div class="col-md-4">
-                            <input required type="password" class="form-control" name="confirm_password" value="">
-                            @if ($errors->has('confirm_password'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('confirm_password') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div> -->
                     <div class="form-group col-md-12">
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div id="map"></div>
@@ -195,24 +169,23 @@
                     </div>
                     <div class="form-group">
                         <label for="about_us" class="col-md-2 control-label">About us:</label>
-                        <div class="col-md-4">
-                            <textarea class="form-control" name="about_us" rows="10" ></textarea>
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="about_us" rows="5" ></textarea>
                             @if ($errors->has('about_us'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('about_us') }}</strong>
                                 </span>
                             @endif
                         </div>
+                    </div>
+                    <div class="form-group">
                         <label for="working_hours" class="col-md-2 control-label">
                         Working Hours:
                         </label>
-                        <div class="col-md-4">
-                            <textarea class="form-control" name="working_hours" rows="10" ></textarea>
-                            @if ($errors->has('working_hours'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('working_hours') }}</strong>
-                                </span>
-                            @endif
+                        <div class="col-md-10">
+                            <!-- Trigger the modal with a button -->
+                            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#working_hours_modal" onclick="javascript:checkWorkingHours();">Add Working Hours</button>
+                            
                         </div>
                     </div>
                     <div class="form-group">
@@ -311,6 +284,8 @@
     <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
     <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         var lat;
         var long;
@@ -532,5 +507,447 @@
                 }, 'json');
             });
         });
+    function checkWorkingHours()
+    {  
+
+        var days = new Array();
+
+        days[0] = document.querySelector('input[name="option_day[0]"]:checked').value;
+        days[1] = document.querySelector('input[name="option_day[1]"]:checked').value;
+        days[2] = document.querySelector('input[name="option_day[2]"]:checked').value;
+        days[3] = document.querySelector('input[name="option_day[3]"]:checked').value;
+        days[4] = document.querySelector('input[name="option_day[4]"]:checked').value;
+        days[5] = document.querySelector('input[name="option_day[5]"]:checked').value;
+        days[6] = document.querySelector('input[name="option_day[6]"]:checked').value;
+
+        for(var i=0;i<days.length;i++)
+        {
+            if(days[i]!=0)
+            {
+                document.getElementById("open_"+i).setAttribute('disabled', true);
+                document.getElementById("close_"+i).setAttribute('disabled', true);
+            }else
+            {
+                document.getElementById("open_"+i).removeAttribute('disabled');
+                document.getElementById("close_"+i).removeAttribute('disabled');
+            }
+        }
+    }
+    $(document).ready(function() {
+        $('input[type=radio][class=opt_day]').change(function() {
+            checkWorkingHours();
+        });
+        $('#modal_submit').click(function() {
+
+            var days = new Array();
+
+            days[0] = document.querySelector('input[name="option_day[0]"]:checked').value;
+            days[1] = document.querySelector('input[name="option_day[1]"]:checked').value;
+            days[2] = document.querySelector('input[name="option_day[2]"]:checked').value;
+            days[3] = document.querySelector('input[name="option_day[3]"]:checked').value;
+            days[4] = document.querySelector('input[name="option_day[4]"]:checked').value;
+            days[5] = document.querySelector('input[name="option_day[5]"]:checked').value;
+            days[6] = document.querySelector('input[name="option_day[6]"]:checked').value;
+            var text = "";
+            for(var i=0;i<days.length;i++)
+            {
+                if(i==0)
+                {
+                    text = text + "MON  :   ";
+                }else if(i==1)
+                {
+                    text = text + "TUE  :   ";
+                }else if(i==2)
+                {
+                    text = text + "WED  :   ";
+                }else if(i==3)
+                {
+                    text = text + "THU  :   ";
+                }else if(i==4)
+                {
+                    text = text + "FRI  :   ";
+                }else if(i==5)
+                {
+                    text = text + "SAT  :   ";
+                }else if(i==6)
+                {
+                    text = text + "SUN  :   ";
+                }
+                if(days[i]==0)
+                {
+                    text = text + convertTime($('#open_'+i).val()) + " to " + convertTime($('#close_'+i).val());
+                }else if(days[i]==1)
+                {
+                    text = text + "Closed";
+                }else if(days[i]==2)
+                {
+                    text = text + "24 Hours Open";
+                }
+                text = text + "\n";
+            }
+            //alert(text);
+            $("#working_hours").val(text);
+            $('#working_hours_modal').modal('hide');
+        });
+    });
+    function convertTime(str)
+    {
+        var temp = str.split(":");
+        temp[0] = parseInt(temp[0]);
+        if(temp[0]<10)
+        {
+            temp[0] = "0" + temp[0];
+        }
+        return temp.join(":");
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('.date').datetimepicker({
+            format: 'LT'
+        });
+    });
 </script>
 @endsection
+<div id="working_hours_modal" class="modal fade bs-example-modal-lg" role="dialog">
+  <div class="modal-dialog modal-lg"">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Working Hours</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Monday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[0]" value="0" checked="checked" id="open_0_radio" class="opt_day" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[0]" value="1" class="opt_day" id="close_0_radio" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[0]" value="2" class="opt_day" id="hour24_0_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[0]" disabled="" id="open_0" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[0]" disabled="" id="close_0" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Tuesday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[1]" value="0" checked="checked" id="open_1_radio" class="opt_day" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[1]" value="1" class="opt_day" id="close_1_radio" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[1]" value="2" class="opt_day" id="hour24_1_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[1]" id="open_1" disabled="" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[1]" disabled="" id="close_1" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Wednesday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[2]" value="0" checked="checked" id="open_2_radio" class="opt_day" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[2]" value="1" class="opt_day" id="close_2_radio" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[2]" value="2" class="opt_day" id="hour24_2_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[2]" disabled="" id="open_2" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[2]" disabled="" id="close_2" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Thursday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[3]" value="0" checked="checked" id="open_3_radio" class="opt_day" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[3]" value="1" class="opt_day" id="close_3_radio" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[3]" value="2" class="opt_day" id="hour24_3_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[3]" disabled="" id="open_3" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[3]" disabled="" id="close_3" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Friday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[4]" value="0" checked="checked" id="open_4_radio" class="opt_day" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[4]" value="1" class="opt_day" id="close_4_radio" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[4]" value="2" class="opt_day" id="hour24_4_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[4]" disabled="" id="open_4" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[4]" disabled="" id="close_4" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Saturday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[5]" value="0" class="opt_day" id="open_5_radio" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[5]" value="1" checked="checked" id="close_5_radio" class="opt_day" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[5]" value="2" class="opt_day" id="hour24_5_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[5]" disabled="" id="open_5" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[5]" disabled="" id="close_5" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label for="working_hours" class="control-label">
+                        Sunday:
+                    </label>
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <input name="option_day[6]" value="0" class="opt_day" id="open_6_radio" type="radio">&nbsp;Open
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[6]" value="1" checked="checked" id="close_6_radio" class="opt_day" type="radio">&nbsp;Closed
+                        </div>
+                        <div class="col-md-4">
+                            <input name="option_day[6]" value="2" class="opt_day" id="hour24_6_radio" type="radio">&nbsp;24 Hours Open
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Opening Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="open[6]" disabled="" id="open_6" class="form-control" value="10:00 AM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="working_hours" class="col-md-5 control-label">
+                            Closing Time: 
+                        </label>
+                        <div class='col-md-7'>
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' name="close[6]" disabled="" id="close_6" class="form-control" value="6:00 PM" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="modal_submit">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
