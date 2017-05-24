@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\UserBusiness;
 use App\BusinessFollower;
 use App\BusinessLike;
+use App\BusinessRating;
 use Auth;
 
 class BusinessFollowerListController extends Controller
@@ -27,7 +28,9 @@ class BusinessFollowerListController extends Controller
 
         $dislikes = BusinessLike::whereBusinessId($businessId)->where('is_dislike',1)->get();
 
-        return view('business-follower.index', compact('pageTitle','followers','likes','dislikes'));
+        $ratings = BusinessRating::whereBusinessId($businessId)->get();
+
+        return view('business-follower.index', compact('pageTitle','followers','likes','dislikes','ratings'));
     }
 
     /**
