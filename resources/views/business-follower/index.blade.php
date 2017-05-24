@@ -56,15 +56,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Event Name</th>
-                            <th>Event Keywords</th>
-                            <th>Orgainzer Name</th>
-                            <th>Event Start Date& time</th>
-                            <th>Event End Date& time</th>
-                            <th>Address</th>
-                            <th>Event Banner</th>
-                            <th>Participants</th>
-                            <th>Actions</th>
+                            <th>User Name</th>
+                            <th>Email</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,15 +93,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Event Name</th>
-                            <th>Event Keywords</th>
-                            <th>Orgainzer Name</th>
-                            <th>Event Start Date& time</th>
-                            <th>Event End Date& time</th>
-                            <th>Address</th>
-                            <th>Event Banner</th>
-                            <th>Participants</th>
-                            <th>Actions</th>
+                            <th>User Name</th>
+                            <th>Email</th>
                         </tr>
                     </thead>
                     <tbody>
