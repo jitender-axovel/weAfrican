@@ -7,6 +7,7 @@
             <li role="presentation"><a href="{{ url('business-service') }}">Business Service</a></li>
             <li role="presentation"><a href="{{ url('business-event') }}">Business Event</a></li>
             <li role="presentation"><a href="{{ url('subscription-plans') }}">Subscription History</a></li>
+            <li role="presentation"><a href="{{ url('business-follower') }}">Business Followers</a></li>
             <li role="presentation"><a href="{{ url('banners') }}">Banners</a></li>
             <!-- <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
