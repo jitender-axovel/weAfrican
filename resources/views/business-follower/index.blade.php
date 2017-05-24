@@ -116,6 +116,45 @@
           </div>
         </div>
       </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Business Rating List
+            </a>
+          </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+                <div class="panel panel-default ">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(count($ratings)>0)
+                            @foreach($ratings as $rating)
+                                <tr>
+                                    <td>{{ $rating->user->full_name }}</td>
+                                    <td>{{ $rating->user->email }}</td>
+                                    <td>{{ $rating->rating }}/5</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="2">No data found !</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 @endsection
