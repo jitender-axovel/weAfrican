@@ -37,6 +37,7 @@ Route::group(['middleware' => ['before']], function(){
 		Route::post('upload-document', 'UserBusinessController@uploadDocument');
 		Route::resource('business-product', 'BusinessProductsController');
 		Route::resource('business-event', 'BusinessEventsController');
+		Route::resource('business-follower', 'BusinessFollowerListController');
 		Route::resource('subscription-plans', 'UserSubscriptionPlansController');
 		Route::resource('business-service', 'BusinessServicesController');
 		Route::post('event/participants/download-csv/{eventId}', 'BusinessEventsController@exportToCsv');
