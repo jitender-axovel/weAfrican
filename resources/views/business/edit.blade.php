@@ -359,7 +359,7 @@
         var text = Array();
         @if(count(explode(PHP_EOL,$business->working_hours))>1)
             @for($i=0;$i<count(explode(PHP_EOL,$business->working_hours))-1;$i++)
-                text[{{ $i }}] = "{{ explode(PHP_EOL,$business->working_hours)[$i] }}";
+                text[{{ $i }}] = "{{ str_replace(PHP_EOL, '', explode(PHP_EOL,$business->working_hours)[$i]) }}";
             @endfor
         @endif
         for(var i=0;i<text.length;i++)
