@@ -29,6 +29,7 @@ Route::group(['middleware' => ['before']], function(){
 	Route::post('check-otp', 'UserBusinessController@checkOtp');
 	Route::resource('change-mobile', 'UserBusinessController@changeMobile');
 	Route::post('update-mobile', 'UserBusinessController@updateMobile');
+	Route::post('country-details', 'UserBusinessController@countryDetails');//Ajax function to get country details from country name
 
 	Route::group(['middleware' => ['auth']], function() {
 
@@ -36,7 +37,7 @@ Route::group(['middleware' => ['before']], function(){
 		Route::get('upload', 'UserBusinessController@uploadForm');
 		Route::post('upload-document', 'UserBusinessController@uploadDocument');
 		Route::resource('business-product', 'BusinessProductsController');
-		Route::post('send_message', 'BusinessFollowerListController@sendMessage');
+		Route::post('send_message', 'BusinessFollowerListController@sendMessage');//Ajax function to send push Notification
 		Route::resource('business-event', 'BusinessEventsController');
 		Route::resource('business-follower', 'BusinessFollowerListController');
 		Route::resource('subscription-plans', 'UserSubscriptionPlansController');
