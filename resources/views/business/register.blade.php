@@ -994,7 +994,6 @@ SUN  :   Closed">
                 _token: "{{ csrf_token() }}",
                 country : $("#country").val(),
             },success:function(response){
-                console.log(response);
                 if(response!="")
                 {
                     var result = JSON.parse(response);
