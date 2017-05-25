@@ -18,7 +18,7 @@
             <div class="panel-body">
                 <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
-                    <input type="hidden" name="currency" id="currency" value="">
+                    <!-- <input type="hidden" name="currency" id="currency" value=""> -->
                     <input type="hidden" name="working_hours" id="working_hours" value="MON  :   10:00 AM to 06:00 PM
 TUE  :   10:00 AM to 06:00 PM
 WED  :   10:00 AM to 06:00 PM
@@ -153,20 +153,16 @@ SUN  :   Closed">
                             @endif
                         </div>
                     </div>
-                    <div class="form-group required">
-                        
-                        <!-- <label for="secondary_phone_number" class="col-md-2 control-label">
-                        Secondary Mobile Number:
-                        <span>(format:99-99-999999)</span>
-                        </label>
+                    <div class="form-group">
+                        <label for="about_us" class="col-md-2 control-label">Currency</label>
                         <div class="col-md-4">
-                            <input type="text"  maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}" required>
-                            @if ($errors->has('secondary_phone_number'))
+                            <input required type="text" maxlength="5" id="currency" class="form-control" name="currency" value="{{ old('currency') }}">
+                            @if ($errors->has('currency'))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('secondary_phone_number') }}</strong>
+                                <strong>{{ $errors->first('currency') }}</strong>
                                 </span>
                             @endif
-                        </div> -->
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="about_us" class="col-md-2 control-label">About us:</label>
@@ -684,6 +680,7 @@ SUN  :   Closed">
             onchanged: function (currentLocation, radius, isMarkerDropped) {
                 var addressComponents = $(this).locationpicker('map').location.addressComponents;
                 updateControls(addressComponents);
+                getCurrencyAndCode();
             },
             oninitialized: function (component) {
                 var addressComponents = $(component).locationpicker('map').location.addressComponents;
@@ -964,9 +961,16 @@ SUN  :   Closed">
                 _token: "{{ csrf_token() }}",
                 country : $("#country").val(),
             },success:function(response){
-                var result = JSON.parse(response);
-                $("#country_code").val(result.country_code);
-                $("#currency").val(result.currency);
+                console.log(response);
+                if(response!="")
+                {
+                    var result = JSON.parse(response);
+                    $("#country_code").val(result.country_code);
+                    $("#currency").val(result.currency);
+                }else
+                {
+                     $("#currency").val("USD");
+                }
             }
         });
     }
