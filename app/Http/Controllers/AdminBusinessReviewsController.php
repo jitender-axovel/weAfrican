@@ -44,7 +44,7 @@ class AdminBusinessReviewsController extends Controller
     {
         $review = BusinessReview::findOrFail($id);
 
-        if($review->delete()){
+        if($review->forceDelete()){
             $response = array(
                 'status' => 'success',
                 'message' => 'Review deleted  successfully',
