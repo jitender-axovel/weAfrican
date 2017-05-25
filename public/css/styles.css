@@ -313,7 +313,5 @@ border-top-left-radius: 8px; border-bottom-left-radius: 8px;}
 .project-notification > p { font-size: 24px;}
 .project-notification .btn.btn-success {background: #ed145b; border: 1px solid #ed145b; border-radius: 8px;}
 .progress-bar-success { background: #ed145b ;}
-
-.form-group {
-  overflow: hidden;
-}
+.form-group { overflow: hidden; }
+#map { z-index: 999; }
