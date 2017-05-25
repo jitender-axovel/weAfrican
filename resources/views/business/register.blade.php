@@ -660,6 +660,13 @@ SUN  :   Closed">
             function geolocationNotSupported() {
                 getLocation();
             }
+          function showPosition(position) {
+              var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              $('.map-lat').val(lat);
+              $('.map-lon').val(lng);
+              buildMap(lat, lng);
+          }
         });
     </script>
 @endsection
