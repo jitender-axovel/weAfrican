@@ -625,7 +625,7 @@ SUN  :   Closed">
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
-        var lat;
+        /*var lat;
         var long;
         var ip = "{{$ip}}";
 
@@ -634,7 +634,17 @@ SUN  :   Closed">
             lat = parseFloat(response.latitude);
             long = parseFloat(response.longitude);
             buildMap(lat,long);
-        }, "jsonp");
+        }, "jsonp");*/
+        $( document ).ready(function() {
+          navigator.geolocation.getCurrentPosition(showPosition);
+          function showPosition(position) {
+              var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              $('.map-lat').val(lat);
+              $('.map-lon').val(lng);
+              buildMap(lat, lng);
+          }
+        });
     </script>
 @endsection
 @section('scripts')
