@@ -7,15 +7,20 @@
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">
-          <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h4 class="panel-title">
               Business Follower List
-            </a>
-          </h4>
+            </h4>
+          </a>
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
           <div class="panel-body">
-            <div class="panel panel-default ">
+            <div class="col-md-12" style="margin-bottom: 10px">
+                <div class="col-md-6"><p id="response" style="color: green"></p></div>
+                <div class="col-md-6 text-right"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#fcm_notification">Send Message</button></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="panel panel-default">
                 <table class="table">
                     <thead>
                         <tr>
@@ -44,11 +49,11 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingTwo">
-          <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Business Like List
+                <h4 class="panel-title">
+                    Business Like List
+                </h4>
             </a>
-          </h4>
         </div>
         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
           <div class="panel-body">
@@ -81,11 +86,11 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingThree">
-          <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Business Dislike List
+                <h4 class="panel-title">
+                    Business Dislike List
+                </h4>
             </a>
-          </h4>
         </div>
         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
           <div class="panel-body">
@@ -118,11 +123,11 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingThree">
-          <h4 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-              Business Rating List
+                <h4 class="panel-title">
+                    Business Rating List
+                </h4>
             </a>
-          </h4>
         </div>
         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
           <div class="panel-body">
@@ -156,6 +161,27 @@
         </div>
       </div>
     </div>
+</div>
+<!-- Modal -->
+<div id="fcm_notification" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Send Messsage to all followers</h4>
+      </div>
+      <div class="modal-body">
+        <textarea name="message" id="message" class="form-control" rows="5" style="resize:none;" placeholder="Enter your message" maxlength="160"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="send_message" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 @endsection
 @section('scripts')
@@ -210,5 +236,27 @@
             }
         });
     }
+    $( "#send_message" ).click(function() {
+        if($("#message").val()=="" || $("#message").val()==null)
+        {
+            alert("Please enter the message");
+        }else
+        {
+            $.ajax({
+                type: "POST",
+                url: '{{ url("send_message") }}',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    business_id : {{ $businessId }},
+                    message : $("#message").val(),
+                    source : "business_follower_list"
+                },success:function(response){
+                    $("#response").html(response).show();
+                    setTimeout(function() { $("#response").hide(); }, 10000);
+                }
+            });
+            $("#message").val("");
+        }
+    });
 </script>
 @endsection
