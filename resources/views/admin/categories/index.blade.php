@@ -22,27 +22,31 @@
 				</td>
 				<td>{{ date_format(date_create($category->created_at), 'd M,Y') }}</td>
 				<td>
-					<ul class="list-inline">
-						<li>
-							<a href="{{ URL::to('admin/bussiness/category/block/'.$category->id) }}">
-			                    @if($category->is_blocked)
-			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
-		                    	@else
-		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
-		                		@endif
-		                    </a>
-						</li>
-						<li>
-							<a class="btn btn-warning" href="{{ url('admin/bussiness/category/'.$category->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
-						</li>
-						<li>
-							<form action="{{ url('admin/bussiness/category/'.$category->id) }}" method="POST" onsubmit="deleteCategory('{{$category->id}}', '{{$category->title}}', event,this)">
-								{{csrf_field()}}
-								{{ method_field('DELETE') }}
-								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
-							</form>
-						</li>
-					</ul>
+					@if($category->id!=1 and $category->id!=2)
+						<ul class="list-inline">
+							<li>
+								<a href="{{ URL::to('admin/bussiness/category/block/'.$category->id) }}">
+				                    @if($category->is_blocked)
+				                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
+			                    	@else
+			                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+			                		@endif
+			                    </a>
+							</li>
+							<li>
+								<a class="btn btn-warning" href="{{ url('admin/bussiness/category/'.$category->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+							</li>
+							<li>
+								<form action="{{ url('admin/bussiness/category/'.$category->id) }}" method="POST" onsubmit="deleteCategory('{{$category->id}}', '{{$category->title}}', event,this)">
+									{{csrf_field()}}
+									{{ method_field('DELETE') }}
+									<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+								</form>
+							</li>
+						</ul>
+					@else
+						You cannot block/update/delete this category
+					@endif
 				</td>
 			</tr>
 			@endforeach
