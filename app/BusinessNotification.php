@@ -41,8 +41,15 @@ class BusinessNotification extends Model
         $notification->message = $message;
         $notification->save();
         $user_id = BusinessFollower::whereBusinessId($businessId)->pluck('user_id')->toArray();
-        $fcm_tokens = FcmUser::whereIn('user_id', $user_id)->pluck('fcm_reg_id')->toArray();
-        $res = $this->sendPushNotificationToFCM($fcm_tokens,array("m" => $notification->message));
+        if(count($user_id)>0)
+        {
+            $fcm_tokens = FcmUser::whereIn('user_id', $user_id)->pluck('fcm_reg_id')->toArray();
+            $res = $this->sendPushNotificationToFCM($fcm_tokens,array("m" => $notification->message));
+            return "Message Sent Successfully";
+        }else
+        {
+            return "No follower found";
+        }
     }
 
     public function sendPushNotificationToFCM($registation_ids, $message) {
