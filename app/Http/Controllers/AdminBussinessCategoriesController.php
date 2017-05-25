@@ -105,9 +105,15 @@ class AdminBussinessCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $pageTitle = "Admin - Edit Bussiness Category";
-        $category = BussinessCategory::find($id);
-        return view('admin.categories.edit',compact('pageTitle','category'));
+        if($id!=1 and $id!=2)
+        {
+            $pageTitle = "Admin - Edit Bussiness Category";
+            $category = BussinessCategory::find($id);
+            return view('admin.categories.edit',compact('pageTitle','category'));
+        }else
+        {
+            return redirect('admin/bussiness/category')->with('error', 'You cannot edit this category');
+        }
     }
 
     /**
@@ -193,14 +199,20 @@ class AdminBussinessCategoriesController extends Controller
 
     public function block($id)
     {
-        $category = BussinessCategory::find($id);
-        $category->is_blocked = !$category->is_blocked;
-        $category->save();
+        if($id!=1 and $id!=2)
+        {    
+            $category = BussinessCategory::find($id);
+            $category->is_blocked = !$category->is_blocked;
+            $category->save();
 
-        if ($category->is_blocked) {
-            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been blocked successfully');
-        } else {
-            return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been unblocked');
+            if ($category->is_blocked) {
+                return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been blocked successfully');
+            } else {
+                return redirect('admin/bussiness/category')->with('success', 'Bussiness Category has been unblocked');
+            }
+        }else
+        {
+            return redirect('admin/bussiness/category')->with('error', 'You cannot block/unblock this category');
         }
     }
 }
