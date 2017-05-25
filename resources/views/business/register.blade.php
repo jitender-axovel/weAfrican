@@ -634,22 +634,7 @@ SUN  :   Closed">
           navigator.geolocation.getCurrentPosition(showPosition);
           if(navigator.geolocation)
           {
-                function showPosition(position) {
-                  lat = position.coords.latitude;
-                  long = position.coords.longitude;
-                  if(lat!="" && long!="")
-                  {
-                    buildMap(lat, long);
-                  }else
-                  {
-                    jQuery.get('http://freegeoip.net/json/'+ip, function (response){
-                        //alert(response.longitude);
-                        lat = parseFloat(response.latitude);
-                        long = parseFloat(response.longitude);
-                        buildMap(lat,long);
-                    }, "jsonp");
-                  }
-                }
+                showPosition(position);
           }else
           {
             jQuery.get('http://freegeoip.net/json/'+ip, function (response){
@@ -660,6 +645,22 @@ SUN  :   Closed">
             }, "jsonp");
           }
         });
+        function showPosition(position) {
+          lat = position.coords.latitude;
+          long = position.coords.longitude;
+          if(lat!="" && long!="")
+          {
+            buildMap(lat, long);
+          }else
+          {
+            jQuery.get('http://freegeoip.net/json/'+ip, function (response){
+                //alert(response.longitude);
+                lat = parseFloat(response.latitude);
+                long = parseFloat(response.longitude);
+                buildMap(lat,long);
+            }, "jsonp");
+          }
+        }
     </script>
 @endsection
 @section('scripts')
