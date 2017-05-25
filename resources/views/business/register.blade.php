@@ -279,9 +279,9 @@ SUN  :   Closed">
         </div>
     </div>
 </div>
-<!-- <div id="working_hours_modal" class="modal fade bs-example-modal-lg" role="dialog">
+<div id="working_hours_modal" class="modal fade bs-example-modal-lg" role="dialog">
   <div class="modal-dialog modal-lg"">
-    <!-- Modal content- ->
+    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -619,7 +619,7 @@ SUN  :   Closed">
       </div>
     </div>
   </div>
-</div> -->
+</div>
 @endsection
 @section('header-scripts')
     <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
@@ -691,7 +691,7 @@ SUN  :   Closed">
         });
     }
 
-    /*//Bootstarp validation on form
+    //Bootstarp validation on form
     $(document).ready(function() {
         $('#register-form').bootstrapValidator({
             // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
@@ -847,8 +847,8 @@ SUN  :   Closed">
                     console.log(result);
                 }, 'json');
             });
-        });*/
-    /*function checkWorkingHours()
+        });
+    function checkWorkingHours()
     {  
 
         var days = new Array();
@@ -940,7 +940,7 @@ SUN  :   Closed">
             temp[0] = "0" + temp[0];
         }
         return temp.join(":");
-    }*/
+    }
 </script>
 <script type="text/javascript">
     $(function () {
