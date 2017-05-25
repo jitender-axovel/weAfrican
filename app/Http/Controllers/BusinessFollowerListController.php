@@ -106,7 +106,7 @@ class BusinessFollowerListController extends Controller
     {
         $input = $request->input();
         $this->businessNotification = new BusinessNotification();
-        $this->businessNotification->saveNotificationMessage($input['business_id'], $input['source'], $input['message']);
-        print_r("Message Sent Success fully");
+        $result = $this->businessNotification->saveNotificationMessage($input['business_id'], $input['source'], $input['message']);
+        print_r($result);
     }
 }
