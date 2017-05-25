@@ -279,336 +279,6 @@ SUN  :   Closed">
         </div>
     </div>
 </div>
-@endsection
-@section('header-scripts')
-    <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
-    <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
-    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        var lat;
-        var long;
-        var ip = "{{$ip}}";
-
-        jQuery.get('http://freegeoip.net/json/'+ip, function (response){
-            //alert(response.longitude);
-            lat = parseFloat(response.latitude);
-            long = parseFloat(response.longitude);
-            buildMap(lat,long)
-        }, "jsonp");
-    </script>
-@endsection
-@section('scripts')
-<script type="text/javascript">
-
-    //Image preview jQuery
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            $('#preview').attr('src', e.target.result);
-          }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-    
-    $("#business_logo").change(function(){
-        readURL(this);
-    });
-
-    //GeoLocation Map Script(locationPicker with jquery)
-    function updateControls(addressComponents) {
-        $('#us5-street1').val(addressComponents.addressLine1);
-        $('#city').val(addressComponents.city);
-        $('#state').val(addressComponents.stateOrProvince);
-        $('#pin_code').val(addressComponents.postalCode);
-        $('#country').val(addressComponents.country);
-    }
-    function buildMap(lat,long){
-        $('#map').locationpicker({
-            location: {
-                latitude: lat,
-                longitude: long
-            },
-            radius: 100,
-            inputBinding: {
-                        latitudeInput: $('#latitude'),
-                        longitudeInput: $('#longitude'),
-                        radiusInput: $('#us3-radius'),
-                        locationNameInput: $('#address')
-            },
-            enableAutocomplete: true,
-            onchanged: function (currentLocation, radius, isMarkerDropped) {
-                var addressComponents = $(this).locationpicker('map').location.addressComponents;
-                updateControls(addressComponents);
-            },
-            oninitialized: function (component) {
-                var addressComponents = $(component).locationpicker('map').location.addressComponents;
-                updateControls(addressComponents);
-            }
-        });
-    }
-
-    //Bootstarp validation on form
-    $(document).ready(function() {
-        $('#register-form').bootstrapValidator({
-            // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                    full_name: {
-                        validators: {
-                                stringLength: {
-                                min: 2,
-                            },
-                            regexp: {
-                                regexp: /^[a-zA-Z\s]+$/,
-                                message: 'The Full name can only consist of alphabetical and space'
-                            },
-                                notEmpty: {
-                                message: 'Please supply your full name'
-                            }
-                        }
-                    },
-                    title: {
-                        validators: {
-                            stringLength: {
-                                min: 2,
-                                max:20
-                            },
-                            notEmpty: {
-                                message: 'Please supply your business name'
-                            }
-                        }
-                    },
-                    bussiness_category_id: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select your category'
-                            }
-                        }
-                    },
-                    keywords: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please supply your business keywords'
-                            }
-                        }
-                    },
-                    address: {
-                        validators: {
-                             stringLength: {
-                                min: 8,
-                            },
-                            notEmpty: {
-                                message: 'Please supply your address'
-                            }
-                        }
-                    },
-                    city: {
-                        validators: {
-                             stringLength: {
-                                min: 4,
-                            },
-                            notEmpty: {
-                                message: 'Please supply your city'
-                            }
-                        }
-                    },
-                    state: {
-                        validators: {
-                             stringLength: {
-                                min: 4,
-                            },
-                            notEmpty: {
-                                message: 'Please supply your state'
-                            }
-                        }
-                    },
-                    country: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please supply your country'
-                            }
-                        }
-                    },
-                    pin_code: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please supply your pin code'
-                            }
-                        }
-                    },
-                    country_code: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please supply country code.'
-                            }
-                        }
-                    },
-                    mobile_number: {
-                        validators: {
-                            numeric: {
-                                message: 'The mobile number can consist only numbers.'
-                            },
-                            notEmpty: {
-                                message: 'Please supply mobile number.'
-                            }
-                        }
-                    }, 
-                    email: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please supply your email address'
-                            },
-                            emailAddress: {
-                                message: 'Please supply a valid email address'
-                            }
-                        }
-                    },                  
-                    password: {
-                        validators: {
-                            identical: {
-                                field: 'confirm_password',
-                                message: 'Confirm your password below - type same password please'
-                            }
-                        }
-                    },
-                    confirm_password: {
-                        validators: {
-                            identical: {
-                                field: 'password',
-                                message: 'The password and its confirm are not the same'
-                            }
-                        }
-                    }, 
-                }
-            })
-            .on('success.form.bv', function(e) {
-                $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
-                    $('#reg_form').data('bootstrapValidator').resetForm();
-
-                // Prevent form submission
-                e.preventDefault();
-
-                // Get the form instance
-                var $form = $(e.target);
-
-                // Get the BootstrapValidator instance
-                var bv = $form.data('bootstrapValidator');
-
-                // Use Ajax to submit form data
-                $.post($form.attr('action'), $form.serialize(), function(result) {
-                    console.log(result);
-                }, 'json');
-            });
-        });
-    function checkWorkingHours()
-    {  
-
-        var days = new Array();
-
-        days[0] = document.querySelector('input[name="option_day[0]"]:checked').value;
-        days[1] = document.querySelector('input[name="option_day[1]"]:checked').value;
-        days[2] = document.querySelector('input[name="option_day[2]"]:checked').value;
-        days[3] = document.querySelector('input[name="option_day[3]"]:checked').value;
-        days[4] = document.querySelector('input[name="option_day[4]"]:checked').value;
-        days[5] = document.querySelector('input[name="option_day[5]"]:checked').value;
-        days[6] = document.querySelector('input[name="option_day[6]"]:checked').value;
-
-        for(var i=0;i<days.length;i++)
-        {
-            if(days[i]!=0)
-            {
-                document.getElementById("open_"+i).setAttribute('disabled', true);
-                document.getElementById("close_"+i).setAttribute('disabled', true);
-            }else
-            {
-                document.getElementById("open_"+i).removeAttribute('disabled');
-                document.getElementById("close_"+i).removeAttribute('disabled');
-            }
-        }
-    }
-    $(document).ready(function() {
-        $('input[type=radio][class=opt_day]').change(function() {
-            checkWorkingHours();
-        });
-        $('#modal_submit').click(function() {
-
-            var days = new Array();
-
-            days[0] = document.querySelector('input[name="option_day[0]"]:checked').value;
-            days[1] = document.querySelector('input[name="option_day[1]"]:checked').value;
-            days[2] = document.querySelector('input[name="option_day[2]"]:checked').value;
-            days[3] = document.querySelector('input[name="option_day[3]"]:checked').value;
-            days[4] = document.querySelector('input[name="option_day[4]"]:checked').value;
-            days[5] = document.querySelector('input[name="option_day[5]"]:checked').value;
-            days[6] = document.querySelector('input[name="option_day[6]"]:checked').value;
-            var text = "";
-            for(var i=0;i<days.length;i++)
-            {
-                if(i==0)
-                {
-                    text = text + "MON  :   ";
-                }else if(i==1)
-                {
-                    text = text + "TUE  :   ";
-                }else if(i==2)
-                {
-                    text = text + "WED  :   ";
-                }else if(i==3)
-                {
-                    text = text + "THU  :   ";
-                }else if(i==4)
-                {
-                    text = text + "FRI  :   ";
-                }else if(i==5)
-                {
-                    text = text + "SAT  :   ";
-                }else if(i==6)
-                {
-                    text = text + "SUN  :   ";
-                }
-                if(days[i]==0)
-                {
-                    text = text + convertTime($('#open_'+i).val()) + " to " + convertTime($('#close_'+i).val());
-                }else if(days[i]==1)
-                {
-                    text = text + "Closed";
-                }else if(days[i]==2)
-                {
-                    text = text + "24 Hours Open";
-                }
-                text = text + "\n";
-            }
-            //alert(text);
-            $("#working_hours").val(text);
-            $('#working_hours_modal').modal('hide');
-        });
-    });
-    function convertTime(str)
-    {
-        var temp = str.split(":");
-        temp[0] = parseInt(temp[0]);
-        if(temp[0]<10)
-        {
-            temp[0] = "0" + temp[0];
-        }
-        return temp.join(":");
-    }
-</script>
-<script type="text/javascript">
-    $(function () {
-        $('.date').datetimepicker({
-            format: 'LT'
-        });
-    });
-</script>
-@endsection
 <div id="working_hours_modal" class="modal fade bs-example-modal-lg" role="dialog">
   <div class="modal-dialog modal-lg"">
     <!-- Modal content-->
@@ -950,4 +620,335 @@ SUN  :   Closed">
     </div>
   </div>
 </div>
+@endsection
+@section('header-scripts')
+    <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
+    <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        var lat;
+        var long;
+        var ip = "{{$ip}}";
+
+        jQuery.get('http://freegeoip.net/json/'+ip, function (response){
+            //alert(response.longitude);
+            lat = parseFloat(response.latitude);
+            long = parseFloat(response.longitude);
+            buildMap(lat,long)
+        }, "jsonp");
+    </script>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+
+    //Image preview jQuery
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    $("#business_logo").change(function(){
+        readURL(this);
+    });
+
+    //GeoLocation Map Script(locationPicker with jquery)
+    function updateControls(addressComponents) {
+        $('#us5-street1').val(addressComponents.addressLine1);
+        $('#city').val(addressComponents.city);
+        $('#state').val(addressComponents.stateOrProvince);
+        $('#pin_code').val(addressComponents.postalCode);
+        $('#country').val(addressComponents.country);
+    }
+    function buildMap(lat,long){
+        $('#map').locationpicker({
+            location: {
+                latitude: lat,
+                longitude: long
+            },
+            radius: 100,
+            inputBinding: {
+                        latitudeInput: $('#latitude'),
+                        longitudeInput: $('#longitude'),
+                        radiusInput: $('#us3-radius'),
+                        locationNameInput: $('#address')
+            },
+            enableAutocomplete: true,
+            onchanged: function (currentLocation, radius, isMarkerDropped) {
+                var addressComponents = $(this).locationpicker('map').location.addressComponents;
+                updateControls(addressComponents);
+            },
+            oninitialized: function (component) {
+                var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                updateControls(addressComponents);
+            }
+        });
+    }
+
+    //Bootstarp validation on form
+    $(document).ready(function() {
+        $('#register-form').bootstrapValidator({
+            // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                    full_name: {
+                        validators: {
+                                stringLength: {
+                                min: 2,
+                            },
+                            regexp: {
+                                regexp: /^[a-zA-Z\s]+$/,
+                                message: 'The Full name can only consist of alphabetical and space'
+                            },
+                                notEmpty: {
+                                message: 'Please supply your full name'
+                            }
+                        }
+                    },
+                    title: {
+                        validators: {
+                            stringLength: {
+                                min: 2,
+                                max:20
+                            },
+                            notEmpty: {
+                                message: 'Please supply your business name'
+                            }
+                        }
+                    },
+                    bussiness_category_id: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select your category'
+                            }
+                        }
+                    },
+                    keywords: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your business keywords'
+                            }
+                        }
+                    },
+                    address: {
+                        validators: {
+                             stringLength: {
+                                min: 8,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your address'
+                            }
+                        }
+                    },
+                    city: {
+                        validators: {
+                             stringLength: {
+                                min: 4,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your city'
+                            }
+                        }
+                    },
+                    state: {
+                        validators: {
+                             stringLength: {
+                                min: 4,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your state'
+                            }
+                        }
+                    },
+                    country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your country'
+                            }
+                        }
+                    },
+                    pin_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your pin code'
+                            }
+                        }
+                    },
+                    country_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply country code.'
+                            }
+                        }
+                    },
+                    mobile_number: {
+                        validators: {
+                            numeric: {
+                                message: 'The mobile number can consist only numbers.'
+                            },
+                            notEmpty: {
+                                message: 'Please supply mobile number.'
+                            }
+                        }
+                    }, 
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your email address'
+                            },
+                            emailAddress: {
+                                message: 'Please supply a valid email address'
+                            }
+                        }
+                    },                  
+                    password: {
+                        validators: {
+                            identical: {
+                                field: 'confirm_password',
+                                message: 'Confirm your password below - type same password please'
+                            }
+                        }
+                    },
+                    confirm_password: {
+                        validators: {
+                            identical: {
+                                field: 'password',
+                                message: 'The password and its confirm are not the same'
+                            }
+                        }
+                    }, 
+                }
+            })
+            .on('success.form.bv', function(e) {
+                $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
+                    $('#reg_form').data('bootstrapValidator').resetForm();
+
+                // Prevent form submission
+                e.preventDefault();
+
+                // Get the form instance
+                var $form = $(e.target);
+
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+
+                // Use Ajax to submit form data
+                $.post($form.attr('action'), $form.serialize(), function(result) {
+                    console.log(result);
+                }, 'json');
+            });
+        });
+    function checkWorkingHours()
+    {  
+
+        var days = new Array();
+
+        days[0] = document.querySelector('input[name="option_day[0]"]:checked').value;
+        days[1] = document.querySelector('input[name="option_day[1]"]:checked').value;
+        days[2] = document.querySelector('input[name="option_day[2]"]:checked').value;
+        days[3] = document.querySelector('input[name="option_day[3]"]:checked').value;
+        days[4] = document.querySelector('input[name="option_day[4]"]:checked').value;
+        days[5] = document.querySelector('input[name="option_day[5]"]:checked').value;
+        days[6] = document.querySelector('input[name="option_day[6]"]:checked').value;
+
+        for(var i=0;i<days.length;i++)
+        {
+            if(days[i]!=0)
+            {
+                document.getElementById("open_"+i).setAttribute('disabled', true);
+                document.getElementById("close_"+i).setAttribute('disabled', true);
+            }else
+            {
+                document.getElementById("open_"+i).removeAttribute('disabled');
+                document.getElementById("close_"+i).removeAttribute('disabled');
+            }
+        }
+    }
+    $(document).ready(function() {
+        $('input[type=radio][class=opt_day]').change(function() {
+            checkWorkingHours();
+        });
+        $('#modal_submit').click(function() {
+
+            var days = new Array();
+
+            days[0] = document.querySelector('input[name="option_day[0]"]:checked').value;
+            days[1] = document.querySelector('input[name="option_day[1]"]:checked').value;
+            days[2] = document.querySelector('input[name="option_day[2]"]:checked').value;
+            days[3] = document.querySelector('input[name="option_day[3]"]:checked').value;
+            days[4] = document.querySelector('input[name="option_day[4]"]:checked').value;
+            days[5] = document.querySelector('input[name="option_day[5]"]:checked').value;
+            days[6] = document.querySelector('input[name="option_day[6]"]:checked').value;
+            var text = "";
+            for(var i=0;i<days.length;i++)
+            {
+                if(i==0)
+                {
+                    text = text + "MON  :   ";
+                }else if(i==1)
+                {
+                    text = text + "TUE  :   ";
+                }else if(i==2)
+                {
+                    text = text + "WED  :   ";
+                }else if(i==3)
+                {
+                    text = text + "THU  :   ";
+                }else if(i==4)
+                {
+                    text = text + "FRI  :   ";
+                }else if(i==5)
+                {
+                    text = text + "SAT  :   ";
+                }else if(i==6)
+                {
+                    text = text + "SUN  :   ";
+                }
+                if(days[i]==0)
+                {
+                    text = text + convertTime($('#open_'+i).val()) + " to " + convertTime($('#close_'+i).val());
+                }else if(days[i]==1)
+                {
+                    text = text + "Closed";
+                }else if(days[i]==2)
+                {
+                    text = text + "24 Hours Open";
+                }
+                text = text + "\n";
+            }
+            //alert(text);
+            $("#working_hours").val(text);
+            $('#working_hours_modal').modal('hide');
+        });
+    });
+    function convertTime(str)
+    {
+        var temp = str.split(":");
+        temp[0] = parseInt(temp[0]);
+        if(temp[0]<10)
+        {
+            temp[0] = "0" + temp[0];
+        }
+        return temp.join(":");
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('.date').datetimepicker({
+            format: 'LT'
+        });
+    });
+</script>
+@endsection
+
 
