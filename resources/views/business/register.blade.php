@@ -18,6 +18,7 @@
             <div class="panel-body">
                 <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
+                    <input type="hidden" name="currency" id="currency" value="">
                     <input type="hidden" name="working_hours" id="working_hours" value="MON  :   10:00 AM to 06:00 PM
 TUE  :   10:00 AM to 06:00 PM
 WED  :   10:00 AM to 06:00 PM
@@ -139,7 +140,7 @@ SUN  :   Closed">
                         </div>
                         <label for="mobile_number" class="col-md-2 required control-label">Mobile Number:(format:99-99-999999)</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control code" name="country_code" value="{{ old('country_code') }}" />
+                            <input type="text" class="form-control code" id="country_code" name="country_code" value="{{ old('country_code') }}" />
 
                             <input  type="text" maxlength="10" minlength="10" pattern="[0-9]{10}" class="form-control mobile" name="mobile_number" value="{{ old('mobile_number') }}" required>
                               <span class="help-block">
@@ -636,7 +637,7 @@ SUN  :   Closed">
             //alert(response.longitude);
             lat = parseFloat(response.latitude);
             long = parseFloat(response.longitude);
-            buildMap(lat,long)
+            buildMap(lat,long);
         }, "jsonp");
     </script>
 @endsection
@@ -948,6 +949,27 @@ SUN  :   Closed">
             format: 'LT'
         });
     });
+</script>
+<script type="text/javascript">
+    window.onload = function () {  getCurrencyAndCode(); };
+    $("#country").change(function(){
+        getCurrencyAndCode();
+    });
+    function getCurrencyAndCode()
+    {
+        $.ajax({
+            type: "POST",
+            url: '{{ url("country-details") }}',
+            data: {
+                _token: "{{ csrf_token() }}",
+                country : $("#country").val(),
+            },success:function(response){
+                var result = JSON.parse(response);
+                $("#country_code").val(result.country_code);
+                $("#currency").val(result.currency);
+            }
+        });
+    }
 </script>
 @endsection
 
