@@ -519,6 +519,9 @@ class UserBusinessController extends Controller
             $user = User::whereMobileNumber($mobile_number)->first();
             $user->mobile_number = $input['mobile_number'];
             $user->save();
+            $business = UserBusiness::whereUserId($user->id)->first();
+            $business->mobile_number = $input['mobile_number'];
+            $business->save();
             $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
             if($res->success==true)
             {
@@ -563,14 +566,20 @@ class UserBusinessController extends Controller
 
             $response = curl_exec($curl);
             $err = curl_error($curl);
+            $http = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
             curl_close($curl);
-
-            if ($err) {
-              print_r("cURL Error #:" . $err);
-            } else {
-                $temp = json_decode($response);
-                print_r(json_encode(array('country_code' => $temp[0]->callingCodes[0], 'currency' => $temp[0]->currencies[0]->code)));
+            if($http=='404')
+            {
+                return "";
+            }else
+            {
+                if ($err) {
+                  print_r("cURL Error #:" . $err);
+                } else {
+                    $temp = json_decode($response);
+                    print_r(json_encode(array('country_code' => $temp[0]->callingCodes[0], 'currency' => $temp[0]->currencies[0]->code)));
+                }
             }
         }
     }
