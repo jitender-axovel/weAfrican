@@ -625,42 +625,42 @@ SUN  :   Closed">
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
-        var lat = "";
-        var long = "";
+        var lat;
+        var long;
         var ip = "{{$ip}}";
-
-        
+        function getLocation()
+        {
+            jQuery.get('http://freegeoip.net/json/'+ip, function (response){
+                    //alert(response.longitude);
+                    lat = parseFloat(response.latitude);
+                    long = parseFloat(response.longitude);
+                    buildMap(lat,long);
+                }, "jsonp");
+        }
         $( document ).ready(function() {
           navigator.geolocation.getCurrentPosition(showPosition);
-          if(navigator.geolocation)
-          {
-                showPosition(position);
-          }else
-          {
-            jQuery.get('http://freegeoip.net/json/'+ip, function (response){
-                //alert(response.longitude);
-                lat = parseFloat(response.latitude);
-                long = parseFloat(response.longitude);
-                buildMap(lat,long);
-            }, "jsonp");
-          }
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(hasGeolocation, noGeolocation)
+            } else {
+                getLocation();
+            }
+
+            function hasGeolocation(position) {
+                var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              $('.map-lat').val(lat);
+              $('.map-lon').val(lng);
+              buildMap(lat, lng);
+            }
+
+            function noGeolocation() {
+                getLocation();
+            }
+
+            function geolocationNotSupported() {
+                getLocation();
+            }
         });
-        function showPosition(position) {
-          lat = position.coords.latitude;
-          long = position.coords.longitude;
-          if(lat!="" && long!="")
-          {
-            buildMap(lat, long);
-          }else
-          {
-            jQuery.get('http://freegeoip.net/json/'+ip, function (response){
-                //alert(response.longitude);
-                lat = parseFloat(response.latitude);
-                long = parseFloat(response.longitude);
-                buildMap(lat,long);
-            }, "jsonp");
-          }
-        }
     </script>
 @endsection
 @section('scripts')
