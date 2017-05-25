@@ -691,7 +691,7 @@ SUN  :   Closed">
         });
     }
 
-    //Bootstarp validation on form
+    /*//Bootstarp validation on form
     $(document).ready(function() {
         $('#register-form').bootstrapValidator({
             // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
@@ -847,7 +847,7 @@ SUN  :   Closed">
                     console.log(result);
                 }, 'json');
             });
-        });
+        });*/
     /*function checkWorkingHours()
     {  
 
