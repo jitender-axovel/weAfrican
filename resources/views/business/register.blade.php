@@ -848,7 +848,7 @@ SUN  :   Closed">
                 }, 'json');
             });
         });
-    function checkWorkingHours()
+    /*function checkWorkingHours()
     {  
 
         var days = new Array();
@@ -940,7 +940,7 @@ SUN  :   Closed">
             temp[0] = "0" + temp[0];
         }
         return temp.join(":");
-    }
+    }*/
 </script>
 <script type="text/javascript">
     $(function () {
