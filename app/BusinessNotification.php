@@ -30,6 +30,21 @@ class BusinessNotification extends Model
         //dd($res);
     }
 
+    public function saveNotificationMessage($businessId, $source, $message)
+    {
+        $business = UserBusiness::whereId($businessId)->first();
+
+        $notification = new BusinessNotification();
+
+        $notification->business_id = $businessId;
+        $notification->source = $source;
+        $notification->message = $message;
+        $notification->save();
+        $user_id = BusinessFollower::whereBusinessId($businessId)->pluck('user_id')->toArray();
+        $fcm_tokens = FcmUser::whereIn('user_id', $user_id)->pluck('fcm_reg_id')->toArray();
+        $res = $this->sendPushNotificationToFCM($fcm_tokens,array("m" => $notification->message));
+    }
+
     public function sendPushNotificationToFCM($registation_ids, $message) {
         //Google cloud messaging GCM-API url
         $url = 'https://fcm.googleapis.com/fcm/send';
