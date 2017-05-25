@@ -532,4 +532,46 @@ class UserBusinessController extends Controller
             }
         }
     }
+
+    /**
+     * Method to get country details from restcountries.eu.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function countryDetails(Request $request)
+    {
+        $input = $request->input();
+        if($input['country']!="" and $input['country']!=null)
+        {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://restcountries.eu/rest/v2/name/".$input['country']."?fullText=true",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => array(
+                "cache-control: no-cache",
+              ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+              print_r("cURL Error #:" . $err);
+            } else {
+                $temp = json_decode($response);
+                print_r(json_encode(array('country_code' => $temp[0]->callingCodes[0], 'currency' => $temp[0]->currencies[0]->code)));
+            }
+        }
+    }
 }
