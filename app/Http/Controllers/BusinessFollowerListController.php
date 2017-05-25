@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\Http\Requests;
 use App\UserBusiness;
 use App\BusinessFollower;
 use App\BusinessLike;
 use App\BusinessRating;
+use App\BusinessNotification;
 use Auth;
 
 class BusinessFollowerListController extends Controller
@@ -30,7 +33,7 @@ class BusinessFollowerListController extends Controller
 
         $ratings = BusinessRating::whereBusinessId($businessId)->get();
 
-        return view('business-follower.index', compact('pageTitle','followers','likes','dislikes','ratings'));
+        return view('business-follower.index', compact('pageTitle','businessId','followers','likes','dislikes','ratings'));
     }
 
     /**
@@ -97,5 +100,13 @@ class BusinessFollowerListController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $input = $request->input();
+        $this->businessNotification = new BusinessNotification();
+        $this->businessNotification->saveNotificationMessage($input['business_id'], $input['source'], $input['message']);
+        print_r("Message Sent Success fully");
     }
 }
