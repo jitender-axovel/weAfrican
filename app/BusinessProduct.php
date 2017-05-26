@@ -26,7 +26,7 @@ class BusinessProduct extends Model
     	'title' => 'required',
     	'description' => 'required',
         'price' => 'required|integer',
-        /*'product_image.*' => 'image|mimes:jpg,png,jpeg',*/
+        'product_image.*' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public function product_business()
