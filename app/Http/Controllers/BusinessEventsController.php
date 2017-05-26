@@ -46,7 +46,7 @@ class BusinessEventsController extends Controller
      */
     public function create()
     {
-        $pageTitle = "Business Event -create";
+        $pageTitle = "Business Event -Create";
         $business = UserBusiness::where('user_id', Auth::id())->first();
         $categories = EventCategory::where('is_blocked', 0)->get();
         return view('business-event.create', compact('pageTitle', 'business', 'categories'));
