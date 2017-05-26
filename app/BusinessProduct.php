@@ -20,7 +20,6 @@ class BusinessProduct extends Model
     	'description' => 'required',
         'price' => 'required|integer',
         'product_image.0' => 'required|image|mimes:jpg,png,jpeg',
-        'product_image.*' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public static $updateValidater = array(
@@ -28,7 +27,6 @@ class BusinessProduct extends Model
     	'description' => 'required',
         'price' => 'required|integer',
         'product_image.0' => 'required|image|mimes:jpg,png,jpeg',
-        'product_image.*' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public function product_business()
