@@ -13,7 +13,7 @@ class CreateCountryListTable extends Migration
      */
     public function up()
     {
-        Schema::create('country_list', function (Blueprint $table) {
+        Schema::create('country_lists', function (Blueprint $table) {
             $table->increments('id');
             $table->string('country')->nullable();
             $table->string('country_calling_code')->nullable();
@@ -28,6 +28,6 @@ class CreateCountryListTable extends Migration
      */
     public function down()
     {
-        Schema::drop('country_list');
+        Schema::drop('country_lists');
     }
 }
