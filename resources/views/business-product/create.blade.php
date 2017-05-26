@@ -64,9 +64,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <label for="address" class="col-md-2 required control-label">Image</label>
                     <div class="col-md-4">
-                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image2">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image2" required>
                         @if($errors->has('product_image.1'))
                             <span class="help-block">
                             <strong>{{ $errors->first('product_image') }}</strong>
@@ -79,9 +79,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <label for="address" class="col-md-2 required control-label">Image</label>
                     <div class="col-md-4">
-                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image3">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image3" required>
                         @if($errors->has('product_image.2'))
                             <span class="help-block">
                             <strong>{{ $errors->first('product_image') }}</strong>
@@ -94,9 +94,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <label for="address" class="col-md-2 required control-label">Image</label>
                     <div class="col-md-4">
-                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image4">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image4" required>
                         @if($errors->has('product_image.3'))
                             <span class="help-block">
                             <strong>{{ $errors->first('product_image') }}</strong>
@@ -109,9 +109,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-2 control-label">Image</label>
+                    <label for="address" class="col-md-2 required control-label">Image</label>
                     <div class="col-md-4">
-                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image5">
+                        <input type="file" name="product_image[]" accept="image/*" onchange="previewImg(this)" id="product_image5" required>
                         @if($errors->has('product_image.4'))
                             <span class="help-block">
                             <strong>{{ $errors->first('product_image') }}</strong>
