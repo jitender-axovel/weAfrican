@@ -94,7 +94,7 @@
                 </div>
                 <label for="country" class="col-md-2 control-label">Country</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="country" value="{{ $business->country }}">
+                    <input type="text" class="form-control" name="country" value="{{ $business->country }}" disabled>
                     @if ($errors->has('country'))
                         <span class="help-block">
                         <strong>{{ $errors->first('country') }}</strong>

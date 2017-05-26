@@ -91,7 +91,7 @@ SUN  :   Closed">
                     <div class="form-group required">
                         <label for="address" class="col-md-2 control-label">Address:</label>
                         <div class="col-md-4">
-                            <input type="text" id="address"class="form-control" name="address" value="{{ old('address') }}">
+                            <input type="text" id="address" class="form-control" name="address" value="{{ old('address') }}">
                             @if ($errors->has('address'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('address') }}</strong>
@@ -1002,6 +1002,7 @@ SUN  :   Closed">
                 }else
                 {
                      $("#currency").val("USD");
+                     $("#country_code").val("");
                 }
             }
         });
