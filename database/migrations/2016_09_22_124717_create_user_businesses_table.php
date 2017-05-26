@@ -27,7 +27,7 @@ class CreateUserBusinessesTable extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
-            $table->integer('pin_code')->nullable();
+            $table->string('pin_code')->nullable();
             $table->integer('currency')->nullable();
             $table->bigInteger('mobile_number');
             $table->string('secondary_phone_number')->nullable();
