@@ -14,7 +14,7 @@ class UserBusiness extends Model
 {
     protected $fillable = ['user_id', 'business_id', 'bussiness_category_id', 'title' ,'keywords', 'about_us', 'address', 'city', 'state', 'country', 'pin_code', 'currency', 'mobile_number', 'secondary_phone_number', 'email', 'website', 'working_hours' , 'is_agree_to_terms', 'identity_proof' , 'business_proof' , 'business_logo', 'banner','latitude', 'longitude'];
 
-    public static $updatable = ['user_id' => "", 'business_id' => "" ,'bussiness_category_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'pin_code' => "", 'currency' => "", 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => "", 'banner' => "", 'latitude' => "", 'longitude' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "" ,'bussiness_category_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'pin_code' => "", 'currency' => "", 'mobile_number' => '', 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => "", 'banner' => "", 'latitude' => "", 'longitude' => ""];
 
     public static $searchValidator = array(
         'userId' => 'required',
