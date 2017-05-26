@@ -117,7 +117,7 @@
                  <div class="form-group ">
                     <label for="address" class="col-md-2 required control-label">Address</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="address" value="{{ old('address')}}" required>
+                        <input type="text" class="form-control" id="address" name="address" value="{{ old('address')}}" required>
                         @if($errors->has('address'))
                             <span class="help-block">
                             <strong>{{ $errors->first('address') }}</strong>
@@ -199,12 +199,46 @@
         var lat;
         var long;
         var ip = "{{$ip}}";
+        function getLocation()
+        {
+            jQuery.get('http://freegeoip.net/json/'+ip, function (response){
+                    //alert(response.longitude);
+                    lat = parseFloat(response.latitude);
+                    long = parseFloat(response.longitude);
+                    buildMap(lat,long);
+                }, "jsonp");
+        }
+        $( document ).ready(function() {
+          navigator.geolocation.getCurrentPosition(showPosition);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(hasGeolocation, noGeolocation)
+            } else {
+                getLocation();
+            }
 
-        jQuery.get('http://freegeoip.net/json/'+ip, function (response){
-            //alert(response.longitude);
-            lat = parseFloat(response.latitude);
-            long = parseFloat(response.longitude);
-        }, "jsonp");
+            function hasGeolocation(position) {
+                var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              $('.map-lat').val(lat);
+              $('.map-lon').val(lng);
+              buildMap(lat, lng);
+            }
+
+            function noGeolocation() {
+                getLocation();
+            }
+
+            function geolocationNotSupported() {
+                getLocation();
+            }
+          function showPosition(position) {
+              var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              $('.map-lat').val(lat);
+              $('.map-lon').val(lng);
+              buildMap(lat, lng);
+          }
+        });
     </script>
 @endsection
 @section('scripts')
@@ -239,27 +273,29 @@
         $('#pin_code').val(addressComponents.postalCode);
         $('#country').val(addressComponents.country);
     }
-    $('#map').locationpicker({
-        location: {
-            latitude: 28.6667,
-            longitude: 77.2167
-        },
-        radius: 100,
-        inputBinding: {
-                    latitudeInput: $('#latitude'),
-                    longitudeInput: $('#longitude'),
-                    radiusInput: $('#us3-radius'),
-                    locationNameInput: $('#address')
-        },
-        enableAutocomplete: true,
-        onchanged: function (currentLocation, radius, isMarkerDropped) {
-            var addressComponents = $(this).locationpicker('map').location.addressComponents;
-            updateControls(addressComponents);
-        },
-        oninitialized: function (component) {
-            var addressComponents = $(component).locationpicker('map').location.addressComponents;
-            updateControls(addressComponents);
-        }
-    });
+    function buildMap(lat,long){
+        $('#map').locationpicker({
+            location: {
+                latitude: lat,
+                longitude: long
+            },
+            radius: 100,
+            inputBinding: {
+                        latitudeInput: $('#latitude'),
+                        longitudeInput: $('#longitude'),
+                        radiusInput: $('#us3-radius'),
+                        locationNameInput: $('#address')
+            },
+            enableAutocomplete: true,
+            onchanged: function (currentLocation, radius, isMarkerDropped) {
+                var addressComponents = $(this).locationpicker('map').location.addressComponents;
+                updateControls(addressComponents);
+            },
+            oninitialized: function (component) {
+                var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                updateControls(addressComponents);
+            }
+        });
+    }
 </script>
 @endsection
