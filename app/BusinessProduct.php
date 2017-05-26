@@ -19,13 +19,15 @@ class BusinessProduct extends Model
     	'title' => 'required|unique:business_products|max:255',
     	'description' => 'required',
         'price' => 'required|integer',
-        'product_image.*' => 'required|image|mimes:jpg,png,jpeg',
+        'product_image.0' => 'required|image|mimes:jpg,png,jpeg',
+        'product_image.*' => 'image|mimes:jpg,png,jpeg',
     	);
 
     public static $updateValidater = array(
     	'title' => 'required',
     	'description' => 'required',
         'price' => 'required|integer',
+        'product_image.0' => 'required|image|mimes:jpg,png,jpeg',
         'product_image.*' => 'image|mimes:jpg,png,jpeg',
     	);
 
