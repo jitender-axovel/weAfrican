@@ -52,7 +52,7 @@ SUN  :   Closed">
                             <select name="bussiness_category_id" class="form-control selectpicker" required>
                                 <option value="" selected>Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" @if($category->title == $category->title){{ 'selected'}} @endif  >{{ $category->title }}</option>
+                                    <option value="{{ $category->id }}" >{{ $category->title }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('bussiness_category_id'))
