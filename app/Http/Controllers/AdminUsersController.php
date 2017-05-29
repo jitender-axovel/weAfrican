@@ -20,7 +20,7 @@ class AdminUsersController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Users';
-        $users = User::get();
+        $users = User::whereIn('user_role_id',array(3,4))->get();
         return view('admin.users.index', compact('pageTitle', 'users'));
     }
 
@@ -185,4 +185,102 @@ class AdminUsersController extends Controller
             return redirect('admin/users')->with('success', 'User unblocked successfully');
         }   
     }
-}
+
+    public function getSearch(Request $request=null)
+    {
+        $input = $request->input();
+        $condition = array();
+        if($input['country']!="")
+        {
+            $condition['country'] = $input['country'];
+        }
+        if($input['state']!="")
+        {
+            $condition['state'] = $input['state'];
+        }
+        if($input['city']!="")
+        {
+            $condition['city'] = $input['city'];
+        }
+        if(isset($input['category']) && $input['category']!="")
+        {
+            $condition['bussiness_category_id'] = $input['category'];
+        }
+        /*if(isset($input['subcategory']) && $input['subcategory']!="")
+        {
+            $condition['bussiness_subcategory_id'] = $input['subcategory'];
+        }*/
+        if($input['page']=='user')
+        {
+            if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
+            {
+                $userBusiness = UserBusiness::where($condition)->pluck('user_id');
+                $users = User::whereIn('id',$userBusiness)->get();
+            }else
+            {
+                $users = User::whereIn('user_role_id',array(3,4))->get();
+            }
+            $pageTitle = 'Admin - Users';
+            return view('admin.users.index', compact('pageTitle', 'users'));
+        }else
+        {
+            if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
+            {
+                $businesses = UserBusiness::where($condition)->get();
+            }else
+            {
+                $businesses = UserBusiness::get();
+            }
+            $pageTitle = 'Admin - User Business';
+            return view('admin.business.index', compact('pageTitle', 'businesses'));
+        }
+    }
+
+    public function exportToCsv(Request $request)
+    {
+        $input = $request->input();
+        $condition = array();
+        if($input['country']!="")
+        {
+            $condition['user_businesses.country'] = $input['country'];
+        }
+        if($input['state']!="")
+        {
+            $condition['user_businesses.state'] = $input['state'];
+        }
+        if($input['city']!="")
+        {
+            $condition['user_businesses.city'] = $input['city'];
+        }
+        if(isset($input['category']) && $input['category']!="")
+        {
+            $condition['bussiness_category_id'] = $input['category'];
+        }
+        /*if(isset($input['subcategory']) && $input['subcategory']!="")
+        {
+            $condition['bussiness_subcategory_id'] = $input['subcategory'];
+        }*/
+        if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
+        {
+            $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country')->leftJoin('user_businesses', 'user_businesses.user_id', '=', 'users.id')->where($condition)->get()->toArray();
+        }else
+        {
+            $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country')->leftJoin('user_businesses', 'user_businesses.user_id', '=', 'users.id')->get()->toArray();
+        }
+        $header = array('Full_Name','Email','Country_Code', 'Mobile_Number','City','State','Country');
+        $delimiter=",";
+
+        $filename = "export".time().".csv";
+
+        header('Content-Type: application/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+        $f = fopen('php://output', 'w');
+        fputcsv($f, $header, $delimiter);
+
+        foreach ($users as $line) { 
+            // generate csv lines from the inner arrays
+            fputcsv($f, $line, $delimiter); 
+        }
+    }
+} 
