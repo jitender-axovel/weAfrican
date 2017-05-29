@@ -434,8 +434,8 @@
     $.fn.locationpicker.defaults = {
         location: {latitude: 40.7324319, longitude: -73.82480777777776},
         locationName: "",
-        radius: 500,
-        zoom: 15,
+        radius: 100,
+        zoom: 5,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         styles: [],
         mapOptions: {},
