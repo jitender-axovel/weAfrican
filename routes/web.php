@@ -30,6 +30,11 @@ Route::group(['middleware' => ['before']], function(){
 	Route::resource('change-mobile', 'UserBusinessController@changeMobile');
 	Route::post('update-mobile', 'UserBusinessController@updateMobile');
 	Route::post('country-details', 'UserBusinessController@countryDetails');//Ajax function to get country details from country name
+	Route::post('country', 'AjaxController@countryList');
+	Route::post('state', 'AjaxController@stateList');
+	Route::post('city', 'AjaxController@cityList');
+	Route::post('category', 'AjaxController@categoryList');
+	Route::post('subcategory', 'AjaxController@subcategoryList');
 
 	Route::group(['middleware' => ['auth']], function() {
 
@@ -60,6 +65,8 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::get('dashboard', 'AdminController@index');
 		Route::get('user/blocked/{id}','AdminUsersController@block');
 		Route::resource('users', 'AdminUsersController');
+		Route::get('getSearch', 'AdminUsersController@getSearch');
+		Route::get('getCSV', 'AdminUsersController@exportToCsv');
 		Route::get('business/block/{id}','AdminUserBusinessesController@block');
 		Route::resource('business', 'AdminUserBusinessesController');
 		Route::get('bussiness/category/block/{id}', 'AdminBussinessCategoriesController@block');
