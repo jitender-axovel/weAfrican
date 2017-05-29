@@ -89,7 +89,7 @@
                             if(ob==0)
                             {
                                 var country = list[ob];
-                                if((Object.keys(country).length-1)>0)
+                                if((Object.keys(country).length)>0)
                                 {
                                     for(key in country){
                                         $('#select_country').append($("<option></option>").attr("value",key).text(key));
@@ -109,7 +109,7 @@
                             }else
                             {
                                 var catgory = list[ob];
-                                if((Object.keys(catgory).length-1)>0)
+                                if((Object.keys(catgory).length)>0)
                                 {
                                     for(key in catgory){
                                         $('#select_category').append($("<option></option>").attr("value",catgory[key]).text([key]));
