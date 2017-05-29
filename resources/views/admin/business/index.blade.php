@@ -4,7 +4,50 @@
 	<h2>User Business</h2>
 	<hr>
 	@include('notification')
-	
+	<br>
+	<form id="form1" action="{{ url('admin/getSearch/') }}" method="GET" class="form-horizontal">
+	{{csrf_field()}}
+	<input type="hidden" name="page" value="business">
+	<div class="col-md-12" style="margin-bottom: 20px">
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-4">
+					<select class="form-control" id="select_country" name="country">
+		                    <option value=""> Select Country </option>
+		            </select>
+				</div>
+				<div class="col-md-4">
+					<select class="form-control" id="select_state" name="state">
+		                    <option value=""> Select State </option>
+		            </select>
+				</div>
+				<div class="col-md-4">
+					<select class="form-control" id="select_city" name="city">
+		                    <option value=""> Select City </option>
+		            </select>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-6">
+					<select class="form-control" id="select_category" name="category">
+		                    <option value=""> Select Category </option>
+		            </select>
+				</div>
+				<div class="col-md-6">
+					<select class="form-control" id="select_subcategory" name="subcategory">
+		                    <option value=""> Select Sub-Category </option>
+		            </select>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3" style="vertical-align: center">
+			<button class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+			<button class="btn btn-info" onclick="javascript:setSubmit()">CSV</button>
+			<a href="{{ url('admin/users/') }}" class="btn btn-info">Reset</a>
+		</div>
+	</div>
+	</form>
+	<br><br>
 	<table id="categories_list" class="display">
 		<thead>
 			<tr>
@@ -77,5 +120,128 @@
 		$(document).ready( function () {
 		    $('#categories_list').DataTable();
 		} );
+	</script>
+	<script type="text/javascript">
+		$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+		$(document).ready( function () {
+			$.ajax({
+                type:'POST',
+                url: '{{ url("category") }}',
+                success:function(response)
+                {
+                    var category = JSON.parse(response);
+                    if(Object.keys(category).length>0)
+                    {
+                        for(key in category){
+                            $('#select_category').append($("<option></option>").attr("value",key).text(category[key]));
+                        }
+                    }
+                }
+            });
+            $.ajax({
+                type:'POST',
+                url: '{{ url("country") }}',
+                success:function(response)
+                {
+                    var country = JSON.parse(response);
+                    if(Object.keys(country).length>0)
+                    {
+                        for(key in country){
+                            $('#select_country').append($("<option></option>").attr("value",key).text(key));
+                        }
+                    }
+                }
+            });
+		});
+		$('#select_category').on('change', function() {
+	        if(this.value!=""){
+	            $.ajax({
+	                type:'POST',
+	                url: '{{ url("subcategory") }}',
+	                data:{
+	                    category : this.value,
+	                },success:function(response)
+	                {
+	                    $('#select_subcategory').find('option').not(':first').remove();
+	                    var subcategory = JSON.parse(response);
+	                    if(Object.keys(subcategory).length>0)
+	                    {
+	                        for(key in subcategory){
+	                            $('#select_subcategory').append($("<option></option>").attr("value",key).text(subcategory[key]));
+	                        }
+	                    }else
+	                    {
+	                    	$('#select_subcategory').find('option').not(':first').remove();
+	                    }
+	                }
+	            });
+	        }else
+	        {
+	            $('#select_subcategory').find('option').not(':first').remove();
+	        }
+	    });
+	    $('#select_country').on('change', function() {
+	        if(this.value!=""){
+	            $.ajax({
+	                type:'POST',
+	                url: '{{ url("state") }}',
+	                data:{
+	                    country : this.value,
+	                },success:function(response)
+	                {
+	                    $('#select_state').find('option').not(':first').remove();
+	                    $('#select_city').find('option').not(':first').remove();
+	                    var state = JSON.parse(response);
+	                    if(state.length>0)
+	                    {
+	                        for (var x = 0; x < state.length; x++) {
+	                            $('#select_state').append($("<option></option>").attr("value",state[x]).text(state[x]));
+	                        }
+	                    }else
+	                    {
+	                        $('#select_state').find('option').not(':first').remove();
+	                    	$('#select_city').find('option').not(':first').remove();
+	                    }
+	                }
+	            });
+	        }else
+	        {
+	            $('#select_state').find('option').not(':first').remove();
+	            $('#select_city').find('option').not(':first').remove();
+	        }
+	    });
+	    $('#select_state').on('change', function() {
+	        if(this.value!=""){
+	            $.ajax({
+	                type:'POST',
+	                url: '{{ url("city") }}',
+	                data:{
+	                	country : $("#select_country option:selected").val(),
+	                    state : this.value,
+	                },success:function(response)
+	                {
+	                    $('#select_city').find('option').not(':first').remove();
+	                    var city = JSON.parse(response);
+	                    if(city.length>0)
+	                    {
+	                        for (var x = 0; x < city.length; x++) {
+	                            $('#select_city').append($("<option></option>").attr("value",city[x]).text(city[x]));
+	                        }
+	                    }else
+	                    {
+	                    	$('#select_city').find('option').not(':first').remove();
+	                    }
+	                }
+	            });
+	        }else
+	        {
+	            $('#select_city').find('option').not(':first').remove();
+	        }
+	    });
+	    function setSubmit() {
+		    $('#form1').attr('target','')
+		    $('#form1').attr('action',"{{ url('admin/getCSV/') }}")
+		    $('#form1').submit()
+		}
 	</script>
 @endsection
