@@ -16,7 +16,7 @@
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business/'.$business->id) }}" enctype='multipart/form-data'>
             {{ csrf_field() }}
             {{ method_field('PUT') }}
-            <input type="hidden" name="working_hours" id="working_hours" value="{{ $business->working_hours }}" />
+            <!-- <input type="hidden" name="working_hours" id="working_hours" value="{{ $business->working_hours }}" /> -->
             <div class="form-group ">
                 <label for="title" class="col-md-2 required control-label">Business Name</label>
                 <div class="col-md-4">
@@ -158,8 +158,10 @@
                 Working Hours
                 </label>
                 <div class="col-md-4">
+                    <textarea class="form-control" name="working_hours" id="working_hours" rows="8" readonly="readonly" onclick="javascript:$('#working_hours_modal').modal('show');" >{{ $business->working_hours }}</textarea>
+                    <br>
                     <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#working_hours_modal" onclick="javascript:checkWorkingHours();">Update Working Hours</button>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#working_hours_modal" onclick="javascript:checkWorkingHours();">Update Working Hours</button>
                 </div>
             </div>
             <div class="form-group">

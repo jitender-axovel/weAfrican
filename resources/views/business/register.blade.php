@@ -19,13 +19,13 @@
                 <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
                     <!-- <input type="hidden" name="currency" id="currency" value=""> -->
-                    <input type="hidden" name="working_hours" id="working_hours" value="MON  :   10:00 AM to 06:00 PM
+                    <!-- <input type="hidden" name="working_hours" id="working_hours" value="MON  :   10:00 AM to 06:00 PM
 TUE  :   10:00 AM to 06:00 PM
 WED  :   10:00 AM to 06:00 PM
 THU  :   10:00 AM to 06:00 PM
 FRI  :   10:00 AM to 06:00 PM
 SAT  :   Closed
-SUN  :   Closed">
+SUN  :   Closed"> -->
                     <div class="form-group required">
                         <label for="full_name" class="col-md-2 control-label">Full Name:</label>
                         <div class="col-md-4">
@@ -166,22 +166,34 @@ SUN  :   Closed">
                     </div>
                     <div class="form-group">
                         <label for="about_us" class="col-md-2 control-label">About us:</label>
-                        <div class="col-md-10">
-                            <textarea class="form-control" name="about_us" rows="5" ></textarea>
+                        <div class="col-md-4">
+                            <textarea class="form-control" name="about_us" rows="11" ></textarea>
                             @if ($errors->has('about_us'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('about_us') }}</strong>
                                 </span>
                             @endif
                         </div>
-                    </div>
-                    <div class="form-group">
                         <label for="working_hours" class="col-md-2 control-label">
                         Working Hours:
                         </label>
-                        <div class="col-md-10">
-                            <!-- Trigger the modal with a button -->
-                            <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#working_hours_modal" onclick="javascript:checkWorkingHours();">Add Working Hours</button>
+                        <div class="col-md-4">
+                            <textarea class="form-control" name="working_hours" id="working_hours" rows="8" readonly="readonly" onclick="javascript:$('#working_hours_modal').modal('show')" >
+MON  :   10:00 AM to 06:00 PM
+TUE  :   10:00 AM to 06:00 PM
+WED  :   10:00 AM to 06:00 PM
+THU  :   10:00 AM to 06:00 PM
+FRI  :   10:00 AM to 06:00 PM
+SAT  :   Closed
+SUN  :   Closed
+</textarea>
+                            <br><!-- Trigger the modal with a button -->
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#working_hours_modal" onclick="javascript:checkWorkingHours();">Add Working Hours</button>
+                            @if ($errors->has('working_hours'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('working_hours') }}</strong>
+                                </span>
+                            @endif
                             
                         </div>
                     </div>
