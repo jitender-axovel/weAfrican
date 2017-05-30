@@ -186,7 +186,9 @@
 							    		<td>
 							    			@if(count(explode('|',$product->image))>0)
 												@foreach(explode('|',$product->image) as $image)
-													<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" class="col-md-2">
+													@if($image!="")
+														<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" class="col-md-2">
+													@endif
 												@endforeach
 											@else
 												No Image found for this product
