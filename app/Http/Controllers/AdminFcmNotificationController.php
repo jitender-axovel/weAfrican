@@ -43,19 +43,19 @@ class AdminFcmNotificationController extends Controller
 		// JSON Msg to be transmitted to selected Users
 		$message = array("m" => $respJson);  
         $condition = array();
+        if($input['country']!="")
+        {
+            $condition['country'] = $input['country'];
+        }
+        if($input['state']!="")
+        {
+            $condition['state'] = $input['state'];
+        }
+        if($input['city']!="")
+        {
+            $condition['city'] = $input['city'];
+        }
         if($input['type'] == 3){
-            if($input['country']!="")
-            {
-                $condition['country'] = $input['country'];
-            }
-            if($input['state']!="")
-            {
-                $condition['state'] = $input['state'];
-            }
-            if($input['city']!="")
-            {
-                $condition['city'] = $input['city'];
-            }
             if($input['category']!="")
             {
                 $condition['bussiness_category_id'] = $input['category'];
@@ -68,18 +68,6 @@ class AdminFcmNotificationController extends Controller
             $ids = FcmUser::select('fcm_reg_id')->whereIn('user_id', $user_id)->where('user_role_id', 3)->get();
         
         } else if($input['type'] == 4){
-            if($input['country']!="")
-            {
-                $condition['country'] = $input['country'];
-            }
-            if($input['state']!="")
-            {
-                $condition['state'] = $input['state'];
-            }
-            if($input['city']!="")
-            {
-                $condition['city'] = $input['city'];
-            }
             $user_id = UserBusiness::where($condition)->pluck('user_id');
             $ids = FcmUser::select('fcm_reg_id')->whereIn('user_id', $user_id)->where('user_role_id', 4)->get();
         }
