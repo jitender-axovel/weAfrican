@@ -264,22 +264,36 @@ class AdminUsersController extends Controller
         {
             if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
             {
-                $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country')->leftJoin('user_businesses', 'user_businesses.user_id', '=', 'users.id')->where($condition)->get()->toArray();
+                $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                ->join('user_businesses', 'user_businesses.user_id', '=', 'users.id')
+                ->join('bussiness_categories', 'bussiness_categories.id', '=', 'user_businesses.bussiness_category_id')
+                ->where($condition)
+                ->get()->toArray();
             }else
             {
-                $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country')->leftJoin('user_businesses', 'user_businesses.user_id', '=', 'users.id')->get()->toArray();
+                $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                ->join('user_businesses', 'user_businesses.user_id', '=', 'users.id')
+                ->join('bussiness_categories', 'bussiness_categories.id', '=', 'user_businesses.bussiness_category_id')
+                ->get()->toArray();
             }
         }elseif($input['page']=='business')
         {
             if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
             {
-                $users = UserBusiness::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country')->leftJoin('users','users.id','=','user_businesses.user_id')->where($condition)->get()->toArray();
+                $users = UserBusiness::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                ->join('users','users.id','=','user_businesses.user_id')
+                ->join('bussiness_categories','user_businesses.bussiness_category_id', '=', 'bussiness_categories.id')
+                ->where($condition)
+                ->get()->toArray();
             }else
             {
-                $users = UserBusiness::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country')->leftJoin('users','users.id','=','user_businesses.user_id')->get()->toArray();
+                $users = UserBusiness::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                ->join('users','users.id','=','user_businesses.user_id')
+                ->join('bussiness_categories','user_businesses.bussiness_category_id', '=', 'bussiness_categories.id')
+                ->get()->toArray();
             }
         }
-        $header = array('Full_Name','Email','Country_Code', 'Mobile_Number','City','State','Country');
+        $header = array('Full_Name','Email','Country_Code', 'Mobile_Number','City','State','Country','Business_Title','Business_Id','Category');
         $delimiter=",";
 
         $filename = "export".time().".csv";
