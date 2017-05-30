@@ -233,7 +233,7 @@ class BusinessEventsController extends Controller
             $users = User::select($input)->leftJoin('event_participants', 'users.id', '=', 'event_participants.user_id')->where('event_participants.event_id',$eventId)->skip($index)->take($limit)->get()->toArray();
         }
 
-        $delimiter=";";
+        $delimiter=",";
 
         $filename = "export".time().".csv";
 
