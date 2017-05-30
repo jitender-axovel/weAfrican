@@ -55,7 +55,18 @@
         <li>
             <a href="{{url('admin/reviews')}}">Business Reviews</a>
         </li>
-         <li>
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#seatingplan" class="collapsed" aria-expanded="false">Seating Plan<i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="seatingplan" class="collapse" aria-expanded="false">
+                <li>
+                    <a href="{{url('admin/seating-plan/create')}}">Create Seating Plan</a>
+                </li>
+                <li>
+                    <a href="{{url('admin/seating-plan')}}">List Seating Plan</a>
+                </li>
+            </ul>
+        </li>
+        <li>
             <a href="{{url('admin/conversation')}}">Users Conversation
             </a>
         </li>
