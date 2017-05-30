@@ -192,8 +192,7 @@
 												@foreach(explode('|',$product->image) as $image)
 													@if($image!="")
 													<a class="example-image-link col-md-2" href="{{asset(config('image.product_image_url').$image)}}" data-lightbox="{{ $product->title }}">
-													<img class="example-image" src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" alt="Golden Gate Bridge with San Francisco in distance"></a>
-														<!-- <img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" data-lightbox="{{ $product->title }}" class="col-md-2"> -->
+													<img class="example-image col-md-2" src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" alt="Golden Gate Bridge with San Francisco in distance"></a>
 													@endif
 												@endforeach
 											@else
