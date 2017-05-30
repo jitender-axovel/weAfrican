@@ -36,6 +36,21 @@ class UserBusiness extends Model
         return $this->belongsTo('App\BussinessCategory','bussiness_category_id');
     }
 
+    public function events()
+    {
+        return $this->hasMany('App\BusinessEvent','business_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany('App\BusinessProduct','business_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany('App\BusinessService','business_id');
+    }
+
     public function likes()
     {
         return $this->hasMany('App\BusinessLike','business_id');
