@@ -54,6 +54,17 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('9494949494'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
+        ],[
+            'full_name' => 'Divya',
+            'slug' => 'divya-4',
+            'user_role_id' => 3,
+            'country_code' => 91,
+            'email' => 'divyaaxovel@gmail.com',
+            'mobile_number' => 9494949494,
+            'password' => Hash::make('9494949494'),
+            'is_verified' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
         ]]);
    }
 }
