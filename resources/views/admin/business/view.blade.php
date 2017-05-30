@@ -187,7 +187,9 @@
 							    			@if(count(explode('|',$product->image))>0)
 												@foreach(explode('|',$product->image) as $image)
 													@if($image!="")
-														<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" class="col-md-2">
+													<a class="example-image-link col-md-2" href="{{asset(config('image.product_image_url').$image)}}" data-lightbox="{{ $product->title }}">
+													<img class="example-image" src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" alt="Golden Gate Bridge with San Francisco in distance"></a>
+														<!-- <img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" data-lightbox="{{ $product->title }}" class="col-md-2"> -->
 													@endif
 												@endforeach
 											@else
@@ -286,4 +288,16 @@
 	    vertical-align: middle;
 	}
 </style>
+@endsection
+@section('header-scripts')
+<script src="{{ asset('js/lightbox.js') }}"></script>
+@endsection
+@section('scripts')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/lightbox.css') }}">
+<script>
+    lightbox.option({
+      'resizeDuration': 200,
+      'wrapAround': true
+    })
+</script>
 @endsection
