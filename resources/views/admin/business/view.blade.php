@@ -154,7 +154,11 @@
 							    		<td>{{ $event->description }}</td>
 							    		<td>{{ date_format(date_create($event->start_date_time), 'd M,Y') }}</td>
 							    		<td>{{ date_format(date_create($event->end_date_time), 'd M,Y') }}</td>
-							    		<td><img src="{{asset(config('image.banner_image_url').'thumbnails/small/'.$event->banner)}}"></td>
+							    		<td>
+								    		<a class="example-image-link" href="{{asset(config('image.banner_image_url').$event->banner)}}" data-lightbox="service_{{ $event->title }}">
+												<img class="example-image" src="{{asset(config('image.banner_image_url').'thumbnails/small/'.$event->banner)}}" alt="Golden Gate Bridge with San Francisco in distance">
+											</a>
+							    		</td>
 							    	</tr>
 								@endforeach
 							</table>
