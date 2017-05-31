@@ -155,7 +155,7 @@ footer .available .list-inline > li {padding-right: 0;}
 	.download-section .list-inline > li {margin: 0 0 15px; width: 100%;}
 	.download-section .list-inline img {height: auto; width: 200px;}
 }
-#map {height: 300px;width:500px;}
+#map {height: 300px;width:100%;}
 
 /* Register Page */
 .form-control.code {
