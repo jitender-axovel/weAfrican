@@ -10,7 +10,7 @@ h6{font-size:20px;}
 a{text-decoration:none; transition:all 0.3s ease; outline:none;}
 a:hoevr{text-decoration:none;}
 p {margin: 10px 0;}
-img {max-height: 100% !important; max-width: 100% !important;}
+/*img {max-height: 100% !important; max-width: 100% !important;}*/
 
 /* Main div */
 .top-container.container-fluid {padding-left: 0; padding-right: 0;}
