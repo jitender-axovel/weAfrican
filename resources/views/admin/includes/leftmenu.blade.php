@@ -67,6 +67,17 @@
             </ul>
         </li>
         <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#securityquestion" class="collapsed" aria-expanded="false">Security Question<i class="fa fa-fw fa-caret-down"></i></a>
+            <ul id="securityquestion" class="collapse" aria-expanded="false">
+                <li>
+                    <a href="{{url('admin/security-question/create')}}">Create Security Question/a>
+                </li>
+                <li>
+                    <a href="{{url('admin/security-question')}}">List Security Question</a>
+                </li>
+            </ul>
+        </li>
+        <li>
             <a href="{{url('admin/conversation')}}">Users Conversation
             </a>
         </li>
