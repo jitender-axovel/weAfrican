@@ -10,7 +10,7 @@
 				<th>Title</th>
 				<th>Description</th>
 				<th>Created On</th>
-				<th>Actions</th>
+				<!-- <th>Actions</th> -->
 			</tr>
 		</thead>
 		<tbody>
@@ -19,7 +19,7 @@
 				<td>{{ $seatingplan->title}}</td>
 				<td>{{ $seatingplan->description}}</td>
 				<td>{{ date_format(date_create($seatingplan->created_at), 'd M,Y') }}</td>
-				<td>
+				<!-- <td>
 					<ul class="list-inline">
 						<li>
 							<a class="btn btn-warning" href="{{ url('admin/seating-plan/'.$seatingplan->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
@@ -32,7 +32,7 @@
 							</form>
 						</li>
 					</ul>
-				</td>
+				</td> -->
 			</tr>
 			@endforeach
 		</tbody>
