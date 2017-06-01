@@ -1,7 +1,7 @@
 @extends('admin.layouts.adminapp')
 @section('title', $pageTitle)
 @section('content')
-	<h2>Add New Event Seating Plan</h2>
+	<h2>Add New Security Questions</h2>
 	<hr>
 	@include('notification')
 	<div class="panel panel-default">
