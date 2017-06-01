@@ -3,6 +3,7 @@
 @section('content')
 <div class="main-container row register-business">
     <h5 class="text-left">Business Follower List</h5>
+    <hr>
     <p class="text-left">You can see list of users who had liked, disliked or followed your business.</p> 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
       <div class="panel panel-default">

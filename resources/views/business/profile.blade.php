@@ -2,6 +2,8 @@
 @section('title', $pageTitle)
 @section('content')
 <div class="main-container row register-business">
+	<h5 class="text-left">Business Profile</h5>
+    <hr>
     @include('notification')
     @if (count($errors) > 0)
 	    <div class="alert alert-danger">
@@ -12,7 +14,6 @@
 	        </ul>
 	    </div>
     @endif
-    <h5 class="text-left">Business Profile</h5>
 
     @if($business)
 

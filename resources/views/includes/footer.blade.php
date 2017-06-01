@@ -9,7 +9,7 @@
 			 	</ul>
 			</div>
 			<div class="col-md-6 text-right col-sm-6 col-xs-12">
-				<p>2015 - 2016 © Copyright your company</p>
+				<p>2016 - {{ date('Y')}} © Copyright your company</p>
 				<p>All Rights Reserved</p>
 				<div class="available">
 					<p>available on</p>

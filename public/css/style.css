@@ -80,10 +80,9 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110p
   padding: 4px 0 4px 51px;width: 70%;}
 .pending.btn-danger.label,.verified.btn-success.label {border-radius: 9px;font-size: 15px;padding: 8px 10px;}
 .top-business-menu {margin: 0 auto;width: 80%;}
-.top-business-menu .nav.nav-pills {float: right;margin-top: 16px;}
+.top-business-menu .nav.nav-pills {float: right;margin-top: 16px;text-transform: uppercase;}
 .panel.panel-default.document {padding: 30px;}
 .form-group.required .control-label:after { content:"*";color:red;}
-.container.subscription-plans {padding: 70px;}
 .business_image {height: 200px !important;width: 100% !important;}
 .event_image {height: 200px !important;width: 100% !important;}
 
@@ -155,6 +154,7 @@ footer .available .list-inline > li {padding-right: 0;}
 	.download-section .list-inline > li {margin: 0 0 15px; width: 100%;}
 	.download-section .list-inline img {height: auto; width: 200px;}
 }
+/*Map css*/
 #map {height: 300px;width:100%;}
 
 /* Register Page */

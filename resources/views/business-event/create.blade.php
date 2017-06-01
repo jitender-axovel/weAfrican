@@ -7,6 +7,7 @@
 <div class="main-container row">
     <div class="col-md-10 col-md-offset-1">
         <h5 class="text-left">Add Event</h5>
+        <hr>
         @include('notification')
         @if (count($errors) > 0)
 	        <div class="alert alert-danger">
@@ -108,9 +109,11 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group col-md-12">
+                    <div class="form-group">
                         <label for="address" class="col-md-2 control-label">Location:</label>
-                        <div id="map"></div>
+                        <div class="col-md-10">
+                            <div id="map"></div>
+                        </div>
                     </div>
                     <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
                     <input type="hidden" id="longitude" class="form-control" name="longitude" value ="{{ old('longitude') }}">
