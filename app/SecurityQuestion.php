@@ -15,7 +15,7 @@ class SecurityQuestion extends Model
     public static $updatable = ['question' => ""];
 
     public static $validater = array(
-    	'question' => 'required|unique:security_questions|min:50',
+    	'question' => 'required|unique:security_questions',
     	);
 
     public static $updateValidater = array(
