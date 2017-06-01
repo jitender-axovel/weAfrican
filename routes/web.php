@@ -103,5 +103,6 @@ Route::group(['prefix' => 'admin'], function() {
 
 		Route::resource('category/event', 'AdminEventCategoriesController');
 		Route::resource('seating-plan', 'AdminSeatingPlanController');
+		Route::resource('security-question', 'AdminSecurityQuestionsController');
 	});
 });

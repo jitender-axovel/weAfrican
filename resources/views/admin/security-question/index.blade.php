@@ -1,38 +1,21 @@
 @extends('admin.layouts.adminapp')
 @section('title', $pageTitle)
 @section('content')
-	<h2>Event Seating Plan List</h2>
+	<h2>Security Questions List</h2>
 	<hr>
 	@include('notification')
 	<table id="categories_list" class="display table">
 		<thead>
 			<tr>
-				<th>Title</th>
-				<th>Description</th>
+				<th>Question</th>
 				<th>Created On</th>
-				<!-- <th>Actions</th> -->
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($seatingplans as $seatingplan)
+			@foreach($securityquestions as $securityquestion)
 			<tr>
-				<td>{{ $seatingplan->title}}</td>
-				<td>{{ $seatingplan->description}}</td>
-				<td>{{ date_format(date_create($seatingplan->created_at), 'd M,Y') }}</td>
-				<!-- <td>
-					<ul class="list-inline">
-						<li>
-							<a class="btn btn-warning" href="{{ url('admin/seating-plan/'.$seatingplan->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
-						</li>
-						<li>
-							<form action="{{ url('admin/seating-plan/'.$seatingplan->id) }}" method="POST" onsubmit="deleteCategory('{{$seatingplan->id}}', '{{$seatingplan->title}}', event,this)">
-								{{csrf_field()}}
-								{{ method_field('DELETE') }}
-								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
-							</form>
-						</li>
-					</ul>
-				</td> -->
+				<td>{{ $securityquestion->question}}</td>
+				<td>{{ date_format(date_create($securityquestion->created_at), 'd M,Y') }}</td>
 			</tr>
 			@endforeach
 		</tbody>
