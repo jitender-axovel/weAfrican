@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
-<div class="main-container row">
+<div class="main-container row register-business">
+    <h4>Edit Business Profile</h4>
+    <hr>
     @include('notification')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -11,8 +13,8 @@
             </ul>
         </div>
     @endif
-    <div class="col-md-10 col-md-offset-1">
-        <h4>Edit Business Profile</h4>
+
+    <div class="panel panel-default document"> 
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business/'.$business->id) }}" enctype='multipart/form-data'>
             {{ csrf_field() }}
             {{ method_field('PUT') }}

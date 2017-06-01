@@ -208,7 +208,7 @@ SUN  :   Closed
                     <div class="form-group">
                         <label for="business_logo" class="col-md-2 control-label">Business Logo:</label>
                         <div class="col-md-4">
-                            <input type="file" name="business_logo" id="business_logo">
+                            <input type="file" name="business_logo" id="business_logo" accept="image/jpg,image/jpeg,image/png" />
                             @if ($errors->has('business_logo'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('business_logo') }}</strong>
@@ -503,6 +503,9 @@ SUN  :   Closed
                     },
                     country_code: {
                         validators: {
+                            numeric: {
+                                message: 'The country code can consist only numbers.'
+                            },
                             notEmpty: {
                                 message: 'Please supply country code.'
                             }
@@ -548,7 +551,7 @@ SUN  :   Closed
             })
             .on('success.form.bv', function(e) {
                 $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
-                    $('#reg_form').data('bootstrapValidator').resetForm();
+                    $('#register-form').data('bootstrapValidator').resetForm();
 
                 // Prevent form submission
                 e.preventDefault();

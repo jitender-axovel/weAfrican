@@ -3,6 +3,7 @@
 @section('content')
 <div class="main-container row register-business">
     <h5 class="text-left">Event Details</h5>
+    <hr>
     <p class="text-left">You can add multiple events.</p> 
     @include('notification')
     @if (count($errors) > 0)

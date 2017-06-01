@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row">
-    <div class="container subscription-plans">
+<div class="main-container row register-business">
+    <h5>Subscription History</h5>
+    <hr>
+    
         @include('notification')
         @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -14,7 +16,7 @@
         </div>
         @endif
         <div class="panel panel-default">
-            <div class="panel-heading"> Purchased Subscription Plans</div>
+            
             <table class="table">
                 <thead>
                     <tr>
@@ -47,6 +49,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
 </div>
+
 @endsection

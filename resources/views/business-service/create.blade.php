@@ -4,6 +4,7 @@
 <div class="main-container row">
     <div class="col-md-10 col-md-offset-1">
         <h5 class="text-left">Add Service</h5>
+        <hr>
         @include('notification')
         @if (count($errors) > 0)
             <div class="alert alert-danger">
