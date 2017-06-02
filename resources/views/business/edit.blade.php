@@ -18,20 +18,49 @@
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business/'.$business->id) }}" enctype='multipart/form-data'>
             {{ csrf_field() }}
             {{ method_field('PUT') }}
-            <!-- <input type="hidden" name="working_hours" id="working_hours" value="{{ $business->working_hours }}" /> -->
             <div class="form-group ">
-                <label for="title" class="col-md-2 required control-label">Business Name</label>
-                <div class="col-md-4">
-                    <input required type="text" class="form-control" name="title" value="{{ $business->title }}">
+                <label for="title" class="col-md-2 required control-label">Name</label>
+                <div class="col-md-1">
+                    <select name="salutation" id="salutation" class="form-control selectpicker" required style="padding-right:0px;">
+                        <option @if($business->user->salutation=="Mr") selected="selected" @endif value="Mr">Mr.</option>
+                        <option @if($business->user->salutation=="Ms") selected="selected" @endif value="Ms">Ms.</option>
+                        <option @if($business->user->salutation=="Mrs") selected="selected" @endif value="Mrs">Mrs.</option>
+                    </select>
+                    @if ($errors->has('salutation'))
+                        <span class="help-block">
+                        <strong>{{ $errors->first('salutation') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-3">
+                    <input required type="text" class="form-control" name="first_name" value="{{ $business->user->first_name }}" placeholder="First Name">
                     @if ($errors->has('title'))
                     <span class="help-block">
                     <strong>{{ $errors->first('title') }}</strong>
                     </span>
                     @endif
                 </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="middle_name" value="{{ $business->user->middle_name }}" placeholder="Middle Name">
+                    @if ($errors->has('title'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('title') }}</strong>
+                    </span>
+                    @endif
+                </div>
+                <div class="col-md-3">
+                    <input required type="text" class="form-control" name="last_name" value="{{ $business->user->last_name }}" placeholder="Last Name">
+                    @if ($errors->has('title'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('title') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            <div class="form-group ">
                 <label for="category" class="col-md-2 required control-label">Category</label>
                 <div class="col-md-4">
-                    <select required name="bussiness_category_id" required>
+                    <select required class="form-control selectpicker" disabled="disabled" >
                         <option value="" selected>Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" @if($business->category->title == $category->title){{ 'selected'}} @else @endif  >{{ $category->title }}</option>
@@ -43,8 +72,28 @@
                         </span>
                     @endif
                 </div>
+                @if(count($subcategories)>0 and $subcategories!=null)
+                    <label for="subcategory" class="col-md-2 required control-label">Sub-Category</label>
+                    <div class="col-md-4">
+                        <select required class="form-control selectpicker" disabled="disabled" >
+                            <option value="" selected>Select Category</option>
+                            @foreach($subcategories as $subcategory)
+                                <option value="{{ $subcategory->id }}" @if($business->subcategory->title == $subcategory->title){{ 'selected'}} @else @endif  >{{ $subcategory->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
             </div>
             <div class="form-group ">
+                <label for="title" class="col-md-2 required control-label">Business Name</label>
+                <div class="col-md-4">
+                    <input required type="text" class="form-control" name="title" value="{{ $business->title }}">
+                    @if ($errors->has('title'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('title') }}</strong>
+                    </span>
+                    @endif
+                </div>
                 <label for="keywords" class="col-md-2 required control-label">Business Keywords</label>
                 <div class="col-md-4">
                     <input required type="text" class="form-control" name="keywords" value="{{ $business->keywords }}">
@@ -54,66 +103,68 @@
                         </span>
                     @endif
                 </div>
+            </div>
+            <div class="form-group ">
                 <label for="email" class="col-md-2 required control-label">Business Email</label>
                 <div class="col-md-4">
-                    <input required type="email" class="form-control" name="email" value=" {{$business->email }}">
+                    <input required type="email" class="form-control" value=" {{$business->user->email }}" disabled="disabled">
                     @if ($errors->has('email'))
                         <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
                         </span>
                     @endif
                 </div>
-            </div>
-            <div class="form-group">
                 <label for="address" class="col-md-2 control-label">Address</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="address" value="{{ $business->address }}">
+                    <input type="text" class="form-control" name="address" value="{{ $business->user->address }}">
                     @if ($errors->has('address'))
                         <span class="help-block">
                         <strong>{{ $errors->first('address') }}</strong>
                         </span>
                     @endif
                 </div>
+            </div>
+            <div class="form-group">
                 <label for="city" class="col-md-2 control-label">City</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="city" value="{{ $business->city }}">
+                    <input type="text" class="form-control" name="city" value="{{ $business->user->city }}">
                     @if ($errors->has('city'))
                         <span class="help-block">
                         <strong>{{ $errors->first('city') }}</strong>
                         </span>
                     @endif
                 </div>
-            </div>
-            <div class="form-group">
                 <label for="state" class="col-md-2 control-label">State</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="state" value="{{ $business->state }}">
+                    <input type="text" class="form-control" name="state" value="{{ $business->user->state }}">
                     @if ($errors->has('state'))
                         <span class="help-block">
                         <strong>{{ $errors->first('state') }}</strong>
                         </span>
                     @endif
                 </div>
+            </div>
+            <div class="form-group">
                 <label for="country" class="col-md-2 control-label">Country</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="country" value="{{ $business->country }}" disabled>
+                    <input type="text" class="form-control" name="country" value="{{ $business->user->country }}" disabled>
                     @if ($errors->has('country'))
                         <span class="help-block">
                         <strong>{{ $errors->first('country') }}</strong>
                         </span>
                     @endif
                 </div>
-            </div>
-            <div class="form-group">
                 <label for="pin_code" class="col-md-2 control-label">Pin Code</label>
                 <div class="col-md-4">
-                    <input type="number" class="form-control" name="pin_code" value="{{ $business->pin_code }}" required>
+                    <input type="number" class="form-control" name="pin_code" value="{{ $business->user->pin_code }}" required>
                     @if ($errors->has('pin_code'))
                         <span class="help-block">
                         <strong>{{ $errors->first('pin_code') }}</strong>
                         </span>
                     @endif
                 </div>
+            </div>
+            <div class="form-group">
                 <label for="website" class="col-md-2 control-label">Website</label>
                 <div class="col-md-4">
                     <input type="text" class="form-control" name="website" value="{{ $business->website }}">
@@ -123,28 +174,15 @@
                         </span>
                     @endif
                 </div>
-            </div>
-            <div class="form-group ">
-                <label for="mobile_number" class="col-md-2 required control-label">Primary Mobile Number:</label>
+                <label for="mobile_number" class="col-md-2 required control-label">Mobile Number:</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="mobile_number" value="{{ $business->mobile_number }}" disabled>
+                    <input type="text" class="form-control" name="mobile_number" value="{{ $business->user->mobile_number }}">
                     @if ($errors->has('mobile_number'))
                         <span class="help-block">
                         <strong>{{ $errors->first('mobile_number') }}</strong>
                         </span>
                     @endif
                 </div>
-                <!-- <label for="secondary_phone_number" class="col-md-2 control-label">
-                Secondary Mobile Number:(format:99-99-999999)
-                </label>
-                <div class="col-md-4">
-                    <input type="text" maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ $business->secondary_phone_number }}">
-                    @if ($errors->has('secondary_phone_number'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('secondary_phone_number') }}</strong>
-                        </span>
-                    @endif
-                </div> -->
             </div>
             <div class="form-group">
                 <label for="about_us" class="col-md-2 control-label">About us</label>
