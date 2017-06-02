@@ -12,9 +12,9 @@ use DB;
 
 class UserBusiness extends Model
 {
-    protected $fillable = ['user_id', 'business_id', 'bussiness_category_id', 'title' ,'keywords', 'about_us', 'address', 'city', 'state', 'country', 'pin_code', 'currency', 'mobile_number', 'secondary_phone_number', 'email', 'website', 'working_hours' , 'is_agree_to_terms', 'identity_proof' , 'business_proof' , 'business_logo', 'banner','latitude', 'longitude'];
+    protected $fillable = ['user_id', 'business_id', 'bussiness_category_id', 'bussiness_subcategory_id', 'title' ,'keywords', 'about_us', 'website', 'working_hours' , 'is_agree_to_terms', 'identity_proof' , 'business_proof' , 'business_logo', 'banner', 'is_update'];
 
-    public static $updatable = ['user_id' => "", 'business_id' => "" ,'bussiness_category_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'address' => "", 'city' => "", 'state' => "", 'pin_code' => "", 'currency' => "", 'mobile_number' => '', 'secondary_phone_number' => "", 'email' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => "", 'banner' => "", 'latitude' => "", 'longitude' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "" ,'bussiness_category_id' => "", 'bussiness_subcategory_id' => "", 'title' => "", 'keywords' => "", 'about_us' => "", 'website' => "", 'working_hours' => "", 'is_agree_to_terms' => "" ,'identity_proof' => "" ,'business_proof' => "", 'business_logo' => "", 'banner' => "", 'is_update' => ""];
 
     public static $searchValidator = array(
         'userId' => 'required',
@@ -34,6 +34,11 @@ class UserBusiness extends Model
     public function category()
     {
         return $this->belongsTo('App\BussinessCategory','bussiness_category_id');
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo('App\BussinessSubcategory','bussiness_subcategory_id');
     }
 
     public function events()
