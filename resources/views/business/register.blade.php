@@ -18,36 +18,77 @@
             <div class="panel-body">
                 <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
-            
+                    
                     <div class="form-group required">
-                        <label for="full_name" class="col-md-2 control-label">Full Name:</label>
-                        <div class="col-md-4">
-                            <input required type="text" class="form-control" name="full_name" value="{{ old('full_name') }}" autofocus>
-                            @if ($errors->has('full_name'))
+                        <label for="name" class="col-md-2 control-label">Full Name:</label>
+                        <div class="col-md-1">
+                            <select name="salutation" id="salutation" class="form-control selectpicker" required style="padding-right:0px;">
+                                <option value="Mr">Mr.</option>
+                                <option value="Ms">Ms.</option>
+                                <option value="Mrs">Mrs.</option>
+                            </select>
+                            @if ($errors->has('salutation'))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('full_name') }}</strong>
+                                <strong>{{ $errors->first('salutation') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-md-3">
+                            <input required type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus placeholder="First Name">
+                            @if ($errors->has('first_name'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('first_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}" autofocus placeholder="Middle Name">
+                            @if ($errors->has('middle_name'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('middle_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="col-md-3">
+                            <input required type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus placeholder="Last Name">
+                            @if ($errors->has('last_name'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('last_name') }}</strong>
                                 </span>
                             @endif
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="title" class="col-md-2 control-label required">Business Name:</label>
+                    <div class="form-group required">
+                        <label for="gender" class="col-md-2 control-label">Gender:</label>
                         <div class="col-md-4">
-                            <input required type="text" class="form-control" name="title" value="{{ old('title') }}">
-                            @if ($errors->has('title'))
+                            <div class="col-md-5">
+                            <input required type="radio" class="" name="gender"
+                            @if(old('gender')!='female')
+                                checked="checked"
+                            @endif
+                            value="male">&nbsp;<label>Male</label>
+                            </div>
+                            <div class="col-md-4">
+                            <input required type="radio" class="" name="gender" 
+                            @if(old('gender')=='female')
+                                checked="checked"
+                            @endif 
+                            value="female">&nbsp;<label>Female</label>
+                            </div>
+                            @if ($errors->has('gender'))
                                 <span class="help-block">
-                                <strong>{{ $errors->first('title') }}</strong>
+                                <strong>{{ $errors->first('gender') }}</strong>
                                 </span>
                             @endif
                         </div>
-
+                    </div>
+                    <div class="form-group">
                         <label for="category" class="col-md-2 control-label required">Category:</label>
                         <div class="col-md-4">
-                            <select name="bussiness_category_id" class="form-control selectpicker" required>
+                            <select name="bussiness_category_id" id="bussiness_category_id" class="form-control selectpicker" required>
                                 <option value="" selected>Select Category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" >{{ $category->title }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('bussiness_category_id'))
@@ -56,29 +97,20 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="keywords" class="col-md-2 required control-label">Business Keywords:</label>
-                        <div class="col-md-4" data-tip="Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.">
-                            <input required type="text" class="form-control" name="keywords" placeholder="Ex. Software developer, Gas Supplier , Baby Cloths, Electronics" value="{{ old('keywords') }}">
-                            @if ($errors->has('keywords'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('keywords') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <label for="website" class="col-md-2 control-label{{ $errors->has('website') ? ' has-error' : '' }}"">Website:</label>
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" name="website" value="{{ old('website') }}">
-                            @if ($errors->has('website'))
-                                <span class="help-block">
-                                <strong>{{ $errors->first('website') }}</strong>
-                                </span>
-                            @endif
+                        <div id="subcategory" style="display: none;">
+                            <label for="subcategory" class="col-md-2 control-label required">Sub Category:</label>
+                            <div class="col-md-4">
+                                <select name="bussiness_subcategory_id" id="bussiness_subcategory_id" class="form-control selectpicker">
+                                    <option value="" selected>Select Sub Category</option>
+                                </select>
+                                @if ($errors->has('bussiness_subcategory_id'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('bussiness_subcategory_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
-
                     <div class="form-group ">
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div class="col-md-10">
@@ -170,6 +202,41 @@
                         </div>
                     </div>
 
+                    <div>
+                        <legend>Business Information</legend>
+                    </div>
+                    <div class="form-group">
+                        <label for="title" class="col-md-2 control-label required">Business Name:</label>
+                        <div class="col-md-4">
+                            <input required type="text" class="form-control" name="title" value="{{ old('title') }}">
+                            @if ($errors->has('title'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('title') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <label for="keywords" class="col-md-2 required control-label">Business Keywords:</label>
+                        <div class="col-md-4" data-tip="Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.">
+                            <input required type="text" class="form-control" name="keywords" placeholder="Ex. Software developer, Gas Supplier , Baby Cloths, Electronics" value="{{ old('keywords') }}">
+                            @if ($errors->has('keywords'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('keywords') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="website" class="col-md-2 control-label{{ $errors->has('website') ? ' has-error' : '' }}"">Website:</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="website" value="{{ old('website') }}">
+                            @if ($errors->has('website'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('website') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="about_us" class="col-md-2 control-label">About us:</label>
                         <div class="col-md-4">
@@ -223,6 +290,108 @@ SUN  :   Closed
                             <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                         </div>
                     </div>
+                    <div id="entertaintment" style="display: none">
+                        <div>
+                            <legend>Entertaintment Information</legend>
+                        </div>
+                    </div>
+                    <div id="skilled_professional" style="display: none">
+                        <div>
+                            <legend>Skilled Professional Information</legend>
+                        </div>
+                    </div>
+                    <div id="common" style="display: none">
+                        <div class="form-group">
+                            <label for="maritial_status" class="col-md-2 control-label required">Maritial Status:</label>
+                            <div class="col-md-4">
+                                <select name="maritial_status" id="maritial_status" class="form-control selectpicker">
+                                   <option value="">Select One</option>
+                                   <option value="married">Married</option>
+                                   <option value="single">Single</option>
+                                   <option value="divorced">Divorced</option>
+                                </select>
+                                @if ($errors->has('maritial_status'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('maritial_status') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <label for="occupation" class="col-md-2 control-label required">Occupation:</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="occupation" id="occupation">
+                                @if ($errors->has('occupation'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('occupation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="acadmic" class="col-md-2 control-label">Academic Status:</label>
+                            <div class="col-md-4">
+                                <select name="academic" id="academic" class="form-control selectpicker">
+                                   <option value="">Select One</option>
+                                   <option value="10">10</option>
+                                   <option value="10+2">10+2</option>
+                                   <option value="Graduate">Graduate</option>
+                                   <option value="Post Graduate">Post Graduate</option>
+                                   <option value="Diploma">Diploma</option>
+                                </select>
+                                @if ($errors->has('academic'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('academic') }}</strong>
+                                    </span>
+                                @endif
+                                <!-- <table class="table table-bordered">
+                                    <tr>
+                                        <th>Degree</th>
+                                        <th>Subjects</th>
+                                        <th>Year Passed</th>
+                                        <th>School/University</th>
+                                        <th>Marks/Percentage</th>
+                                    </tr>
+                                    <tr>
+                                        <td>10<sup>th</sup></td>
+                                        <td><input class="form-control" type="text" name="sub_1"></td>
+                                        <td><input class="form-control" type="text" name="year_1"></td>
+                                        <td><input class="form-control" type="text" name="school_1"></td>
+                                        <td><input class="form-control" type="text" name="marks_1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10+2<sup>th</sup></td>
+                                        <td><input class="form-control" type="text" name="sub_2"></td>
+                                        <td><input class="form-control" type="text" name="year_2"></td>
+                                        <td><input class="form-control" type="text" name="school_2"></td>
+                                        <td><input class="form-control" type="text" name="marks_2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Graduation/Diploma</td>
+                                        <td><input class="form-control" type="text" name="sub_3"></td>
+                                        <td><input class="form-control" type="text" name="year_3"></td>
+                                        <td><input class="form-control" type="text" name="school_3"></td>
+                                        <td><input class="form-control" type="text" name="marks_3"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Post Graduation</td>
+                                        <td><input class="form-control" type="text" name="sub_4"></td>
+                                        <td><input class="form-control" type="text" name="year_4"></td>
+                                        <td><input class="form-control" type="text" name="school_4"></td>
+                                        <td><input class="form-control" type="text" name="marks_4"></td>
+                                    </tr>
+                                </table> -->
+                            </div>
+                        
+                            <label for="key_skills" class="col-md-2 control-label required">Key Skills:</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="key_skills" id="key_skills">
+                                @if ($errors->has('key_skills'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('key_skills') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <legend>Login Information</legend>
                     </div>
@@ -260,6 +429,37 @@ SUN  :   Closed
                             @endif
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="checkbox" class="col-md-2 control-label required">Security Question</label>
+                        <div class="col-md-10">
+                            <select name="security_question_id" id="security_question_id" class="form-control selectpicker" required="required">
+                                <option value="">Select Security Question</option>
+                                @foreach($securityquestions as $securityquestion)
+                                    <option value="{{ $securityquestion->id }}"
+                                    @if(old('security_question_id')==$securityquestion->id)
+                                        selected="selected"
+                                    @endif
+                                    >{{ $securityquestion->question }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('security_question_id'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('security_question_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkbox" class="col-md-2 control-label required">Answer</label>
+                        <div class="col-md-4">
+                            <input required type="text" class="form-control" name="security_question_ans" id="security_question_ans" value="{{ old('security_question_ans') }}">
+                            @if ($errors->has('security_question_ans'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('security_question_ans') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="checkbox" class="col-md-2 control-label"></label>
@@ -268,11 +468,12 @@ SUN  :   Closed
                         </div>
                     </div>
 
+                     
                     <div class="form-group">
                         <div class="col-md-12 col-md-offset-2">
                             <button type="submit" class="btn btn-primary">
                                 Submit
-                            </button>`
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -546,7 +747,49 @@ SUN  :   Closed
                                 message: 'The password and its confirm are not the same'
                             }
                         }
-                    }, 
+                    },
+                    maritial_status: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select your maritial status'
+                            }
+                        }
+                    },
+                    key_skills: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please enter your key skills'
+                            }
+                        }
+                    },
+                    academic: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select your Academic Status'
+                            }
+                        }
+                    },
+                    occupation: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your occupation'
+                            }
+                        }
+                    },
+                    security_question_id: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select your Security Question'
+                            }
+                        }
+                    },
+                    security_question_ans: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your Security Question Answer'
+                            }
+                        }
+                    },
                 }
             })
             .on('success.form.bv', function(e) {
@@ -670,7 +913,10 @@ SUN  :   Closed
     });
 </script>
 <script type="text/javascript">
-    window.onload = function () {  getCurrencyAndCode(); };
+    setTimeout(function () {
+      getCurrencyAndCode();
+    }, 3000);
+    window.onload = getCurrencyAndCode();
     $("#country").change(function(){
         getCurrencyAndCode();
     });
@@ -696,6 +942,73 @@ SUN  :   Closed
             }
         });
     }
+    $('#bussiness_category_id').on('change', function() {
+        if(this.value!=""){
+            $.ajax({
+                type:'POST',
+                url: '{{ url("subcategory") }}',
+                data:{
+                    _token: "{{ csrf_token() }}",
+                    user_role : 3,
+                    category : this.value,
+                },success:function(response)
+                {
+                    $('#bussiness_subcategory_id').find('option').not(':first').remove();
+                    $('#subcategory').show();
+                    $('#bussiness_subcategory_id').attr('required', false);
+                    var subcategory = JSON.parse(response);
+                    if(Object.keys(subcategory).length>0)
+                    {
+                        for(key in subcategory){
+                            $('#bussiness_subcategory_id').append($("<option></option>").attr("value",key).text(subcategory[key]));
+                        }
+                        $('#subcategory').show();
+                        $('#bussiness_subcategory_id').attr('required', true);
+                    }else
+                    {
+                        $('#subcategory').hide();
+                    }
+                }
+            });
+            var selected = $('#bussiness_category_id option:selected').html();
+            if(selected=='Entertainment')
+            {
+                $('#entertaintment').show();
+                $('#skilled_professional').hide();
+                $('#common').show();
+                $('#maritial_status').attr('required', true);
+                $('#occupation').attr('required', true);
+                $('#key_skills').attr('required', true);
+                $('#occupation_skill').attr('required', false);
+                $('#key_skills_skill').attr('required', false);
+            }else if(selected=='Skilled Professional')
+            {
+                $('#skilled_professional').show();
+                $('#entertaintment').hide();
+                $('#common').show();
+                $('#maritial_status').attr('required', false);
+                $('#occupation').attr('required', false);
+                $('#key_skills').attr('required', false);
+                $('#occupation_skill').attr('required', true);
+                $('#key_skills_skill').attr('required', true);
+            }else
+            {
+                $('#skilled_professional').hide();
+                $('#entertaintment').hide();
+                $('#common').hide();
+                $('#maritial_status').attr('required', false);
+                $('#occupation').attr('required', false);
+                $('#key_skills').attr('required', false);
+                $('#occupation_skill').attr('required', false);
+                $('#key_skills_skill').attr('required', false);
+            }
+        }else
+        {
+            $('#bussiness_subcategory_id').find('option').not(':first').remove();
+            $('#bussiness_subcategory_id').attr('required', false);
+            $('#subcategory').hide();
+        }
+    });
 </script>
 @endsection
 
