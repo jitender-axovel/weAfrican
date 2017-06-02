@@ -16,8 +16,21 @@
     @endif
 
     @if($business)
-
-	    <p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button> </a> </p>
+	    <div class="row">
+	    	<div class="col-md-9">
+	    		@if($business->is_update==1)
+	    			<div class="notifications">
+					    <div class="alert alert-warning alert-block">
+					        <button type="button" class="close" data-dismiss="alert">×</button>
+					        <h6>Update Your Portfolio</h6>
+						</div>
+					</div>
+	    		@endif
+	    	</div>
+	    	<div class="col-md-3">
+	    		<p class="text-right"><a href="{{url('register-business/'.$business->id.'/edit')}}"><button type="button" class="btn btn-info">Edit Business Profile</button> </a> </p>
+	    	</div>
+	    </div>
 	    <div class="panel panel-default ">
 	    	@if($business->banner != NULL)
 	    		<img class="banner_image" src="{{asset(config('image.banner_image_url').'business/'.$business->banner)}}"/>
@@ -47,19 +60,19 @@
 			        <dt>About Us</dt>
 			        <dd>{{ $business->about_us }}</dd>
 			        <dt>Address</dt>
-			        <dd>{{ $business->address }}</dd>
+			        <dd>{{ $business->user->address }}</dd>
 			        <dt>City</dt>
-			        <dd>{{ $business->city }}</dd>
+			        <dd>{{ $business->user->city }}</dd>
 			        <dt>State</dt>
-			        <dd>{{ $business->state }}</dd>
+			        <dd>{{ $business->user->state }}</dd>
 			        <dt>Country:</dt>
-			        <dd>{{ $business->country }}</dd>
+			        <dd>{{ $business->user->country }}</dd>
 			        <dt>Pin code</dt>
-			        <dd>{{ $business->pin_code }}</dd>
+			        <dd>{{ $business->user->pin_code }}</dd>
 			        <dt>Email</dt>
-			        <dd>{{ $business->email }}</dd>
+			        <dd>{{ $business->user->email }}</dd>
 			        <dt>Primary Mobile Number</dt>
-			        <dd>{{ $business->mobile_number }}</dd>
+			        <dd>{{ $business->user->mobile_number }}</dd>
 			        <!-- <dt>Secondary Mobile Number</dt>
 			        <dd>{{ $business->secondary_phone_number }}</dd> -->
 			        <dt>Website</dt>
