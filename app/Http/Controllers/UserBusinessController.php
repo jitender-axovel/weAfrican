@@ -70,6 +70,7 @@ class UserBusinessController extends Controller
     {
         $input = $request->input();
         $rules = array(
+            'salutation' => 'required',
             'first_name' => 'required|max:255|string',
             'last_name' => 'required|max:255|string',
             'country_code' => 'required|numeric|min:0|max:99',
