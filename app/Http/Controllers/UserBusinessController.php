@@ -156,7 +156,10 @@ class UserBusinessController extends Controller
             if(isset($fileName)){
                 $business['business_logo'] = $image;
             }
-           
+            if($business['bussiness_subcategory_id']=="")
+            {
+                unset($business['bussiness_subcategory_id']);
+            }
             $business = UserBusiness::create($business);
             $business->save();
             $value = $request->session()->get('key');
