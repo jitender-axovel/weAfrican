@@ -9,6 +9,7 @@
 			<tr>
 				<th>Question</th>
 				<th>Created On</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,6 +17,19 @@
 			<tr>
 				<td>{{ $securityquestion->question}}</td>
 				<td>{{ date_format(date_create($securityquestion->created_at), 'd M,Y') }}</td>
+				<td>
+					<ul class="list-inline">
+						<li>
+							<a href="{{ URL::to('admin/security-question/block/'.$securityquestion->id) }}">
+			                    @if($securityquestion->is_blocked)
+			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
+		                    	@else
+		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                		@endif
+		                    </a>
+						</li>
+					</ul>
+				</td>
 			</tr>
 			@endforeach
 		</tbody>
