@@ -11,6 +11,8 @@ use App\UserBusiness;
 use App\CmsPage;
 use App\User;
 use App\CountryList;
+use App\SecurityQuestion;
+use App\BussinessSubcategory;
 use Auth;
 use Validator;
 use App\Helper;
@@ -53,8 +55,9 @@ class UserBusinessController extends Controller
     {
         $pageTitle = "Register Business";
         $categories = BussinessCategory::where('is_blocked',0)->get();
+        $securityquestions = SecurityQuestion::where('is_blocked',0)->get();
         $term = CmsPage::where('slug', 'terms-and-conditions')->first();
-        return view('business.register', compact('categories','pageTitle', 'term'));
+        return view('business.register', compact('categories','pageTitle', 'term', 'securityquestions'));
     }
 
     /**
@@ -65,22 +68,35 @@ class UserBusinessController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'full_name' => 'required|max:255|string',
-            'country_code' => 'required|numeric',
+        $input = $request->input();
+        $rules = array(
+            'first_name' => 'required|max:255|string',
+            'last_name' => 'required|max:255|string',
+            'country_code' => 'required|numeric|min:0|max:99',
             'title' => 'required',
             'keywords' =>'required',
-            'email' => 'required|email|max:255|unique:user_businesses',
-            'password' => 'required|min:5|max:20',
-            'confirm_password' => 'required|min:5|max:20|same:password',
-            'country_code'=> 'required|numeric',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:5|max:255',
+            'confirm_password' => 'required|min:5|max:255|same:password',
             'mobile_number' => 'required|numeric|unique:users',
-            'pin_code' => 'required',
+            'pin_code' => 'regex:/\b\d{6}\b/',
             'country' => 'string',
             'state' => 'string',
             'city' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg',
-        ]);
+            'bussiness_category_id' => 'required',
+            'security_question_id' => 'required',
+            'security_question_ans' => 'required|max:255|string',
+            );
+        if($input['bussiness_category_id']==1 || $input['bussiness_category_id']==2)
+        {
+            $rules['maritial_status'] = 'required';
+            $rules['occupation'] = 'required|string';
+            $rules['key_skills'] = 'required|string';
+            $rules['academic'] = 'required';
+            $input['is_update'] = 1;
+        }
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->messages();
@@ -94,13 +110,11 @@ class UserBusinessController extends Controller
             }
         }
 
-        $input = $request->input();
-
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
             $input['is_agree_to_terms'] = 0;
- 
+        
         if($input['is_agree_to_terms'] == 1)
         { 
             if ($request->hasFile('business_logo') ){
@@ -128,16 +142,16 @@ class UserBusinessController extends Controller
             $user['user_role_id'] = 3;
             $user['password'] = bcrypt($input['password']);
             $user['otp'] = rand(1000,9999);
-            
             $user = User::create($user);
             $user->save();
 
-            $user->slug = Helper::slug($user->full_name, $user->id);
-            $user->save();
+            $user->slug = Helper::slug($user->first_name, $user->id);
             
+            $user->save();
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
-            $business['business_id']=substr($input['full_name'],0,3).rand(100,999);
+
+            $business['business_id']=substr($input['first_name'],0,3).rand(100,999);
             $business['user_id'] = $user->id;
             if(isset($fileName)){
                 $business['business_logo'] = $image;
@@ -375,7 +389,8 @@ class UserBusinessController extends Controller
         $pageTitle = "Bussiness -Edit";
         $business = UserBusiness::find($id);
         $categories = BussinessCategory::where('is_blocked',0)->get();
-        return view('business.edit',compact('pageTitle','business','categories'));
+        $subcategories = BussinessSubcategory::where('category_id',$business->bussiness_category_id)->get();
+        return view('business.edit',compact('pageTitle','business','categories','subcategories'));
     }
 
     /**
@@ -388,15 +403,16 @@ class UserBusinessController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'salutation' => 'required',
+            'first_name' => 'required|max:255|string',
+            'last_name' => 'required|max:255|string',
             'title' => 'required',
-            'email' => 'required|email|max:255',
             'keywords' =>'required',
             'address' => 'string',
             'pin_code' => 'regex:/\b\d{6}\b/|integer',
             'country' => 'string',
             'state' => 'string',
             'city' => 'string',
-            'secondary_phone_number' => 'numeric',
             'about_us' => 'string',
             'working_hours' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg',
@@ -450,20 +466,26 @@ class UserBusinessController extends Controller
             }
         }
 
-        $input = array_intersect_key($input, UserBusiness::$updatable);
+        $business_input = array_intersect_key($input, UserBusiness::$updatable);
+        $user_id = UserBusiness::where('id',$id)->first()->user_id;
+        $user_input = array_intersect_key($input, User::$updatable);
 
         if(isset($fileName)) {
-            $input['business_logo'] =  $image;
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business_input['business_logo'] =  $image;
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         } else if(isset($bannerFileName)){
-            $input['banner'] =  $bannerImage;
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business_input['banner'] =  $bannerImage;
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         } else if((isset($fileName)) && (isset($bannerFileName))){
-            $input['business_logo'] =  $image;
-            $input['banner'] =  $bannerImage;
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business_input['business_logo'] =  $image;
+            $business_input['banner'] =  $bannerImage;
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         } else {
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         }
 
         return redirect('register-business/'.$id)->with('success', 'User Business updated successfully');
@@ -521,9 +543,6 @@ class UserBusinessController extends Controller
             $user = User::whereMobileNumber($mobile_number)->first();
             $user->mobile_number = $input['mobile_number'];
             $user->save();
-            $business = UserBusiness::whereUserId($user->id)->first();
-            $business->mobile_number = $input['mobile_number'];
-            $business->save();
             $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
             if($res->success==true)
             {
