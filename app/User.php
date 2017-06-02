@@ -21,7 +21,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'first_name','middle_name','last_name', 'country_code', 'mobile_number', 'email', 'password', 'user_role_id', 'slug', 'otp', 'image', 'address', 'city', 'state', 'country', 'pin_code', 'currency', 'security_question_id', 'security_question_ans', 'latitude', 'longitude'];
+        'salutation','first_name','middle_name','last_name', 'country_code', 'mobile_number', 'email', 'password', 'user_role_id', 'slug', 'otp', 'image', 'address', 'city', 'state', 'country', 'pin_code', 'currency', 'security_question_id', 'security_question_ans', 'latitude', 'longitude'];
 
     /**
     * The attributes that are updatable.
@@ -29,7 +29,7 @@ class User extends Authenticatable
     * @var array
     */
     public static $updatable = [
-        'first_name' => "",'middle_name' => "",'last_name' => "", 'password' => "", 'slug' => "", 'email' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => "", 'address' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'currency' => "", 'security_question_id' => "", 'security_question_ans' => "", 'latitude' => "", 'longitude' => ""];
+        'salutation' => "",'first_name' => "",'middle_name' => "",'last_name' => "", 'password' => "", 'slug' => "", 'email' => "", 'otp' => "" , 'country_code' => "" , 'user_role_id' => "" , 'mobile_number' => "", 'image' => "", 'address' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'currency' => "", 'security_question_id' => "", 'security_question_ans' => "", 'latitude' => "", 'longitude' => ""];
 
     /**
     * The attributes that should be hidden for arrays.
