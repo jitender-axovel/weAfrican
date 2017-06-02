@@ -10,7 +10,7 @@
 				<th>Title</th>
 				<th>Description</th>
 				<th>Created On</th>
-				<!-- <th>Actions</th> -->
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -19,20 +19,29 @@
 				<td>{{ $seatingplan->title}}</td>
 				<td>{{ $seatingplan->description}}</td>
 				<td>{{ date_format(date_create($seatingplan->created_at), 'd M,Y') }}</td>
-				<!-- <td>
+				<td>
 					<ul class="list-inline">
 						<li>
-							<a class="btn btn-warning" href="{{ url('admin/seating-plan/'.$seatingplan->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+							<a href="{{ URL::to('admin/seating-plan/block/'.$seatingplan->id) }}">
+			                    @if($seatingplan->is_blocked)
+			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
+		                    	@else
+		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                		@endif
+		                    </a>
 						</li>
-						<li>
+						<!-- <li>
+							<a class="btn btn-warning" href="{{ url('admin/seating-plan/'.$seatingplan->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+						</li> -->
+						<!-- <li>
 							<form action="{{ url('admin/seating-plan/'.$seatingplan->id) }}" method="POST" onsubmit="deleteCategory('{{$seatingplan->id}}', '{{$seatingplan->title}}', event,this)">
 								{{csrf_field()}}
 								{{ method_field('DELETE') }}
 								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
 							</form>
-						</li>
+						</li> -->
 					</ul>
-				</td> -->
+				</td>
 			</tr>
 			@endforeach
 		</tbody>
