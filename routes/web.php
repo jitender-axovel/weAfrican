@@ -29,7 +29,7 @@ Route::group(['middleware' => ['before']], function(){
 	Route::post('check-otp', 'UserBusinessController@checkOtp');
 	Route::resource('change-mobile', 'UserBusinessController@changeMobile');
 	Route::post('update-mobile', 'UserBusinessController@updateMobile');
-	Route::post('country-details', 'UserBusinessController@countryDetails');//Ajax function to get country details from country name
+	Route::post('country-details', 'AjaxController@countryDetails');
 	Route::post('country', 'AjaxController@countryList');
 	Route::post('state', 'AjaxController@stateList');
 	Route::post('city', 'AjaxController@cityList');
@@ -103,6 +103,8 @@ Route::group(['prefix' => 'admin'], function() {
 
 		Route::resource('category/event', 'AdminEventCategoriesController');
 		Route::resource('seating-plan', 'AdminSeatingPlanController');
+		Route::get('seating-plan/block/{id}', 'AdminSeatingPlanController@block');
 		Route::resource('security-question', 'AdminSecurityQuestionsController');
+		Route::resource('security-question/block/{id}', 'AdminSecurityQuestionsController@block');
 	});
 });
