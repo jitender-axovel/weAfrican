@@ -37,7 +37,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <label>
-                                <a class="btn btn-link" href="{{ url('change-mobile/') }}">Change Mobile Number</a>
+                                <!-- <a class="btn btn-link" href="{{ url('change-mobile/') }}">Change Mobile Number</a> -->
                             </label>
                         </div>
                     </div>
