@@ -84,11 +84,25 @@ class LoginController extends Controller
                     {
                         Session::put('is_login', true);
                         Session::put('mobile_number', $user->mobile_number);
+                        Session::put('email', $user->email);
                         Session::put('password', $request->password);
-                        $user->otp = rand(1000,9999);
+                        Session::put('otp', rand(1000,9999));
+                        $user->otp = Session::get('otp');
                         $user->save();
-                        $res = json_decode(app('App\Http\Controllers\UserBusinessController')->sendVerificationCode($user->country_code,$user->mobile_number));
-                        if($res->success==true)
+                        /*$res = json_decode(app('App\Http\Controllers\UserBusinessController')->sendVerificationCode($user->country_code,$user->mobile_number));*/
+                        Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                        if( count(Mail::failures()) > 0 ) {
+
+                           return redirect('emailVerify')->with('warning', 'Mail Cannot be sent! Please try to resend the OTP!');
+
+                           foreach(Mail::failures as $email_address) {
+                               echo " - $email_address <br />";
+                            }
+
+                        } else {
+                            return redirect('emailVerify')->with('success', 'Please enter the OTP to verify your email to proceed to logged in! OTP has been sent to '.$user->email.'.Please enter the OTP!');
+                        }
+                        /*if($res->success==true)
                         {
                             $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
                             $words = explode(" ", $mobile);
@@ -96,7 +110,7 @@ class LoginController extends Controller
                         }else
                         {
                             return redirect('login')->with('warning', $res->message.'! Please try again!');
-                        }
+                        }*/
                     }
                 }else
                 {
