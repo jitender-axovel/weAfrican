@@ -206,18 +206,18 @@
                         <legend>Business Information</legend>
                     </div>
                     <div class="form-group">
-                        <label for="title" class="col-md-2 control-label required">Business Name:</label>
+                        <label for="title" id="business_title_lable" class="col-md-2 control-label required">Business Name:</label>
                         <div class="col-md-4">
-                            <input required type="text" class="form-control" name="title" value="{{ old('title') }}">
+                            <input required type="text" class="form-control" name="title" id="business_title" value="{{ old('title') }}">
                             @if ($errors->has('title'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('title') }}</strong>
                                 </span>
                             @endif
                         </div>
-                        <label for="keywords" class="col-md-2 required control-label">Business Keywords:</label>
+                        <label for="keywords" id="business_keyword_lable" class="col-md-2 required control-label">Business Keywords:</label>
                         <div class="col-md-4" data-tip="Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.">
-                            <input required type="text" class="form-control" name="keywords" placeholder="Ex. Software developer, Gas Supplier , Baby Cloths, Electronics" value="{{ old('keywords') }}">
+                            <input required type="text" class="form-control" id="business_keywords" name="keywords" placeholder="Ex. Software developer, Gas Supplier , Baby Cloths, Electronics" value="{{ old('keywords') }}">
                             @if ($errors->has('keywords'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('keywords') }}</strong>
@@ -238,7 +238,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="about_us" class="col-md-2 control-label">About us:</label>
+                        <label for="about_us" id="about_us_lable" class="col-md-2 control-label">About us:</label>
                         <div class="col-md-4">
                             <textarea class="form-control" name="about_us" rows="11" ></textarea>
                             @if ($errors->has('about_us'))
@@ -273,7 +273,7 @@ SUN  :   Closed
                     </div>
 
                     <div class="form-group">
-                        <label for="business_logo" class="col-md-2 control-label">Business Logo:</label>
+                        <label for="business_logo" id="business_logo_lable" class="col-md-2 control-label">Business Logo:</label>
                         <div class="col-md-4">
                             <input type="file" name="business_logo" id="business_logo" accept="image/jpg,image/jpeg,image/png" />
                             @if ($errors->has('business_logo'))
@@ -284,7 +284,7 @@ SUN  :   Closed
                         </div>
 
                         <label for="logo_preview" class="col-md-2 control-label">
-                        Logo Preview:
+                        Preview:
                         </label>
                         <div class="col-md-4">
                             <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
@@ -342,43 +342,6 @@ SUN  :   Closed
                                     <strong>{{ $errors->first('academic') }}</strong>
                                     </span>
                                 @endif
-                                <!-- <table class="table table-bordered">
-                                    <tr>
-                                        <th>Degree</th>
-                                        <th>Subjects</th>
-                                        <th>Year Passed</th>
-                                        <th>School/University</th>
-                                        <th>Marks/Percentage</th>
-                                    </tr>
-                                    <tr>
-                                        <td>10<sup>th</sup></td>
-                                        <td><input class="form-control" type="text" name="sub_1"></td>
-                                        <td><input class="form-control" type="text" name="year_1"></td>
-                                        <td><input class="form-control" type="text" name="school_1"></td>
-                                        <td><input class="form-control" type="text" name="marks_1"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10+2<sup>th</sup></td>
-                                        <td><input class="form-control" type="text" name="sub_2"></td>
-                                        <td><input class="form-control" type="text" name="year_2"></td>
-                                        <td><input class="form-control" type="text" name="school_2"></td>
-                                        <td><input class="form-control" type="text" name="marks_2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Graduation/Diploma</td>
-                                        <td><input class="form-control" type="text" name="sub_3"></td>
-                                        <td><input class="form-control" type="text" name="year_3"></td>
-                                        <td><input class="form-control" type="text" name="school_3"></td>
-                                        <td><input class="form-control" type="text" name="marks_3"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Post Graduation</td>
-                                        <td><input class="form-control" type="text" name="sub_4"></td>
-                                        <td><input class="form-control" type="text" name="year_4"></td>
-                                        <td><input class="form-control" type="text" name="school_4"></td>
-                                        <td><input class="form-control" type="text" name="marks_4"></td>
-                                    </tr>
-                                </table> -->
                             </div>
                         
                             <label for="key_skills" class="col-md-2 control-label required">Key Skills:</label>
@@ -971,19 +934,34 @@ SUN  :   Closed
                 }
             });
             var selected = $('#bussiness_category_id option:selected').html();
+            var bootstrapValidator = $('#register-form').data('bootstrapValidator');
             if(selected=='Entertainment')
             {
                 $('#entertaintment').show();
                 $('#skilled_professional').hide();
+                $('#business_logo_lable').text("Profile Pic :");
+                $('#about_us_lable').text("Description :");
+                $('#business_title_lable').removeClass("required");
+                $('#business_title').attr('required', false);
+                $('#business_keyword_lable').removeClass("required");
+                $('#business_keywords').attr('required', false);
                 $('#common').show();
                 $('#maritial_status').attr('required', true);
                 $('#occupation').attr('required', true);
                 $('#key_skills').attr('required', true);
                 $('#occupation_skill').attr('required', false);
                 $('#key_skills_skill').attr('required', false);
+                bootstrapValidator.enableFieldValidators('title', false);
+                bootstrapValidator.enableFieldValidators('keywords', false);
             }else if(selected=='Skilled Professional')
             {
                 $('#skilled_professional').show();
+                $('#business_logo_lable').text("Profile Pic :");
+                $('#about_us_lable').text("Description :");
+                $('#business_title_lable').removeClass("required");
+                $('#business_title').attr('required', false);
+                $('#business_keyword_lable').removeClass("required");
+                $('#business_keywords').attr('required', false);
                 $('#entertaintment').hide();
                 $('#common').show();
                 $('#maritial_status').attr('required', false);
@@ -991,9 +969,17 @@ SUN  :   Closed
                 $('#key_skills').attr('required', false);
                 $('#occupation_skill').attr('required', true);
                 $('#key_skills_skill').attr('required', true);
+                bootstrapValidator.enableFieldValidators('title', false);
+                bootstrapValidator.enableFieldValidators('keywords', false);
             }else
             {
                 $('#skilled_professional').hide();
+                $('#business_logo_lable').text("Business Logo :");
+                $('#about_us_lable').text("About us :");
+                $('#business_title_lable').addClass("required");
+                $('#business_title').attr('required', true);
+                $('#business_keyword_lable').addClass("required");
+                $('#business_keywords').attr('required', true);
                 $('#entertaintment').hide();
                 $('#common').hide();
                 $('#maritial_status').attr('required', false);
@@ -1001,6 +987,8 @@ SUN  :   Closed
                 $('#key_skills').attr('required', false);
                 $('#occupation_skill').attr('required', false);
                 $('#key_skills_skill').attr('required', false);
+                bootstrapValidator.enableFieldValidators('title', true);
+                bootstrapValidator.enableFieldValidators('keywords', true);
             }
         }else
         {
