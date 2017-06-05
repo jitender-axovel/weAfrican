@@ -20,6 +20,7 @@ use Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewRegisterBusiness;
+use App\Mail\SendOtp;
 
 
 class UserBusinessController extends Controller
@@ -167,10 +168,24 @@ class UserBusinessController extends Controller
             if($business)
             {
                 Session::put('mobile_number', $input['mobile_number']);
+                Session::put('email', $input['email']);
+                Session::put('otp', $user['otp']);
                 Session::put('is_login', false);
                 Mail::to('madhav@gmail.com')->send(new NewRegisterBusiness($user));
-                $res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));
-                if($res->success==true)
+                Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                if( count(Mail::failures()) > 0 ) {
+
+                   return redirect('emailVerify')->with('warning', 'Mail Cannot be sent! Please try to resend the OTP!');
+
+                   foreach(Mail::failures as $email_address) {
+                       echo " - $email_address <br />";
+                    }
+
+                } else {
+                    return redirect('emailVerify')->with('success', 'You have been successfully registered. OTP has been sent to '.$input['email'].'.Please enter the OTP!');
+                }
+                /*$res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));*/
+                /*if($res->success==true)
                 {
                     $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
                     $words = explode(" ", $mobile);
@@ -178,7 +193,7 @@ class UserBusinessController extends Controller
                 }else
                 {
                     return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
-                }
+                }*/
             }else{
                 return back()->with('error', 'Business could not created successfully.Please try again'); 
             }    
@@ -190,21 +205,24 @@ class UserBusinessController extends Controller
     public function otp()
     {
         Session::put('otp_verify', false);
-        $pageTitle = "Otp";
+        $pageTitle = "Email Verification";
         return view('business.otp', compact('pageTitle'));
     }
 
     public function checkOtp(Request $request)
     {
         $mobile_number = Session::get('mobile_number');
+        $email = Session::get('email');
+        $otp = Session::get('otp');
         $is_login = Session::get('is_login');
         $password = Session::get('password');
-        $user = User::whereMobileNumber($mobile_number)->first();
-        $res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));
-        if($res->success==true){
+        $user = User::whereEmail($email)->first();
+        /*$res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));*/
+        /*if($res->success==true){*/
+        if($request->input('otp')==$otp){
             $user->is_verified = 1;
             $user->save();
-            Session::forget('mobile_number');Session::forget('is_login');Session::forget('password');
+            Session::forget('mobile_number');Session::forget('email');Session::forget('otp');Session::forget('is_login');Session::forget('password');
             if($is_login)
             {
                 if(Auth::attempt(['email' => $user->email,'password' => $password]))
@@ -221,20 +239,36 @@ class UserBusinessController extends Controller
                 }
             }else
             {
-                return redirect('login')->with('success', 'Your mobile number is successfully verified. Please enter Email and Password to login!');
+                return redirect('login')->with('success', 'Your Email is successfully verified. Please enter Email and Password to login!');
             }
         } else {
-            return redirect('otp')->with('error', $res->message.'! Please Enter the valid OTP');
+            return redirect('emailVerify')->with('error', 'OTP dos\'t match ! Please Enter the valid OTP');
         }
     }
 
     public function resendotp()
     {
         $mobile_number = Session::get('mobile_number');
-        $user= User::whereMobileNumber($mobile_number)->first();
+        $email = Session::get('email');
+        $user= User::whereEmail($email)->first();
         if ($user) {
-            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
-            if($res->success==true)
+            Session::put('otp', rand(1000,9999));
+            $user->otp = Session::get('otp');
+            $user->save();
+            /*$res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));*/
+            Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+            if( count(Mail::failures()) > 0 ) {
+
+               return redirect('emailVerify')->with('warning', 'Mail Cannot be sent! Please try to resend the OTP!');
+
+               foreach(Mail::failures as $email_address) {
+                   echo " - $email_address <br />";
+                }
+
+            } else {
+                return redirect('emailVerify')->with('success', 'New OTP has been send to your registerd email address. OTP has been sent to '.$email.'.Please enter the OTP!');
+            }
+            /*if($res->success==true)
             {
                 $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
                 $words = explode(" ", $mobile);
@@ -242,7 +276,7 @@ class UserBusinessController extends Controller
             }else
             {
                 return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
-            }
+            }*/
         } else {
             return redirect('login')->with('warning', 'Your login session has been expired, Please try to login again!');
         }
