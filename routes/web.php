@@ -28,8 +28,6 @@ Route::group(['middleware' => ['before']], function(){
 	Route::get('otp', 'UserBusinessController@otp');
 	Route::get('emailVerify', 'UserBusinessController@otp');
 	Route::post('check-otp', 'UserBusinessController@checkOtp');
-	Route::resource('change-mobile', 'UserBusinessController@changeMobile');
-	Route::post('update-mobile', 'UserBusinessController@updateMobile');
 	Route::post('country-details', 'AjaxController@countryDetails');
 	Route::post('country', 'AjaxController@countryList');
 	Route::post('state', 'AjaxController@stateList');
@@ -56,6 +54,12 @@ Route::group(['middleware' => ['before']], function(){
 		Route::get('home/banner/block/{id}','BannersController@blockHomeBanner');
 		Route::get('business/banner/block/{id}','BannersController@blockBusinessBanner');
 		Route::get('event/banner/block/{id}','BannersController@blockEventBanner');
+		Route::get('mobileVerify', 'UserBusinessController@verifyMobile');
+		Route::get('verifyMobile', 'UserBusinessController@mobileOtp');
+		Route::get('resend-mobile-otp', 'UserBusinessController@resendMobileOtp');
+		Route::resource('change-mobile', 'UserBusinessController@changeMobile');
+		Route::post('update-mobile', 'UserBusinessController@updateMobile');
+		Route::post('check-mobile-otp', 'UserBusinessController@checkMobileOtp');
 	});
 });
 
