@@ -952,7 +952,7 @@ SUN  :   Closed
                 $('#occupation_skill').attr('required', false);
                 $('#key_skills_skill').attr('required', false);
                 bootstrapValidator.enableFieldValidators('title', false);
-                bootstrapValidator.enableFieldValidators('keywords', false);
+                /*bootstrapValidator.enableFieldValidators('keywords', false);*/
             }else if(selected=='Skilled Professional')
             {
                 $('#skilled_professional').show();
@@ -970,7 +970,7 @@ SUN  :   Closed
                 $('#occupation_skill').attr('required', true);
                 $('#key_skills_skill').attr('required', true);
                 bootstrapValidator.enableFieldValidators('title', false);
-                bootstrapValidator.enableFieldValidators('keywords', false);
+                /*bootstrapValidator.enableFieldValidators('keywords', false);*/
             }else
             {
                 $('#skilled_professional').hide();
@@ -988,7 +988,7 @@ SUN  :   Closed
                 $('#occupation_skill').attr('required', false);
                 $('#key_skills_skill').attr('required', false);
                 bootstrapValidator.enableFieldValidators('title', true);
-                bootstrapValidator.enableFieldValidators('keywords', true);
+                /*bootstrapValidator.enableFieldValidators('keywords', true);*/
             }
         }else
         {
