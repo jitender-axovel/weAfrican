@@ -71,8 +71,14 @@
 			        <dd>{{ $business->user->pin_code }}</dd>
 			        <dt>Email</dt>
 			        <dd>{{ $business->user->email }}</dd>
-			        <dt>Primary Mobile Number</dt>
-			        <dd>{{ $business->user->mobile_number }}</dd>
+			        <dt>Mobile Number</dt>
+			        <dd>{{ $business->user->mobile_number }} &nbsp;&nbsp;&nbsp;
+			        @if($business->user->mobile_verified==0)
+			        <a class="btn-danger label" href="{{ url('mobileVerify/') }}"><label >Not Verified</label></a>
+			        @else
+			        <label class="btn-success label">Verified</span>
+			        @endif
+			        </dd>
 			        <!-- <dt>Secondary Mobile Number</dt>
 			        <dd>{{ $business->secondary_phone_number }}</dd> -->
 			        <dt>Website</dt>
