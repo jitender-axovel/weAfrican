@@ -943,8 +943,8 @@ SUN  :   Closed
                 $('#about_us_lable').text("Description :");
                 $('#business_title_lable').removeClass("required");
                 $('#business_title').attr('required', false);
-                $('#business_keyword_lable').removeClass("required");
-                $('#business_keywords').attr('required', false);
+                /*$('#business_keyword_lable').removeClass("required");
+                $('#business_keywords').attr('required', false);*/
                 $('#common').show();
                 $('#maritial_status').attr('required', true);
                 $('#occupation').attr('required', true);
@@ -960,8 +960,8 @@ SUN  :   Closed
                 $('#about_us_lable').text("Description :");
                 $('#business_title_lable').removeClass("required");
                 $('#business_title').attr('required', false);
-                $('#business_keyword_lable').removeClass("required");
-                $('#business_keywords').attr('required', false);
+                /*$('#business_keyword_lable').removeClass("required");
+                $('#business_keywords').attr('required', false);*/
                 $('#entertaintment').hide();
                 $('#common').show();
                 $('#maritial_status').attr('required', false);
@@ -978,8 +978,8 @@ SUN  :   Closed
                 $('#about_us_lable').text("About us :");
                 $('#business_title_lable').addClass("required");
                 $('#business_title').attr('required', true);
-                $('#business_keyword_lable').addClass("required");
-                $('#business_keywords').attr('required', true);
+                /*$('#business_keyword_lable').addClass("required");
+                $('#business_keywords').attr('required', true);*/
                 $('#entertaintment').hide();
                 $('#common').hide();
                 $('#maritial_status').attr('required', false);
