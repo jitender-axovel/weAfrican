@@ -569,29 +569,34 @@ class UserBusinessController extends Controller
             return back()->withErrors($validator)
                          ->withInput();
         }
-        $input = $request->input();
-        $mobile_number = Session::get('mobile_number');
-        $is_login = Session::get('is_login');
-        $password = Session::get('password');
-        if($password!=$input['password'])
-        {
-            return back()->with('error.password', 'Password dosn\'t match. Please enter a valid password to continue !');
-        }else
-        {
-            $user = User::whereMobileNumber($mobile_number)->first();
-            $user->mobile_number = $input['mobile_number'];
-            $user->save();
-            $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
-            if($res->success==true)
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {    
+            $input = $request->input();
+            $mobile_number = $user->mobile_number;
+            $password = $input['password'];
+            if(Hash::check($password, $user->password))
             {
-                Session::put('mobile_number',$input['mobile_number']);
-                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
-                $words = explode(" ", $mobile);
-                return redirect('otp')->with('success', 'You have been successfully registered. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
+                $user->mobile_number = $input['mobile_number'];
+                $user->save();
+                $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
+                if($res->success==true)
+                {
+                    Session::put('mobile_number',$input['mobile_number']);
+                    $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                    $words = explode(" ", $mobile);
+                    return redirect('verifyMobile')->with('success', 'Your Mobile number has been updated. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
+                }else
+                {
+                    return redirect('verifyMobile')->with('warning', $res->message.'! Please try to resend the OTP!');
+                }
             }else
             {
-                return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
+                return back()->with('error.password', 'Password dosn\'t match. Please enter a valid password to continue !');
             }
+        }else
+        {
+            return redirect('logout');
         }
     }
 
@@ -613,6 +618,73 @@ class UserBusinessController extends Controller
         }else
         {
             return "";
+        }
+    }
+
+    public function verifyMobile()
+    {
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {
+            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
+            if($res->success==true)
+            {
+                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                $words = explode(" ", $mobile);
+                return redirect('verifyMobile')->with('success', 'New OTP has been send to your registerd mobile number. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
+            }else
+            {
+                return redirect('verifyMobile')->with('warning', $res->message.'! Please try to resend the OTP!');
+            }
+            
+        }else
+        {
+            return redirect('logout');
+        }
+    }
+    public function mobileOtp()
+    {
+        $pageTitle = "Mobile Number Verification";
+        return view('business.mobileotp', compact('pageTitle'));
+    }
+    public function resendMobileOtp()
+    {
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {
+            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
+            if($res->success==true)
+            {
+                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                $words = explode(" ", $mobile);
+                return redirect('verifyMobile')->with('success', 'New OTP has been send to your registerd mobile number. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
+            }else
+            {
+                return redirect('verifyMobile')->with('warning', $res->message.'! Please try to resend the OTP!');
+            }
+        }else
+        {
+            return redirect('logout');
+        }
+    }
+
+    public function checkMobileOtp(Request $request)
+    {
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {
+            $res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));
+            if($res->success==true){
+                $user->mobile_verified = 1;
+                $user->save();
+                return redirect('register-business/'.Auth::id())->with('success', 'Your Mobile number has been successfully verified');
+            }else
+            {
+                return redirect('register-business/'.Auth::id())->with('error', 'Something goes wrong. Please try again!');
+            }   
+        }else
+        {
+            return redirect('logout');
         }
     }
 }
