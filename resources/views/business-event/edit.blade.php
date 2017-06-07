@@ -24,7 +24,7 @@
                 <div class="form-group ">
                     <label for="category" class="col-md-2 required control-label">Category</label>
                     <div class="col-md-4">
-                        <select required name="event_category_id" required>
+                        <select required class="form-control" name="event_category_id" required>
                             <option value="" selected>Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" @if($event->category->title == $category->title){{ 'selected'}} @else @endif  >{{ $category->title }}</option>
@@ -190,6 +190,25 @@
                         <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                     </div>
                 </div>
+                <div>
+                    <legend>Event Seating Plan</legend>
+                </div>
+                <div class="form-group">
+                    <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="total_seats" value="{{ $event->total_seats }}" placeholder="Total Available Seats" id="total_seats">
+                    </div>
+                </div>
+                @if(count($seatingplans)>0)
+                    @foreach($seatingplans as $seatingplan)
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{ $seatingplan->title}}</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control SeatingPlan" id="seats_in_plan" name="seating_plan[{{ $seatingplan->id }}]" value="@if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id)){{ $seatingplan->getEventPlanSeats($event->id, $seatingplan->id) }}@endif" placeholder="Seats Available in {{ $seatingplan->title}}" onchange="javascript:checkTotalSeats();">
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
                 <div class="form-group">
                     <div class="col-md-12 col-md-offset-2">
                         <button type="submit" class="btn btn-primary">
@@ -205,6 +224,9 @@
 @section('header-scripts')
     <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
     <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         var lat;
         var long;
@@ -290,6 +312,134 @@
             $('#pin_code').val(addressComponents.postalCode);
             $('#country').val(addressComponents.country);
         }
+        //Bootstarp validation on form
+        $(document).ready(function() {
+            $('#register-form').bootstrapValidator({
+                // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        validators: {
+                                stringLength: {
+                                min: 2,
+                            },
+                            regexp: {
+                                regexp: /^[a-zA-Z\s]+$/,
+                                message: 'The Full name can only consist of alphabetical and space'
+                            },
+                                notEmpty: {
+                                message: 'Please supply your full name'
+                            }
+                        }
+                    },
+                    keywords: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your business keywords'
+                            }
+                        }
+                    },
+                    description: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your Event Description'
+                            }
+                        }
+                    },
+                    start_date_time: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your Event Start Time'
+                            }
+                        }
+                    },
+                    end_date_time: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your Event Description'
+                            }
+                        }
+                    },
+                    city: {
+                        validators: {
+                             stringLength: {
+                                min: 4,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your city'
+                            }
+                        }
+                    },
+                    state: {
+                        validators: {
+                             stringLength: {
+                                min: 4,
+                            },
+                            notEmpty: {
+                                message: 'Please supply your state'
+                            }
+                        }
+                    },
+                    country: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your country'
+                            }
+                        }
+                    },
+                    pin_code: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please supply your pin code'
+                            }
+                        }
+                    },
+                    /*SeatingPlan: {
+                        selector: '.SeatingPlan',
+                        validators: {
+                            callback: {
+                                message: 'The sum of percentages must be 100',
+                                callback: function(value, validator, $field) {
+                                    var percentage = validator.getFieldElements("input[id='seats_in_plan']"),
+                                    length = percentage.length,
+                                    sum = 0;
+                                    for (var i = 0; i < length; i++) {
+                                        sum += parseFloat($(percentage[i]).val());
+                                    }
+                                    if (sum === 100) {
+                                        validator.updateStatus(SeatingPlan, 'VALID', 'callback');
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        }
+                    },*/
+                }
+            })
+            .on('success.form.bv', function(e) {
+                $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
+                    $('#register-form').data('bootstrapValidator').resetForm();
+
+                // Prevent form submission
+                e.preventDefault();
+
+                // Get the form instance
+                var $form = $(e.target);
+
+                // Get the BootstrapValidator instance
+                var bv = $form.data('bootstrapValidator');
+
+                // Use Ajax to submit form data
+                $.post($form.attr('action'), $form.serialize(), function(result) {
+                    console.log(result);
+                }, 'json');
+            });
+        });
     </script>
 @endsection
 @section('scripts')
