@@ -6,9 +6,11 @@ use Illuminate\Pagination\Paginator;
 use App\Http\Requests;
 use App\EventCategory;
 use App\BusinessEvent;
+use App\BusinessEventSeat;
 use App\EventBanner;
 use App\UserBusiness;
 use App\BusinessNotification;
+use App\EventSeatingPlan;
 use App\User;
 use App\Helper;
 use Validator;
@@ -49,7 +51,8 @@ class BusinessEventsController extends Controller
         $pageTitle = "Business Event -Create";
         $business = UserBusiness::where('user_id', Auth::id())->first();
         $categories = EventCategory::where('is_blocked', 0)->get();
-        return view('business-event.create', compact('pageTitle', 'business', 'categories'));
+        $seatingplans = EventSeatingPlan::where('is_blocked', 0)->get();
+        return view('business-event.create', compact('pageTitle', 'business', 'categories','seatingplans'));
     }
 
     /**
@@ -104,6 +107,17 @@ class BusinessEventsController extends Controller
         $event = BusinessEvent::create($event);
 
         $event->save();
+
+        $seating_plan['user_id'] = Auth::id();
+        $seating_plan['business_id'] = $business->id;
+        $seating_plan['business_event_id'] = $event->id;
+        foreach ($input['seating_plan'] as $key => $value) {
+            $seating_plan['event_seating_plan_id'] = $key;
+            $seating_plan['total_seat_available'] = $value;
+            $business_event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
+            $business_event_seats = BusinessEventSeat::create($business_event_seats);
+            $business_event_seats->save();
+        }
       
         $event->slug = Helper::slug($event->name, $event->id);
         $event->save();
@@ -136,7 +150,9 @@ class BusinessEventsController extends Controller
         $pageTitle = "Business Product-Edit";
         $event = BusinessEvent::find($id);
         $categories = EventCategory::where('is_blocked',0)->get();
-        return view('business-event.edit',compact('pageTitle','event', 'categories'));
+        $seatingplans = EventSeatingPlan::get();
+        $business_event_seats = BusinessEventSeat::where('business_event_id',$id)->get();
+        return view('business-event.edit',compact('pageTitle','event', 'categories','seatingplans','business_event_seats'));
     }
 
     /**
@@ -182,6 +198,7 @@ class BusinessEventsController extends Controller
         $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 
+        
         if(isset($fileName)) {
             $input['banner'] =  $image;
             $event = BusinessEvent::where('id',$id)->update($input);
@@ -189,6 +206,36 @@ class BusinessEventsController extends Controller
             $event = BusinessEvent::where('id',$id)->update($input);
         }
 
+        $event = BusinessEvent::where('id',$id)->first();
+        $seating_plan['user_id'] = Auth::id();
+        $seating_plan['business_id'] = $event->business->id;
+        $seating_plan['business_event_id'] = $event->id;
+        $search = $seating_plan;
+        foreach ($request->input('seating_plan') as $key => $value) {
+            $search['event_seating_plan_id'] = $seating_plan['event_seating_plan_id'] =  $key;
+            $seating_plan['total_seat_available'] = $value;
+            if($value!="" and $value!=null)
+            {
+                $row = BusinessEventSeat::where($search)->first();
+                $event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
+                if($row)
+                {
+                    $event_seats = BusinessEventSeat::where('id',$row->id)->update($event_seats);
+                    
+                }else
+                {
+                    $event_seats = BusinessEventSeat::create($event_seats);
+                    $event_seats->save();
+                }
+            }else
+            {
+                $row = BusinessEventSeat::where($search)->first();
+                if($row)
+                {
+                    $row->delete();
+                }
+            }
+        }
         return redirect('business-event')->with('success', 'Event updated successfully');
     }
 
