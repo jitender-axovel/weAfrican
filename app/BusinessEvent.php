@@ -14,9 +14,9 @@ class BusinessEvent extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'business_id', 'event_category_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner', 'city', 'state', 'country', 'pin_code', 'latitude', 'longitude', 'start_date', 'end_date' ];
+    protected $fillable = ['user_id', 'business_id', 'event_category_id', 'name', 'keywords', 'slug', 'description', 'organizer_name', 'address', 'start_date_time', 'end_date_time', 'banner', 'city', 'state', 'country', 'pin_code', 'latitude', 'longitude', 'total_seats', 'start_date', 'end_date' ];
 
-    public static $updatable = ['user_id' => "", 'business_id' => "", 'event_category_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'latitude' => "", 'longitude' => "", 'start_date' => "", 'end_date' => ""];
+    public static $updatable = ['user_id' => "", 'business_id' => "", 'event_category_id' => "", 'name' => "" , 'keywords' => "", 'slug' => "", 'description' => "", 'organizer_name' => "", 'address' => "", 'start_date_time' => "", 'end_date_time' => "", 'banner' => "", 'city' => "", 'state' => "", 'country' => "", 'pin_code' => "", 'latitude' => "", 'longitude' => "", 'total_seats' => "", 'start_date' => "", 'end_date' => ""];
 
     public static $validater = array(
         'event_category_id' => 'required',
