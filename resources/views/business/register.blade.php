@@ -329,7 +329,7 @@ SUN  :   Closed
                         <div class="form-group">
                             <label for="acadmic" class="col-md-2 control-label">Academic Status:</label>
                             <div class="col-md-4">
-                                <select name="academic" id="academic" class="form-control selectpicker">
+                                <select name="acedimic_status" id="acedimic_status" class="form-control selectpicker">
                                    <option value="">Select One</option>
                                    <option value="10">10</option>
                                    <option value="10+2">10+2</option>
