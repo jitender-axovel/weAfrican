@@ -23,15 +23,18 @@ class CreateUserPortfoliosTable extends Migration
             $table->string('occupation')->nullable();
             $table->string('acedimic_status')->nullable();
             $table->string('key_skills')->nullable();
-            $table->string('experience')->nullable();
-            $table->string('height')->nullable();
+            $table->string('experience_years')->nullable();
+            $table->string('experience_months')->nullable();
+            $table->string('height_feets')->nullable();
+            $table->string('height_inches')->nullable();
             $table->string('hair_type')->nullable();
             $table->string('skin_color')->nullable();
             $table->string('hair_color')->nullable();
             $table->boolean('professional_training')->default(false);
             $table->string('institute_name')->nullable();
+            $table->string('image')->nullable();
+            $table->integer('main_image')->unsigned()->default(0);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
