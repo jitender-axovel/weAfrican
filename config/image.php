@@ -21,6 +21,7 @@ return array(
     'product_image_path' => str_replace('\\','/',public_path()). '/uploads/images/products/',
     'document_path' => str_replace('\\','/',public_path()). '/uploads/documents/',
     'user_image_path' => str_replace('\\','/',public_path()). '/uploads/images/user_images/',
+    'portfolio_image_path' => str_replace('\\','/',public_path()). '/uploads/images/portfolio_images/',
 
     /*
      |.....................................................................
@@ -36,6 +37,7 @@ return array(
     'product_image_url' => '/uploads/images/products/',
     'document_url' => '/uploads/documents/',
     'user_image_url' => '/uploads/images/user_images/',
+    'portfolio_image_url' => '/uploads/images/portfolio_images/',
 
     /*
      |.....................................................................
