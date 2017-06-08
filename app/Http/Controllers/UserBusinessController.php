@@ -13,6 +13,7 @@ use App\User;
 use App\CountryList;
 use App\SecurityQuestion;
 use App\BussinessSubcategory;
+use App\UserPortfolio;
 use Auth;
 use Validator;
 use App\Helper;
@@ -70,6 +71,7 @@ class UserBusinessController extends Controller
     public function store(Request $request)
     {
         $input = $request->input();
+        /*dd($input);*/
         $rules = array(
             'salutation' => 'required',
             'first_name' => 'required|max:255|string',
@@ -95,7 +97,7 @@ class UserBusinessController extends Controller
             $rules['maritial_status'] = 'required';
             $rules['occupation'] = 'required|string';
             $rules['key_skills'] = 'required|string';
-            $rules['academic'] = 'required';
+            $rules['acedimic_status'] = 'required';
             $input['is_update'] = 1;
         }
         $validator = Validator::make($request->all(), $rules);
@@ -167,6 +169,11 @@ class UserBusinessController extends Controller
             $value = $request->session()->get('key');
             if($business)
             {
+                $portfolio = array_intersect_key($input, UserPortfolio::$updatable);
+                $portfolio['user_id'] = $user->id;
+                $portfolio['business_id'] = $business->id;
+                $portfolio = UserPortfolio::create($portfolio);
+                $portfolio->save();
                 Session::put('mobile_number', $input['mobile_number']);
                 Session::put('email', $input['email']);
                 Session::put('otp', $user['otp']);
