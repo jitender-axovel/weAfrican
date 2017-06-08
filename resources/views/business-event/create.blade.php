@@ -189,7 +189,13 @@
                 <div class="form-group">
                     <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="total_seats" value="{{ old('total_seats') }}" placeholder="Total Available Seats" id="total_seats">
+                        <select class="form-control" name="total_seats" id="total_seats" data-show-subtext="true" data-live-search="true">
+                            <option value="">Select Total Seats</option>
+                            @for($i=0;$i<=5000;$i++)
+                                <option value="{{$i}}">{{$i}}</option>
+                            @endfor
+                        </select>
+                        <!-- <input type="text" class="form-control" name="total_seats" value="@if(old('total_seats')!=''){{ old('total_seats') }}@else 0 @endif" placeholder="Total Available Seats" id="total_seats"> -->
                     </div>
                 </div>
                 @if(count($seatingplans)>0)
@@ -197,7 +203,13 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{ $seatingplan->title }}</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" id="seats_in_plan" name="seating_plan[{{ $seatingplan->id }}]" value="{{ old('total_seats') }}" placeholder="Seats Available in {{ $seatingplan->title}}" onchange="javascript:checkTotalSeats();">
+                                <select class="form-control" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
+                                    <option value="">Select Seats for {{ $seatingplan->title }}</option>
+                                    @for($i=0;$i<=5000;$i++)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                                <!-- <input type="text" class="form-control" id="seats_in_plan" name="seating_plan[{{ $seatingplan->id }}]" value="" placeholder="Seats Available in {{ $seatingplan->title}}" onchange="javascript:checkTotalSeats();"> -->
                             </div>
                         </div>
                     @endforeach
@@ -220,7 +232,9 @@
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+    
     <script type="text/javascript">
+        
         var lat;
         var long;
         var ip = "{{$ip}}";
@@ -266,14 +280,25 @@
         });
     </script>
 @endsection
+@section('styles')
+
+@endsection
+@section('herader-script')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
+@endsection
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/formValidation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.formvalidation@0.6.1(js/formValidation.min.js+js/framework/bootstrap.min.js)"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker();
+        /*$('#datetimepicker1').datetimepicker();*/
         $('#datetimepicker2').datetimepicker();
+        $('#total_seats').selectpicker();
     });
 
     function readURL(input) {
@@ -340,9 +365,16 @@
     $("input[id='seats_in_plan']").each(function() {
         sum = sum + parseInt($(this).val());
     });
+    $('#datetimepicker1').datetimepicker({
+            format: 'MM/DD/YYYY h:m A',
+            useCurrent: false
+        }).on('changeDate', function(e) {
+            // Revalidate the date field
+            $('#register-form').formValidation('revalidateField', 'start_date_time');
+        });
     //Bootstarp validation on form
         $(document).ready(function() {
-            $('#register-form').bootstrapValidator({
+            $('#register-form').formValidation({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
@@ -434,7 +466,7 @@
                             }
                         }
                     },
-                    SeatingPlan: {
+                    /*SeatingPlan: {
                         selector: '.SeatingPlan',
                         validators: {
                             callback: {
@@ -447,7 +479,7 @@
                                 }
                             }
                         }
-                    },
+                    },*/
                 }
             })
             .on('success.form.bv', function(e) {
