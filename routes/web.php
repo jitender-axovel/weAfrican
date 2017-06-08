@@ -60,6 +60,7 @@ Route::group(['middleware' => ['before']], function(){
 		Route::resource('change-mobile', 'UserBusinessController@changeMobile');
 		Route::post('update-mobile', 'UserBusinessController@updateMobile');
 		Route::post('check-mobile-otp', 'UserBusinessController@checkMobileOtp');
+		Route::resource('portfolio', 'UserBusinessPortfolioController');
 	});
 });
 
