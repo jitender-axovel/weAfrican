@@ -13,23 +13,38 @@
 			<div class="row">
 				<div class="col-md-4">
 					<select class="form-control" id="select_country" name="country">
-		                    <option value=""> Select Country </option>
+		                    <option value="" selected=""> Select Country </option>
+		                    @if(isset($countries))
+		                    	@foreach($countries as $key=>$country)
+		                    		<option value="{{ $key }}" @if($input['country']==$key) selected="" @endif>{{ $key }}</option>
+		                    	@endforeach
+		                    @endif
 		            </select>
 				</div>
 				<div class="col-md-4">
 					<select class="form-control" id="select_state" name="state">
-		                    <option value=""> Select State </option>
+						<option value="" selected=""> Select State </option>
+						@if(isset($states))
+							@foreach($states as $key=>$state)
+								<option value="{{ $state }}" @if($input['state']==$state) selected="" @endif>{{ $state }}</option>
+							@endforeach
+						@endif
 		            </select>
 				</div>
 				<div class="col-md-4">
 					<select class="form-control" id="select_city" name="city">
-		                    <option value=""> Select City </option>
+		                    <option value="" selected=""> Select City </option>
+		                    @if(isset($cities))
+		                    	@foreach($cities as $key=>$city)
+		                    		<option value="{{ $city }}" @if($input['city']==$city) selected="" @endif>{{ $city }}</option>
+		                    	@endforeach
+		                    @endif
 		            </select>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-3" style="vertical-align: center">
-			<button class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+			<button class="btn btn-info">Filter</button>
 			<button class="btn btn-info" onclick="javascript:setSubmit()">CSV</button>
 			<a href="{{ url('admin/users/') }}" class="btn btn-info">Reset</a>
 		</div>
@@ -50,7 +65,7 @@
 		<tbody>
 			@foreach($users as $user)
 			<tr>
-				<td>{{ $user->full_name}}</td>
+				<td>{{ $user->first_name}} {{ $user->middle_name}} {{ $user->last_name}}</td>
 				<td>{{ '+' . $user->country_code . '-' . $user->mobile_number }}</td>
 				<td>{{ $user->role->name }}</td>
 				<td>
@@ -155,6 +170,7 @@
 	</script>
 	<script type="text/javascript">
 		$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+		@if(!isset($input['page']))
 		$(document).ready( function () {
 			$.ajax({
                 type:'POST',
@@ -185,6 +201,7 @@
                 }
             });
 		});
+		@endif
 		$('#select_category').on('change', function() {
 	        if(this.value!=""){
 	            $.ajax({

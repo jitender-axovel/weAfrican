@@ -7,6 +7,7 @@ use App\User;
 use App\UserBusiness;
 use App\BussinessCategory;
 use App\BussinessSubCategory;
+use App\CountryList;
 
 class AjaxController extends Controller
 {
@@ -21,9 +22,8 @@ class AjaxController extends Controller
     	$user_role_id = $request->input('user_role');
     	if($user_role_id!="")
     	{
-	    	$user_ids = User::where('user_role_id',$user_role_id)->pluck('id');
 	    	$list = array();
-	    	$list[0] = UserBusiness::whereIn('user_id',$user_ids)->distinct('country')->pluck('id', 'country');
+	    	$list[0] = User::distinct('country')->pluck('id', 'country');
 	    	if($user_role_id==3)
 	    	{
 	    		$list[1] = BussinessCategory::where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
@@ -32,7 +32,7 @@ class AjaxController extends Controller
     	}
     	else
     	{
-    		$list = UserBusiness::distinct('country')->pluck('id', 'country');
+    		$list = User::distinct('country')->pluck('id', 'country');
     		print_r(json_encode($list));
     	}
     }
@@ -46,13 +46,7 @@ class AjaxController extends Controller
     {
     	$user_role_id = $request->input('user_role');
     	$country = $request->input('country');
-    	if($user_role_id!=""){
-	    	$user_ids = User::where('user_role_id',$user_role_id)->pluck('id');
-	    	$stateList = UserBusiness::whereIn('user_id',$user_ids)->where('country',$country)->distinct('state')->pluck('state');
-    	}else
-    	{
-    		$stateList = UserBusiness::where('country',$country)->distinct('state')->pluck('state');
-    	}
+    	$stateList = User::where('country',$country)->distinct('state')->pluck('state');
     	print_r(json_encode($stateList));
 
     }
@@ -62,13 +56,7 @@ class AjaxController extends Controller
     	$user_role_id = $request->input('user_role');
     	$country = $request->input('country');
     	$state = $request->input('state');
-    	if($user_role_id!=""){
-	    	$user_ids = User::where('user_role_id',$user_role_id)->pluck('id');
-	    	$cityList = UserBusiness::whereIn('user_id',$user_ids)->where('country',$country)->where('state',$state)->distinct('city')->pluck('city');
-    	}else
-    	{
-    		$cityList = UserBusiness::where('country',$country)->where('state',$state)->distinct('city')->pluck('city');
-    	}
+	    $cityList = User::where('country',$country)->where('state',$state)->distinct('city')->pluck('city');
     	print_r(json_encode($cityList));
 
     }
@@ -85,5 +73,26 @@ class AjaxController extends Controller
     	$input = $request->input();
     	$categoryList = BussinessCategory::where('is_blocked', 0)->orderBy('id','asc')->pluck('title', 'id');
     	print_r(json_encode($categoryList));
+    }
+
+    /**
+     * Method to get country details from restcountries.eu.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function countryDetails(Request $request)
+    {
+        $input = $request->input();
+        $country = $input['country'];
+        $details = CountryList::whereCountry($country)->first();
+        if($details)
+        {
+            print_r(json_encode(array('country_code' => $details->country_calling_code, 'currency' => $details->country_currency_code)));
+        }else
+        {
+            return "";
+        }
     }
 }

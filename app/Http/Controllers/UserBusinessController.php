@@ -11,6 +11,8 @@ use App\UserBusiness;
 use App\CmsPage;
 use App\User;
 use App\CountryList;
+use App\SecurityQuestion;
+use App\BussinessSubcategory;
 use Auth;
 use Validator;
 use App\Helper;
@@ -18,6 +20,7 @@ use Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewRegisterBusiness;
+use App\Mail\SendOtp;
 
 
 class UserBusinessController extends Controller
@@ -53,8 +56,9 @@ class UserBusinessController extends Controller
     {
         $pageTitle = "Register Business";
         $categories = BussinessCategory::where('is_blocked',0)->get();
+        $securityquestions = SecurityQuestion::where('is_blocked',0)->get();
         $term = CmsPage::where('slug', 'terms-and-conditions')->first();
-        return view('business.register', compact('categories','pageTitle', 'term'));
+        return view('business.register', compact('categories','pageTitle', 'term', 'securityquestions'));
     }
 
     /**
@@ -65,22 +69,36 @@ class UserBusinessController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'full_name' => 'required|max:255|string',
-            'country_code' => 'required|numeric',
+        $input = $request->input();
+        $rules = array(
+            'salutation' => 'required',
+            'first_name' => 'required|max:255|string',
+            'last_name' => 'required|max:255|string',
+            'country_code' => 'required|numeric|min:0|max:99',
             'title' => 'required',
             'keywords' =>'required',
-            'email' => 'required|email|max:255|unique:user_businesses',
-            'password' => 'required|min:5|max:20',
-            'confirm_password' => 'required|min:5|max:20|same:password',
-            'country_code'=> 'required|numeric',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:5|max:255',
+            'confirm_password' => 'required|min:5|max:255|same:password',
             'mobile_number' => 'required|numeric|unique:users',
-            'pin_code' => 'required',
+            'pin_code' => 'regex:/\b\d{6}\b/',
             'country' => 'string',
             'state' => 'string',
             'city' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg',
-        ]);
+            'bussiness_category_id' => 'required',
+            'security_question_id' => 'required',
+            'security_question_ans' => 'required|max:255|string',
+            );
+        if($input['bussiness_category_id']==1 || $input['bussiness_category_id']==2)
+        {
+            $rules['maritial_status'] = 'required';
+            $rules['occupation'] = 'required|string';
+            $rules['key_skills'] = 'required|string';
+            $rules['academic'] = 'required';
+            $input['is_update'] = 1;
+        }
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $messages = $validator->messages();
@@ -94,13 +112,11 @@ class UserBusinessController extends Controller
             }
         }
 
-        $input = $request->input();
-
         if(isset($input['is_agree_to_terms']))
             $input['is_agree_to_terms'] = 1;
         else 
             $input['is_agree_to_terms'] = 0;
- 
+        
         if($input['is_agree_to_terms'] == 1)
         { 
             if ($request->hasFile('business_logo') ){
@@ -128,31 +144,48 @@ class UserBusinessController extends Controller
             $user['user_role_id'] = 3;
             $user['password'] = bcrypt($input['password']);
             $user['otp'] = rand(1000,9999);
-            
             $user = User::create($user);
             $user->save();
 
-            $user->slug = Helper::slug($user->full_name, $user->id);
-            $user->save();
+            $user->slug = Helper::slug($user->first_name, $user->id);
             
+            $user->save();
 
             $business = array_intersect_key($input, UserBusiness::$updatable);
-            $business['business_id']=substr($input['full_name'],0,3).rand(100,999);
+
+            $business['business_id']=substr($input['first_name'],0,3).rand(100,999);
             $business['user_id'] = $user->id;
             if(isset($fileName)){
                 $business['business_logo'] = $image;
             }
-           
+            if($business['bussiness_subcategory_id']=="")
+            {
+                unset($business['bussiness_subcategory_id']);
+            }
             $business = UserBusiness::create($business);
             $business->save();
             $value = $request->session()->get('key');
             if($business)
             {
                 Session::put('mobile_number', $input['mobile_number']);
+                Session::put('email', $input['email']);
+                Session::put('otp', $user['otp']);
                 Session::put('is_login', false);
                 Mail::to('madhav@gmail.com')->send(new NewRegisterBusiness($user));
-                $res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));
-                if($res->success==true)
+                Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                if( count(Mail::failures()) > 0 ) {
+
+                   return redirect('emailVerify')->with('warning', 'Mail Cannot be sent! Please try to resend the OTP!');
+
+                   foreach(Mail::failures as $email_address) {
+                       echo " - $email_address <br />";
+                    }
+
+                } else {
+                    return redirect('emailVerify')->with('success', 'You have been successfully registered. OTP has been sent to '.$input['email'].'.Please enter the OTP!');
+                }
+                /*$res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));*/
+                /*if($res->success==true)
                 {
                     $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
                     $words = explode(" ", $mobile);
@@ -160,7 +193,7 @@ class UserBusinessController extends Controller
                 }else
                 {
                     return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
-                }
+                }*/
             }else{
                 return back()->with('error', 'Business could not created successfully.Please try again'); 
             }    
@@ -172,21 +205,24 @@ class UserBusinessController extends Controller
     public function otp()
     {
         Session::put('otp_verify', false);
-        $pageTitle = "Otp";
+        $pageTitle = "Email Verification";
         return view('business.otp', compact('pageTitle'));
     }
 
     public function checkOtp(Request $request)
     {
         $mobile_number = Session::get('mobile_number');
+        $email = Session::get('email');
+        $otp = Session::get('otp');
         $is_login = Session::get('is_login');
         $password = Session::get('password');
-        $user = User::whereMobileNumber($mobile_number)->first();
-        $res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));
-        if($res->success==true){
+        $user = User::whereEmail($email)->first();
+        /*$res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));*/
+        /*if($res->success==true){*/
+        if($request->input('otp')==$otp){
             $user->is_verified = 1;
             $user->save();
-            Session::forget('mobile_number');Session::forget('is_login');Session::forget('password');
+            Session::forget('mobile_number');Session::forget('email');Session::forget('otp');Session::forget('is_login');Session::forget('password');
             if($is_login)
             {
                 if(Auth::attempt(['email' => $user->email,'password' => $password]))
@@ -203,20 +239,36 @@ class UserBusinessController extends Controller
                 }
             }else
             {
-                return redirect('login')->with('success', 'Your mobile number is successfully verified. Please enter Email and Password to login!');
+                return redirect('login')->with('success', 'Your Email is successfully verified. Please enter Email and Password to login!');
             }
         } else {
-            return redirect('otp')->with('error', $res->message.'! Please Enter the valid OTP');
+            return redirect('emailVerify')->with('error', 'OTP dos\'t match ! Please Enter the valid OTP');
         }
     }
 
     public function resendotp()
     {
         $mobile_number = Session::get('mobile_number');
-        $user= User::whereMobileNumber($mobile_number)->first();
+        $email = Session::get('email');
+        $user= User::whereEmail($email)->first();
         if ($user) {
-            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
-            if($res->success==true)
+            Session::put('otp', rand(1000,9999));
+            $user->otp = Session::get('otp');
+            $user->save();
+            /*$res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));*/
+            Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+            if( count(Mail::failures()) > 0 ) {
+
+               return redirect('emailVerify')->with('warning', 'Mail Cannot be sent! Please try to resend the OTP!');
+
+               foreach(Mail::failures as $email_address) {
+                   echo " - $email_address <br />";
+                }
+
+            } else {
+                return redirect('emailVerify')->with('success', 'New OTP has been send to your registerd email address. OTP has been sent to '.$email.'.Please enter the OTP!');
+            }
+            /*if($res->success==true)
             {
                 $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
                 $words = explode(" ", $mobile);
@@ -224,7 +276,7 @@ class UserBusinessController extends Controller
             }else
             {
                 return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
-            }
+            }*/
         } else {
             return redirect('login')->with('warning', 'Your login session has been expired, Please try to login again!');
         }
@@ -375,7 +427,8 @@ class UserBusinessController extends Controller
         $pageTitle = "Bussiness -Edit";
         $business = UserBusiness::find($id);
         $categories = BussinessCategory::where('is_blocked',0)->get();
-        return view('business.edit',compact('pageTitle','business','categories'));
+        $subcategories = BussinessSubcategory::where('category_id',$business->bussiness_category_id)->get();
+        return view('business.edit',compact('pageTitle','business','categories','subcategories'));
     }
 
     /**
@@ -388,15 +441,16 @@ class UserBusinessController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'salutation' => 'required',
+            'first_name' => 'required|max:255|string',
+            'last_name' => 'required|max:255|string',
             'title' => 'required',
-            'email' => 'required|email|max:255',
             'keywords' =>'required',
             'address' => 'string',
             'pin_code' => 'regex:/\b\d{6}\b/|integer',
             'country' => 'string',
             'state' => 'string',
             'city' => 'string',
-            'secondary_phone_number' => 'numeric',
             'about_us' => 'string',
             'working_hours' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg',
@@ -450,20 +504,26 @@ class UserBusinessController extends Controller
             }
         }
 
-        $input = array_intersect_key($input, UserBusiness::$updatable);
+        $business_input = array_intersect_key($input, UserBusiness::$updatable);
+        $user_id = UserBusiness::where('id',$id)->first()->user_id;
+        $user_input = array_intersect_key($input, User::$updatable);
 
         if(isset($fileName)) {
-            $input['business_logo'] =  $image;
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business_input['business_logo'] =  $image;
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         } else if(isset($bannerFileName)){
-            $input['banner'] =  $bannerImage;
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business_input['banner'] =  $bannerImage;
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         } else if((isset($fileName)) && (isset($bannerFileName))){
-            $input['business_logo'] =  $image;
-            $input['banner'] =  $bannerImage;
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business_input['business_logo'] =  $image;
+            $business_input['banner'] =  $bannerImage;
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         } else {
-            $user = UserBusiness::where('id',$id)->update($input);
+            $business = UserBusiness::where('id',$id)->update($business_input);
+            $user = User::where('id',$user_id)->update($user_input);
         }
 
         return redirect('register-business/'.$id)->with('success', 'User Business updated successfully');
@@ -509,32 +569,34 @@ class UserBusinessController extends Controller
             return back()->withErrors($validator)
                          ->withInput();
         }
-        $input = $request->input();
-        $mobile_number = Session::get('mobile_number');
-        $is_login = Session::get('is_login');
-        $password = Session::get('password');
-        if($password!=$input['password'])
-        {
-            return back()->with('error.password', 'Password dosn\'t match. Please enter a valid password to continue !');
-        }else
-        {
-            $user = User::whereMobileNumber($mobile_number)->first();
-            $user->mobile_number = $input['mobile_number'];
-            $user->save();
-            $business = UserBusiness::whereUserId($user->id)->first();
-            $business->mobile_number = $input['mobile_number'];
-            $business->save();
-            $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
-            if($res->success==true)
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {    
+            $input = $request->input();
+            $mobile_number = $user->mobile_number;
+            $password = $input['password'];
+            if(Hash::check($password, $user->password))
             {
-                Session::put('mobile_number',$input['mobile_number']);
-                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
-                $words = explode(" ", $mobile);
-                return redirect('otp')->with('success', 'You have been successfully registered. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
+                $user->mobile_number = $input['mobile_number'];
+                $user->save();
+                $res = json_decode($this->sendVerificationCode($user->country_code,$input['mobile_number']));
+                if($res->success==true)
+                {
+                    Session::put('mobile_number',$input['mobile_number']);
+                    $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                    $words = explode(" ", $mobile);
+                    return redirect('verifyMobile')->with('success', 'Your Mobile number has been updated. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
+                }else
+                {
+                    return redirect('verifyMobile')->with('warning', $res->message.'! Please try to resend the OTP!');
+                }
             }else
             {
-                return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
+                return back()->with('error.password', 'Password dosn\'t match. Please enter a valid password to continue !');
             }
+        }else
+        {
+            return redirect('logout');
         }
     }
 
@@ -556,6 +618,73 @@ class UserBusinessController extends Controller
         }else
         {
             return "";
+        }
+    }
+
+    public function verifyMobile()
+    {
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {
+            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
+            if($res->success==true)
+            {
+                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                $words = explode(" ", $mobile);
+                return redirect('verifyMobile')->with('success', 'New OTP has been send to your registerd mobile number. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
+            }else
+            {
+                return redirect('verifyMobile')->with('warning', $res->message.'! Please try to resend the OTP!');
+            }
+            
+        }else
+        {
+            return redirect('logout');
+        }
+    }
+    public function mobileOtp()
+    {
+        $pageTitle = "Mobile Number Verification";
+        return view('business.mobileotp', compact('pageTitle'));
+    }
+    public function resendMobileOtp()
+    {
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {
+            $res = json_decode($this->sendVerificationCode($user->country_code,$user->mobile_number));
+            if($res->success==true)
+            {
+                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
+                $words = explode(" ", $mobile);
+                return redirect('verifyMobile')->with('success', 'New OTP has been send to your registerd mobile number. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
+            }else
+            {
+                return redirect('verifyMobile')->with('warning', $res->message.'! Please try to resend the OTP!');
+            }
+        }else
+        {
+            return redirect('logout');
+        }
+    }
+
+    public function checkMobileOtp(Request $request)
+    {
+        $user = User::where('id',Auth::id())->first();
+        if($user)
+        {
+            $res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));
+            if($res->success==true){
+                $user->mobile_verified = 1;
+                $user->save();
+                return redirect('register-business/'.Auth::id())->with('success', 'Your Mobile number has been successfully verified');
+            }else
+            {
+                return redirect('register-business/'.Auth::id())->with('error', 'Something goes wrong. Please try again!');
+            }   
+        }else
+        {
+            return redirect('logout');
         }
     }
 }

@@ -28,7 +28,7 @@
                             <li> <a href="{{url('cms/terms-of-use')}}">Terms of Use</a> </li>
                             <li>
                                 <div class="dropdown">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->full_name}}
+                                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->first_name}}
                                     <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ url('register-business/'.Auth::id()) }}">Manage Account</a></li>

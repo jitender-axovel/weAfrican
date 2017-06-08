@@ -108,4 +108,23 @@ class AdminSecurityQuestionsController extends Controller
     {
         //
     }
+
+    /**
+     * Block the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function block($id)
+    {
+        $securityquestion = SecurityQuestion::find($id);
+        $securityquestion->is_blocked = !$securityquestion->is_blocked;
+        $securityquestion->save();
+
+        if ($securityquestion->is_blocked) {
+            return redirect('admin/security-question')->with('success', 'Security Question has been blocked successfully');
+        } else {
+            return redirect('admin/security-question')->with('success', 'Security Question has been unblocked');
+        }
+    }
 }

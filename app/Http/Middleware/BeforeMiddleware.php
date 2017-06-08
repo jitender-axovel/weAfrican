@@ -7,6 +7,8 @@ use Closure;
 use App;
 use Auth;
 use App\CmsPage;
+use App\User;
+use App\UserBusiness;
 
 class BeforeMiddleware
 {
@@ -21,6 +23,11 @@ class BeforeMiddleware
     {
         $ip = $request->ip();
         $cmsPages = CmsPage::get();
+        if (Auth::check() and Auth::user()->user_role_id!=1)
+        {
+            $Authuser = User::where('id',Auth::user()->id)->first();
+            view()->share('category_check', $Authuser->business->bussiness_category_id);
+        }
         view()->share('cmsPages', $cmsPages);
         view()->share('ip', $ip);
         return $next($request);

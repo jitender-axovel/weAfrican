@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
         $this->call(BussinessCategoriesTableSeeder::class);
         $this->call(SubscriptionPlansTableSeeder::class);
         $this->call(CmsPagesTableSeeder::class);
-        
+        $this->call(CountryListTableSeeder::class);
+        $this->call(EventSeatingPlanSeeder::class);
+        $this->call(UserBusinessesTableSeeder::class);
+        $this->call(SubscriptionPlansTableSeeder::class);
+        $this->call(SecurityQuestionsTableSeeder::class);
+        $this->call(EventCategorySeeder::class);
     }
 }

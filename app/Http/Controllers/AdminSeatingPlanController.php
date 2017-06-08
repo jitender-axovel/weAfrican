@@ -155,9 +155,9 @@ class AdminSeatingPlanController extends Controller
         $seatingplan->save();
 
         if ($seatingplan->is_blocked) {
-            return redirect('admin/seating-plan')->with('success', 'Bussiness Sub-Category has been blocked successfully');
+            return redirect('admin/seating-plan')->with('success', 'Event Seating Plan has been blocked successfully');
         } else {
-            return redirect('admin/seating-plan')->with('success', 'Bussiness Sub-Category has been unblocked');
+            return redirect('admin/seating-plan')->with('success', 'Event Seating Plan has been unblocked');
         }
     }
 }

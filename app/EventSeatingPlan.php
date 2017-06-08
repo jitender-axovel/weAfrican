@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\BusinessEventSeat;
 
 class EventSeatingPlan extends Model
 {
@@ -23,4 +24,16 @@ class EventSeatingPlan extends Model
     	'title' => 'required',
     	'description' => 'required',
     	);
+    
+    public function getEventPlanSeats($eventId , $planId)
+    {
+        if(BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first())
+        {
+            return BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first()->total_seat_available;
+        }else
+        {
+            return 0;
+        }
+        
+    }
 }

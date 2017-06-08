@@ -6,6 +6,7 @@ use App\Http\Requests;
 
 use App\User;
 use App\BussinessCategory;
+use App\BussinessSubCategory;
 use App\UserBusiness;
 use Auth;
 use Validator;
@@ -42,16 +43,19 @@ class AdminUsersController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->input();
          $validator = Validator::make($request->all(), [
             'title' => 'required',
             'keywords' =>'required',
-            'email' => 'required|email|max:255|unique:user_businesses',
-            'pin_code' => 'regex:/\b\d{6}\b/|required|numeric',
+            'bussiness_category_id' =>'required',
+            'keywords' =>'required',
+            'email' => 'required|email|max:255|unique:users,id,'.$input['id'],
+            'mobile_number' => 'required|numeric|unique:users,id,'.$input['id'],
+            'pin_code' => 'required|string',
             'country' => 'string',
             'state' => 'string',
             'city' => 'string',
             'business_logo' => 'image|mimes:jpg,png,jpeg,gif',
-            'secondary_phone_number' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -59,8 +63,6 @@ class AdminUsersController extends Controller
                          ->withInput();
         }
 
-        $input = $request->input();
-        
         if ($request->hasFile('business_logo') ){
             if ($request->file('business_logo')->isValid())
             {
@@ -75,20 +77,24 @@ class AdminUsersController extends Controller
                 shell_exec($command);
             }
         }
-
-        User::where('id',$input['id'])->update(['user_role_id' => 3]);
+        $user_input = array_intersect_key($input, User::$updatable);
+        $user_input['user_role_id'] = 3;
+        User::where('id',$input['id'])->update($user_input);
         $user = User::where('id', $input['id'])->first();
-    
+
         $business = array_intersect_key($input, UserBusiness::$updatable);
 
-        $business['business_id']=substr($user->full_name,0,3).rand(0,999);
+        $business['business_id']=substr($user->first_name,0,3).rand(0,999);
         $business['user_id'] = $user->id;
         $business['is_agree_to_terms'] = 1;
 
         if(isset($fileName)){
             $business['business_logo'] = $image;
         }
-
+        if($business['bussiness_subcategory_id']=="")
+        {
+            unset($business['bussiness_subcategory_id']);
+        }
         $business = UserBusiness::create($business);
         $business->save();
 
@@ -189,50 +195,61 @@ class AdminUsersController extends Controller
     public function getSearch(Request $request=null)
     {
         $input = $request->input();
-        $condition = array();
+        $user_condition = array();
+        $business_condition = array();
         if($input['country']!="")
         {
-            $condition['country'] = $input['country'];
+            $user_condition['country'] = $input['country'];
         }
         if($input['state']!="")
         {
-            $condition['state'] = $input['state'];
+            $user_condition['state'] = $input['state'];
         }
         if($input['city']!="")
         {
-            $condition['city'] = $input['city'];
+            $user_condition['city'] = $input['city'];
         }
         if(isset($input['category']) && $input['category']!="")
         {
-            $condition['bussiness_category_id'] = $input['category'];
+            $business_condition['bussiness_category_id'] = $input['category'];
         }
-        /*if(isset($input['subcategory']) && $input['subcategory']!="")
+        if(isset($input['subcategory']) && $input['subcategory']!="")
         {
-            $condition['bussiness_subcategory_id'] = $input['subcategory'];
-        }*/
+            $business_condition['bussiness_subcategory_id'] = $input['subcategory'];
+        }
         if($input['page']=='user')
         {
-            if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
+            if(!empty($request->country) || !empty($request->state) || !empty($request->city))
             {
-                $userBusiness = UserBusiness::where($condition)->pluck('user_id');
-                $users = User::whereIn('id',$userBusiness)->get();
+                $users = User::where($user_condition)->whereIn('user_role_id',array(3,4))->get();
             }else
             {
                 $users = User::whereIn('user_role_id',array(3,4))->get();
             }
             $pageTitle = 'Admin - Users';
-            return view('admin.users.index', compact('pageTitle', 'users'));
+            $countries = User::distinct('country')->pluck('id','country')->toArray();
+            $states = User::where('country',$input['country'])->distinct('state')->pluck('state');
+            $cities = User::where('country',$input['country'])->where('state',$input['state'])->distinct('city')->pluck('city');
+            /*$categories = BussinessCategory::where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
+            $subcategories = BussinessSubCategory::whereCategoryId($input['category'])->where('is_blocked', 0)->orderBy('id','asc')->pluck('title', 'id');*/
+            return view('admin.users.index', compact('pageTitle', 'users','countries','states','cities','input'));
         }else
         {
             if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
             {
-                $businesses = UserBusiness::where($condition)->get();
+                $user_ids = User::where($user_condition)->pluck('id');
+                $businesses = UserBusiness::where($business_condition)->whereIn('user_id',$user_ids)->get();
             }else
             {
                 $businesses = UserBusiness::get();
             }
             $pageTitle = 'Admin - User Business';
-            return view('admin.business.index', compact('pageTitle', 'businesses'));
+            $countries = User::distinct('country')->pluck('id','country')->toArray();
+            $states = User::where('country',$input['country'])->distinct('state')->pluck('state');
+            $cities = User::where('country',$input['country'])->where('state',$input['state'])->distinct('city')->pluck('city');
+            $categories = BussinessCategory::where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
+            $subcategories = BussinessSubCategory::whereCategoryId($input['category'])->where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
+            return view('admin.business.index', compact('pageTitle', 'businesses','countries','states','cities','input','categories','subcategories'));
         }
     }
 
@@ -242,36 +259,36 @@ class AdminUsersController extends Controller
         $condition = array();
         if($input['country']!="")
         {
-            $condition['user_businesses.country'] = $input['country'];
+            $condition['users.country'] = $input['country'];
         }
         if($input['state']!="")
         {
-            $condition['user_businesses.state'] = $input['state'];
+            $condition['users.state'] = $input['state'];
         }
         if($input['city']!="")
         {
-            $condition['user_businesses.city'] = $input['city'];
+            $condition['users.city'] = $input['city'];
         }
         if(isset($input['category']) && $input['category']!="")
         {
-            $condition['bussiness_category_id'] = $input['category'];
+            $condition['user_businesses.bussiness_category_id'] = $input['category'];
         }
-        /*if(isset($input['subcategory']) && $input['subcategory']!="")
+        if(isset($input['subcategory']) && $input['subcategory']!="")
         {
-            $condition['bussiness_subcategory_id'] = $input['subcategory'];
-        }*/
+            $condition['user_businesses.bussiness_subcategory_id'] = $input['subcategory'];
+        }
         if($input['page']=='user')
         {
             if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
             {
-                $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                $users = User::select('users.first_name','users.middle_name','users.last_name','users.email','users.country_code','users.mobile_number','users.city','users.state','users.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
                 ->join('user_businesses', 'user_businesses.user_id', '=', 'users.id')
                 ->join('bussiness_categories', 'bussiness_categories.id', '=', 'user_businesses.bussiness_category_id')
                 ->where($condition)
                 ->get()->toArray();
             }else
             {
-                $users = User::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                $users = User::select('users.first_name','users.middle_name','users.last_name','users.email','users.country_code','users.mobile_number','users.city','users.state','users.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
                 ->join('user_businesses', 'user_businesses.user_id', '=', 'users.id')
                 ->join('bussiness_categories', 'bussiness_categories.id', '=', 'user_businesses.bussiness_category_id')
                 ->get()->toArray();
@@ -280,20 +297,20 @@ class AdminUsersController extends Controller
         {
             if(!empty($request->country) || !empty($request->state) || !empty($request->city) || !empty($request->category) || !empty($request->subcategory))
             {
-                $users = UserBusiness::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                $users = UserBusiness::select('users.first_name','users.middle_name','users.last_name','users.email','users.country_code','users.mobile_number','users.city','users.state','users.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
                 ->join('users','users.id','=','user_businesses.user_id')
                 ->join('bussiness_categories','user_businesses.bussiness_category_id', '=', 'bussiness_categories.id')
                 ->where($condition)
                 ->get()->toArray();
             }else
             {
-                $users = UserBusiness::select('users.full_name','users.email','users.country_code','users.mobile_number','user_businesses.city','user_businesses.state','user_businesses.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
+                $users = UserBusiness::select('users.first_name','users.middle_name','users.last_name','users.email','users.country_code','users.mobile_number','users.city','users.state','users.country','user_businesses.title','user_businesses.business_id','bussiness_categories.title as category_title')
                 ->join('users','users.id','=','user_businesses.user_id')
                 ->join('bussiness_categories','user_businesses.bussiness_category_id', '=', 'bussiness_categories.id')
                 ->get()->toArray();
             }
         }
-        $header = array('Full_Name','Email','Country_Code', 'Mobile_Number','City','State','Country','Business_Title','Business_Id','Category');
+        $header = array('First_Name','Middle_Name','Last_Name','Email','Country_Code', 'Mobile_Number','City','State','Country','Business_Title','Business_Id','Category');
         $delimiter=",";
 
         $filename = "export".time().".csv";

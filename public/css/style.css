@@ -212,3 +212,4 @@ footer .available .list-inline > li {padding-right: 0;}
 [data-tip]:hover:after {
 	display:block;
 }
+#preview{ width: 100px; height: auto; }

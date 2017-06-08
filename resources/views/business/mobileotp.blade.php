@@ -5,9 +5,9 @@
     <div class="col-md-8 col-md-offset-2">
         @include('notification')
         <div class="panel panel-default">
-            <div class="panel-heading">Enter Otp to continue</div>
+            <div class="panel-heading">Verify Mobile VIA OTP</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('check-otp') }}">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('check-mobile-otp') }}">
                     {{ csrf_field() }}
 
                      <div class="form-group{{ $errors->has('otp') ? ' has-error' : '' }}">
@@ -29,7 +29,7 @@
                                 Continue
                             </button>
 
-                            <a class="btn btn-link" href="{{ url('resend-otp') }}">
+                            <a class="btn btn-link" href="{{ url('resend-mobile-otp') }}">
                                 Resend Otp
                             </a>
                         </div>
@@ -37,7 +37,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <label>
-                                <!-- <a class="btn btn-link" href="{{ url('change-mobile/') }}">Change Mobile Number</a> -->
+                                <a class="btn btn-link" href="{{ url('change-mobile/') }}">Change Mobile Number</a>
                             </label>
                         </div>
                     </div>

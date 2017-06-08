@@ -16,6 +16,7 @@ class CreateSecurityQuestionsTable extends Migration
         Schema::create('security_questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('question')->unique();
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

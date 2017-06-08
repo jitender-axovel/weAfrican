@@ -18,6 +18,7 @@ class CreateEventSeatingPlansTable extends Migration
             $table->string('title')->unique();
             $table->string('slug');
             $table->text('description');
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

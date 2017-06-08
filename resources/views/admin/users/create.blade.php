@@ -11,8 +11,22 @@
 				<input type="hidden" class="form-control" name="id" value="{{ $user->id }}" required>
 				<div class="form-group">
 					<label class="control-label col-md-2">Full Name:</label>
-					<div class="col-md-10">
-						{{$user->full_name}}
+					<div class="col-md-4">
+						{{$user->first_name}} {{$user->middle_name}} {{$user->last_name}}
+					</div>
+					<label class="control-label col-md-2">Category</label>
+					<div class="col-md-4">
+						<select required class="form-control" name="bussiness_category_id" id="bussiness_category_id" required>
+							<option value="" selected>Select category</option>
+							@foreach($categories as $category)
+								<option value="{{ $category->id }}" @if($category->title == old('bussiness_category_id')){{ 'selected'}} @endif >{{ $category->title }}</option>
+							@endforeach
+						</select>
+						@if($errors->has('bussiness_category_id'))
+						<span class="help-block">
+							<strong>{{ $errors->first('bussiness_category_id') }}</strong>
+						</span>
+						@endif
 					</div>
 				</div>
 				<div class="form-group">
@@ -25,20 +39,20 @@
 						</span>
 						@endif
 					</div>
-					<label class="control-label col-md-2">Category</label>
-					<div class="col-md-4">
-						<select required name="bussiness_category_id" required>
-							<option value="" selected>Select category</option>
-							@foreach($categories as $category)
-								<option value="{{ $category->id }}" @if($category->title == $category->title){{ 'selected'}} @else @endif >{{ $category->title }}</option>
-							@endforeach
-						</select>
-						@if($errors->has('bussiness_category_id'))
-						<span class="help-block">
-							<strong>{{ $errors->first('bussiness_category_id') }}</strong>
-						</span>
-						@endif
+					<div id="subcategory" style="display: none">
+						<label for="subcategory" class="col-md-2 control-label required">Sub Category:</label>
+                        <div class="col-md-4">
+                            <select name="bussiness_subcategory_id" id="bussiness_subcategory_id" class="form-control selectpicker">
+                                <option value="" selected>Select Sub Category</option>
+                            </select>
+                            @if ($errors->has('bussiness_subcategory_id'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('bussiness_subcategory_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
 					</div>
+					
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">Bussiness keywords:</label>
@@ -103,7 +117,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Pin Code: (format:110075)</label>
 					<div class="col-md-4">
-						<input type="text" pattern="[0-9]{6}" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
+						<input type="text" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
 						@if($errors->has('pin_code'))
 						<span class="help-block">
 							<strong>{{ $errors->first('pin_code') }}</strong>
@@ -112,7 +126,7 @@
 					</div>
 					<label class="control-label col-md-2">Email:</label>
 					<div class="col-md-4">
-					<input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+					<input type="text" class="form-control" name="email" value="{{ $user->email}}" required>
 						@if($errors->has('email'))
 						<span class="help-block">
 							<strong>{{ $errors->first('email') }}</strong>
@@ -121,7 +135,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-2">Primary Mobile Number:</label>
+					<label class="control-label col-md-2">Mobile Number:</label>
 					<div class="col-md-4">
 						<input type="text" class="form-control" name="mobile_number" value="{{ $user->mobile_number}}">
 						@if($errors->has('mobile_number'))
@@ -130,18 +144,6 @@
 						</span>
 						@endif
 					</div>
-					<label class="control-label col-md-2">Secondary Mobile Number:(format:99-99-999999)</label>
-					<div class="col-md-4">
-					 <input type="text" maxlength="10" min-length="10" pattern="[0-9]{10}" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}">
-					<!-- <input type="text" class="form-control" name="secondary_phone_number" value="{{ old('secondary_phone_number') }}"> -->
-						@if($errors->has('secondary_phone_number'))
-						<span class="help-block">
-							<strong>{{ $errors->first('secondary_phone_number') }}</strong>
-						</span>
-						@endif
-					</div>
-				</div>
-				<div class="form-group">	
 					<label class="control-label col-md-2">Website</label>
 					<div class="col-md-4">
 						<input type="text" class="form-control" name="website" value="{{ old('website') }}">
@@ -151,6 +153,8 @@
 						</span>
 						@endif
 					</div>
+				</div>
+				<div class="form-group">	
 					<label class="control-label col-md-2">Working Hours</label>
 					<div class="col-md-4">
 						<input type="text" class="form-control" name="website" value="{{ old('working_hours') }}">
@@ -197,6 +201,41 @@
     
     $("#business_logo").change(function(){
         readURL(this);
+    });
+    $('#bussiness_category_id').on('change', function() {
+        if(this.value!=""){
+            $.ajax({
+                type:'POST',
+                url: '{{ url("subcategory") }}',
+                data:{
+                    _token: "{{ csrf_token() }}",
+                    user_role : 3,
+                    category : this.value,
+                },success:function(response)
+                {
+                    $('#bussiness_subcategory_id').find('option').not(':first').remove();
+                    $('#subcategory').show();
+                    $('#bussiness_subcategory_id').attr('required', false);
+                    var subcategory = JSON.parse(response);
+                    if(Object.keys(subcategory).length>0)
+                    {
+                        for(key in subcategory){
+                            $('#bussiness_subcategory_id').append($("<option></option>").attr("value",key).text(subcategory[key]));
+                        }
+                        $('#subcategory').show();
+                        $('#bussiness_subcategory_id').attr('required', true);
+                    }else
+                    {
+                        $('#subcategory').hide();
+                    }
+                }
+            });
+        }else
+        {
+            $('#bussiness_subcategory_id').find('option').not(':first').remove();
+            $('#bussiness_subcategory_id').attr('required', false);
+            $('#subcategory').hide();
+        }
     });
 </script>
 @endsection

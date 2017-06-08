@@ -36,39 +36,38 @@ class AdminFcmNotificationController extends Controller
 		$msg = $input['message'];
 		$respJson = '{"Message":"'.$msg.'"}';
 		$registation_ids = array();
-		/*for($i=0; $i < $userCount; $i++)
-	    {	
-			array_push($registation_ids, $sendUsers[$i]);			  
-	    } */
 		// JSON Msg to be transmitted to selected Users
 		$message = array("m" => $respJson);  
-        $condition = array();
+        $user_condition = array();
+        $business_condition = array();
         if($input['country']!="")
         {
-            $condition['country'] = $input['country'];
+            $user_condition['country'] = $input['country'];
         }
         if($input['state']!="")
         {
-            $condition['state'] = $input['state'];
+            $user_condition['state'] = $input['state'];
         }
         if($input['city']!="")
         {
-            $condition['city'] = $input['city'];
+            $user_condition['city'] = $input['city'];
         }
         if($input['type'] == 3){
             if($input['category']!="")
             {
-                $condition['bussiness_category_id'] = $input['category'];
+                $business_condition['bussiness_category_id'] = $input['category'];
             }
             if($input['subcategory']!="")
             {
-                $condition['bussiness_subcategory_id'] = $input['subcategory'];
+                $business_condition['bussiness_subcategory_id'] = $input['subcategory'];
             }
-            $user_id = UserBusiness::where($condition)->pluck('user_id');
+            $user_ids = User::where($user_condition)->pluck('id');
+            $user_id = UserBusiness::where($business_condition)->whereIn('user_id',$user_ids)->pluck('user_id');
             $ids = FcmUser::select('fcm_reg_id')->whereIn('user_id', $user_id)->where('user_role_id', 3)->get();
         
         } else if($input['type'] == 4){
-            $user_id = UserBusiness::where($condition)->pluck('user_id');
+            $user_ids = User::where($user_condition)->pluck('id');
+            $user_id = UserBusiness::where($business_condition)->whereIn('user_id',$user_ids)->pluck('user_id');
             $ids = FcmUser::select('fcm_reg_id')->whereIn('user_id', $user_id)->where('user_role_id', 4)->get();
         }
         else{
