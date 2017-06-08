@@ -196,7 +196,12 @@
                 <div class="form-group">
                     <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="total_seats" value="{{ $event->total_seats }}" placeholder="Total Available Seats" id="total_seats">
+                        <select class="form-control js-example-basic-single" name="total_seats" id="total_seats" data-show-subtext="true" data-live-search="true">
+                            <option value="">Select Total Seats</option>
+                            @for($i=0;$i<=5000;$i++)
+                                <option value="{{$i}}" @if($i==$event->total_seats) selected=""selected" @endif>{{$i}}</option>
+                            @endfor
+                        </select>
                     </div>
                 </div>
                 @if(count($seatingplans)>0)
@@ -204,7 +209,16 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{ $seatingplan->title}}</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control SeatingPlan" id="seats_in_plan" name="seating_plan[{{ $seatingplan->id }}]" value="@if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id)){{ $seatingplan->getEventPlanSeats($event->id, $seatingplan->id) }}@endif" placeholder="Seats Available in {{ $seatingplan->title}}" onchange="javascript:checkTotalSeats();">
+                            @php
+                            if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
+                            $j = $seatingplan->getEventPlanSeats($event->id, $seatingplan->id)
+                            @endphp
+                                <select class="form-control js-example-basic-single" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
+                                    <option value="">Select Seats for {{ $seatingplan->title }}</option>
+                                    @for($i=0;$i<=5000;$i++)
+                                        <option @if($i==$j) selected="selected"@endif value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
                             </div>
                         </div>
                     @endforeach
@@ -228,6 +242,7 @@
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+
         var lat;
         var long;
         var ip = "{{$ip}}";
@@ -314,6 +329,7 @@
         }
         //Bootstarp validation on form
         $(document).ready(function() {
+            $(".SeatingPlan").select2();
             $('#register-form').bootstrapValidator({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
@@ -443,15 +459,7 @@
     </script>
 @endsection
 @section('scripts')
-<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
-    });
-
     function readURL(input) {
       if (input.files && input.files[0]) {
           var reader = new FileReader();
@@ -465,6 +473,11 @@
     $("#banner").change(function(){
         readURL(this);
     });
+    $(document).ready(function () {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+            $(".js-example-basic-single").select2();
+        });
 
     
 

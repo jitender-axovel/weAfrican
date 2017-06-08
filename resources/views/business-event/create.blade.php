@@ -189,7 +189,7 @@
                 <div class="form-group">
                     <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
-                        <select class="form-control" name="total_seats" id="total_seats" data-show-subtext="true" data-live-search="true">
+                        <select class="form-control js-example-basic-single" name="total_seats" id="total_seats" data-show-subtext="true" data-live-search="true">
                             <option value="">Select Total Seats</option>
                             @for($i=0;$i<=5000;$i++)
                                 <option value="{{$i}}">{{$i}}</option>
@@ -203,7 +203,7 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{ $seatingplan->title }}</label>
                             <div class="col-md-4">
-                                <select class="form-control" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
+                                <select class="form-control js-example-basic-single" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
                                     <option value="">Select Seats for {{ $seatingplan->title }}</option>
                                     @for($i=0;$i<=5000;$i++)
                                         <option value="{{$i}}">{{$i}}</option>
@@ -280,12 +280,6 @@
         });
     </script>
 @endsection
-@section('styles')
-
-@endsection
-@section('herader-script')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-select.min.css') }}">
-@endsection
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
@@ -293,12 +287,12 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/formValidation.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.formvalidation@0.6.1(js/formValidation.min.js+js/framework/bootstrap.min.js)"></script>
-<script type="text/javascript" src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
-        /*$('#datetimepicker1').datetimepicker();*/
+        $('#datetimepicker1').datetimepicker();
         $('#datetimepicker2').datetimepicker();
-        $('#total_seats').selectpicker();
+        $(".js-example-basic-single").select2();
     });
 
     function readURL(input) {
@@ -365,13 +359,6 @@
     $("input[id='seats_in_plan']").each(function() {
         sum = sum + parseInt($(this).val());
     });
-    $('#datetimepicker1').datetimepicker({
-            format: 'MM/DD/YYYY h:m A',
-            useCurrent: false
-        }).on('changeDate', function(e) {
-            // Revalidate the date field
-            $('#register-form').formValidation('revalidateField', 'start_date_time');
-        });
     //Bootstarp validation on form
         $(document).ready(function() {
             $('#register-form').formValidation({
