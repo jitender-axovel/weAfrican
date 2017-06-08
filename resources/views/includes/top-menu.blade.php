@@ -4,7 +4,7 @@
         <ul class="nav nav-pills">
             <li role="presentation"><a href="{{ url('register-business/'.Auth::id()) }}">Business Profile</a></li>
             @if(isset($category_check) and ($category_check==1 or $category_check==2))
-                <li role="presentation"><a href="#">Portfolio</a></li>
+                <li role="presentation"><a href="{{ url('portfolio') }}">Portfolio</a></li>
             @else
                 <li role="presentation"><a href="{{ url('business-product') }}">Product</a></li>
             @endif
