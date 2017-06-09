@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use App\UserBusiness;
+use App\SoldEventTicket;
 use Validator;
 use DB;
 
@@ -46,6 +47,44 @@ class BusinessEvent extends Model
         'banner' => 'image|mimes:jpg,png,jpeg',
 	);
 
+    public function user($id)
+    {
+        if(User::where('id', $id)->first())
+        {
+            return User::where('id', $id)->first();
+        }else
+        {
+            return 0;
+        }
+    }
+
+    public function seatingPlan($id)
+    {
+        if(EventSeatingPlan::where('id', $id)->first())
+        {
+            return EventSeatingPlan::where('id', $id)->first();
+        }else
+        {
+            return 0;
+        }
+    }
+
+    public function soldTicket($user_id,$business_event_id,$transaction_id)
+    {
+        if(SoldEventTicket::where(array('user_id'=>$user_id,'business_event_id'=>$business_event_id,'transaction_id'=>$transaction_id))->first())
+        {
+            return SoldEventTicket::where(array('user_id'=>$user_id,'business_event_id'=>$business_event_id,'transaction_id'=>$transaction_id))->first();
+        }else
+        {
+            return 0;
+        }
+    }
+
+    public function soldEventTickets()
+    {
+        return $this->hasMany('App\SoldEventTicket','business_event_id');
+    }
+
     public function category()
     {
         return $this->belongsTo('App\EventCategory','event_category_id');
@@ -58,7 +97,7 @@ class BusinessEvent extends Model
 
     public function business()
     {
-        return $this->hasOne('App\UserBusiness','id');
+        return $this->belongsTo('App\UserBusiness','id','business_id');
     }
 
     public function apiGetBusinessEvents($input)
