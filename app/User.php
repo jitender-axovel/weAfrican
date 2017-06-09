@@ -39,7 +39,7 @@ class User extends Authenticatable
     protected $hidden = [
     'password', 'remember_token',];
 
-    public static $downloadable = ['full_name' => '', 'mobile_number' => "", 'country_code' => ''];
+    public static $downloadable = ['first_name' => '', 'middle_name' => '', 'last_name' => '', 'mobile_number' => "", 'country_code' => ''];
 
     public function role()
     {
