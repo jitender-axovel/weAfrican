@@ -22,7 +22,7 @@
             <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                  <div class="form-group required">
-                    <label for="category" class="col-md-2 control-label">Select Category:</label>
+                    <label class="col-md-2 control-label">Select Category:</label>
                     <div class="col-md-4">
                         <select required name="event_category_id" class="form-control" required>
                             <option value="" selected>Select Category</option>
@@ -36,7 +36,7 @@
                             </span>
                         @endif
                     </div>
-                    <label for="name" class="col-md-2 required control-label"> Name of Event</label>
+                    <label class="col-md-2 required control-label"> Name of Event</label>
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
                         @if($errors->has('name'))
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group ">
                     
-                    <label for="keywords" class="col-md-2 required control-label">Event Keywords</label>
+                    <label class="col-md-2 required control-label">Event Keywords</label>
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="keywords" value="{{ old('keywords') }}" required>
                         @if($errors->has('keywords'))
@@ -57,7 +57,7 @@
 	                        </span>
                         @endif
                     </div>
-                    <label for="organizer_name" class="col-md-2 required control-label">Organizer Name</label>
+                    <label class="col-md-2 required control-label">Organizer Name</label>
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="organizer_name" value="{{ $business->title or old('organizer_name')}}" required>
                         @if($errors->has('organizer_name'))
@@ -68,9 +68,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="description" class="col-md-2 required control-label">Description</label>
+                    <label class="col-md-2 required control-label">Description</label>
                     <div class="col-md-10">
-                        <textarea required type="text" class="form-control" name="description"></textarea>
+                        <textarea required class="form-control" name="description"></textarea>
                         @if($errors->has('description'))
                             <span class="help-block">
                             <strong>{{ $errors->first('description') }}</strong>
@@ -80,7 +80,7 @@
                     
                 </div>
                 <div class="form-group">
-                    <label for="start_date_time" class="col-md-2 required control-label">Event Start Date& Time</label>
+                    <label class="col-md-2 required control-label">Event Start Date& Time</label>
                     <div class="col-md-4">
                         <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control" id='datetimepicker1' name="start_date_time" value="{{ old('start_date_time') }}" />
@@ -94,7 +94,7 @@
 	                        </span>
                         @endif
                     </div>
-                    <label for="end_date_time" class="col-md-2 required control-label">Event End Date& Time</label>
+                    <label class="col-md-2 required control-label">Event End Date& Time</label>
                     <div class="col-md-4">
                         <div class='input-group date' id='datetimepicker2'>
                             <input type='text' class="form-control" id='datetimepicker2' name="end_date_time" value="{{ old('end_date_time')}}" />
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                     <div class="form-group">
-                        <label for="address" class="col-md-2 control-label">Location:</label>
+                        <label class="col-md-2 control-label">Location:</label>
                         <div class="col-md-10">
                             <div id="map"></div>
                         </div>
@@ -118,7 +118,7 @@
                     <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
                     <input type="hidden" id="longitude" class="form-control" name="longitude" value ="{{ old('longitude') }}">
                  <div class="form-group ">
-                    <label for="address" class="col-md-2 required control-label">Address</label>
+                    <label class="col-md-2 required control-label">Address</label>
                     <div class="col-md-4">
                         <input type="text" class="form-control" id="address" name="address" value="{{ old('address')}}" required>
                         @if($errors->has('address'))
@@ -127,7 +127,7 @@
                             </span>
                         @endif
                     </div>
-                    <label for="city" class="col-md-2 control-label">City:</label>
+                    <label class="col-md-2 control-label">City:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}">
                             @if ($errors->has('city'))
@@ -138,7 +138,7 @@
                         </div>
                 </div>
                   <div class="form-group">
-                        <label for="state" class="col-md-2 control-label">State:</label>
+                        <label class="col-md-2 control-label">State:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}">
                             @if ($errors->has('state'))
@@ -147,7 +147,7 @@
                                 </span>
                             @endif
                         </div>
-                        <label for="country" class="col-md-2 control-label">Country:</label>
+                        <label class="col-md-2 control-label">Country:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}">
                             @if ($errors->has('country'))
@@ -158,7 +158,7 @@
                         </div>
                     </div>
                       <div class="form-group">
-                        <label for="pin_code" class="col-md-2 required control-label">Pin Code: (format:110075)</label>
+                        <label class="col-md-2 required control-label">Pin Code: (format:110075)</label>
                         <div class="col-md-4">
                             <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}">
                             @if ($errors->has('pin_code'))
@@ -169,7 +169,7 @@
                         </div>
                         </div>
                  <div class="form-group">
-                    <label for="banner" class="col-md-2 required control-label">Banner Image</label>
+                    <label class="col-md-2 required control-label">Banner Image</label>
                     <div class="col-md-4">
                         <input type="file" name="banner" id="banner" required>
                         @if($errors->has('banner'))
@@ -178,16 +178,16 @@
                             </span>
                         @endif
                     </div>
-                    <label for="city" class="col-md-2 control-label">Banner Preview</label>
+                    <label class="col-md-2 control-label">Banner Preview</label>
                     <div class="col-md-4">
                         <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                     </div>
                 </div>
-                <div>
-                        <legend>Event Seating Plan</legend>
-                    </div>
+                <fieldset>
+                    <legend>Event Seating Plan</legend>
+                </fieldset>
                 <div class="form-group">
-                    <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
+                    <label class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
                         <select class="form-control js-example-basic-single" name="total_seats" id="total_seats" data-show-subtext="true" data-live-search="true">
                             <option value="">Select Total Seats</option>
@@ -195,7 +195,6 @@
                                 <option value="{{$i}}">{{$i}}</option>
                             @endfor
                         </select>
-                        <!-- <input type="text" class="form-control" name="total_seats" value="@if(old('total_seats')!=''){{ old('total_seats') }}@else 0 @endif" placeholder="Total Available Seats" id="total_seats"> -->
                     </div>
                 </div>
                 @if(count($seatingplans)>0)
@@ -205,11 +204,14 @@
                             <div class="col-md-4">
                                 <select class="form-control js-example-basic-single" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
                                     <option value="">Select Seats for {{ $seatingplan->title }}</option>
-                                    @for($i=0;$i<=5000;$i++)
+                                    @for($i=1;$i<=5000;$i++)
                                         <option value="{{$i}}">{{$i}}</option>
                                     @endfor
                                 </select>
-                                <!-- <input type="text" class="form-control" id="seats_in_plan" name="seating_plan[{{ $seatingplan->id }}]" value="" placeholder="Seats Available in {{ $seatingplan->title}}" onchange="javascript:checkTotalSeats();"> -->
+                            </div>
+                            <label class="col-md-3 control-label">{{ $seatingplan->title }} Per Ticket Price</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="seating_plan_price[{{ $seatingplan->id }}]" value="">
                             </div>
                         </div>
                     @endforeach
@@ -287,11 +289,10 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/formValidation.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.formvalidation@0.6.1(js/formValidation.min.js+js/framework/bootstrap.min.js)"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
+        $('#datetimepicker1').datetimepicker({ minDate:new Date() });
+        $('#datetimepicker2').datetimepicker({ minDate:new Date() });
         $(".js-example-basic-single").select2();
     });
 
