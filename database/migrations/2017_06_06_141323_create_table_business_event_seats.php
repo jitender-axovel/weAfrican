@@ -24,6 +24,7 @@ class CreateTableBusinessEventSeats extends Migration
             $table->integer('event_seating_plan_id')->unsigned();
             $table->foreign('event_seating_plan_id')->references('id')->on('event_seating_plans');
             $table->integer('total_seat_available')->nullable();
+            $table->double('per_ticket_price', 15, 2)->nullable();
             $table->integer('seat_buyed')->nullable();
             $table->timestamps();
         });
