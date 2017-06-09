@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datepicker.min.css') }}"/>
 @endsection
 @section('content')
@@ -19,12 +20,12 @@
 	        </div>
         @endif
         <div class="panel panel-default document">
-            <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
+            <form id="event-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                  <div class="form-group required">
                     <label for="category" class="col-md-2 control-label">Select Category:</label>
                     <div class="col-md-4">
-                        <select required name="event_category_id" class="form-control" required>
+                        <select required name="event_category_id" class="form-control js-example-basic-single" data-show-subtext="true" data-live-search="true" required>
                             <option value="" selected>Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" >{{ $category->title }}</option>
@@ -205,7 +206,7 @@
                             <div class="col-md-4">
                                 <select class="form-control js-example-basic-single" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
                                     <option value="">Select Seats for {{ $seatingplan->title }}</option>
-                                    @for($i=0;$i<=5000;$i++)
+                                    @for($i=1;$i<=50;$i++)
                                         <option value="{{$i}}">{{$i}}</option>
                                     @endfor
                                 </select>
@@ -214,6 +215,13 @@
                         </div>
                     @endforeach
                 @endif
+                <div class="col-md-6 bs-example">
+      <div class="input-group">
+        <label for="PayDate" class="input-group-addon btn">
+          <span class="glyphicon glyphicon-calendar"></span></label>
+        <input type="text" id="PayDate" name="PayDate" class="form-control date-picker" />
+      </div>
+    </div>
                 <div class="form-group">
                     <div class="col-md-12 col-md-offset-2">
                         <button type="submit" class="btn btn-primary">
@@ -229,10 +237,8 @@
 @section('header-scripts')
     <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
     <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
-    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-    
+    <script type="text/javascript" src="{{ asset('js/select2.min.js') }}"></script>
+
     <script type="text/javascript">
         
         var lat;
@@ -247,8 +253,9 @@
                     buildMap(lat,long);
                 }, "jsonp");
         }
-        $( document ).ready(function() {
-          navigator.geolocation.getCurrentPosition(showPosition);
+
+        $(document).ready(function() {
+            navigator.geolocation.getCurrentPosition(showPosition);
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(hasGeolocation, noGeolocation)
             } else {
@@ -270,98 +277,103 @@
             function geolocationNotSupported() {
                 getLocation();
             }
-          function showPosition(position) {
-              var lat = position.coords.latitude;
-              var lng = position.coords.longitude;
-              $('.map-lat').val(lat);
-              $('.map-lon').val(lng);
-              buildMap(lat, lng);
-          }
+
+            function showPosition(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                $('.map-lat').val(lat);
+                $('.map-lon').val(lng);
+                buildMap(lat, lng);
+            }
         });
     </script>
 @endsection
+
 @section('scripts')
-<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/formValidation.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
-<script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.formvalidation@0.6.1(js/formValidation.min.js+js/framework/bootstrap.min.js)"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
-        $(".js-example-basic-single").select2();
-    });
-
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            $('#preview').attr('src', e.target.result);
-          }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-    
-    $("#banner").change(function(){
-        readURL(this);
-    });
-
-    //GeoLocation Map Script(locationPicker with jquery)
-    function updateControls(addressComponents) {
-        $('#us5-street1').val(addressComponents.addressLine1);
-        $('#city').val(addressComponents.city);
-        $('#state').val(addressComponents.stateOrProvince);
-        $('#pin_code').val(addressComponents.postalCode);
-        $('#country').val(addressComponents.country);
-    }
-    function buildMap(lat,long){
-        $('#map').locationpicker({
-            location: {
-                latitude: lat,
-                longitude: long
-            },
-            radius: 100,
-            inputBinding: {
-                        latitudeInput: $('#latitude'),
-                        longitudeInput: $('#longitude'),
-                        radiusInput: $('#us3-radius'),
-                        locationNameInput: $('#address')
-            },
-            enableAutocomplete: true,
-            onchanged: function (currentLocation, radius, isMarkerDropped) {
-                var addressComponents = $(this).locationpicker('map').location.addressComponents;
-                updateControls(addressComponents);
-            },
-            oninitialized: function (component) {
-                var addressComponents = $(component).locationpicker('map').location.addressComponents;
-                updateControls(addressComponents);
-            }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+            $(".js-example-basic-single").select2();
+            $(".date-picker").datetimepicker();
         });
-    }
-    function checkTotalSeats()
-    {
-        /*var total = $("#total_seats").val();
-        var temp = 0;
+
+        function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                $('#preview').attr('src', e.target.result);
+              }
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+    
+        $("#banner").change(function(){
+            readURL(this);
+        });
+
+        //GeoLocation Map Script(locationPicker with jquery)
+        function updateControls(addressComponents) {
+            $('#us5-street1').val(addressComponents.addressLine1);
+            $('#city').val(addressComponents.city);
+            $('#state').val(addressComponents.stateOrProvince);
+            $('#pin_code').val(addressComponents.postalCode);
+            $('#country').val(addressComponents.country);
+        }
+
+        function buildMap(lat,long){
+            $('#map').locationpicker({
+                location: {
+                    latitude: lat,
+                    longitude: long
+                },
+                radius: 100,
+                inputBinding: {
+                            latitudeInput: $('#latitude'),
+                            longitudeInput: $('#longitude'),
+                            radiusInput: $('#us3-radius'),
+                            locationNameInput: $('#address')
+                },
+                enableAutocomplete: true,
+                onchanged: function (currentLocation, radius, isMarkerDropped) {
+                    var addressComponents = $(this).locationpicker('map').location.addressComponents;
+                    updateControls(addressComponents);
+                },
+                oninitialized: function (component) {
+                    var addressComponents = $(component).locationpicker('map').location.addressComponents;
+                    updateControls(addressComponents);
+                }
+            });
+        }
+
+        function checkTotalSeats()
+        {
+            /*var total = $("#total_seats").val();
+            var temp = 0;
+            $("input[id='seats_in_plan']").each(function() {
+                if(total>$(this).val())
+                {
+                    alert("Seats Available cannot be greater than Total Available Seats");
+                    self.focus();
+                    return;
+                }
+            });*/
+        }
+
+        var total_seats = $('#total_seats').val();
+        var sum = 0;
         $("input[id='seats_in_plan']").each(function() {
-            if(total>$(this).val())
-            {
-                alert("Seats Available cannot be greater than Total Available Seats");
-                self.focus();
-                return;
-            }
-        });*/
-    }
-    var total_seats = $('#total_seats').val();
-    var sum = 0;
-    $("input[id='seats_in_plan']").each(function() {
-        sum = sum + parseInt($(this).val());
-    });
-    //Bootstarp validation on form
+            sum = sum + parseInt($(this).val());
+        });
+
+        //Bootstarp validation on form
         $(document).ready(function() {
-            $('#register-form').formValidation({
+           
+            $('#event-form').bootstrapValidator({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
                     valid: 'glyphicon glyphicon-ok',
@@ -453,20 +465,17 @@
                             }
                         }
                     },
-                    /*SeatingPlan: {
-                        selector: '.SeatingPlan',
-                        validators: {
-                            callback: {
-                                message: 'The sum of percentages must be 100',
-                                callback: function(value, validator, $field) {
-                                    if (sum === total_seats) {
-                                        return true;
-                                    }
-                                    return false;
-                                }
-                            }
-                        }
-                    },*/
+                        PayDate: {
+               validators: {
+                 notEmpty: {
+                   message: 'The Pay Date is required and cannot be empty'
+                 },
+                 date: {
+                   format: 'MM/DD/YYYY',
+                   message: 'The format is dd/mm/yyyy'
+                 }
+               }
+             },
                 }
             })
             .on('success.form.bv', function(e) {
@@ -492,6 +501,10 @@
                     console.log(result);
                 }, 'json');
             });
+
+             $('.date-picker').on('changeDate show', function(e) {
+           $('#event-form').bootstrapValidator('revalidateField', 'PayDate');
+
         });
 </script>
 @endsection
