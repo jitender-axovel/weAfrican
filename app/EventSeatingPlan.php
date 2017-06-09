@@ -36,4 +36,16 @@ class EventSeatingPlan extends Model
         }
         
     }
+
+    public function getEventPlanSeatsPrice($eventId , $planId)
+    {
+        if(BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first())
+        {
+            return BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first()->per_ticket_price;
+        }else
+        {
+            return 0;
+        }
+        
+    }
 }
