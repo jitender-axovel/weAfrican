@@ -111,6 +111,6 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('seating-plan', 'AdminSeatingPlanController');
 		Route::get('seating-plan/block/{id}', 'AdminSeatingPlanController@block');
 		Route::resource('security-question', 'AdminSecurityQuestionsController');
-		Route::resource('security-question/block/{id}', 'AdminSecurityQuestionsController@block');
+		Route::get('security-question/block/{id}', 'AdminSecurityQuestionsController@block');
 	});
 });

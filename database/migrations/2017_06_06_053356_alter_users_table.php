@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterUserTable extends Migration
+class AlterUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AlterUserTable extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->string('mobile_verified')->after('is_verified')->default(0);
+            $table->integer('mobile_verified')->after('is_verified')->default(0);
+            $table->string('gender')->after('last_name')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AlterUserTable extends Migration
     {
         Schema::table('users', function($table) {
             $table->dropColumn('mobile_verified');
+            $table->dropColumn('gender');
         });
     }
 }

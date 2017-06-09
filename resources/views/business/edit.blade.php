@@ -57,6 +57,30 @@
                     @endif
                 </div>
             </div>
+            <div class="form-group required">
+                <label for="gender" class="col-md-2 control-label">Gender:</label>
+                <div class="col-md-4">
+                    <div class="col-md-5">
+                    <input required type="radio" name="gender"
+                    @if(old('gender')!='female' or $business->user->gender=="male")
+                        checked="checked"
+                    @endif
+                    value="male">&nbsp;<label>Male</label>
+                    </div>
+                    <div class="col-md-4">
+                    <input required type="radio" name="gender" 
+                    @if(old('gender')=='female'  or $business->user->gender=="female")
+                        checked="checked"
+                    @endif 
+                    value="female">&nbsp;<label>Female</label>
+                    </div>
+                    @if ($errors->has('gender'))
+                        <span class="help-block">
+                        <strong>{{ $errors->first('gender') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
             <div class="form-group ">
                 <label for="category" class="col-md-2 required control-label">Category</label>
                 <div class="col-md-4">
