@@ -292,20 +292,6 @@
 @endsection
 
 @section('scripts')
-<<<<<<< HEAD
-<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/formValidation.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
-<script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.formvalidation@0.6.1(js/formValidation.min.js+js/framework/bootstrap.min.js)"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker({ minDate:new Date() });
-        $('#datetimepicker2').datetimepicker({ minDate:new Date() });
-        $(".js-example-basic-single").select2();
-    });
-=======
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
@@ -317,7 +303,6 @@
             $(".js-example-basic-single").select2();
             $(".date-picker").datetimepicker();
         });
->>>>>>> 8bf3f8b6751e20fedf2e810845d5d05361beec6c
 
         function readURL(input) {
           if (input.files && input.files[0]) {
