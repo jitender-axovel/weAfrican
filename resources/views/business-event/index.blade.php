@@ -60,29 +60,37 @@
                                         </div>
                                         <div class="modal-body">
                                          <form class="form-horizontal" action="{{ url('event/participants/download-csv/'.$event->id) }}" method="POST">
-                    {{csrf_field()}}
-                    <div class="form-group form-inline col-md-4">
-                        <label>Full Name</label>
-                        <input type="checkbox" class="form-control" name="full_name" value="full_name">
-                    </div>
-                    <div class="form-group form-inline col-md-4">
-                        <label>Mobile Number</label>
-                        <input type="checkbox" class="form-control" name="mobile_number" value="mobile_number">
-                    </div>
-                    <div class="form-group form-inline col-md-4">
-                        <label>Country Code</label>
-                        <input type="checkbox" class="form-control" name="country_code" value="country_code">
-                    </div>
-                    <div class="form-group form-inline col-md-6">
-                        <label>Index</label>
-                            <input type="number" class="form-control " name="index">
-                    </div>
-                    <div class="form-group form-inline col-md-6">
-                        <label>Limit</label>
-                            <input type="number" class="form-control " name="limit">
-                    </div>
-                    <button class="btn btn-success col-md-12" type="submit">Download</button>
-                </form>
+                                            {{csrf_field()}}
+                                            <div class="form-group form-inline col-md-3">
+                                                <label>First Name</label>
+                                                <input type="checkbox" class="form-control" name="first_name" value="first_name">
+                                            </div>
+                                            <div class="form-group form-inline col-md-3">
+                                                <label>Middle Name</label>
+                                                <input type="checkbox" class="form-control" name="middle_name" value="middle_name">
+                                            </div>
+                                            <div class="form-group form-inline col-md-3">
+                                                <label>Last Name</label>
+                                                <input type="checkbox" class="form-control" name="last_name" value="last_name">
+                                            </div>
+                                            <div class="form-group form-inline col-md-3">
+                                                <label>Mobile Number</label>
+                                                <input type="checkbox" class="form-control" name="mobile_number" value="mobile_number">
+                                            </div>
+                                            <div class="form-group form-inline col-md-2">
+                                                <label>Country Code</label>
+                                                <input type="checkbox" class="form-control" name="country_code" value="country_code">
+                                            </div>
+                                            <div class="form-group form-inline col-md-6">
+                                                <label>Index</label>
+                                                    <input type="number" class="form-control " name="index">
+                                            </div>
+                                            <div class="form-group form-inline col-md-6">
+                                                <label>Limit</label>
+                                                    <input type="number" class="form-control " name="limit">
+                                            </div>
+                                            <button class="btn btn-success col-md-12" type="submit">Download</button>
+                                        </form>
                                         </div>
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -94,6 +102,9 @@
                                 </li>
                                 <li>
                                     <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Event"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></button></a>
+                                </li>
+                                <li>
+                                    <a href="{{url('business-event/'.$event->id)}}"><button type="button" class="btn btn-success" title="Edit Event"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                 </li>
                                 <li>
                                     <form action="{{url('business-event/'.$event->id)}}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->title}}', event,this)">
