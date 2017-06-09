@@ -77,7 +77,6 @@ class UserBusinessController extends Controller
             'first_name' => 'required|max:255|string',
             'last_name' => 'required|max:255|string',
             'country_code' => 'required|numeric|min:0|max:99',
-            'title' => 'required',
             'keywords' =>'required',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:5|max:255',
@@ -99,6 +98,9 @@ class UserBusinessController extends Controller
             $rules['key_skills'] = 'required|string';
             $rules['acedimic_status'] = 'required';
             $input['is_update'] = 1;
+        }else
+        {
+            $rules['title'] = 'required';
         }
         $validator = Validator::make($request->all(), $rules);
 
