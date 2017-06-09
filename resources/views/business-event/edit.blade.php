@@ -190,9 +190,9 @@
                         <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                     </div>
                 </div>
-                <div>
+                <fieldset>
                     <legend>Event Seating Plan</legend>
-                </div>
+                </fieldset>
                 <div class="form-group">
                     <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
@@ -219,6 +219,10 @@
                                         <option @if($i==$j) selected="selected"@endif value="{{$i}}">{{$i}}</option>
                                     @endfor
                                 </select>
+                            </div>
+                            <label class="col-md-3 control-label">{{ $seatingplan->title }} Per Ticket Price</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="seating_plan_price[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanSeatsPrice($event->id, $seatingplan->id) }}">
                             </div>
                         </div>
                     @endforeach
