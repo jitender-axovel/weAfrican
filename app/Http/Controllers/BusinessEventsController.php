@@ -11,6 +11,7 @@ use App\EventBanner;
 use App\UserBusiness;
 use App\BusinessNotification;
 use App\EventSeatingPlan;
+use App\SoldEventTicket;
 use App\User;
 use App\Helper;
 use Validator;
@@ -114,6 +115,7 @@ class BusinessEventsController extends Controller
         foreach ($input['seating_plan'] as $key => $value) {
             $seating_plan['event_seating_plan_id'] = $key;
             $seating_plan['total_seat_available'] = $value;
+             $seating_plan['per_ticket_price'] = $input['seating_plan_price'][$key];
             $business_event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
             $business_event_seats = BusinessEventSeat::create($business_event_seats);
             $business_event_seats->save();
@@ -136,7 +138,13 @@ class BusinessEventsController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = BusinessEvent::whereId($id)->first();
+        $pageTitle = "Business Event - ".$event->name;
+        $eventSeatingPlans = EventSeatingPlan::where('is_blocked', 0)->get();
+        $soldEventTickets = SoldEventTicket::where(array('business_id'=>$event->business_id,'business_event_id'=>$event->id))->get();
+        $ticket_details = DB::select("SELECT id, user_id,business_id, business_event_id, transaction_id, GROUP_CONCAT(event_seating_plan_id SEPARATOR ',') as seating_plans,sum(total_tickets_price) as totalprice, sum(total_tickets_buyed) as total_ticket, created_at FROM `sold_event_tickets` where business_event_id='$id' group by user_id,created_at order by created_at desc");
+        
+        return view('business-event.view', compact('pageTitle', 'event', 'eventSeatingPlans','soldEventTickets', 'ticket_details'));
     }
 
     /**
@@ -205,15 +213,17 @@ class BusinessEventsController extends Controller
         } else {
             $event = BusinessEvent::where('id',$id)->update($input);
         }
-
+        $seating_plan_price = $request->input('seating_plan_price');
         $event = BusinessEvent::where('id',$id)->first();
+
         $seating_plan['user_id'] = Auth::id();
-        $seating_plan['business_id'] = $event->business->id;
+        $seating_plan['business_id'] = $event->business_id;
         $seating_plan['business_event_id'] = $event->id;
         $search = $seating_plan;
         foreach ($request->input('seating_plan') as $key => $value) {
             $search['event_seating_plan_id'] = $seating_plan['event_seating_plan_id'] =  $key;
             $seating_plan['total_seat_available'] = $value;
+            $seating_plan['per_ticket_price'] = $seating_plan_price[$key];
             if($value!="" and $value!=null)
             {
                 $row = BusinessEventSeat::where($search)->first();
@@ -267,9 +277,9 @@ class BusinessEventsController extends Controller
     public function exportToCsv(Request $request, $eventId)
     {
         $input = $request->input();
-        
         $index = (--$input['index']);
         $limit = $input['limit'];
+
         
         $input = array_intersect_key($input, User::$downloadable);
 
