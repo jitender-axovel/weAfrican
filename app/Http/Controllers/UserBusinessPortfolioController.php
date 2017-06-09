@@ -133,6 +133,13 @@ class UserBusinessPortfolioController extends Controller
             if($request->hasFile('portfolio_image_'.($i+1))){
                 if($request->file('portfolio_image_'.($i+1))->isValid())
                 {
+                    if(isset($image[$i]) and $image[$i]!="")
+                    {
+                        unlink(config('image.portfolio_image_path').$image[$i]);
+                        unlink(config('image.portfolio_image_path').'thumbnails/small/'.$image[$i]);
+                        unlink(config('image.portfolio_image_path').'thumbnails/medium/'.$image[$i]);
+                        unlink(config('image.portfolio_image_path').'thumbnails/large/'.$image[$i]);
+                    }
                     $file = $key = md5(uniqid(rand(), true));
                     $ext = $request->file('portfolio_image_'.($i+1))->
                         getClientOriginalExtension();
@@ -151,7 +158,7 @@ class UserBusinessPortfolioController extends Controller
                 }
             }else
             {
-                if($image[$i]=="" or  $image[$i]==NULL)
+                if(!isset($image[$i]) or $image[$i]=="" or  $image[$i]==NULL)
                 {$image[$i] = "";}
             }
         }
