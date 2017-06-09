@@ -213,3 +213,4 @@ footer .available .list-inline > li {padding-right: 0;}
 	display:block;
 }
 #preview,.previewImg{ width: 100px; height: auto; }
+.align-left{ text-align: left !important; }
