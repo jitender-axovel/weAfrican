@@ -271,7 +271,7 @@
                     </label>
                     <div class="col-md-2">
                         @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[1]!="")
-                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[1])}}" alt=""  id="preview_2">
+                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[1])}}" alt="" class="previewImg" id="preview_2">
                         @else
                             <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_2">
                         @endif
