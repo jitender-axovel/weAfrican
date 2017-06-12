@@ -253,7 +253,7 @@
                         @endif
                     </div>
                     <div class="col-md-4">
-                        <input type="radio" name="main_image" value="1" @if($businessPorfolio->main_image==1 or $businessPorfolio->main_image==0) checked="checked" @endif >&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Main Image</label>
+                        <input type="radio" name="featured_image" value="1" @if($businessPorfolio->featured_image==1 or $businessPorfolio->featured_image==0) checked="checked" @endif >&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -277,7 +277,7 @@
                         @endif
                     </div>
                     <div class="col-md-4">
-                        <input type="radio" name="main_image" @if($businessPorfolio->main_image==2) checked="checked" @endif value="2">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Main Image</label>
+                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==2) checked="checked" @endif value="2">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -301,7 +301,7 @@
                         @endif
                     </div>
                     <div class="col-md-4">
-                        <input type="radio" name="main_image" @if($businessPorfolio->main_image==3) checked="checked" @endif value="3">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Main Image</label>
+                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==3) checked="checked" @endif value="3">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -325,7 +325,7 @@
                         @endif
                     </div>
                     <div class="col-md-4">
-                        <input type="radio" name="main_image" @if($businessPorfolio->main_image==4) checked="checked" @endif value="4">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Main Image</label>
+                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==4) checked="checked" @endif value="4">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -349,7 +349,7 @@
                         @endif
                     </div>
                     <div class="col-md-4">
-                        <input type="radio" name="main_image" @if($businessPorfolio->main_image==5) checked="checked" @endif value="5">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Main Image</label>
+                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==5) checked="checked" @endif value="5">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
                 <div class="form-group">
