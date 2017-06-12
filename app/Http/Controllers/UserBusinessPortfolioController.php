@@ -109,7 +109,7 @@ class UserBusinessPortfolioController extends Controller
             'portfolio_image_3' => 'image|mimes:jpg,png,jpeg',
             'portfolio_image_4' => 'image|mimes:jpg,png,jpeg',
             'portfolio_image_5' => 'image|mimes:jpg,png,jpeg',
-            'main_image' => 'required',
+            'featured_image' => 'required',
             );
         if($portfolio->image!="" and $portfolio->image!=NULL)
         {
