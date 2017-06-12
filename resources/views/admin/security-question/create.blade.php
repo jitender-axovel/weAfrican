@@ -20,17 +20,6 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-2">Confirm Security Question</label>
-					<div class="col-md-10">
-						<input type="text" class="form-control" name="confirm_question" value="" required >
-						@if($errors->has('confirm_question'))
-							<span class="help-block">
-								<strong>{{ $errors->first('confirm_question') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div>
-				<div class="form-group">
 					<div class="col-md-4 col-md-offset-1">
 						<button type="submit" class="btn btn-success" id="btn-login">Create Seating Plan</button>
 					</div>
