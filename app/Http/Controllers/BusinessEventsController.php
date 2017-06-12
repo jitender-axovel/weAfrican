@@ -142,8 +142,12 @@ class BusinessEventsController extends Controller
         $pageTitle = "Business Event - ".$event->name;
         $eventSeatingPlans = EventSeatingPlan::where('is_blocked', 0)->get();
         $soldEventTickets = SoldEventTicket::where(array('business_id'=>$event->business_id,'business_event_id'=>$event->id))->get();
-        $ticket_details = DB::select("SELECT id, user_id,business_id, business_event_id, transaction_id, GROUP_CONCAT(event_seating_plan_id SEPARATOR ',') as seating_plans,sum(total_tickets_price) as totalprice, sum(total_tickets_buyed) as total_ticket, created_at FROM `sold_event_tickets` where business_event_id='$id' group by user_id,created_at order by created_at desc");
-        
+        $ticket_details = DB::table('sold_event_tickets as SET')
+            ->join('users as U','U.id','SET.user_id')
+            ->join('business_events as BE','BE.id','SET.business_event_id')
+            ->groupBy('SET.transaction_id','SET.user_id','SET.created_at')
+            ->select("*","SET.user_id",DB::raw("SUM(SET.total_tickets_price) as totalprice"),DB::raw("SUM(SET.total_tickets_buyed) as total_ticket"),DB::raw("GROUP_CONCAT(SET.event_seating_plan_id SEPARATOR ',') as seating_plans"))
+            ->get();
         return view('business-event.view', compact('pageTitle', 'event', 'eventSeatingPlans','soldEventTickets', 'ticket_details'));
     }
 
