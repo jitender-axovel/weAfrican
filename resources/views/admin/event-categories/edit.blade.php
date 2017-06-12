@@ -19,15 +19,6 @@
 						</span>
 						@endif
 					</div>
-					<label class="control-label col-md-2">Confirm Name</label>
-					<div class="col-md-4">
-						<input type="text" class="form-control" name="confirm_title" required >
-						@if($errors->has('confirm_title'))
-						<span class="help-block">
-							<strong>{{ $errors->first('confirm_title') }}</strong>
-						</span>
-						@endif
-					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">Description</label>
