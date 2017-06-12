@@ -56,7 +56,7 @@ class UserBusinessController extends Controller
     public function create()
     {
         $pageTitle = "Register Business";
-        $categories = BussinessCategory::where('is_blocked',0)->get();
+        $categories = BussinessCategory::where('is_blocked',0)->where('parent_id',0)->get();
         $securityquestions = SecurityQuestion::where('is_blocked',0)->get();
         $term = CmsPage::where('slug', 'terms-and-conditions')->first();
         return view('business.register', compact('categories','pageTitle', 'term', 'securityquestions'));
@@ -436,7 +436,7 @@ class UserBusinessController extends Controller
         $pageTitle = "Bussiness -Edit";
         $business = UserBusiness::find($id);
         $categories = BussinessCategory::where('is_blocked',0)->get();
-        $subcategories = BussinessSubcategory::where('category_id',$business->bussiness_category_id)->get();
+        $subcategories = BussinessCategory::where('parent_id',$business->bussiness_category_id)->get();
         return view('business.edit',compact('pageTitle','business','categories','subcategories'));
     }
 
