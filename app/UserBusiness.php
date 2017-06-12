@@ -116,6 +116,11 @@ class UserBusiness extends Model
         return $this->reviews()->count();
     }
 
+    public function portfolio()
+    {
+        return $this->hasOne('App\UserPortfolio','business_id');
+    }
+
     public function apiGetBusinessesByCategory($input)
     {
         if (isset($input['latitude']) && isset($input['longitude']) && isset($input['radius'])) {
