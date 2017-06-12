@@ -111,19 +111,19 @@
 							    </tr>
 							  </thead>
 							  <tbody>
-							  @php
-							  $i=1;
-							  foreach($ticket_details as $key => $value) {
-							  		echo '<tr><td scope="row">'.$i.'</td>';
-							  		echo '<td>'.$event->user($value->id)->first_name.' '.$event->user($value->id)->last_name.'</td>';
-							  		echo '<td>';
-						            foreach (explode(",", $value->seating_plans) as $value1) {
-						                echo $event->seatingPlan($value1)->title.": ".$event->soldTicket($value->user_id,$value->business_event_id,$value->transaction_id)->total_tickets_buyed.'<br>';
-						            }
-						            echo '<td>'.$value->totalprice.' '.$event->user($value->id)->currency.'</td><td>'.date('m/d/Y h:i A', strtotime($value->created_at)).'</td></tr>';
-						            $i++;
-						        }
-						      @endphp
+						      @foreach($ticket_details as $key => $ticket_detail)
+						      	<tr>
+						      		<td>{{$key+1}}</td>
+						      		<td>{{$ticket_detail->first_name}} {{$ticket_detail->last_name}}</td>
+						      		<td>
+						      		@foreach(explode(',',$ticket_detail->seating_plans) as $seating_plan)
+						      			{{ $event->seatingPlan($seating_plan)->title }} : {{ $event->soldTicket($ticket_detail->user_id,$ticket_detail->business_event_id,$ticket_detail->transaction_id,$seating_plan)->total_tickets_buyed }}&nbsp;&nbsp;
+						      		@endforeach
+						      		</td>
+						      		<td>{{ $ticket_detail->totalprice }} {{ $ticket_detail->currency }}</td>
+						      		<td>{{ date('m/d/Y h:i A', strtotime($ticket_detail->created_at)) }}</td>
+						      	</tr>
+						      @endforeach
 							  </tbody>
 							</table>
 						</div>
