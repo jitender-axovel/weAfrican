@@ -51,7 +51,7 @@ class AdminSeatingPlanController extends Controller
 
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title']) {
+        try{
             $seatingplan = new EventSeatingPlan();
             $seatingplan->title = $input['title'];
             $seatingplan->description = $input['description'];
@@ -60,9 +60,8 @@ class AdminSeatingPlanController extends Controller
             $seatingplan->save();
 
             return redirect('admin/seating-plan')->with('success', 'New Event Seating Plan created successfully');
-        }else
-        {
-            return redirect('admin/seating-plan/create')->with('error', 'Title and confirm title should be same');
+        }catch(Exception $e){
+            return redirect('admin/seating-plan/create')->with('error', $e->getMessage());
         }
     }
 
@@ -105,15 +104,15 @@ class AdminSeatingPlanController extends Controller
             return redirect('admin/seatingplan/'.$id.'/edit')->withErrors($validator)->withInput();
         }
         $input = $request->input();
-        if($input['title'] == $input['confirm_title'])
-        {
+        try{
+
             $seatingplan = array_intersect_key($input, EventSeatingPlan::$updatable);
             $seatingplan = EventSeatingPlan::where('id',$id)->update($seatingplan);
 
             return redirect('admin/seating-plan')->with('success', ' Event Seating Plan updated successfully');
-        }else
+        }catch(Exception $e)
         {
-            return back()->with('error', 'Title and confirm title should be same');
+            return back()->with('error', 'There is some error. Please try after some time');
         }
     }
 
