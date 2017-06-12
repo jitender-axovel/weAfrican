@@ -21,7 +21,6 @@ class CreateUserBusinessesTable extends Migration
             $table->integer('bussiness_category_id')->unsigned();
             $table->foreign('bussiness_category_id')->references('id')->on('bussiness_categories');
             $table->integer('bussiness_subcategory_id')->unsigned()->nullable();
-            $table->foreign('bussiness_subcategory_id')->references('id')->on('bussiness_subcategories');
             $table->string('title');
             $table->string('keywords');
             $table->longText('about_us')->nullable();
