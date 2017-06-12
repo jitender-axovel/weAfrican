@@ -21,7 +21,7 @@
 					</div>
 					<label class="control-label col-md-2">Category</label>
 					<div class="col-md-4">
-						<select required name="bussiness_category_id" required>
+						<select required class="form-control" name="bussiness_category_id" required>
 							<option value="" selected>Select category</option>
 							@foreach($categories as $category)
 								<option value="{{ $category->id }}" @if($business->category->title == $category->title){{ 'selected'}} @else @endif >{{ $category->title }}</option>
@@ -34,6 +34,19 @@
 						@endif
 					</div>
 				</div>
+				@if(count($subCategories)>0)
+					<div class="form-group">
+						<label class="control-label col-md-2">Sub Category</label>
+						<div class="col-md-4">
+							<select required class="form-control" name="bussiness_subcategory_id" required>
+								<option value="" selected>Select Sub Category</option>
+								@foreach($subCategories as $subCategory)
+									<option @if($subCategory->id==$business->bussiness_subcategory_id) selected="selected" @endif value="{{$subCategory->id}}">{{$subCategory->title}}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+				@endif
 				<div class="form-group">
 					<label class="control-label col-md-2">Bussiness keywords:</label>
 					<div class="col-md-4">
@@ -57,7 +70,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Address:</label>
 					<div class="col-md-4">
-					<input type="text" class="form-control" name="address" value="{{ $business->address or old('address') }}">
+					<input type="text" class="form-control" name="address" value="{{ $business->user->address or old('address') }}">
 						@if($errors->has('address'))
 						<span class="help-block">
 							<strong>{{ $errors->first('address') }}</strong>
@@ -66,7 +79,7 @@
 					</div>
 					<label class="control-label col-md-2">City:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="city" value="{{ $business->city or old('city') }}" >
+						<input type="text" class="form-control" name="city" value="{{ $business->user->city or old('city') }}" >
 						@if($errors->has('city'))
 						<span class="help-block">
 							<strong>{{ $errors->first('city') }}</strong>
@@ -77,7 +90,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">State:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="state" value="{{ $business->state or old('state') }}">
+						<input type="text" class="form-control" name="state" value="{{ $business->user->state or old('state') }}">
 						@if($errors->has('state'))
 						<span class="help-block">
 							<strong>{{ $errors->first('state') }}</strong>
@@ -86,7 +99,7 @@
 					</div>
 					<label class="control-label col-md-2">Country:</label>
 					<div class="col-md-4">
-					<input type="text" class="form-control" name="country" value="{{ $business->country or old('country') }}">
+					<input type="text" class="form-control" name="country" value="{{ $business->user->country or old('country') }}">
 						@if($errors->has('country'))
 						<span class="help-block">
 							<strong>{{ $errors->first('country') }}</strong>
@@ -97,7 +110,7 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Pin code:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="pin_code" value="{{ $business->pin_code or old('pin_code') }}" >
+						<input type="text" class="form-control" name="pin_code" value="{{ $business->user->pin_code or old('pin_code') }}" >
 						@if($errors->has('pin_code'))
 						<span class="help-block">
 							<strong>{{ $errors->first('pin_code') }}</strong>
@@ -106,7 +119,7 @@
 					</div>
 					<label class="control-label col-md-2">Email:</label>
 					<div class="col-md-4">
-					<input type="text" class="form-control" name="email" value="{{ $business->email or old('email') }}" required>
+					<input type="text" class="form-control" name="email" value="{{ $business->user->email or old('email') }}" required>
 						@if($errors->has('email'))
 						<span class="help-block">
 							<strong>{{ $errors->first('email') }}</strong>
@@ -117,19 +130,10 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Primary Mobile Number:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="mobile_number" value="{{ $business->mobile_number or old('mobile_number') }}" required disabled >
+						<input type="text" class="form-control" name="mobile_number" value="{{ $business->user->mobile_number or old('mobile_number') }}" required disabled >
 						@if($errors->has('mobile_number'))
 						<span class="help-block">
 							<strong>{{ $errors->first('mobile_number') }}</strong>
-						</span>
-						@endif
-					</div>
-					<label class="control-label col-md-2">Secondary Mobile Number:</label>
-					<div class="col-md-4">
-					<input type="text" class="form-control" name="secondary_phone_number" value="{{ $business->secondary_phone_number or old('secondary_phone_number') }}">
-						@if($errors->has('secondary_phone_number'))
-						<span class="help-block">
-							<strong>{{ $errors->first('secondary_phone_number') }}</strong>
 						</span>
 						@endif
 					</div>
@@ -158,4 +162,8 @@
 			</form>
 		</div>
 	</div>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+</script>
 @endsection

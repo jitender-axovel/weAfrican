@@ -42,41 +42,41 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Address:</label>
 					<div class="col-md-4">
-					{{ $business->address  }}
+					{{ $business->user->address  }}
 					</div>
 					<label class="control-label col-md-2">City:</label>
 					<div class="col-md-4">
-						{{ $business->city  }}
+						{{ $business->user->city  }}
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">State:</label>
 					<div class="col-md-4">
-						{{ $business->state }}
+						{{ $business->user->state }}
 					</div>
 					<label class="control-label col-md-2">Country:</label>
 					<div class="col-md-4">
-					{{ $business->country or old('country') }}
+					{{ $business->user->country or old('country') }}
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-md-2">Pin code:</label>
 					<div class="col-md-4">
-						{{ $business->pin_code or old('pin_code') }}
+						{{ $business->user->pin_code or old('pin_code') }}
 					</div>
 					<label class="control-label col-md-2">Email:</label>
 					<div class="col-md-4">
-					{{ $business->email or old('email') }}
+					{{ $business->user->email or old('email') }}
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-2">Primary Mobile Number:</label>
+					<label class="control-label col-md-2">Mobile Number:</label>
 					<div class="col-md-4">
-						+{{ $business->user->country_code }}-{{ $business->mobile_number or old('mobile_number') }}
+						+{{ $business->user->country_code }}-{{ $business->user->mobile_number or old('mobile_number') }}
 					</div>
 					<label class="control-label col-md-2">Currency:</label>
 					<div class="col-md-4">
-					{{ $business->currency }}
+					{{ $business->user->currency }}
 					</div>
 				</div>
 				<div class="form-group">	

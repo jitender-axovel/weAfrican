@@ -94,10 +94,10 @@
 			@foreach($businesses as $business)
 			<tr>
 				<td>{{ $business->business_id}} </td>
-				<td>{{ $business->user->full_name}} </td>
+				<td>{{ $business->user->first_name }} {{ $business->user->last_name }}</td>
 				<td>{{ $business->title}} </td>
 				
-				<td>{{ $business->mobile_number}}</td>
+				<td>{{ $business->user->mobile_number}}</td>
 				<td>
 					@if($business->is_identity_proof_validate==1)
 						Identity Proof: Verified
@@ -148,10 +148,10 @@
 	</script>
 	<script type="text/javascript">
 		$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-		@if(isset($input) and !$input['page'])
+		@if(!isset($input['page']))
 		$(document).ready( function () {
 			$.ajax({
-                type:'POST',
+				type:'POST',
                 url: '{{ url("category") }}',
                 success:function(response)
                 {
