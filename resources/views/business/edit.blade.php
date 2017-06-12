@@ -102,7 +102,7 @@
                         <select required class="form-control selectpicker" disabled="disabled" >
                             <option value="" selected>Select Category</option>
                             @foreach($subcategories as $subcategory)
-                                <option value="{{ $subcategory->id }}" @if($business->subcategory->title == $subcategory->title){{ 'selected'}} @else @endif  >{{ $subcategory->title }}</option>
+                                <option value="{{ $subcategory->id }}" @if($business->bussiness_subcategory_id == $subcategory->id){{ 'selected'}} @else @endif  >{{ $subcategory->title }}</option>
                             @endforeach
                         </select>
                     </div>
