@@ -33,7 +33,8 @@ class AdminBussinessCategoriesController extends Controller
     public function create()
     {
         $pageTitle = "Admin - Create Business Category";
-        return view('admin.categories.create', compact('pageTitle'));
+        $categories = BussinessCategory::where('parent_id',0)->get();
+        return view('admin.categories.create', compact('pageTitle','categories'));
     }
 
     /**
@@ -69,20 +70,19 @@ class AdminBussinessCategoriesController extends Controller
         }
 
         $input = $request->input();
+        $category = array_intersect_key($input, BussinessCategory::$updatable);
+        try{
 
-        if($input['title'] == $input['confirm_title']) {
-            $category = new BussinessCategory();
+            $category = new BussinessCategory($category);
 
-            $category->title = $input['title'];
-            $category->description = $input['description'];
-            $category->image = $image;
             $category->slug = Helper::slug($input['title'], $category->id);
-
             $category->save();
 
             return redirect('admin/bussiness/category')->with('success', 'New Bussiness category created successfully');
-        } else {
-            return redirect('admin/bussiness/category/create')->with('error', 'Title and confirm title should be same');
+
+        }catch(Exception $e)
+        {
+            return redirect('admin/bussiness/category/create')->with('error', $e->getMessage());
         }
     }
 
@@ -109,7 +109,8 @@ class AdminBussinessCategoriesController extends Controller
         {
             $pageTitle = "Admin - Edit Bussiness Category";
             $category = BussinessCategory::find($id);
-            return view('admin.categories.edit',compact('pageTitle','category'));
+            $categories = BussinessCategory::where('parent_id',0)->get();
+            return view('admin.categories.edit',compact('pageTitle','category','categories'));
         }else
         {
             return redirect('admin/bussiness/category')->with('error', 'You cannot edit this category');
@@ -153,8 +154,8 @@ class AdminBussinessCategoriesController extends Controller
         }
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title'])
-        {
+        /*if($input['title'] == $input['confirm_title'])
+        {*/
             $category = array_intersect_key($input, BussinessCategory::$updatable);
            
            
@@ -165,11 +166,15 @@ class AdminBussinessCategoriesController extends Controller
             } else {
                 $category = BussinessCategory::where('id',$id)->update($category);
             }
-
-            return redirect('admin/bussiness/category')->with('success', ' Business Category updated successfully');
-        } else {
+            if($category){
+                return redirect('admin/bussiness/category')->with('success', ' Business Category updated successfully');
+            }else
+            {
+                return redirect('admin/bussiness/category')->with('error', ' Error occured.Please Try again!');
+            }
+        /*} else {
             return back()->with('error', 'Title and confirm title should be same');
-        }
+        }*/
     }
 
     /**
