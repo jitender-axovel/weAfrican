@@ -9,12 +9,12 @@ class BussinessCategory extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['title', 'slug', 'description', 'image'];
+    protected $fillable = ['parent_id','title', 'slug', 'description', 'image'];
 
-    public static $updatable = ['title' => "", 'slug' => "", 'description' => "", 'image' => ""];
+    public static $updatable = ['parent_id' => "", 'title' => "", 'slug' => "", 'description' => "", 'image' => ""];
 
     public static $validater = array(
-    	'title' => 'required|unique:bussiness_categories|max:255',
+    	'title' => 'required|unique:bussiness_categories|max:20',
     	'description' => 'required',
     	'category_image' => 'required',
     	);
@@ -38,5 +38,10 @@ class BussinessCategory extends Model
     {
     	$categories = $this->where('is_blocked',0)->get();
        	return $categories;
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo('App\BussinessCategory','parent_id','id');
     }
 }
