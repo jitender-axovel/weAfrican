@@ -47,17 +47,6 @@ class BusinessEvent extends Model
         'banner' => 'image|mimes:jpg,png,jpeg',
 	);
 
-    public function user($id)
-    {
-        if(User::where('id', $id)->first())
-        {
-            return User::where('id', $id)->first();
-        }else
-        {
-            return 0;
-        }
-    }
-
     public function seatingPlan($id)
     {
         if(EventSeatingPlan::where('id', $id)->first())
@@ -69,11 +58,11 @@ class BusinessEvent extends Model
         }
     }
 
-    public function soldTicket($user_id,$business_event_id,$transaction_id)
+    public function soldTicket($user_id,$business_event_id,$transaction_id,$event_seating_plan_id)
     {
-        if(SoldEventTicket::where(array('user_id'=>$user_id,'business_event_id'=>$business_event_id,'transaction_id'=>$transaction_id))->first())
+        if(SoldEventTicket::where(array('user_id'=>$user_id,'business_event_id'=>$business_event_id,'transaction_id'=>$transaction_id,'event_seating_plan_id'=>$event_seating_plan_id))->first())
         {
-            return SoldEventTicket::where(array('user_id'=>$user_id,'business_event_id'=>$business_event_id,'transaction_id'=>$transaction_id))->first();
+            return SoldEventTicket::where(array('user_id'=>$user_id,'business_event_id'=>$business_event_id,'transaction_id'=>$transaction_id,'event_seating_plan_id'=>$event_seating_plan_id))->first();
         }else
         {
             return 0;
