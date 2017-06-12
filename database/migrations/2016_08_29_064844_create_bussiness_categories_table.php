@@ -15,6 +15,7 @@ class CreateBussinessCategoriesTable extends Migration
     {
         Schema::create('bussiness_categories', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('parent_id')->default(0);
             $table->string('title')->unique();
             $table->string('slug');
             $table->text('description');
