@@ -26,7 +26,7 @@ class AjaxController extends Controller
 	    	$list[0] = User::distinct('country')->pluck('id', 'country');
 	    	if($user_role_id==3)
 	    	{
-	    		$list[1] = BussinessCategory::where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
+	    		$list[1] = BussinessCategory::where('is_blocked', 0)->where('parent_id',0)->orderBy('id','asc')->pluck('id', 'title');
 	    	}
 	    	print_r(json_encode($list));
     	}
@@ -64,7 +64,7 @@ class AjaxController extends Controller
     public function subcategoryList(Request $request)
     {
     	$input = $request->input();
-    	$subcategoryList = BussinessSubCategory::whereCategoryId($input['category'])->where('is_blocked', 0)->orderBy('id','asc')->pluck('title', 'id')->toArray();
+    	$subcategoryList = BussinessCategory::where('parent_id',$input['category'])->where('is_blocked', 0)->orderBy('id','asc')->pluck('title', 'id')->toArray();
     	print_r(json_encode($subcategoryList));
     }
 
