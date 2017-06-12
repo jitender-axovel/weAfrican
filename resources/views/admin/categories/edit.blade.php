@@ -19,13 +19,18 @@
 						</span>
 						@endif
 					</div>
-					<label class="control-label col-md-2">Confirm Name</label>
+					<label class="control-label col-md-2">Selet Parent Category</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="confirm_title" required >
-						@if($errors->has('confirm_title'))
-						<span class="help-block">
-							<strong>{{ $errors->first('confirm_title') }}</strong>
-						</span>
+						<select class="form-control" name="parent_id" id="parent_id">
+							<option value="0">None</option>
+							@foreach($categories as $parentCategory)
+								<option value="{{$parentCategory->id}}" @if($parentCategory->id==$category->parent_id) selected="selected" @endif>{{$parentCategory->title}}</option>
+							@endforeach
+						</select>
+						@if($errors->has('parent_id'))
+							<span class="help-block">
+								<strong>{{ $errors->first('parent_id') }}</strong>
+							</span>
 						@endif
 					</div>
 				</div>

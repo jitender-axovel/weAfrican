@@ -8,6 +8,7 @@
 		<thead>
 			<tr>
 				<th>Title</th>
+				<th>Parent Category</th>
 				<th>Icon</th>
 				<th>Created On</th>
 				<th>Actions</th>
@@ -17,6 +18,13 @@
 			@foreach($categories as $category)
 			<tr>
 				<td>{{ $category->title}}</td>
+				<td>
+				@if($category->parent['title']!="")
+					{{$category->parent['title']}}
+				@else
+					None
+				@endif
+				</td>
 				<td>
 					<img src="{{ asset(config('image.category_image_url').'thumbnails/small/'.$category->image) }}" class="responsive">
 				</td>
