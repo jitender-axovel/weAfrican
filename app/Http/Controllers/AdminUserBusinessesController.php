@@ -68,7 +68,8 @@ class AdminUserBusinessesController extends Controller
         $pageTitle = "Admin - Edit User Bussiness Category";
         $business = UserBusiness::find($id);
         $categories = BussinessCategory::where('is_blocked',0)->get();
-        return view('admin.business.edit',compact('pageTitle','business', 'categories'));
+        $subCategories = BussinessCategory::where('parent_id',$business->bussiness_category_id)->where('is_blocked',0)->get();
+        return view('admin.business.edit',compact('pageTitle','business', 'categories', 'subCategories'));
     }
 
     /**
@@ -83,9 +84,12 @@ class AdminUserBusinessesController extends Controller
 
         $input = $request->input();
 
-        $input = array_intersect_key($input, UserBusiness::$updatable);
-         
-        $user = UserBusiness::where('id',$id)->update($input);
+        $business = array_intersect_key($input, UserBusiness::$updatable);
+        $business = UserBusiness::where('id',$id)->update($business);
+        $business = UserBusiness::find($id);
+
+        $user = array_intersect_key($input, User::$updatable);
+        $user = User::where('id',$business->user_id)->update($user);
             
         return redirect('admin/business')->with('success', 'User Business updated successfully');
         
