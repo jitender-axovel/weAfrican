@@ -69,8 +69,7 @@ class AdminEventCategoriesController extends Controller
         }
 
         $input = $request->input();
-
-        if($input['title'] == $input['confirm_title']) {
+        try{
             $category = new EventCategory();
 
             $category->title = $input['title'];
@@ -79,10 +78,9 @@ class AdminEventCategoriesController extends Controller
             $category->slug = Helper::slug($input['title'], $category->id);
 
             $category->save();
-
             return redirect('admin/category/event/')->with('success', 'New Bussiness category created successfully');
-        } else {
-            return back()->with('error', 'Title and confirm title should be same');
+        }catch(Exception $e){
+            return back()->with('error', 'There is some error. Please try after some time');
         }
     }
 
@@ -149,7 +147,7 @@ class AdminEventCategoriesController extends Controller
 
         $input = $request->input();
 
-        if($input['title'] == $input['confirm_title'])
+        try
         {
 
             $event = array_intersect_key($input, EventCategory::$updatable);
@@ -164,8 +162,8 @@ class AdminEventCategoriesController extends Controller
             }
 
             return redirect('admin/category/event')->with('success', ' Business Category updated successfully');
-        } else {
-            return back()->with('error', 'Title and confirm title should be same');
+        }catch(Exception $e){
+            return back()->with('error', 'There is some error. Please try after some time');
         }
     }
 
