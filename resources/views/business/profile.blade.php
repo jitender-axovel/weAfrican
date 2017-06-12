@@ -41,7 +41,11 @@
 		<div class="business-profile">
 			<div class="business-left col-md-6">
 			    <dl class="dl-horizontal">
-			        <dt>Business Logo</dt>
+			    	@if($category_check==1 or $category_check==2)
+			    		<dt>Profile Pic</dt>
+			    	@else
+			    		<dt>Business Logo</dt>
+			    	@endif
 			        <dd>
 		          	@if($business->business_logo != NULL)
 			            <img src="{{asset(config('image.logo_image_url').'thumbnails/small/'.$business->business_logo)}}"/>
@@ -79,16 +83,31 @@
 			        <label class="btn-success label">Verified</span>
 			        @endif
 			        </dd>
-			        <!-- <dt>Secondary Mobile Number</dt>
-			        <dd>{{ $business->secondary_phone_number }}</dd> -->
 			        <dt>Website</dt>
 			        <dd>{{ $business->website }}</dd>
 			        <dt>Working Hours</dt>
 			        <dd>
 			        	{!! nl2br(e($business->working_hours)) !!}
 			        </dd>
-			        <dt></dt>
-			     </dl>    
+			    </dl>
+			    @if($category_check==1 or $category_check==2)
+				    <fieldset>
+				    	<legend>Login Information</legend>
+				    </fieldset>
+				    <dl class="dl-horizontal">
+			    		<dt>Maritial Status</dt>
+			    		<dd></dd>
+			    		<dt>Maritial Status</dt>
+			    		<dd></dd>
+			    		<dt>Maritial Status</dt>
+			    		<dd></dd>
+			    		<dt>Maritial Status</dt>
+			    		<dd></dd>
+			    		<dt>Maritial Status</dt>
+			    		<dd></dd>
+				        <dt></dt>
+				    </dl>
+			    @endif    
 		    </div>
 		    <div class="business-right col-md-6">
 				<dl class="dl-horizontal">
