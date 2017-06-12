@@ -51,16 +51,16 @@ class AdminSecurityQuestionsController extends Controller
 
         $input = $request->input();
 
-        if($input['question'] == $input['confirm_question']) {
+        try{
             $securityquestion = new SecurityQuestion();
             $securityquestion->question = $input['question'];
 
             $securityquestion->save();
 
             return redirect('admin/security-question')->with('success', 'New Security Question created successfully');
-        }else
+        }catch(Exception $e)
         {
-            return redirect('admin/security-question/create')->with('error', 'Question and confirm question should be same');
+            return redirect('admin/security-question/create')->with('error', $e->getMessage());
         }
     }
 
