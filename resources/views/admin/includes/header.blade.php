@@ -1,8 +1,8 @@
 <header class="admin-header">
-    <div class="container">
+    <div class="container-fluid">
         <div class="col-md-6 left-side">
             <ul class="left-menu list-inline">
-                <li><a href="#" class="site-logo">WeAfrican Admin</a></li>
+                <li><a href="#" class="site-logo"><img src="{{asset('images/admin_logo.png')}}"></a></li>
             </ul>
         </div>
         <div class="col-md-6 right-side">
