@@ -19,9 +19,9 @@
                 <form id="register-form" class="form-horizontal" role="form" method="POST" action="{{ url('/register-business') }}" enctype='multipart/form-data'>
                     {{ csrf_field() }}
                     
-                    <div class="form-group required">
-                        <label for="name" class="col-md-2 control-label">Full Name:</label>
-                        <div class="col-md-1">
+                    <div class="row">
+                        <label for="name" class="col-md-2 control-label required">Full Name:</label>
+                        <div class="col-md-1 form-group">
                             <select name="salutation" id="salutation" class="form-control selectpicker" required style="padding-right:0px;">
                                 <option value="Mr">Mr.</option>
                                 <option value="Ms">Ms.</option>
@@ -33,7 +33,7 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 form-group">
                             <input required type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus placeholder="First Name">
                             @if ($errors->has('first_name'))
                                 <span class="help-block">
@@ -41,7 +41,7 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 form-group">
                             <input type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}" autofocus placeholder="Middle Name">
                             @if ($errors->has('middle_name'))
                                 <span class="help-block">
@@ -49,7 +49,7 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 form-group">
                             <input required type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus placeholder="Last Name">
                             @if ($errors->has('last_name'))
                                 <span class="help-block">
@@ -58,9 +58,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group required">
-                        <label for="gender" class="col-md-2 control-label">Gender:</label>
-                        <div class="col-md-4">
+                    <div class="row">
+                        <label for="gender" class="col-md-2 control-label required">Gender:</label>
+                        <div class="col-md-4 form-group">
                             <div class="col-md-5">
                             <input required type="radio" class="" name="gender"
                             @if(old('gender')!='female')
@@ -82,9 +82,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="category" class="col-md-2 control-label required">Category:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <select name="bussiness_category_id" id="bussiness_category_id" class="form-control selectpicker" required>
                                 <option value="" selected>Select Category</option>
                                 @foreach($categories as $category)
@@ -99,7 +99,7 @@
                         </div>
                         <div id="subcategory" style="display: none;">
                             <label for="subcategory" class="col-md-2 control-label required">Sub Category:</label>
-                            <div class="col-md-4">
+                            <div class="col-md-4 form-group">
                                 <select name="bussiness_subcategory_id" id="bussiness_subcategory_id" class="form-control selectpicker">
                                     <option value="" selected>Select Sub Category</option>
                                 </select>
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group">
                         <label for="address" class="col-md-2 control-label">Location:</label>
                         <div class="col-md-10">
                             <div id="map"></div>
@@ -121,9 +121,9 @@
                     <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
                     <input type="hidden" id="longitude" class="form-control" name="longitude" value ="{{ old('longitude') }}">
 
-                    <div class="form-group ">
+                    <div class="row">
                         <label for="address" class="col-md-2 control-label required">Address:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4  form-group">
                             <input type="text" id="address" class="form-control" name="address" value="{{ old('address') }}">
                             @if ($errors->has('address'))
                                 <span class="help-block">
@@ -143,9 +143,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="state" class="col-md-2 control-label required">State:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}">
                             @if ($errors->has('state'))
                                 <span class="help-block">
@@ -154,7 +154,7 @@
                             @endif
                         </div>
                         <label for="country" class="col-md-2 control-label required">Country:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}" >
                             @if ($errors->has('country'))
                                 <span class="help-block">
@@ -163,9 +163,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="pin_code" class="col-md-2 required control-label">Pin Code: (format:110075)</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}">
                             @if ($errors->has('pin_code'))
                                 <span class="help-block">
@@ -175,7 +175,7 @@
                         </div>
 
                         <label for="mobile_number" class="col-md-2 required control-label">Mobile Number:(format:99-99-999999)</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="text" class="form-control code" id="country_code" name="country_code" value="{{ old('country_code') }}" />
 
                             <input  type="text" maxlength="10" minlength="10" pattern="[0-9]{10}" class="form-control mobile" name="mobile_number" value="{{ old('mobile_number') }}" required>
@@ -190,9 +190,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="about_us" class="col-md-2 control-label">Currency</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="text" maxlength="5" id="currency" class="form-control" name="currency" value="{{ old('currency') }}" required>
                             @if ($errors->has('currency'))
                                 <span class="help-block">
@@ -205,9 +205,9 @@
                     <div>
                         <legend>Business Information</legend>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="title" id="business_title_lable" class="col-md-2 control-label required">Business Name:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="text" class="form-control" name="title" id="business_title" value="{{ old('title') }}">
                             @if ($errors->has('title'))
                                 <span class="help-block">
@@ -216,7 +216,7 @@
                             @endif
                         </div>
                         <label for="keywords" id="business_keyword_lable" class="col-md-2 required control-label">Business Keywords:</label>
-                        <div class="col-md-4" data-tip="Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.">
+                        <div class="col-md-4 form-group">
                             <input required type="text" class="form-control" id="business_keywords" name="keywords" placeholder="Ex. Software developer, Gas Supplier , Baby Cloths, Electronics" value="{{ old('keywords') }}">
                             @if ($errors->has('keywords'))
                                 <span class="help-block">
@@ -225,9 +225,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="website" class="col-md-2 control-label{{ $errors->has('website') ? ' has-error' : '' }}"">Website:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="text" class="form-control" name="website" value="{{ old('website') }}">
                             @if ($errors->has('website'))
                                 <span class="help-block">
@@ -237,9 +237,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="about_us" id="about_us_lable" class="col-md-2 control-label">About us:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <textarea class="form-control" name="about_us" rows="11" ></textarea>
                             @if ($errors->has('about_us'))
                                 <span class="help-block">
@@ -251,7 +251,7 @@
                         <label for="working_hours" class="col-md-2 control-label">
                         Working Hours:
                         </label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <textarea class="form-control" name="working_hours" id="working_hours" rows="8" readonly="readonly" onclick="javascript:$('#working_hours_modal').modal('show')" >
 MON  :   10:00 AM to 06:00 PM
 TUE  :   10:00 AM to 06:00 PM
@@ -272,9 +272,9 @@ SUN  :   Closed
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="business_logo" id="business_logo_lable" class="col-md-2 control-label">Business Logo:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="file" name="business_logo" id="business_logo" accept="image/jpg,image/jpeg,image/png" />
                             @if ($errors->has('business_logo'))
                                 <span class="help-block">
@@ -301,9 +301,9 @@ SUN  :   Closed
                         </div>
                     </div>
                     <div id="common" style="display: none">
-                        <div class="form-group">
+                        <div class="row">
                             <label for="maritial_status" class="col-md-2 control-label required">Maritial Status:</label>
-                            <div class="col-md-4">
+                            <div class="col-md-4 form-group">
                                 <select name="maritial_status" id="maritial_status" class="form-control selectpicker">
                                    <option value="">Select One</option>
                                    <option value="married">Married</option>
@@ -317,7 +317,7 @@ SUN  :   Closed
                                 @endif
                             </div>
                             <label for="occupation" class="col-md-2 control-label required">Occupation:</label>
-                            <div class="col-md-4">
+                            <div class="col-md-4 form-group">
                                 <input type="text" class="form-control" name="occupation" id="occupation">
                                 @if ($errors->has('occupation'))
                                     <span class="help-block">
@@ -326,9 +326,9 @@ SUN  :   Closed
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="acadmic" class="col-md-2 control-label">Academic Status:</label>
-                            <div class="col-md-4">
+                        <div class="row">
+                            <label for="acadmic" class="col-md-2 control-label required">Academic Status:</label>
+                            <div class="col-md-4 form-group">
                                 <select name="acedimic_status" id="acedimic_status" class="form-control selectpicker">
                                    <option value="">Select One</option>
                                    <option value="10">10</option>
@@ -345,7 +345,7 @@ SUN  :   Closed
                             </div>
                         
                             <label for="key_skills" class="col-md-2 control-label required">Key Skills:</label>
-                            <div class="col-md-4">
+                            <div class="col-md-4 form-group">
                                 <input type="text" class="form-control" name="key_skills" id="key_skills">
                                 @if ($errors->has('key_skills'))
                                     <span class="help-block">
@@ -359,9 +359,9 @@ SUN  :   Closed
                         <legend>Login Information</legend>
                     </div>
 
-                     <div class="form-group ">
+                     <div class="row">
                         <label for="email" class="col-md-2 control-label required">Email:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" name="email" value="{{ old('email') }}">
                             @if ($errors->has('email'))
                                 <span class="help-block">
@@ -371,9 +371,9 @@ SUN  :   Closed
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="password" class="col-md-2 control-label required">Password:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="password" class="form-control" name="password" value="">
                             @if ($errors->has('password'))
                                 <span class="help-block">
@@ -383,7 +383,7 @@ SUN  :   Closed
                         </div>
 
                         <label for="confirm_password" class="col-md-2 control-label required">Confirm Password:</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="password" class="form-control" name="confirm_password" value="">
                             @if ($errors->has('confirm_password'))
                                 <span class="help-block">
@@ -392,9 +392,9 @@ SUN  :   Closed
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="checkbox" class="col-md-2 control-label required">Security Question</label>
-                        <div class="col-md-10">
+                        <div class="col-md-10 form-group">
                             <select name="security_question_id" id="security_question_id" class="form-control selectpicker" required="required">
                                 <option value="">Select Security Question</option>
                                 @foreach($securityquestions as $securityquestion)
@@ -412,9 +412,9 @@ SUN  :   Closed
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="checkbox" class="col-md-2 control-label required">Answer</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="text" class="form-control" name="security_question_ans" id="security_question_ans" value="{{ old('security_question_ans') }}">
                             @if ($errors->has('security_question_ans'))
                                 <span class="help-block">
@@ -424,16 +424,16 @@ SUN  :   Closed
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label for="checkbox" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
+                        <div class="col-md-10 form-group">
                             <input name="is_agree_to_terms" value="" type="checkbox" required> I hereby declare, that I have read and accepted the <a href="" data-toggle="modal" data-target="#myModal">Terms &amp; Conditions.</a>
                         </div>
                     </div>
 
                      
-                    <div class="form-group">
-                        <div class="col-md-12 col-md-offset-2">
+                    <div class="row">
+                        <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
@@ -725,7 +725,7 @@ SUN  :   Closed
                             }
                         }
                     },
-                    academic: {
+                    acedimic_status: {
                         validators: {
                             notEmpty: {
                                 message: 'Please select your Academic Status'
@@ -867,15 +867,11 @@ SUN  :   Closed
         }
         return temp.join(":");
     }
-</script>
-<script type="text/javascript">
     $(function () {
         $('.date').datetimepicker({
             format: 'LT'
         });
     });
-</script>
-<script type="text/javascript">
     setTimeout(function () {
       getCurrencyAndCode();
     }, 3000);
@@ -997,6 +993,7 @@ SUN  :   Closed
             $('#subcategory').hide();
         }
     });
+    $('#business_keywords').tooltip({'trigger':'focus', 'title': 'Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.'});
 </script>
 @endsection
 
