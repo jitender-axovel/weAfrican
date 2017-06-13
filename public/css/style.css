@@ -104,7 +104,7 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110p
 
 /* Footer */
 footer{background: #2d3e50; padding: 50px 0;}
-footer .text-right p {color: #ffffff; margin: 0; text-transform: capitalize;}
+footer .text-right p, footer .text-left p {color: #ffffff; margin: 0; text-transform: capitalize;}
 footer .available {margin-top: 20px;}
 footer .available .list-inline > li {padding-right: 0;}
 .footer-linkss a {color: #ffffff; display: inline-block; text-decoration: none; text-transform: uppercase; padding: 0 2px;}
