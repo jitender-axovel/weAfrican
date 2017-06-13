@@ -1,9 +1,11 @@
 <header>
     <div class="col-md-10 col-md-offset-1">
+    <div class="row">
         <div class="col-md-2 col-sm-2 col-xs-12 logo">
             <a href="{{url('/')}}"><img src="{{asset('images/logo.png')}}"></a>
         </div>
         <div class="col-md-10 col-sm-10 col-xs-12 menu_bar">
+        <div class="row">
             <nav class="navbar">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -41,6 +43,8 @@
                     </div>
                 </div>
             </nav>
+            </div>
+        </div>
         </div>
     </div>
 </header>
