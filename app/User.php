@@ -114,6 +114,74 @@ class User extends Authenticatable
         }
     }
 
+    public function signup(Request $request)
+    {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+        }
+
+        $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
+
+        if (!$user){
+
+            $validator = Validator::make($request->input(), [
+                'fullName' => 'required',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required',
+            ]);
+
+            if($validator->fails()){
+                if(count($validator->errors()) <= 1){
+                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+                } else{
+                    return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+                }
+            }
+           
+            $user['full_name'] = $request->input('fullName');
+            $user['mobile_number'] = $request->input('mobileNumber');
+            $user['country_code'] = $request->input('countryCode');
+            $user['password'] = bcrypt($request->input('mobileNumber'));
+            $user['user_role_id'] = 4;
+
+            $user = array_intersect_key($user, User::$updatable);
+
+            $user = $this->create($user);
+
+            $user['slug'] = Helper::slug($user->full_name, $user->id);
+
+            if($user->save()){
+                return response()->json(['status' => 'success','response' => $user]);
+            } else {
+                return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
+            }
+        } else{
+
+            $user->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
+
+            if ($user->is_blocked) {
+                // Authentication passed...
+                return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
+                
+            } else if (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
+
+                $checkBusiness = UserBusiness::whereUserId($user->id)->first();
+                
+                $response = Auth::user();
+
+                if ($checkBusiness)
+                    $response['businessId'] = $checkBusiness->id;
+                
+;                return response()->json(['status' => 'success','response' => $response]);
+            }
+            else{
+                return response()->json(['status' => 'failure', 'response' => 'Can not login using this mobile number!!!']);
+            }
+        }
+    }
+
     public function apiCheckOtp($input)
     {
         $check = $this->where('mobile_number', $input['mobileNumber'])->first();
