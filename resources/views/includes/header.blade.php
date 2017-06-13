@@ -3,7 +3,7 @@
         <div class="col-md-2 col-sm-2 col-xs-12 logo">
             <a href="{{url('/')}}"><img src="{{asset('images/logo.png')}}"></a>
         </div>
-        <div class="col-md-10 col-sm-10 col-xs-12">
+        <div class="col-md-10 col-sm-10 col-xs-12 menu_bar">
             <nav class="navbar">
                 <div class="container-fluid">
                     <div class="navbar-header">
