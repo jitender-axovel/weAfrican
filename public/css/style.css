@@ -19,7 +19,7 @@ p {margin: 10px 0;}
 header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto; padding: 35px 0 0; width: 100%;display: inline-block;}
 .navbar .navbar-nav > li > a {color: #ffffff; padding: 9px 16px; text-transform: uppercase; border-radius: 4px;}
 .navbar .navbar-nav li .download-link, .download-link {background: #05c2f9; border: 1px solid #05c2f9; border-radius: 4px; color: #ffffff;}
-.btn{text-transform:uppercase; padding: 8px 15px;float: right;}
+.btn{text-transform:uppercase; padding: 8px 15px;}
 .navbar-nav > li.active {border-bottom: 2px solid #05c2f9;}
 .navbar-nav > li {margin-left: 15px;}
 .nav > li > a:focus, .nav > li > a:hover {background-color: #05c2f9; text-decoration: none;}
