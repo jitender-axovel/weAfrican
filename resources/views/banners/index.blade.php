@@ -12,51 +12,53 @@
 	</ul>
   	<div class="tab-content">
     	<div id="home" class="tab-pane fade in active">
-	      	<table id="subscription_list" class="display">
-				<thead>
-					<tr>
-						<th>Business ID</th>
-						<th>Business name</th>
-						<th>Subscription Plan</th>
-						<th>Banner</th>
-						<th>Created On</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				@foreach($homeBanners as $banner)
-					<tr>
-						<td>{{ $banner->business->business_id}}</td>
-						<td>{{ $banner->business->title}}</td>
-						<td>{{ $banner->subscription->title}}</td>
-						<td><img src="{{ asset(config('image.banner_image_url').'business/thumbnails/small/'.$banner->image) }}"/></td>
-						<td>{{ date_format(date_create($banner->created_at), 'd M,Y') }}</td>
-						<td>
-							<ul class="list-inline">
-								<!-- <li>
-									<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
-								</li> -->
-								<li>
-									<a href="{{ URL::to('home/banner/block/'.$banner->id) }}">
-					                    @if ($banner->is_blocked)
-					                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
-				                    	@else
-				                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
-			                    		@endif
-					                </a>
-								</li>
-								<li>
-									<form action="{{ url('banner/'.$banner->id) }}" method="POST" onsubmit="deleteHomeBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
-										{{csrf_field()}}
-										<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
-									</form>
-								</li>
-							</ul>
-						</td>
-					</tr>
-				@endforeach
-				</tbody>
-			</table>
+    		<div class="all_content">
+		      	<table id="subscription_list" class="display">
+					<thead>
+						<tr>
+							<th>Business ID</th>
+							<th>Business name</th>
+							<th>Subscription Plan</th>
+							<th>Banner</th>
+							<th>Created On</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+					@foreach($homeBanners as $banner)
+						<tr>
+							<td>{{ $banner->business->business_id}}</td>
+							<td>{{ $banner->business->title}}</td>
+							<td>{{ $banner->subscription->title}}</td>
+							<td><img src="{{ asset(config('image.banner_image_url').'business/thumbnails/small/'.$banner->image) }}"/></td>
+							<td>{{ date_format(date_create($banner->created_at), 'd M,Y') }}</td>
+							<td>
+								<ul class="list-inline">
+									<!-- <li>
+										<a class="btn btn-warning" href="{{ url('admin/banner/'.$banner->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+									</li> -->
+									<li>
+										<a href="{{ URL::to('home/banner/block/'.$banner->id) }}">
+						                    @if ($banner->is_blocked)
+						                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
+					                    	@else
+					                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+				                    		@endif
+						                </a>
+									</li>
+									<li>
+										<form action="{{ url('banner/'.$banner->id) }}" method="POST" onsubmit="deleteHomeBanner('{{$banner->id}}', '{{$banner->subscription->title}}', event,this)">
+											{{csrf_field()}}
+											<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+										</form>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					@endforeach
+					</tbody>
+				</table>
+			</div>
     	</div>
 	    <div id="menu1" class="tab-pane fade">
 	      	<table id="business_list" class="display">
