@@ -219,3 +219,6 @@ footer .available .list-inline > li {padding-right: 0;}
 }
 #preview,.previewImg{ width: 100px; height: auto; }
 .align-left{ text-align: left !important; }
+#register-form .row .required.control-label:after{content: "*";color: red;}
+#register-form .form-group{margin-right: 0px;margin-left: 0px;}
+#register-form .has-feedback .form-control-feedback {right: 30px;}
