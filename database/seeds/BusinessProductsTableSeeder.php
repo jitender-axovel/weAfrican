@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class BusinessProductsSeeder extends Seeder
+class BusinessProductsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
