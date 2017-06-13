@@ -5,60 +5,49 @@
     <h5 class="text-left">Business Follower List</h5>
     <hr>
     <p class="text-left">You can see list of users who had liked, disliked or followed your business.</p> 
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            <h4 class="panel-title">
-              Business Follower List
-            </h4>
-          </a>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            <div class="col-md-12" style="margin-bottom: 10px">
-                <div class="col-md-6"><p id="response" style="color: green"></p></div>
-                <div class="col-md-6 text-right"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#fcm_notification">Send Message</button></div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="panel panel-default">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>User Name </th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(count($followers)>0)
-                            @foreach($followers as $follower)
-                                <tr>
-                                    <td>{{ $follower->user->full_name }}</td>
-                                    <td>{{ $follower->user->email }}</td>
-                                </tr>
-                            @endforeach
-                        @else
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Business Follower List</a></li>
+        <li><a data-toggle="tab" href="#like">Business Like List</a></li>
+        <li><a data-toggle="tab" href="#dislike">Business Dislike List</a></li>
+        <li><a data-toggle="tab" href="#rating">Business Rating List</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <div class="all_content">
+                <div class="col-md-12" style="margin-bottom: 10px">
+                    <div class="col-md-6"><p id="response" style="color: green"></p></div>
+                    <div class="col-md-6 text-right"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#fcm_notification">Send Message</button></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="panel panel-default">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td colspan="2">No data found !</td>
+                                <th>User Name </th>
+                                <th>Email</th>
                             </tr>
-                        @endif
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if(count($followers)>0)
+                                @foreach($followers as $follower)
+                                    <tr>
+                                        <td>{{ $follower->user->full_name }}</td>
+                                        <td>{{ $follower->user->email }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="2">No data found !</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingTwo">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <h4 class="panel-title">
-                    Business Like List
-                </h4>
-            </a>
-        </div>
-        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            <div class="panel panel-default ">
+        <div id="like" class="tab-pane fade in">
+            <div class="all_content">
+            <div class="panel panel-default">
                 <table class="table">
                     <thead>
                         <tr>
@@ -81,21 +70,12 @@
                         @endif
                     </tbody>
                 </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingThree">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                <h4 class="panel-title">
-                    Business Dislike List
-                </h4>
-            </a>
-        </div>
-        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-                <div class="panel panel-default ">
+        <div id="dislike" class="tab-pane fade in">
+            <div class="all_content">
+            <div class="panel panel-default">
                 <table class="table">
                     <thead>
                         <tr>
@@ -118,49 +98,40 @@
                         @endif
                     </tbody>
                 </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingThree">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                <h4 class="panel-title">
-                    Business Rating List
-                </h4>
-            </a>
-        </div>
-        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-                <div class="panel panel-default ">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>User Name</th>
-                            <th>Email</th>
-                            <th>Rating</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(count($ratings)>0)
-                            @foreach($ratings as $rating)
-                                <tr>
-                                    <td>{{ $rating->user->full_name }}</td>
-                                    <td>{{ $rating->user->email }}</td>
-                                    <td>{{ $rating->rating }}/5</td>
-                                </tr>
-                            @endforeach
-                        @else
+        <div id="rating" class="tab-pane fade in">
+            <div class="all_content">
+                <div class="panel panel-default">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td colspan="2">No data found !</td>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Rating</th>
                             </tr>
-                        @endif
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if(count($ratings)>0)
+                                @foreach($ratings as $rating)
+                                    <tr>
+                                        <td>{{ $rating->user->full_name }}</td>
+                                        <td>{{ $rating->user->email }}</td>
+                                        <td>{{ $rating->rating }}/5</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="2">No data found !</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                    <div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 </div>
 <!-- Modal -->
