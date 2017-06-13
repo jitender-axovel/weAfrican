@@ -217,7 +217,7 @@
                     @endforeach
                 @endif
                 <div class="form-group">
-                    <div class="col-md-12 col-md-offset-2">
+                    <div class="col-md-12 text-right">
                         <button type="submit" class="btn btn-primary">
                         Submit
                         </button>
