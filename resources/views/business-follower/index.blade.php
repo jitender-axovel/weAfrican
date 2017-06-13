@@ -20,7 +20,7 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="panel panel-default">
-                    <table class="table">
+                    <table class="table" id="follower">
                         <thead>
                             <tr>
                                 <th>User Name </th>
@@ -31,7 +31,7 @@
                             @if(count($followers)>0)
                                 @foreach($followers as $follower)
                                     <tr>
-                                        <td>{{ $follower->user->full_name }}</td>
+                                        <td>{{ $follower->user->first_name }}</td>
                                         <td>{{ $follower->user->email }}</td>
                                     </tr>
                                 @endforeach
@@ -48,7 +48,7 @@
         <div id="like" class="tab-pane fade in">
             <div class="all_content">
             <div class="panel panel-default">
-                <table class="table">
+                <table class="table" id="likes">
                     <thead>
                         <tr>
                             <th>User Name</th>
@@ -59,7 +59,7 @@
                         @if(count($likes)>0)
                             @foreach($likes as $like)
                                 <tr>
-                                    <td>{{ $like->user->full_name }}</td>
+                                    <td>{{ $like->user->first_name }}</td>
                                     <td>{{ $like->user->email }}</td>
                                 </tr>
                             @endforeach
@@ -76,7 +76,7 @@
         <div id="dislike" class="tab-pane fade in">
             <div class="all_content">
             <div class="panel panel-default">
-                <table class="table">
+                <table class="table" id="dislikes">
                     <thead>
                         <tr>
                             <th>User Name</th>
@@ -87,7 +87,7 @@
                         @if(count($dislikes)>0)
                             @foreach($dislikes as $dislike)
                                 <tr>
-                                    <td>{{ $dislike->user->full_name }}</td>
+                                    <td>{{ $dislike->user->first_name }}</td>
                                     <td>{{ $dislike->user->email }}</td>
                                 </tr>
                             @endforeach
@@ -104,7 +104,7 @@
         <div id="rating" class="tab-pane fade in">
             <div class="all_content">
                 <div class="panel panel-default">
-                    <table class="table">
+                    <table class="table" id="ratings">
                         <thead>
                             <tr>
                                 <th>User Name</th>
@@ -116,7 +116,7 @@
                             @if(count($ratings)>0)
                                 @foreach($ratings as $rating)
                                     <tr>
-                                        <td>{{ $rating->user->full_name }}</td>
+                                        <td>{{ $rating->user->first_name }}</td>
                                         <td>{{ $rating->user->email }}</td>
                                         <td>{{ $rating->rating }}/5</td>
                                     </tr>
@@ -229,6 +229,16 @@
             });
             $("#message").val("");
         }
+    });
+    $(document).ready(function(){
+        $('#follower').DataTable();
+        $('#follower').css("width","100%");
+        $('#likes').DataTable();
+        $('#likes').css("width","100%");
+        $('#dislikes').DataTable();
+        $('#dislikes').css("width","100%")
+        $('#ratings').DataTable();
+        $('#ratings').css("width","100%");
     });
 </script>
 @endsection
