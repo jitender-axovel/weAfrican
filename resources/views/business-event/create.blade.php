@@ -21,9 +21,9 @@
         <div class="panel panel-default document">
             <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
-                 <div class="form-group required">
-                    <label class="col-md-2 control-label">Select Category:</label>
-                    <div class="col-md-4">
+                 <div class="row">
+                    <label class="col-md-2 control-label required">Select Category:</label>
+                    <div class="col-md-4 form-group">
                         <select required name="event_category_id" class="form-control" required>
                             <option value="" selected>Select Category</option>
                             @foreach($categories as $category)
@@ -36,8 +36,8 @@
                             </span>
                         @endif
                     </div>
-                    <label class="col-md-2 required control-label"> Name of Event</label>
-                    <div class="col-md-4">
+                    <label class="col-md-2 required control-label required"> Name of Event</label>
+                    <div class="col-md-4 form-group">
                         <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
                         @if($errors->has('name'))
                             <span class="help-block">
@@ -46,10 +46,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group ">
-                    
+                <div class="row">
                     <label class="col-md-2 required control-label">Event Keywords</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <input type="text" class="form-control" name="keywords" value="{{ old('keywords') }}" required>
                         @if($errors->has('keywords'))
                             <span class="help-block">
@@ -58,7 +57,7 @@
                         @endif
                     </div>
                     <label class="col-md-2 required control-label">Organizer Name</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <input type="text" class="form-control" name="organizer_name" value="{{ $business->title or old('organizer_name')}}" required>
                         @if($errors->has('organizer_name'))
                             <span class="help-block">
@@ -67,9 +66,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-md-2 required control-label">Description</label>
-                    <div class="col-md-10">
+                    <div class="col-md-10 form-group">
                         <textarea required class="form-control" name="description"></textarea>
                         @if($errors->has('description'))
                             <span class="help-block">
@@ -79,9 +78,9 @@
                     </div>
                     
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-md-2 required control-label">Event Start Date& Time</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control" id='datetimepicker1' name="start_date_time" value="{{ old('start_date_time') }}" />
                             <span class="input-group-addon">
@@ -95,7 +94,7 @@
                         @endif
                     </div>
                     <label class="col-md-2 required control-label">Event End Date& Time</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <div class='input-group date' id='datetimepicker2'>
                             <input type='text' class="form-control" id='datetimepicker2' name="end_date_time" value="{{ old('end_date_time')}}" />
                             <span class="input-group-addon">
@@ -117,9 +116,9 @@
                     </div>
                     <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
                     <input type="hidden" id="longitude" class="form-control" name="longitude" value ="{{ old('longitude') }}">
-                 <div class="form-group ">
+                 <div class="row">
                     <label class="col-md-2 required control-label">Address</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <input type="text" class="form-control" id="address" name="address" value="{{ old('address')}}" required>
                         @if($errors->has('address'))
                             <span class="help-block">
@@ -127,8 +126,8 @@
                             </span>
                         @endif
                     </div>
-                    <label class="col-md-2 control-label">City:</label>
-                        <div class="col-md-4">
+                    <label class="col-md-2 control-label required">City:</label>
+                        <div class="col-md-4 form-group ">
                             <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}">
                             @if ($errors->has('city'))
                                 <span class="help-block">
@@ -137,9 +136,9 @@
                             @endif
                         </div>
                 </div>
-                  <div class="form-group">
-                        <label class="col-md-2 control-label">State:</label>
-                        <div class="col-md-4">
+                  <div class="row">
+                        <label class="col-md-2 required control-label">State:</label>
+                        <div class="col-md-4 form-group">
                             <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}">
                             @if ($errors->has('state'))
                                 <span class="help-block">
@@ -147,8 +146,8 @@
                                 </span>
                             @endif
                         </div>
-                        <label class="col-md-2 control-label">Country:</label>
-                        <div class="col-md-4">
+                        <label class="col-md-2 control-label required">Country:</label>
+                        <div class="col-md-4 form-group">
                             <input type="text" class="form-control" id="country" name="country" value="{{ old('country') }}">
                             @if ($errors->has('country'))
                                 <span class="help-block">
@@ -157,9 +156,9 @@
                             @endif
                         </div>
                     </div>
-                      <div class="form-group">
+                      <div class="row">
                         <label class="col-md-2 required control-label">Pin Code: (format:110075)</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input required type="text" pattern="[0-9]{6}" id="pin_code" class="form-control" name="pin_code" value="{{ old('pin_code') }}">
                             @if ($errors->has('pin_code'))
                                 <span class="help-block">
@@ -168,9 +167,9 @@
                             @endif
                         </div>
                         </div>
-                 <div class="form-group">
+                 <div class="row">
                     <label class="col-md-2 required control-label">Banner Image</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group ">
                         <input type="file" name="banner" id="banner" required>
                         @if($errors->has('banner'))
                             <span class="help-block">
@@ -290,12 +289,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/g/jquery.formvalidation@0.6.1(js/formValidation.min.js+js/framework/bootstrap.min.js)"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker({ minDate:new Date() });
-        $('#datetimepicker2').datetimepicker({ minDate:new Date() });
-        $(".js-example-basic-single").select2();
-    });
-
     function readURL(input) {
       if (input.files && input.files[0]) {
           var reader = new FileReader();
@@ -362,6 +355,20 @@
     });
     //Bootstarp validation on form
         $(document).ready(function() {
+            $('#total_seats').change(function(){
+                alert( $(this).find(":selected").val() );
+                $('#register-form').formValidation('enableFieldValidators', 'total_seats');
+            });
+            /*var bootstrapValidator = $('#register-form').data('formValidation');
+            bootstrapValidator.enableFieldValidators('title', false);*/
+            $('#datetimepicker1').datetimepicker({ minDate: new Date() });
+            $('#datetimepicker2').datetimepicker({ minDate: new Date() });
+            $('#datetimepicker1').on('dp.change dp.show', function(e) {
+                $('#register-form').formValidation('revalidateField', 'start_date_time');
+            });
+            $('#datetimepicker2').on('dp.change dp.show', function(e) {
+                $('#register-form').formValidation('revalidateField', 'end_date_time');
+            });
             $('#register-form').formValidation({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
@@ -454,20 +461,37 @@
                             }
                         }
                     },
-                    /*SeatingPlan: {
-                        selector: '.SeatingPlan',
-                        validators: {
+                    total_seats:{
+                        validators:{
+                            notEmpty: {
+                                message: 'Please supply your pin code'
+                            }
+                        }
+                    },
+                    'seating_plan[]':{
+                         validators:{
+                            between: {
+                            },
                             callback: {
-                                message: 'The sum of percentages must be 100',
+                                message: 'The sum of percentages must be equal to Total Seats',
                                 callback: function(value, validator, $field) {
-                                    if (sum === total_seats) {
+                                    var percentage = validator.getFieldElements('seating_plan[]'),
+                                        length     = percentage.length,
+                                        sum        = 0;
+
+                                    for (var i = 0; i < length; i++) {
+                                        sum += parseInt($(percentage[i]).val());
+                                    }
+                                    if (sum === parseInt($("#total_seats option:selected").text())) {
+                                        validator.updateStatus('seating_plan[]', 'VALID', 'callback');
                                         return true;
                                     }
+
                                     return false;
                                 }
                             }
                         }
-                    },*/
+                    }
                 }
             })
             .on('success.form.bv', function(e) {
