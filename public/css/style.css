@@ -16,10 +16,10 @@ p {margin: 10px 0;}
 .top-container.container-fluid {padding-left: 0; padding-right: 0;}
 
 /* Header */
-header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110px; padding: 35px 0 0; width: 100%;}
+header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto; padding: 35px 0 0; width: 100%;display: inline-block;}
 .navbar .navbar-nav > li > a {color: #ffffff; padding: 9px 16px; text-transform: uppercase; border-radius: 4px;}
 .navbar .navbar-nav li .download-link, .download-link {background: #05c2f9; border: 1px solid #05c2f9; border-radius: 4px; color: #ffffff;}
-.btn{text-transform:uppercase; padding: 8px 15px;}
+.btn{text-transform:uppercase; padding: 8px 15px;float: right;}
 .navbar-nav > li.active {border-bottom: 2px solid #05c2f9;}
 .navbar-nav > li {margin-left: 15px;}
 .nav > li > a:focus, .nav > li > a:hover {background-color: #05c2f9; text-decoration: none;}
@@ -49,7 +49,7 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:110p
 
 .app-features{padding:50px 0;}
 .app-features .margin-bottom {margin-bottom: 40px;}
-.feature-container > img {left: 50px; position: relative; top: 220px; transform: scale(1.5);}
+.feature-container > img {left: 50px; position: relative; top: 220px; transform: scale(1.5);width: 100%;height: auto;max-width: 100%;}
 .feature-item {margin-bottom: 30px; overflow: hidden;}
 .feature-item .left-side {padding: 0 5px 0 0;}
 .feature-item .right-side {padding: 0 0 0 5px;}
@@ -110,6 +110,10 @@ footer .available .list-inline > li {padding-right: 0;}
 .footer-linkss a {color: #ffffff; display: inline-block; text-decoration: none; text-transform: uppercase; padding: 0 2px;}
 .footer-linkss a:hover {transform: scale(1.2);}
 .available .list-inline {margin: 0;}
+/*new code*/
+.all_content{padding-top: 20px;}
+.event_img{width: 80px;height: 70px; object-fit: cover;}
+.list-inline>li:first-child{padding-left: 5px;}
 
 /* Responsive */
 @media all and (max-width:1200px){
@@ -126,12 +130,13 @@ footer .available .list-inline > li {padding-right: 0;}
 	.first-section {padding-top: 70px;}
 }
 @media all and (max-width:767px){	
-	.navbar {  margin: 40px 0 0;}
-	.logo{text-align:center;}
-	.navbar-header button {border: 1px solid #ffffff;}
+	/*.navbar {  margin: 40px 0 0;}*/
+	.menu_bar{position: relative; float: right;}
+	.logo{float:left;position: relative}
+	.navbar-header button {border: 1px solid #ffffff;position: absolute;right: 0;top: -45px;}
 	.navbar-toggle .icon-bar {background: #ffffff;}
-	.navbar-collapse {background: #2d3e50;}
-	header {background: #2d3e50; padding: 50px 0 0; position: static;}
+	.navbar-collapse {background: #2d3e50;position: relative;top: 20px;}
+	header {background: #2d3e50; padding: 30px 0 0; position: static;}
 	.first-section {padding-top: 0; text-align: center;}
 	.first-section .download-weafrican h2 {margin: 60px 0 30px;}
 	.nav.navbar-nav { margin: 5px 0;}
