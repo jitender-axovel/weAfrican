@@ -131,6 +131,8 @@ footer .available .list-inline > li {padding-right: 0;}
 }
 @media all and (max-width:767px){	
 	/*.navbar {  margin: 40px 0 0;}*/
+	.top-business-menu{width: 100%;}
+	.panel.panel-default.document{padding: 0px;}
 	.menu_bar{position: relative; float: right;}
 	.logo{float:left;position: relative}
 	.navbar-header button {border: 1px solid #ffffff;position: absolute;right: 0;top: -45px;}
