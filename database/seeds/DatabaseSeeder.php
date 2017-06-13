@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SecurityQuestionsTableSeeder::class);
         $this->call(EventCategorySeeder::class);
         $this->call(UserPortfoliosSeeder::class);
-        $this->call(EventCategoriesSeeder::class);
         $this->call(BusinessEventsSeeder::class);
         $this->call(BusinessFollowersSeeder::class);
         $this->call(BusinessLikesSeeder::class);
