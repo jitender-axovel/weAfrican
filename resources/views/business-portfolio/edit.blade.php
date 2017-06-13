@@ -21,33 +21,9 @@
             <form id="register-form" class="form-horizontal" action="{{ url('portfolio/'.$businessPorfolio->id) }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                 {{ method_field('PUT') }}
-                <!-- <div class="form-group required">
-                    <label for="gender" class="col-md-2 control-label">Gender:</label>
-                    <div class="col-md-4">
-                        <div class="col-md-5">
-                        <input required type="radio" class="" name="gender"
-                        @if(old('gender')!='female')
-                            checked="checked"
-                        @endif
-                        value="male">&nbsp;<label>Male</label>
-                        </div>
-                        <div class="col-md-4">
-                        <input required type="radio" class="" name="gender" 
-                        @if(old('gender')=='female')
-                            checked="checked"
-                        @endif 
-                        value="female">&nbsp;<label>Female</label>
-                        </div>
-                        @if ($errors->has('gender'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('gender') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div> -->
-                <div class="form-group">
+                <div class="row">
                     <label for="maritial_status" class="col-md-2 control-label required">Maritial Status:</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <select name="maritial_status" id="maritial_status" class="form-control selectpicker">
                            <option value="">Select One</option>
                            <option @if($businessPorfolio->maritial_status=="married") selected="selected" @endif value="married">Married</option>
@@ -61,7 +37,7 @@
                         @endif
                     </div>
                     <label for="occupation" class="col-md-2 control-label required">Occupation:</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <input type="text" class="form-control" value="{{$businessPorfolio->occupation}}" name="occupation" id="occupation">
                         @if ($errors->has('occupation'))
                             <span class="help-block">
@@ -70,9 +46,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label for="acadmic" class="col-md-2 control-label">Academic Status:</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <select name="acedimic_status" id="acedimic_status" class="form-control selectpicker">
                            <option value="">Select One</option>
                            <option @if($businessPorfolio->acedimic_status=="10") selected="selected" @endif value="10">10</option>
@@ -89,7 +65,7 @@
                     </div>
                 
                     <label for="key_skills" class="col-md-2 control-label required">Key Skills:</label>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-group">
                         <input type="text" class="form-control" name="key_skills" value="{{$businessPorfolio->key_skills}}" id="key_skills">
                         @if ($errors->has('key_skills'))
                             <span class="help-block">
@@ -99,10 +75,10 @@
                     </div>
                 </div>
                 @if($category_check==1)
-                    <div class="form-group">
+                    <div class="row">
                         <label for="category" class="col-md-2 required control-label">Experience</label>
-                        <div class="col-md-2">
-                            <select class="form-control" name="experience_years">
+                        <div class="col-md-2 form-group">
+                            <select class="form-control" id="experience_years" name="experience_years">
                                 <option value="">Select Years</option>
                                 @for($i=1;$i<=30;$i++)
                                     <option @if($businessPorfolio->experience_years==$i) selected="selected" @endif value="{{ $i }}">{{ $i }}</option>
@@ -114,8 +90,8 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="col-md-2">
-                            <select class="form-control" name="experience_months">
+                        <div class="col-md-2 form-group">
+                            <select class="form-control" id="experience_months" name="experience_months">
                                 <option value="">Select Months</option>
                                 @for($i=1;$i<=12;$i++)
                                     <option @if($businessPorfolio->experience_months==$i) selected="selected" @endif value="{{ $i }}">{{ $i }}</option>
@@ -128,7 +104,7 @@
                             @endif
                         </div>
                         <label for="name" class="col-md-2 required control-label">Height</label>
-                        <div class="col-md-2">
+                        <div class="col-md-2 form-group">
                             <select class="form-control" name="height_feets">
                                 <option value="">Feets</option>
                                 @for($i=1;$i<=30;$i++)
@@ -141,7 +117,7 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 form-group">
                             <select class="form-control" name="height_inches">
                                 <option value="">inches</option>
                                 @for($i=1;$i<=12;$i++)
@@ -155,9 +131,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="category" class="col-md-2 required control-label">Hair type</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <select class="form-control" name="hair_type">
                                 <option value="">Select Hair type</option>
                                 <option @if($businessPorfolio->hair_type=="Long") selected="selected" @endif value="Long">Long</option>
@@ -173,7 +149,7 @@
                             @endif
                         </div>
                         <label for="category" class="col-md-2 required control-label">Hair Colour</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <select class="form-control" name="hair_color">
                                 <option value="">Select Hair Color</option>
                                 <option @if($businessPorfolio->hair_color=="Red") selected="selected" @endif value="Red">Red</option>
@@ -189,9 +165,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="category" class="col-md-2 required control-label">Skin Colour</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <select class="form-control" name="skin_color">
                                 <option value="">Select Hair type</option>
                                 <option @if($businessPorfolio->skin_color=="Light") selected="selected" @endif value="Light">Light</option>
@@ -206,9 +182,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="checkbox" class="col-md-2 control-label">Professional Training </label>
-                        <div class="col-md-10">
+                        <div class="col-md-10 form-group">
                             <input name="professional_training" id="professional_training" value="1" type="checkbox" @if($businessPorfolio->professional_training==1) checked="checked" @endif > I have professional training from institute
                             @if ($errors->has('professional_training'))
                                 <span class="help-block">
@@ -217,9 +193,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group" id="institute" @if($businessPorfolio->professional_training!=1) style="display: none;" @endif >
+                    <div class="row" id="institute" @if($businessPorfolio->professional_training!=1) style="display: none;" @endif >
                         <label for="checkbox" class="col-md-2 required control-label">Institute Name</label>
-                        <div class="col-md-4">
+                        <div class="col-md-4 form-group">
                             <input type="text" id="institute_name" data-bv-notempty="false" class="form-control" required="required" name="institute_name" value ="{{ $businessPorfolio->institute_name }}">
                             @if ($errors->has('institute_name'))
                                 <span class="help-block">
@@ -232,9 +208,9 @@
                 <div>
                     <legend>Portfolio Image</legend>
                 </div>
-                <div class="form-group">
+                <div class="row mb-1">
                     <label for="portfolio_image_1" class="col-md-2 required control-label">Image</label>
-                    <div class="col-md-3">
+                    <div class="col-md-3 form-group">
                         <input name="portfolio_image_1" id="portfolio_image_1" value="{{ old('portfolio_image_1') }}" type="file" onchange="previewImg(this)" @if(!($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[0]!="")) required="required" @endif>
                         @if ($errors->has('portfolio_image_1'))
                             <span class="help-block">
@@ -256,7 +232,7 @@
                         <input type="radio" name="featured_image" value="1" @if($businessPorfolio->featured_image==1 or $businessPorfolio->featured_image==0) checked="checked" @endif >&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row mb-1">
                     <label for="portfolio_image_2" class="col-md-2 control-label">Image</label>
                     <div class="col-md-3">
                         <input name="portfolio_image_2" id="portfolio_image_2" value="{{ old('portfolio_image_2') }}" onchange="previewImg(this)" type="file">
@@ -280,7 +256,7 @@
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==2) checked="checked" @endif value="2">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row mb-1">
                     <label for="portfolio_image_3" class="col-md-2 control-label">Image</label>
                     <div class="col-md-3">
                         <input name="portfolio_image_3" id="portfolio_image_3" value="{{ old('portfolio_image_3') }}" onchange="previewImg(this)" type="file">
@@ -304,7 +280,7 @@
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==3) checked="checked" @endif value="3">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row mb-1">
                     <label for="portfolio_image_4" class="col-md-2 control-label">Image</label>
                     <div class="col-md-3">
                         <input name="portfolio_image_4" id="portfolio_image_4" value="{{ old('portfolio_image_4') }}" onchange="previewImg(this)" type="file">
@@ -328,7 +304,7 @@
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==4) checked="checked" @endif value="4">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row mb-1">
                     <label for="portfolio_image_5" class="col-md-2 control-label">Image</label>
                     <div class="col-md-3">
                         <input name="portfolio_image_5" id="portfolio_image_5" value="{{ old('portfolio_image_5') }}" onchange="previewImg(this)" type="file">
@@ -353,7 +329,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-12 col-md-offset-2">
+                    <div class="col-md-12 text-right">
                         <button type="submit" class="btn btn-primary">
                         Submit
                         </button>
@@ -365,17 +341,15 @@
 </div>
 @endsection
 @section('header-scripts')
+<style type="text/css">
+    .mb-1 {margin-bottom: 20px;}
+</style>
     <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
     <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
-        
-        /*.find('[name="exp_years"]').change(function(e) {
-                // revalidate the language when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'exp_years');
-            });*/
         //Bootstarp validation on form
         $(document).ready(function() {
             $('#register-form')
@@ -394,17 +368,17 @@
             })
             .end()
 
-            .find('[name="exp_years"]')
+            .find('[name="experience_years"]')
             .change(function(e) {
                 // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'exp_years');
+                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'experience_years');
             })
             .end()
 
-            .find('[name="exp_months"]')
+            .find('[name="experience_months"]')
             .change(function(e) {
                 // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'exp_months');
+                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'experience_months');
             })
             .end()
 
@@ -457,21 +431,21 @@
                                 message: 'Please select Maritial Status.'
                             }
                         }
-                    },academic: {
+                    },acedimic_status: {
                         validators: {
                             notEmpty: {
                                 message: 'Please select Academic.'
                             }
                         }
                     },
-                    exp_years: {
+                    experience_years: {
                         validators: {
                             notEmpty: {
                                 message: 'Please select Exp. Year.'
                             }
                         }
                     },
-                    exp_months: {
+                    experience_months: {
                         validators: {
                             notEmpty: {
                                 message: 'Please select Exp. months.'
