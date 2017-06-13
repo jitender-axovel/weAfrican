@@ -46,7 +46,8 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto
 
 .greyed-section {background: #f0f0f0; padding: 50px 0;}
 .greyed-section h4 {font-weight: 500;}
-
+.comment-section{ text-align: center; margin: 0 auto}
+.inner_comment_section{ display: inline-block; }
 .app-features{padding:50px 0;}
 .app-features .margin-bottom {margin-bottom: 40px;}
 .feature-container > img {left: 50px; position: relative; top: 220px; transform: scale(1.5);width: 100%;height: auto;max-width: 100%;}
@@ -87,8 +88,8 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto
 .event_image {height: 200px !important;width: 100% !important;}
 
 /*business-profile-page*/
-.col-md-2.item {padding: 15px;width: 20%;text-align: center;}
-.comment-section .item .label {padding: 1.2em 3.6em 1.3em;}
+.col-md-2.item {padding: 15px;width: 10%;text-align: center;}
+.comment-section .item .label {padding: 1.2em 1.6em 1.3em;}
 .comment-section .label .fa {font-size: 22px;vertical-align: middle;}
 .comment-section .badge {padding: 5px 10px;position: absolute;top: 7px;}
 .comment-section.col-md-12 {border-top: 1px solid #dadada;}
@@ -219,7 +220,7 @@ footer .available .list-inline > li {padding-right: 0;}
 [data-tip]:hover:after {
 	display:block;
 }
-#preview,.previewImg{ width: 100px; height: auto; }
+#preview,.previewImg{ width: 100px; height:100px;object-fit: cover; }
 .align-left{ text-align: left !important; }
 #register-form .row .required.control-label:after{content: "*";color: red;}
 #register-form .form-group{margin-right: 0px;margin-left: 0px;}
