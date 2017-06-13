@@ -92,20 +92,45 @@
 			    </dl>
 			    @if($category_check==1 or $category_check==2)
 				    <fieldset>
-				    	<legend>Login Information</legend>
+				    	<legend>User Portfolio Details</legend>
 				    </fieldset>
 				    <dl class="dl-horizontal">
 			    		<dt>Maritial Status</dt>
-			    		<dd></dd>
-			    		<dt>Maritial Status</dt>
-			    		<dd></dd>
-			    		<dt>Maritial Status</dt>
-			    		<dd></dd>
-			    		<dt>Maritial Status</dt>
-			    		<dd></dd>
-			    		<dt>Maritial Status</dt>
-			    		<dd></dd>
-				        <dt></dt>
+			    		<dd>{{ $business->portfolio->maritial_status }}</dd>
+			    		<dt>Ocupation</dt>
+			    		<dd>{{ $business->portfolio->occupation }}</dd>
+			    		<dt>Academic Status</dt>
+			    		<dd>{{ $business->portfolio->acedimic_status }}</dd>
+			    		<dt>Key Skills</dt>
+			    		<dd>{{ $business->portfolio->key_skills }}</dd>
+			    		<dt>Experience</dt>
+			    		<dd>{{ $business->portfolio->experience_years }} Years {{ $business->portfolio->experience_months }} months</dd>
+				        <dt>Height</dt>
+				        <dd>{{ $business->portfolio->height_feets }} feet {{ $business->portfolio->height_inches }} inches</dd>
+				        <dt>Hair Type</dt>
+				        <dd>{{ $business->portfolio->hair_type }}</dd>
+				        <dt>Hair Color</dt>
+				        <dd>{{ $business->portfolio->skin_color }}</dd>
+				        <dt>Skin Color</dt>
+				        <dd>{{ $business->portfolio->hair_color }}</dd>
+				        <dt>Professional Training</dt>
+				        <dd>@if($business->portfolio->professional_training) Yes @else No @endif</dd>
+				        <dt>Institute Name</dt>
+				        <dd>{{ $business->portfolio->institute_name }}</dd>
+				        <dt>Portfolio Images</dt>
+				        <dd>
+				        	@if($business->portfolio->image!="")
+				        		<div class="col-md-12">
+					        		@foreach(explode('|',$business->portfolio->image) as $image)
+					        			@if($image!="")
+					        			<div class="col-md-3">
+					        				<img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.$image)}}" class="img">
+					        			</div>
+					        			@endif
+					        		@endforeach
+				        		</div>
+				        	@endif
+				        </dd>
 				    </dl>
 			    @endif    
 		    </div>
