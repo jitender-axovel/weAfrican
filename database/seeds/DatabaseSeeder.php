@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
         $this->call(SecurityQuestionsTableSeeder::class);
         $this->call(EventCategorySeeder::class);
         $this->call(UserPortfoliosSeeder::class);
-        $this->call(UserBusinessEventCategoriesSeeder::class);
-        $this->call(UserBusinessEventSeeder::class);
-        $this->call(UserBusinessFollowersSeeder::class);
-        $this->call(UserBusinessLikesSeeder::class);
-        $this->call(UserBusinessProductsSeeder::class);
-        $this->call(UserBusinessRatingssSeeder::class);
-        $this->call(UserBusinessReviewsSeeder::class);
-        $this->call(UserBusinessServicesSeeder::class);
+        $this->call(EventCategoriesSeeder::class);
+        $this->call(BusinessEventsSeeder::class);
+        $this->call(BusinessFollowersSeeder::class);
+        $this->call(BusinessLikesSeeder::class);
+        $this->call(BusinessProductsSeeder::class);
+        $this->call(BusinessRatingssSeeder::class);
+        $this->call(BusinessReviewsSeeder::class);
+        $this->call(BusinessServicesSeeder::class);
     }
 }
