@@ -41,7 +41,7 @@
                         <td>{{ date('d M,Y h:i A', strtotime($event->start_date_time))}}</td>
                         <td>{{ date('d M,Y h:i A', strtotime($event->end_date_time))}}</td>
                         <td>{{$event->address}}</td>
-                        <td> @if($event->banner)<img src="{{asset(config('image.banner_image_url').'event/thumbnails/small/'.$event->banner)}}"/>
+                        <td> @if($event->banner)<img  class="event_img" src="{{asset(config('image.banner_image_url').'event/thumbnails/small/'.$event->banner)}}"/>
                         @else Banner not uploded yet @endif</td>
                         <td> {{ isset($event->participations) ? $event->participations->count() : 'Default' }}</td>
                         <td>
