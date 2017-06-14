@@ -30,5 +30,9 @@ class DatabaseSeeder extends Seeder
         $this->call(BusinessRatingsTableSeeder::class);
         $this->call(BusinessReviewsTableSeeder::class);
         $this->call(BusinessServicesTableSeeder::class);
+        $this->call(BusinessFavouritesTableSeeder::class);
+        $this->call(UserBusinessEventCategorySeeder::class);
+        $this->call(UserBusinessEventSeeder::class);
+        $this->call(/UserSubscriptionPlansTableSeeder::class);
     }
 }
