@@ -116,6 +116,7 @@ class BusinessEventsController extends Controller
             $seating_plan['event_seating_plan_id'] = $key;
             $seating_plan['total_seat_available'] = $value;
              $seating_plan['per_ticket_price'] = $input['seating_plan_price'][$key];
+             $seating_plan['seating_plan_alias'] = $input['seating_plan_alias'][$key];
             $business_event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
             $business_event_seats = BusinessEventSeat::create($business_event_seats);
             $business_event_seats->save();
@@ -228,6 +229,7 @@ class BusinessEventsController extends Controller
             $search['event_seating_plan_id'] = $seating_plan['event_seating_plan_id'] =  $key;
             $seating_plan['total_seat_available'] = $value;
             $seating_plan['per_ticket_price'] = $seating_plan_price[$key];
+            $seating_plan['seating_plan_alias'] = $request->input('seating_plan_alias')[$key];
             if($value!="" and $value!=null)
             {
                 $row = BusinessEventSeat::where($search)->first();
