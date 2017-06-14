@@ -17,10 +17,10 @@ class UserRolesTableSeeder extends Seeder
         
         DB::table('user_roles')->delete();
         DB::table('user_roles')->insert([
-            ['name' => 'SuperAdmin', 'created_at' => $dt, 'updated_at' => $dt],
-            ['name' => 'Admin', 'created_at' => $dt, 'updated_at' => $dt],
-            ['name' => 'BussinessUser', 'created_at' => $dt, 'updated_at' => $dt],
-            ['name' => 'EndUser', 'created_at' => $dt, 'updated_at' => $dt],
+            ['id' => 1, 'name' => 'SuperAdmin', 'created_at' => $dt, 'updated_at' => $dt],
+            ['id' => 2, 'name' => 'Admin', 'created_at' => $dt, 'updated_at' => $dt],
+            ['id' => 3, 'name' => 'BussinessUser', 'created_at' => $dt, 'updated_at' => $dt],
+            ['id' => 4, 'name' => 'EndUser', 'created_at' => $dt, 'updated_at' => $dt],
         ]);
     }
 }

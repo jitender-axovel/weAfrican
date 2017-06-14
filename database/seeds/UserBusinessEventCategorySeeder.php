@@ -16,26 +16,26 @@ class UserBusinessEventCategorySeeder extends Seeder
         DB::table('event_categories')->insert([[
         	'id' => 1,
             'title' => 'Dance',
-            'slug' => 'platinum-1',
-            'description' => 'Platinum',
+            'slug' => 'dance-1',
+            'description' => 'Dance',
             'is_blocked' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ],
         [
         	'id' => 2,
-            'title' => 'Dance',
-            'slug' => 'platinum-1',
-            'description' => 'Platinum',
+            'title' => 'Music',
+            'slug' => 'music-1',
+            'description' => 'Music',
             'is_blocked' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ],
         [
         	'id' => 3,
-            'title' => 'Dance',
-            'slug' => 'platinum-1',
-            'description' => 'Platinum',
+            'title' => 'Concert',
+            'slug' => 'concert-1',
+            'description' => 'Concert',
             'is_blocked' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
