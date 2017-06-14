@@ -83,13 +83,24 @@
                 @if(count($eventSeatingPlans)>0)
                     @foreach($eventSeatingPlans as $eventSeatingPlans)
                         <div class="form-group">
-                            <label class="col-md-2 control-label">{{ $eventSeatingPlans->title}} Seats</label>
+                            <label class="col-md-2 control-label">
+                            @if($eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!="" and $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!=NULL)
+                            	{{ $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id) }} 
+                            @else
+                            	{{$eventSeatingPlans->title}}
+                            @endif Seats</label>
                             	@if($eventSeatingPlans->getEventPlanSeats($event->id, $eventSeatingPlans->id))
                             		<label class="col-md-4 control-label align-left">{{$eventSeatingPlans->getEventPlanSeats($event->id, $eventSeatingPlans->id)}}</label>
                             	@else
                             		<label class="col-md-4 control-label align-left"></label>
                             	@endif
-                            <label class="col-md-3 control-label">{{ $eventSeatingPlans->title }} Per Ticket Price</label>
+                            <label class="col-md-3 control-label">
+                            @if($eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!="" and $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!=NULL)
+                            	{{ $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id) }} 
+                            @else
+                            	{{$eventSeatingPlans->title}}
+                            @endif
+                             Per Ticket Price</label>
                             <label class="col-md-3 control-label align-left">{{ $eventSeatingPlans->getEventPlanSeatsPrice($event->id, $eventSeatingPlans->id) }}</label>
                         </div>
                     @endforeach
@@ -117,7 +128,7 @@
 						      		<td>{{$ticket_detail->first_name}} {{$ticket_detail->last_name}}</td>
 						      		<td>
 						      		@foreach(explode(',',$ticket_detail->seating_plans) as $seating_plan)
-						      			{{ $event->seatingPlan($seating_plan)->title }} : {{ $event->soldTicket($ticket_detail->user_id,$ticket_detail->business_event_id,$ticket_detail->transaction_id,$seating_plan)->total_tickets_buyed }}&nbsp;&nbsp;
+						      			{{ $event->seatingPlan($seating_plan,$event->id) }} : {{ $event->soldTicket($ticket_detail->user_id,$ticket_detail->business_event_id,$ticket_detail->transaction_id,$seating_plan)->total_tickets_buyed }}&nbsp;&nbsp;
 						      		@endforeach
 						      		</td>
 						      		<td>{{ $ticket_detail->totalprice }} {{ $ticket_detail->currency }}</td>
