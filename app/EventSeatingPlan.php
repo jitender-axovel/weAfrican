@@ -37,6 +37,22 @@ class EventSeatingPlan extends Model
         
     }
 
+    public function getEventPlanAlias($eventId , $planId)
+    {
+        $businessEventSeat = BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first();
+        if($businessEventSeat and $businessEventSeat->seating_plan_alias!="")
+        {
+            return BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first()->seating_plan_alias;
+        }elseif(EventSeatingPlan::whereId($planId)->first())
+        {
+            return EventSeatingPlan::whereId($planId)->first()->title;
+        }else
+        {
+            return 0;
+        }
+        
+    }
+
     public function getEventPlanSeatsPrice($eventId , $planId)
     {
         if(BusinessEventSeat::where('business_event_id', $eventId)->where('event_seating_plan_id', $planId)->first())
