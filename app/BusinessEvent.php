@@ -47,11 +47,15 @@ class BusinessEvent extends Model
         'banner' => 'image|mimes:jpg,png,jpeg',
 	);
 
-    public function seatingPlan($id)
+    public function seatingPlan($id,$event_id)
     {
-        if(EventSeatingPlan::where('id', $id)->first())
+        $businessEventSeats = BusinessEventSeat::where('business_event_id',$event_id)->where('event_seating_plan_id',$id)->first();
+        if(isset($businessEventSeats) and $businessEventSeats->seating_plan_alias!="" and $businessEventSeats->seating_plan_alias!=NULL)
         {
-            return EventSeatingPlan::where('id', $id)->first();
+            return BusinessEventSeat::where('business_event_id',$event_id)->where('event_seating_plan_id',$id)->first()->seating_plan_alias;
+        }elseif(EventSeatingPlan::where('id', $id)->first())
+        {
+            return EventSeatingPlan::where('id', $id)->first()->title;
         }else
         {
             return 0;
