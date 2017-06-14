@@ -23,8 +23,8 @@
                     <th>Event Name</th>
                     <th>Event Keywords</th>
                     <th>Orgainzer Name</th>
-                    <th>Event Start Date& time</th>
-                    <th>Event End Date& time</th>
+                    <th>Event Start Date</th>
+                    <th>Event End Date</th>
                     <th>Address</th>
                     <th>Event Banner</th>
                     <th>Participants</th>
