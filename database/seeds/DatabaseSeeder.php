@@ -33,6 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BusinessFavouritesTableSeeder::class);
         $this->call(UserBusinessEventCategorySeeder::class);
         $this->call(UserBusinessEventSeeder::class);
-        $this->call(/UserSubscriptionPlansTableSeeder::class);
+        $this->call(UserSubscriptionPlansTableSeeder::class);
     }
 }
