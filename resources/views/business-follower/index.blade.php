@@ -231,14 +231,10 @@
         }
     });
     $(document).ready(function(){
-        $('#follower').DataTable();
-        $('#follower').css("width","100%");
-        $('#likes').DataTable();
-        $('#likes').css("width","100%");
-        $('#dislikes').DataTable();
-        $('#dislikes').css("width","100%")
-        $('#ratings').DataTable();
-        $('#ratings').css("width","100%");
+        $('.table').DataTable({
+            responsive: true
+        });
+        $('.table').css("width","100%");
     });
 </script>
 @endsection
