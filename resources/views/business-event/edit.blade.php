@@ -208,19 +208,18 @@
                     @foreach($seatingplans as $seatingplan)
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{ $seatingplan->title}}</label>
-                            <div class="col-md-4">
+                            <div class="col-md-3" class="control-label">
+                                <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanAlias($event->id, $seatingplan->id) }}" placeholder="Seating Plan Alias">
+                            </div>
+                            <div class="col-md-3">
                             @php
                             if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
                             $j = $seatingplan->getEventPlanSeats($event->id, $seatingplan->id)
                             @endphp
-                                <select class="form-control js-example-basic-single" name="seating_plan[{{ $seatingplan->id }}]" data-show-subtext="true" data-live-search="true">
-                                    <option value="">Select Seats for {{ $seatingplan->title }}</option>
-                                    @for($i=0;$i<=5000;$i++)
-                                        <option @if($i==$j) selected="selected"@endif value="{{$i}}">{{$i}}</option>
-                                    @endfor
-                                </select>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" value="{{$j }}" name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
+                                </div>
                             </div>
-                            <label class="col-md-3 control-label">{{ $seatingplan->title }} Per Ticket Price</label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="seating_plan_price[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanSeatsPrice($event->id, $seatingplan->id) }}">
                             </div>
@@ -245,6 +244,8 @@
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.bootstrap-touchspin.min.css') }}">
+    <script src="{{ asset('js/jquery.bootstrap-touchspin.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
 
         var lat;
@@ -298,6 +299,7 @@
               }
             });
         @endif
+
         function buildMap(lat,long)
         {
             $('#map').locationpicker({
@@ -333,7 +335,6 @@
         }
         //Bootstarp validation on form
         $(document).ready(function() {
-            $(".SeatingPlan").select2();
             $('#register-form').bootstrapValidator({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
@@ -478,10 +479,42 @@
         readURL(this);
     });
     $(document).ready(function () {
-            $('#datetimepicker1').datetimepicker();
-            $('#datetimepicker2').datetimepicker();
-            $(".js-example-basic-single").select2();
-        });
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+        $("input[name='total_seats']").TouchSpin({
+            postfix: "Seats",
+            postfix_extraclass: "btn btn-default",
+            min: 0,
+            max: 5000,
+            step: 1,
+        })./*on('change touchspin.on.min touchspin.on.max', function() {
+            var row  = $(this).parents('.form-group');
+            if($(this).val()!="" && parseInt($(this).val())!==0)
+            {
+                $('#register-form').formValidation('addField', $(this).attr('name'), total_seats);
+            }else
+            {
+                $('#register-form').formValidation('removeField', row.find('[name="'+$(this).attr('name')+'"]'));
+            }
+        }).*/end();
+        $(".seatingplan_touchspin").TouchSpin({
+            postfix: "Seats",
+            postfix_extraclass: "btn btn-default",
+            min: 0,
+            max: 5000,
+            step: 1,
+        })./*on('change touchspin.on.min touchspin.on.max', function() {
+            var row  = $(this).parents('.form-group');
+            var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
+            if($(this).val()!="" && parseInt($(this).val())!==0)
+            {
+                $('#register-form').formValidation('addField', name, priceValidator);
+            }else
+            {
+                $('#register-form').formValidation('removeField', row.find('[name="'+name+'"]'));
+            }
+        }).*/end();
+    });
 
     
 
