@@ -1,6 +1,8 @@
 @if(Auth::check())
     @if(!isset($flag))
     <div class="top-business-menu">
+    <div class="container">
+    <div class="row">
         <ul class="nav nav-pills">
             <li role="presentation"><a href="{{ url('register-business/'.Auth::id()) }}">Business Profile</a></li>
             @if(isset($category_check) and ($category_check==1 or $category_check==2))
@@ -24,6 +26,8 @@
                 </ul>
             </li> -->
         </ul>
+        </div>
+        </div>
     </div>
     @endif
 @endif
