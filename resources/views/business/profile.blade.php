@@ -39,42 +39,7 @@
             @endif
 	    </div>
 		<div class="business-profile">
-			  <div class="business-right col-md-12">
-				<dl class="dl-horizontal">
-					@if($business->business_proof)
-				        <dt>Identity Proof</dt>
-				        <dd>
-				        	@if($business->identity_proof)
-				            <a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	
-				            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i> </a>
-				            @endif
-				        </dd>
-				       
-				        <dt>Business Proof</dt>
-				        <dd>
-				        	@if($business->business_proof)
-				            <a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	
-				            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
-				            </a>
-				            @endif
-				        </dd>
-			        	@if($business->is_identity_proof_validate && $business->is_business_proof_validate)
-					        <dt>Document Status</dt>
-					        <dd><span class="verified btn-success label"><i class="fa fa-check" aria-hidden="true"></i>
-					            Verified</span>
-					        </dd>
-			        	@else
-					        <dt>Edit Document</dt>
-					        <dd><a href="{{url('upload')}}"><button>Upload Document</button></a></dd>
-					        <dt>Document Status</dt>
-					        <dd> <span class=" pending btn-danger label">Pending Verification</span></dd>
-			        	@endif
-			        @else
-				        <dt>Upload Document</dt>
-				        <dd><a href="{{url('upload')}}"><button>Upload Document</button></a> </dd>
-			        @endif
-				</dl>
-		    </div>
+			  
 			<div class="business-left col-md-6">
 			 <fieldset>
 				    	<legend>Business Profile Details</legend>
@@ -175,9 +140,45 @@
 				    </dl>
 			    @endif    
 		    </div>
-		  
+		  <div class="business-right col-md-12">
+				<dl class="dl-horizontal">
+					@if($business->business_proof)
+				        <dt>Identity Proof</dt>
+				        <dd>
+				        	@if($business->identity_proof)
+				            <a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	
+				            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i> </a>
+				            @endif
+				        </dd>
+				       
+				        <dt>Business Proof</dt>
+				        <dd>
+				        	@if($business->business_proof)
+				            <a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	
+				            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
+				            </a>
+				            @endif
+				        </dd>
+			        	@if($business->is_identity_proof_validate && $business->is_business_proof_validate)
+					        <dt>Document Status</dt>
+					        <dd><span class="verified btn-success label"><i class="fa fa-check" aria-hidden="true"></i>
+					            Verified</span>
+					        </dd>
+			        	@else
+					        <dt>Edit Document</dt>
+					        <dd><a href="{{url('upload')}}"><button>Upload Document</button></a></dd>
+					        <dt>Document Status</dt>
+					        <dd> <span class=" pending btn-danger label">Pending Verification</span></dd>
+			        	@endif
+			        @else
+		
+				        <div class="pull-left"><a href="{{url('upload')}}"><button type="button" class="btn btn-info">Upload Document</button></a> </div>
+			        @endif
+				</dl>
+		    </div>
 
 		    <div class="comment-section col-md-12">
+		    		<div class="icons_section">
 			    	<div class="col-md-2 like item">
 			        	<span class="label label-warning" title="Likes"><i class="fa fa-thumbs-o-up" aria-hidden="true"><span class="badge">{{$business->getLikes()}}</span></i></span>
 					</div>
@@ -203,6 +204,7 @@
 						<span class="label label-danger" title="Followers"><i class="fa fa-users" aria-hidden="true">
 						<span class="badge">{{$business->getFollowers()}}</span></i></span>
 					</div>
+				</div>
 				</div>
 				</div> 
 				</div>
