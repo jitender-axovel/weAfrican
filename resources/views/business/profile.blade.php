@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
 	<h5 class="text-left">Business Profile</h5>
     <hr>
     @include('notification')
@@ -42,7 +42,7 @@
 			  
 			<div class="business-left col-md-6">
 			 	<fieldset>
-			    	<legend>Business Profile Details</legend>
+			    	<legend class="head1">Business Profile Details</legend>
 				</fieldset>
 				<div class="row">
 					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
@@ -102,10 +102,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
-						<label>Address</label>
+						<label>Adivress</label>
 					</div>
 					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
-						{{ $business->user->address }}
+						{{ $business->user->adivress }}
 					</div>
 				</div>
 				<div class="row">
@@ -181,7 +181,7 @@
 			    @if($category_check==1 or $category_check==2)
 				   <div class="business-right col-md-6">
 				    <fieldset>
-				    	<legend>User Portfolio Details</legend>
+				    	<legend class="head1">User Portfolio Details</legend>
 				    </fieldset>
 				    <div class="row">
 						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
@@ -292,67 +292,79 @@
 			    @endif    
 		    </div>
 		  <div class="business-right col-md-12">
-				<dl class="dl-horizontal">
+		  <div class="row">
+				<div class="col-md-12">
+				<div class="row">
+				<div class="sep_id">
 					@if($business->business_proof)
-				        <dt>Identity Proof</dt>
-				        <dd>
+				        <div class="col-md-2 col-xs-6">Identity Proof</div>
+				        <div class="col-md-10 col-xs-6">
 				        	@if($business->identity_proof)
 				            <a href="{{asset(config('image.document_url').$business->identity_proof)}}" target="_blank">	
-				            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i> </a>
+				            <i class="fa fa-file-text fa-2x" aria-hidiven="true" title="see document"></i> </a>
 				            @endif
-				        </dd>
+				        </div>
+				        </div>
 				       
-				        <dt>Business Proof</dt>
-				        <dd>
+				       <div class="sep_id">
+				        <div class="col-md-2 col-xs-6">Business Proof</div>
+				        <div class="col-md-10 col-xs-6">
 				        	@if($business->business_proof)
 				            <a href="{{asset(config('image.document_url').$business->business_proof)}}" target="_blank">	
-				            <i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
+				            <i class="fa fa-file-text fa-2x" aria-hidiven="true" title="see document"></i>
 				            </a>
 				            @endif
-				        </dd>
+				        </div>
+				        </div>
+
+				        <div class="sep_id">
 			        	@if($business->is_identity_proof_validate && $business->is_business_proof_validate)
-					        <dt>Document Status</dt>
-					        <dd><span class="verified btn-success label"><i class="fa fa-check" aria-hidden="true"></i>
+					        <div class="col-md-2 col-xs-6">Document Status</div>
+					        <div class="col-md-10 col-xs-6"><span class="verified btn-success label"><i class="fa fa-check" aria-hidiven="true"></i>
 					            Verified</span>
-					        </dd>
+					        </div>
+					        <div class="sep_id">
 			        	@else
-					        <dt>Edit Document</dt>
-					        <dd><a href="{{url('upload')}}"><button>Upload Document</button></a></dd>
-					        <dt>Document Status</dt>
-					        <dd> <span class=" pending btn-danger label">Pending Verification</span></dd>
+					        <div class="col-md-2 col-xs-6">Edit Document</div>
+					        <div class="col-md-10 col-xs-6"><a href="{{url('upload')}}"><button>Upload Document</button></a></div>
+					        <div class="col-md-2 col-xs-6">Document Status</div>
+					        <div class="col-md-10 col-xs-6"> <span class=" pending btn-danger label">Pending Verification</span></div>
 			        	@endif
 			        @else
 		
 				        <div class="pull-left"><a href="{{url('upload')}}"><button type="button" class="btn btn-info">Upload Document</button></a> </div>
 			        @endif
-				</dl>
+			        </div>
+				</div>
+				</div>
 		    </div>
 
 		    <div class="comment-section col-md-12">
 		    		<div class="icons_section">
 			    	<div class="col-md-2 like item">
-			        	<span class="label label-warning" title="Likes"><i class="fa fa-thumbs-o-up" aria-hidden="true"><span class="badge">{{$business->getLikes()}}</span></i></span>
+			        	<span class="label label-warning" title="Likes"><i class="fa fa-thumbs-o-up" aria-hidiven="true"></i></span>
+			        	<span class="badge">{{$business->getLikes()}}</span>
 					</div>
 
 					<div class="col-md-2 dislike item">
-						<span class="label label-primary" title="Dislikes"><i class="fa fa-thumbs-o-down" aria-hidden="true">
+						<span class="label label-primary" title="Dislikes"><i class="fa fa-thumbs-o-down" aria-hidiven="true">
 						<span class="badge">{{$business->getDislikes()}}</span></i></span>
 					</div>
 
 					<div class="col-md-2 rating item">
-						<span class="label label-success" title="Ratings"><i class="fa fa-star-o" aria-hidden="true">
+						<span class="label label-success" title="Ratings"><i class="fa fa-star-o" aria-hidiven="true">
 						<span class="badge">{{(int)$business->getRatings()}}</span></i>
 						</span>
 					</div>
 
 					<div class="col-md-2 favourite item">
-						<span class="label label-info" title="Favourites"><i class="fa fa-heart-o" aria-hidden="true">
+						<span class="label label-info" title="Favourites"><i class="fa fa-heart-o" aria-hidiven="true">
 						<span class="badge">{{$business->getFavourites()}}</span></i>
 						</span>
 					</div>
 
 					<div class="col-md-2 followers item">
-						<span class="label label-danger" title="Followers"><i class="fa fa-users" aria-hidden="true">
+						<span class="label label-danger" title="Followers"><i class="fa fa-users" aria-hidiven="true">
 						<span class="badge">{{$business->getFollowers()}}</span></i></span>
 					</div>
 				</div>
