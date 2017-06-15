@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
     <h5 class="text-left">Event Details</h5>
     <hr>
     <p class="text-left">You can add multiple events.</p> 
@@ -47,7 +47,7 @@
                         <td>
                             <ul class="list-inline">
                                 <li>
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal-{{$event->id}}" title="Download Participant List"><i class="fa fa-download" aria-hidden="true"></i></button>
+                                    <button type="button" class="btn btn-info btn_fix" data-toggle="modal" data-target="#myModal-{{$event->id}}" title="Download Participant List"><i class="fa fa-download" aria-hidden="true"></i></button>
                                   <!-- Modal -->
                                     <div class="modal fade" id="myModal-{{$event->id}}" role="dialog">
                                     <div class="modal-dialog modal-lg">
@@ -101,15 +101,15 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Event"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></button></a>
+                                    <a href="{{url('business-event/'.$event->id.'/edit')}}"><button type="button" class="btn btn-default btn_fix" title="Edit Event"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></button></a>
                                 </li>
                                 <li>
-                                    <a href="{{url('business-event/'.$event->id)}}"><button type="button" class="btn btn-success" title="Edit Event"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
+                                    <a href="{{url('business-event/'.$event->id)}}"><button type="button" class="btn btn-success btn_fix" title="Edit Event"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                 </li>
                                 <li>
                                     <form action="{{url('business-event/'.$event->id)}}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->title}}', event,this)">
                                         {{csrf_field()}}
-                                        <button type="submit" class="btn btn-danger" title="Delete Event"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        <button type="submit" class="btn btn-danger btn_fix" title="Delete Event"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </form>
                                 </li>
                             </ul>
