@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datepicker.min.css') }}"/>
 @endsection
 @section('content')
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container row_pad">
+    <div class="col-md-12">
         <h5 class="text-left">Add Event</h5>
         <hr>
         @include('notification')
@@ -21,6 +21,7 @@
         <div class="panel panel-default document">
             <form id="register-form" class="form-horizontal" action="{{ url('business-event') }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
+                <div class="col-md-12">
                  <div class="row">
                     <label class="col-md-2 control-label required">Select Category:</label>
                     <div class="col-md-4 form-group">
@@ -111,7 +112,9 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label">Location:</label>
                         <div class="col-md-10">
+                        <div class="row">
                             <div id="map"></div>
+                            </div>
                         </div>
                     </div>
                     <input type="hidden" id="latitude" class="form-control" name="latitude" value ="{{ old('latitude') }}">
@@ -182,9 +185,10 @@
                         <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
                     </div>
                 </div>
+
                 <fieldset>
                     <legend>Event Seating Plan</legend>
-                </fieldset>
+                </fieldset></div>
                 <div class="form-group touchspin_input">
                     <label class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
