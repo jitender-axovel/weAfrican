@@ -16,7 +16,7 @@ p {margin: 10px 0;}
 .top-container.container-fluid {padding-left: 0; padding-right: 0;}
 
 /* Header */
-header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto; padding: 35px 0 0; width: 100%;display: inline-block;}
+header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto; padding: 35px 0 0; width: 100%;display:inline-block;float:left;}
 .navbar .navbar-nav > li > a {color: #ffffff; padding: 9px 16px; text-transform: uppercase; border-radius: 4px;}
 .navbar .navbar-nav li .download-link, .download-link {background: #05c2f9; border: 1px solid #05c2f9; border-radius: 4px; color: #ffffff;}
 .btn{text-transform:uppercase; padding: 8px 15px;}
@@ -27,7 +27,7 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto
 .top-business-menu a.active {background:#05c2f9;}
 
 /* Main Content */
-.top-container .main-content {min-height: 350px;}
+.top-container .main-content {min-height: 350px;display: inline-block;width: 100%;}
 .#category-form img{width: auto;}
 /* Home Page Main Content */
 .first-section {background: #2d3e50; padding-top: 35px;}
@@ -80,7 +80,7 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto
 .dl-horizontal dd {float: left;margin: 0;overflow: hidden;
   padding: 4px 0 4px 51px;width: 70%;}
 .pending.btn-danger.label,.verified.btn-success.label {border-radius: 9px;font-size: 15px;padding: 8px 10px;}
-.top-business-menu {margin: 0 auto;width: 80%;}
+.top-business-menu {display:block}
 .top-business-menu .nav.nav-pills {float: right;margin-top: 16px;text-transform: uppercase;}
 .panel.panel-default.document {padding: 30px;}
 .form-group.required .control-label:after { content:"*";color:red;}
@@ -88,10 +88,10 @@ header { background: #2d3e50 none repeat scroll 0 0; margin: 0 auto; height:auto
 .event_image {height: 200px !important;width: 100% !important;}
 
 /*business-profile-page*/
-.col-md-2.item {padding: 15px;width: 10%;text-align: center;}
-.comment-section .item .label {padding: 1.2em 1.6em 1.3em;}
+.col-md-2.item {padding: 15px;width:auto;text-align: center;}
+.comment-section .item .label {padding: 10px 10px;display: block;border-radius: 50px;height: 40px; width: 40px;}
 .comment-section .label .fa {font-size: 22px;vertical-align: middle;}
-.comment-section .badge {padding: 5px 10px;position: absolute;top: 7px;}
+.comment-section .badge {padding: 5px 10px;position: absolute;top: 57px;right: 20px;background-color: transparent;color: black;}
 .comment-section.col-md-12 {border-top: 1px solid #dadada;}
 
 /*business-event-page*/
@@ -115,7 +115,21 @@ footer .available .list-inline > li {padding-right: 0;}
 .all_content{padding-top: 20px;}
 .event_img{width: 80px;height: 70px; object-fit: cover;}
 .list-inline>li:first-child{padding-left: 5px;}
-
+.icons_section{display: inline-block;}
+.actn_btun{padding: 2px 5px;}
+.head1{padding-top: 20px;}
+.upload_img{width: 100px;height: 100px;display: table; vertical-align: middle; background: #ccc;}
+.set_imgs{display: table-cell;vertical-align: middle;text-align: center;}
+.set_imgs img{display: inline-block; max-height: 100px}
+.sep_id{margin-bottom: 10px;display: inline-block;width: 100%;}
+.btn_fix{padding: 2px 5px;}
+.row_pad{padding: 50px 0px;}
+.banner_image{width: 100%;display: block;}
+.container-fluid{padding-left: 0px;padding-right: 0px;}
+.dataTables_length{margin-left: 10px;}
+.dataTables_filter{margin-right: 10px;}
+.dataTables_info{margin-left: 10px;}
+.modal-title{font-size: 17px;}
 /* Responsive */
 @media all and (max-width:1200px){
 	.container {width: 90%;}
@@ -132,7 +146,10 @@ footer .available .list-inline > li {padding-right: 0;}
 }
 @media all and (max-width:767px){	
 	/*.navbar {  margin: 40px 0 0;}*/
+	.top-container .main-content .main-container.row{padding: 20px 15px}
+	.register-business{width: 100%;}
 	.top-business-menu{width: 100%;}
+	.col-md-2.item{float:left;}
 	.panel.panel-default.document{padding: 0px;}
 	.menu_bar{position: relative; float: right;}
 	.logo{float:left;position: relative}
@@ -155,6 +172,7 @@ footer .available .list-inline > li {padding-right: 0;}
 	.download-section .list-inline > li {box-sizing: border-box; margin: 0; padding: 0 2px; width: 30%;}
 	.download-section .list-inline img { height: 42px;}
 	footer .text-left, footer .text-right {text-align: center;}
+	footer{padding: 20px 0;}
 }
 @media all and (max-width:479px){	
 	.first-section .download-weafrican h2 {font-size: 40px;}
@@ -220,7 +238,7 @@ footer .available .list-inline > li {padding-right: 0;}
 [data-tip]:hover:after {
 	display:block;
 }
-#preview,.previewImg{ width: 100px; height:100px;object-fit: cover; }
+#preview,.previewImg{max-height:100px;display: inline-block; vertical-align: inherit; max-width: 100%; }
 .align-left{ text-align: left !important; }
 #register-form .row .required.control-label:after{content: "*";color: red;}
 #register-form .form-group{margin-right: 0px;margin-left: 0px;}
