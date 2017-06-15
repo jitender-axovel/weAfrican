@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container row_pad">
+    <div class="col-md-12">
         <h5 class="text-left">Add Service</h5>
         <hr>
         @include('notification')
