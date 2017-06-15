@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
     <h5>Subscription History</h5>
     <hr>
     
