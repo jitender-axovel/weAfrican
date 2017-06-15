@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
     <h5 class="text-left">Service Details</h5>
     <hr>
     <p class="text-left">You can add multiple services.</p> 
@@ -34,13 +34,13 @@
                         <td>
                             <ul class="list-inline">
                                 <li>
-                                    <a href="{{url('business-service/'.$service->id.'/edit')}}"><button type="button" class="btn btn-default" title="Edit Service"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i>
+                                    <a href="{{url('business-service/'.$service->id.'/edit')}}"><button type="button" class="btn btn-default btn_fix" title="Edit Service"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i>
                                     </button></a>
                                 </li>
                                 <li>
                                     <form action="{{url('business-service/'.$service->id)}}" method="POST" onsubmit="deleteService('{{$service->id}}', '{{$service->title}}', event,this)">
                                         {{csrf_field()}}
-                                        <button type="submit" class="btn btn-danger" title="Delete Service"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        <button type="submit" class="btn btn-danger btn_fix" title="Delete Service"><i class="fa fa-trash-o" aria-hidden="true"></i>
                                         </button>
                                     </form>
                                 </li>
