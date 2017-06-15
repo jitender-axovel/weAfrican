@@ -198,15 +198,15 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{ $seatingplan->title }}</label>
                             <div class="col-md-3" class="control-label">
-                                <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" disabled="disabled" value="{{ $seatingplan->title }}" placeholder="Seating Plan Alias">
+                                <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" readonly="readonly" value="{{ $seatingplan->title }}" placeholder="Seating Plan Alias">
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group input-group-sm">
-                                    <input type="text" disabled="disabled" value="" name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
+                                    <input type="text" readonly="readonly" value="" name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" disabled="disabled" class="form-control seatingplan_price" name="seating_plan_price[{{ $seatingplan->id }}]" placeholder="Per Ticket Price">
+                                <input type="text" readonly="readonly" class="form-control seatingplan_price" name="seating_plan_price[{{ $seatingplan->id }}]" placeholder="Per Ticket Price">
                             </div>
                         </div>
                     @endforeach
@@ -331,16 +331,6 @@
             }
         });
     }
-    var priceValidator = {
-        validators: {
-            notEmpty: {
-                message: 'Please supply Price for the seating plan'
-            }
-        }
-    };
-    var total_seats={
-         
-    };
     //Bootstarp validation on form
         $(document).ready(function() {
             $('#datetimepicker1').datetimepicker({ minDate: new Date() });
@@ -521,10 +511,11 @@
                        {
                             $('input[name="'+input+'"]').val("");
                        }
-                       $('input[name="'+input+'"]').attr('disabled','disabled');
+                       $('input[name="'+input+'"]').attr('readonly','readonly');
                        $('i[data-bv-icon-for="'+input+'"]').css('display', 'none');
                        $('small[data-bv-validator-for="'+input+'"]').css('display', 'none');
                        $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-error');
+                       $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-success');
 
                     });
                     bootstrapValidator.enableFieldValidators('total_seats', false);
@@ -534,7 +525,7 @@
                        var input = $(this).attr("name");
                        if(!(input.indexOf('seating_plan_price[')>-1))
                        {
-                            $('input[name="'+input+'"]').removeAttr('disabled');
+                            $('input[name="'+input+'"]').removeAttr('readonly');
                        }
                     });
                     bootstrapValidator.enableFieldValidators('total_seats', true);
@@ -552,11 +543,12 @@
                 var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
                 if($(this).val()!="" && parseInt($(this).val())!==0)
                 {
-                    $('input[name="'+name+'"]').removeAttr('disabled');
+                    $('input[name="'+name+'"]').removeAttr('readonly');
                     bootstrapValidator.enableFieldValidators(name, true);
                 }else
                 {
-                    $('input[name="'+name+'"]').attr('disabled','disabled');
+                    $('input[name="'+name+'"]').val("");
+                    $('input[name="'+name+'"]').attr('readonly','readonly');
                     bootstrapValidator.enableFieldValidators(name, false);
                 }
                 bootstrapValidator.enableFieldValidators('total_seats', true);

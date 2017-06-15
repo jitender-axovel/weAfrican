@@ -193,15 +193,12 @@
                 <fieldset>
                     <legend>Event Seating Plan</legend>
                 </fieldset>
-                <div class="form-group">
+                <div class="form-group touchspin_input">
                     <label for="seating_plan" class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
-                        <select class="form-control js-example-basic-single" name="total_seats" id="total_seats" data-show-subtext="true" data-live-search="true">
-                            <option value="">Select Total Seats</option>
-                            @for($i=0;$i<=5000;$i++)
-                                <option value="{{$i}}" @if($i==$event->total_seats) selected=""selected" @endif>{{$i}}</option>
-                            @endfor
-                        </select>
+                        <div class="input-group input-group-sm">
+                            <input type="text" value="{{$event->total_seats}}" name="total_seats" id="total_seats" class="form-control input-sm">
+                        </div>
                     </div>
                 </div>
                 @if(count($seatingplans)>0)
@@ -212,16 +209,16 @@
                                 <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanAlias($event->id, $seatingplan->id) }}" placeholder="Seating Plan Alias">
                             </div>
                             <div class="col-md-3">
-                            @php
-                            if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
-                            $j = $seatingplan->getEventPlanSeats($event->id, $seatingplan->id)
-                            @endphp
                                 <div class="input-group input-group-sm">
-                                    <input type="text" value="{{$j }}" name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
+                                    <input type="text" value="
+                                    @if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
+                                    {{$seatingplan->getEventPlanSeats($event->id, $seatingplan->id) }}
+                                    @endif
+                                    " name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="seating_plan_price[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanSeatsPrice($event->id, $seatingplan->id) }}">
+                                <input type="text" class="form-control seatingplan_price" name="seating_plan_price[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanSeatsPrice($event->id, $seatingplan->id) }}">
                             </div>
                         </div>
                     @endforeach
@@ -333,8 +330,33 @@
             $('#pin_code').val(addressComponents.postalCode);
             $('#country').val(addressComponents.country);
         }
-        //Bootstarp validation on form
+    </script>
+@endsection
+@section('scripts')
+<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<script type="text/javascript">
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#preview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    $("#banner").change(function(){
+        readURL(this);
+    });
+    //Bootstarp validation on form
         $(document).ready(function() {
+            var min1 = $('#datetimepicker1').val();console.log('min',min1);
+            var min2 = $('#datetimepicker2').val();console.log('min',min2);
+            $('#datetimepicker1').datetimepicker({ defaultDate: ""+min1+"", });
+            $('#datetimepicker2').datetimepicker({ defaultDate: ""+min2+"",  });
             $('#register-form').bootstrapValidator({
                 // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
                 feedbackIcons: {
@@ -375,13 +397,21 @@
                         validators: {
                             notEmpty: {
                                 message: 'Please supply your Event Start Time'
+                            },
+                            date: {
+                                format: 'MM/DD/YYYY h:m A',
+                                message: 'The value is not a valid date'
                             }
                         }
                     },
                     end_date_time: {
                         validators: {
                             notEmpty: {
-                                message: 'Please supply your Event Description'
+                                message: 'Please supply your Event End Time'
+                            },
+                            date: {
+                                format: 'MM/DD/YYYY h:m A',
+                                message: 'The value is not a valid date'
                             }
                         }
                     },
@@ -419,27 +449,42 @@
                             }
                         }
                     },
-                    /*SeatingPlan: {
-                        selector: '.SeatingPlan',
-                        validators: {
+                    total_seats:
+                    {
+                        validators:{
                             callback: {
-                                message: 'The sum of percentages must be 100',
+                                message: 'The sum of all the seats in seating plan must be equal to Total Seats',
                                 callback: function(value, validator, $field) {
-                                    var percentage = validator.getFieldElements("input[id='seats_in_plan']"),
-                                    length = percentage.length,
-                                    sum = 0;
-                                    for (var i = 0; i < length; i++) {
-                                        sum += parseFloat($(percentage[i]).val());
-                                    }
-                                    if (sum === 100) {
-                                        validator.updateStatus(SeatingPlan, 'VALID', 'callback');
+                                    var total = 0;
+                                    $(".seatingplan_touchspin").each(function() {
+                                        if($(this).val()!="")
+                                        {
+                                            total = total + parseInt($(this).val());
+                                        }else
+                                        {
+                                            total = total + 0;
+                                        }
+                                    });
+                                    if (total === parseInt($("#total_seats").val())) {
+                                        /*validator.updateStatus(total_seats, 'VALID', 'callback');*/
                                         return true;
                                     }
                                     return false;
                                 }
                             }
                         }
-                    },*/
+                    },
+                    @if(count($seatingplans)>0)
+                        @foreach($seatingplans as $seatingplan)
+                            'seating_plan_price[{{$seatingplan->id}}]':{
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Please supply your Per Ticket Price'
+                                    }
+                                }
+                            },
+                        @endforeach
+                    @endif
                 }
             })
             .on('success.form.bv', function(e) {
@@ -460,63 +505,123 @@
                     console.log(result);
                 }, 'json');
             });
+            $('#datetimepicker1').on('dp.change dp.show', function(e) {
+                $('#register-form').bootstrapValidator('revalidateField', 'start_date_time');
+            });
+            $('#datetimepicker2').on('dp.change dp.show', function(e) {
+                $('#register-form').bootstrapValidator('revalidateField', 'end_date_time');
+            });
+            var bootstrapValidator = $('#register-form').data('bootstrapValidator');
+            bootstrapValidator.enableFieldValidators('total_seats', false);
+            @if(count($seatingplans)>0)
+                @foreach($seatingplans as $seatingplan)
+                bootstrapValidator.enableFieldValidators('seating_plan_price[{{$seatingplan->id}}]', false);
+                @endforeach
+            @endif
+            $("input[name='total_seats']").TouchSpin({
+                postfix: "Seats",
+                postfix_extraclass: "btn btn-default",
+                min: 0,
+                max: 5000,
+                step: 1,
+            }).on('change touchspin.on.min touchspin.on.max',function(e){
+                if($(this).val()=="" || parseInt($(this).val())==0)
+                {
+                    $('input[name^="seating_plan"]').each(function(i){
+                       var input = $(this).attr("name");
+                       if(!(input.indexOf('seating_plan_alias[')>-1))
+                       {
+                            $('input[name="'+input+'"]').val("");
+                       }
+                       $('input[name="'+input+'"]').attr('readonly','readonly');
+                       $('i[data-bv-icon-for="'+input+'"]').css('display', 'none');
+                       $('small[data-bv-validator-for="'+input+'"]').css('display', 'none');
+                       $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-error');
+                       $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-success');
+
+                    });
+                    bootstrapValidator.enableFieldValidators('total_seats', false);
+                }else
+                {
+                    $('input[name^="seating_plan"]').each(function(i){
+                       var input = $(this).attr("name");
+                       if(!(input.indexOf('seating_plan_price[')>-1))
+                       {
+                            $('input[name="'+input+'"]').removeAttr('readonly');
+                       }
+                    });
+                    bootstrapValidator.enableFieldValidators('total_seats', true);
+                }
+                $('#register-form').bootstrapValidator('validateField', 'total_seats');
+            }).end();
+            $(".seatingplan_touchspin").TouchSpin({
+                postfix: "Seats",
+                postfix_extraclass: "btn btn-default",
+                min: 0,
+                max: 5000,
+                step: 1,
+            }).on('change touchspin.on.min touchspin.on.max', function(e) {
+                var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
+                if($(this).val()!="" && parseInt($(this).val())!==0)
+                {
+                    $('input[name="'+name+'"]').removeAttr('readonly');
+                    bootstrapValidator.enableFieldValidators(name, true);
+                }else
+                {
+                    $('input[name="'+name+'"]').val("");
+                    $('input[name="'+name+'"]').attr('readonly','readonly');
+                    bootstrapValidator.enableFieldValidators(name, false);
+                }
+                bootstrapValidator.enableFieldValidators('total_seats', true);
+            }).end();
+
+            if($('input[name="total_seats"]').val()=="" || parseInt($('input[name="total_seats"]').val())==0)
+            {
+                $('input[name^="seating_plan"]').each(function(i){
+                   var input = $(this).attr("name");
+                   if(!(input.indexOf('seating_plan_alias[')>-1))
+                   {
+                        $('input[name="'+input+'"]').val("");
+                   }
+                   $('input[name="'+input+'"]').attr('readonly','readonly');
+                   $('i[data-bv-icon-for="'+input+'"]').css('display', 'none');
+                   $('small[data-bv-validator-for="'+input+'"]').css('display', 'none');
+                   $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-error');
+                   $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-success');
+
+                });
+                bootstrapValidator.enableFieldValidators('total_seats', false);
+            }else
+            {
+                $('input[name^="seating_plan"]').each(function(i){
+                   var input = $(this).attr("name");
+                   if(!(input.indexOf('seating_plan_price[')>-1))
+                   {
+                        $('input[name="'+input+'"]').removeAttr('readonly');
+                   }
+                });
+                bootstrapValidator.enableFieldValidators('total_seats', true);
+            }
+            $('#register-form').bootstrapValidator('validateField', 'total_seats');
+            $(".seatingplan_touchspin").each(function() {
+                var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
+                if($(this).val()!="" && parseInt($(this).val())!==0)
+                {
+                    $('input[name="'+name+'"]').removeAttr('readonly');
+                    bootstrapValidator.enableFieldValidators(name, true);
+                }else
+                {
+                    $('input[name="'+name+'"]').val("");
+                    $('input[name="'+name+'"]').attr('readonly','readonly');
+                    bootstrapValidator.enableFieldValidators(name, false);
+                }
+                bootstrapValidator.enableFieldValidators('total_seats', true);
+            });
         });
-    </script>
-@endsection
-@section('scripts')
-<script type="text/javascript">
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            $('#preview').attr('src', e.target.result);
-          }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-    
-    $("#banner").change(function(){
-        readURL(this);
-    });
-    $(document).ready(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
-        $("input[name='total_seats']").TouchSpin({
-            postfix: "Seats",
-            postfix_extraclass: "btn btn-default",
-            min: 0,
-            max: 5000,
-            step: 1,
-        })./*on('change touchspin.on.min touchspin.on.max', function() {
-            var row  = $(this).parents('.form-group');
-            if($(this).val()!="" && parseInt($(this).val())!==0)
-            {
-                $('#register-form').formValidation('addField', $(this).attr('name'), total_seats);
-            }else
-            {
-                $('#register-form').formValidation('removeField', row.find('[name="'+$(this).attr('name')+'"]'));
-            }
-        }).*/end();
-        $(".seatingplan_touchspin").TouchSpin({
-            postfix: "Seats",
-            postfix_extraclass: "btn btn-default",
-            min: 0,
-            max: 5000,
-            step: 1,
-        })./*on('change touchspin.on.min touchspin.on.max', function() {
-            var row  = $(this).parents('.form-group');
-            var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
-            if($(this).val()!="" && parseInt($(this).val())!==0)
-            {
-                $('#register-form').formValidation('addField', name, priceValidator);
-            }else
-            {
-                $('#register-form').formValidation('removeField', row.find('[name="'+name+'"]'));
-            }
-        }).*/end();
-    });
-
-    
-
 </script>
+<style>
+#register-form .touchspin_input .form-control-feedback {
+    right: -15px;
+}
+</style>
 @endsection
