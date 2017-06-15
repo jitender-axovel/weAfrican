@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
     <h5 class="text-left">Business Follower List</h5>
     <hr>
     <p class="text-left">You can see list of users who had liked, disliked or followed your business.</p> 
@@ -15,11 +15,14 @@
         <div id="home" class="tab-pane fade in active">
             <div class="all_content">
                 <div class="col-md-12" style="margin-bottom: 10px">
+                <div class="row">
                     <div class="col-md-6"><p id="response" style="color: green"></p></div>
-                    <div class="col-md-6 text-right"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#fcm_notification">Send Message</button></div>
+                    <div class="col-md-6 text-right"><div class="row"><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#fcm_notification">Send Message</button></div></div>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="panel panel-default">
+                <div class="all_content">
                     <table class="table" id="follower">
                         <thead>
                             <tr>
@@ -42,12 +45,14 @@
                             @endif
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
         <div id="like" class="tab-pane fade in">
             <div class="all_content">
             <div class="panel panel-default">
+                <div class="all_content">
                 <table class="table" id="likes">
                     <thead>
                         <tr>
@@ -71,11 +76,13 @@
                     </tbody>
                 </table>
                 </div>
+                </div>
             </div>
         </div>
         <div id="dislike" class="tab-pane fade in">
             <div class="all_content">
             <div class="panel panel-default">
+            <div class="all_content">
                 <table class="table" id="dislikes">
                     <thead>
                         <tr>
@@ -99,11 +106,13 @@
                     </tbody>
                 </table>
                 </div>
+                </div>
             </div>
         </div>
         <div id="rating" class="tab-pane fade in">
             <div class="all_content">
                 <div class="panel panel-default">
+                <div class="all_content">
                     <table class="table" id="ratings">
                         <thead>
                             <tr>
@@ -128,6 +137,7 @@
                             @endif
                         </tbody>
                     </table>
+                    </div>
                     <div>
                 </div>
             </div>
