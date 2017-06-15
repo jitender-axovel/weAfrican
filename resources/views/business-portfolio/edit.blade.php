@@ -3,8 +3,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datepicker.min.css') }}"/>
 @endsection
 @section('content')
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container row_pad">
+    <div class="col-md-12">
+    <div class="row">
         <h5 class="text-left">Edit Business Portfolio</h5>
         <hr>
         @include('notification')
@@ -21,6 +22,7 @@
             <form id="register-form" class="form-horizontal" action="{{ url('portfolio/'.$businessPorfolio->id) }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                 {{ method_field('PUT') }}
+                <div class="col-md-12">
                 <div class="row">
                     <label for="maritial_status" class="col-md-2 control-label required">Maritial Status:</label>
                     <div class="col-md-4 form-group">
@@ -205,9 +207,11 @@
                         </div>
                     </div>
                 @endif
+                </div>
                 <div>
                     <legend>Portfolio Image</legend>
                 </div>
+                <div class="col-md-12">
                 <div class="row mb-1">
                     <label for="portfolio_image_1" class="col-md-2 required control-label">Image</label>
                     <div class="col-md-3 form-group">
@@ -222,11 +226,15 @@
                         Preview:
                     </label>
                     <div class="col-md-2">
-                        @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[0]!="")
-                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[0])}}" alt="" class="previewImg" id="preview_1">
-                        @else
-                            <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_1">
-                        @endif
+                        <div class="upload_img" >
+                        <div class="set_imgs">
+                            @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[0]!="")
+                                <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[0])}}" alt="" class="previewImg" id="preview_1">
+                            @else
+                                <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_1">
+                            @endif
+                          </div>
+                    </div>
                     </div>
                     <div class="col-md-4">
                         <input type="radio" name="featured_image" value="1" @if($businessPorfolio->featured_image==1 or $businessPorfolio->featured_image==0) checked="checked" @endif >&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
@@ -246,11 +254,15 @@
                         Preview:
                     </label>
                     <div class="col-md-2">
+                         <div class="upload_img" >
+                        <div class="set_imgs">
                         @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[1]!="")
                             <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[1])}}" alt="" class="previewImg" id="preview_2">
                         @else
                             <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_2">
                         @endif
+                        </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==2) checked="checked" @endif value="2">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
@@ -270,11 +282,15 @@
                         Preview:
                     </label>
                     <div class="col-md-2">
+                          <div class="upload_img" >
+                        <div class="set_imgs">
                         @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[2]!="")
                             <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[2])}}" alt="" class="previewImg" id="preview_3">
                         @else
                             <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_3">
                         @endif
+                        </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==3) checked="checked" @endif value="3">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
@@ -294,11 +310,15 @@
                         Preview:
                     </label>
                     <div class="col-md-2">
+                    <div class="upload_img">
+                        <div class="set_imgs">
                         @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[3]!="")
                             <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[3])}}" alt="" class="previewImg" id="preview_4">
                         @else
                             <img src="{{asset('images/no-image.jpg')}}" class="previewImg" alt=""  id="preview_4">
                         @endif
+                    </div>
+                    </div>
                     </div>
                     <div class="col-md-4">
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==4) checked="checked" @endif value="4">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
@@ -318,15 +338,20 @@
                         Preview:
                     </label>
                     <div class="col-md-2">
+                      <div class="upload_img" >
+                        <div class="set_imgs">
                         @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[4]!="")
                             <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[2])}}" class="previewImg" alt=""  id="preview_5">
                         @else
                             <img src="{{asset('images/no-image.jpg')}}" class="previewImg" alt=""  id="preview_5">
                         @endif
+                        </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==5) checked="checked" @endif value="5">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
                     </div>
+                </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-12 text-right">
@@ -336,6 +361,7 @@
                     </div>
                 </div>
             </form>
+        </div>
         </div>
     </div>
 </div>
