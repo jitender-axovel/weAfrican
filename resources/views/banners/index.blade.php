@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', $pageTitle)
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
 	<h5>Banners</h5>
 	<hr>
 	@include('notification')
@@ -61,6 +61,7 @@
 			</div>
     	</div>
 	    <div id="menu1" class="tab-pane fade">
+	    	<div class="all_content">
 	      	<table id="business_list" class="display">
 				<thead>
 					<tr>
@@ -106,8 +107,10 @@
 				@endforeach
 				</tbody>
 			</table>
+			</div>
 	    </div>
 	    <div id="menu2" class="tab-pane fade">
+	    <div class="all_content">
 			<table id="event_list" class="display">
 				<thead>
 					<tr>
@@ -153,6 +156,7 @@
 				@endforeach
 				</tbody>
 			</table>
+			</div>
 	    </div>
 	</div>
 </div>
