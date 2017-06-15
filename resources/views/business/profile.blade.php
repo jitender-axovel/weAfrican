@@ -41,91 +41,242 @@
 		<div class="business-profile">
 			  
 			<div class="business-left col-md-6">
-			 <fieldset>
-				    	<legend>Business Profile Details</legend>
-				    </fieldset>
-			    <dl class="dl-horizontal">
-			    	@if($category_check==1 or $category_check==2)
-			    		<dt>Profile Pic</dt>
-			    	@else
-			    		<dt>Business Logo</dt>
-			    	@endif
-			        <dd>
-		          	@if($business->business_logo != NULL)
-			            <img src="{{asset(config('image.logo_image_url').'thumbnails/small/'.$business->business_logo)}}"/>
-		            @else
-			            <img src="{{asset('images/no-uploaded.png')}}"/>
-		            @endif
-			        </dd>
-			        <dt>Business ID</dt>
-			        <dd>{{$business->business_id}}</dd>
-			        <dt>Business name</dt>
-			        <dd>{{$business->title}}</dd>
-			        <dt>Category:</dt>
-			        <dd>{{ $business->category->title}}</dd>
-			        <dt>Bussiness keywords</dt>
-			        <dd>{{ $business->keywords }}</dd>
-			        <dt>About Us</dt>
-			        <dd>{{ $business->about_us }}</dd>
-			        <dt>Address</dt>
-			        <dd>{{ $business->user->address }}</dd>
-			        <dt>City</dt>
-			        <dd>{{ $business->user->city }}</dd>
-			        <dt>State</dt>
-			        <dd>{{ $business->user->state }}</dd>
-			        <dt>Country:</dt>
-			        <dd>{{ $business->user->country }}</dd>
-			        <dt>Pin code</dt>
-			        <dd>{{ $business->user->pin_code }}</dd>
-			        <dt>Email</dt>
-			        <dd>{{ $business->user->email }}</dd>
-			        <dt>Mobile Number</dt>
-			        <dd>{{ $business->user->mobile_number }} &nbsp;&nbsp;&nbsp;
-			        @if($business->user->mobile_verified==0)
-			        <a class="btn-danger label" href="{{ url('mobileVerify/') }}"><label >Not Verified</label></a>
-			        @else
-			        <label class="btn-success label">Verified</label>
-			        @endif
-			        </dd>
-			        <dt>Website</dt>
-			        <dd>{{ $business->website }}</dd>
-			        <dt>Working Hours</dt>
-			        <dd>
-			        	{!! nl2br(e($business->working_hours)) !!}
-			        </dd>
-			    </dl>
+			 	<fieldset>
+			    	<legend>Business Profile Details</legend>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						@if($category_check==1 or $category_check==2)
+			    			<label>Profile Pic</label>
+			    		@else
+			    			<label>Business Logo</label>
+			    		@endif
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						@if($business->business_logo != NULL)
+				            <img src="{{asset(config('image.logo_image_url').'thumbnails/small/'.$business->business_logo)}}"/>
+			            @else
+				            <img src="{{asset('images/no-uploaded.png')}}"/>
+			            @endif
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Business ID</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{$business->business_id}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Business name</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{$business->title}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Category:</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->category->title}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Bussiness keywords</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->keywords }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>About Us</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->about_us }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Address</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->address }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>City</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->city }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>State</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->state }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Country</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->country }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Pin code</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->pin_code }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Email</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->email }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Mobile Number</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->user->mobile_number }} &nbsp;&nbsp;&nbsp;
+				        @if($business->user->mobile_verified==0)
+				        <a class="btn-danger label" href="{{ url('mobileVerify/') }}"><label >Not Verified</label></a>
+				        @else
+				        <label class="btn-success label">Verified</label>
+				        @endif
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Website</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{{ $business->website }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+						<label>Working Hours</label>
+					</div>
+					<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+						{!! nl2br(e($business->working_hours)) !!}
+					</div>
+				</div>
+			</div>
 			    @if($category_check==1 or $category_check==2)
-			    </div>
-				   <div class="business-left col-md-6">
+				   <div class="business-right col-md-6">
 				    <fieldset>
 				    	<legend>User Portfolio Details</legend>
 				    </fieldset>
-				    <dl class="dl-horizontal">
-			    		<dt>Maritial Status</dt>
-			    		<dd>{{ $business->portfolio->maritial_status }}</dd>
-			    		<dt>Ocupation</dt>
-			    		<dd>{{ $business->portfolio->occupation }}</dd>
-			    		<dt>Academic Status</dt>
-			    		<dd>{{ $business->portfolio->acedimic_status }}</dd>
-			    		<dt>Key Skills</dt>
-			    		<dd>{{ $business->portfolio->key_skills }}</dd>
-			    		<dt>Experience</dt>
-			    		<dd>{{ $business->portfolio->experience_years }} Years {{ $business->portfolio->experience_months }} months</dd>
-				        <dt>Height</dt>
-				        <dd>{{ $business->portfolio->height_feets }} feet {{ $business->portfolio->height_inches }} inches</dd>
-				        <dt>Hair Type</dt>
-				        <dd>{{ $business->portfolio->hair_type }}</dd>
-				        <dt>Hair Color</dt>
-				        <dd>{{ $business->portfolio->skin_color }}</dd>
-				        <dt>Skin Color</dt>
-				        <dd>{{ $business->portfolio->hair_color }}</dd>
-				        <dt>Professional Training</dt>
-				        <dd>@if($business->portfolio->professional_training) Yes @else No @endif</dd>
-				        <dt>Institute Name</dt>
-				        <dd>{{ $business->portfolio->institute_name }}</dd>
-				        <dt>Portfolio Images</dt>
-				        <dd>
-				        	@if($business->portfolio->image!="")
+				    <div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Maritial Status</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->maritial_status }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Ocupation</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->occupation }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Academic Status</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->acedimic_status }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Key Skills</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->key_skills }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Experience</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->experience_years }} Years {{ $business->portfolio->experience_months }} months
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Height</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->height_feets }} feet {{ $business->portfolio->height_inches }} inches
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Hair Type</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->hair_type }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Hair Color</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->skin_color }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Skin Color</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->hair_color }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Professional Training</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							@if($business->portfolio->professional_training) Yes @else No @endif
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Institute Name</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							{{ $business->portfolio->institute_name }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
+							<label>Portfolio Images</label>
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
+							@if($business->portfolio->image!="")
 				        		<div class="col-md-12">
 					        		@foreach(explode('|',$business->portfolio->image) as $image)
 					        			@if($image!="")
@@ -136,8 +287,8 @@
 					        		@endforeach
 				        		</div>
 				        	@endif
-				        </dd>
-				    </dl>
+						</div>
+					</div>
 			    @endif    
 		    </div>
 		  <div class="business-right col-md-12">
