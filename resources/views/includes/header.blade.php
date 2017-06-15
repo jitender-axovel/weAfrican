@@ -1,8 +1,10 @@
 <header>
-    <div class="col-md-10 col-md-offset-1">
+    <div class="container">
     <div class="row">
         <div class="col-md-2 col-sm-2 col-xs-12 logo">
+        <div class="row">
             <a href="{{url('/')}}"><img src="{{asset('images/logo.png')}}"></a>
+            </div>
         </div>
         <div class="col-md-10 col-sm-10 col-xs-12 menu_bar">
         <div class="row">
