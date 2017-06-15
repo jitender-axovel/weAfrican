@@ -112,16 +112,22 @@ class BusinessEventsController extends Controller
         $seating_plan['user_id'] = Auth::id();
         $seating_plan['business_id'] = $business->id;
         $seating_plan['business_event_id'] = $event->id;
-        foreach ($input['seating_plan'] as $key => $value) {
-            $seating_plan['event_seating_plan_id'] = $key;
-            $seating_plan['total_seat_available'] = $value;
-             $seating_plan['per_ticket_price'] = $input['seating_plan_price'][$key];
-             $seating_plan['seating_plan_alias'] = $input['seating_plan_alias'][$key];
-            $business_event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
-            $business_event_seats = BusinessEventSeat::create($business_event_seats);
-            $business_event_seats->save();
+        if(isset($input['seating_plan']))
+        {
+            foreach ($input['seating_plan'] as $key => $value) {
+                if(isset($value) and $value!="" and $value!=0)
+                {
+                    $seating_plan['event_seating_plan_id'] = $key;
+                    $seating_plan['total_seat_available'] = $value;
+                    $seating_plan['per_ticket_price'] = $input['seating_plan_price'][$key];
+                    $seating_plan['seating_plan_alias'] = $input['seating_plan_alias'][$key];
+                    $business_event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
+                    $business_event_seats = BusinessEventSeat::create($business_event_seats);
+                    $business_event_seats->save();
+                }
+            }
         }
-      
+        
         $event->slug = Helper::slug($event->name, $event->id);
         $event->save();
         
@@ -211,7 +217,6 @@ class BusinessEventsController extends Controller
         $input['start_date_time'] = date('Y-m-d H:i:s', strtotime($input['start_date_time']));
         $input['end_date_time'] = date('Y-m-d H:i:s', strtotime($input['end_date_time']));
 
-        
         if(isset($fileName)) {
             $input['banner'] =  $image;
             $event = BusinessEvent::where('id',$id)->update($input);
@@ -220,36 +225,41 @@ class BusinessEventsController extends Controller
         }
         $seating_plan_price = $request->input('seating_plan_price');
         $event = BusinessEvent::where('id',$id)->first();
-
         $seating_plan['user_id'] = Auth::id();
         $seating_plan['business_id'] = $event->business_id;
         $seating_plan['business_event_id'] = $event->id;
         $search = $seating_plan;
         foreach ($request->input('seating_plan') as $key => $value) {
             $search['event_seating_plan_id'] = $seating_plan['event_seating_plan_id'] =  $key;
-            $seating_plan['total_seat_available'] = $value;
-            $seating_plan['per_ticket_price'] = $seating_plan_price[$key];
-            $seating_plan['seating_plan_alias'] = $request->input('seating_plan_alias')[$key];
-            if($value!="" and $value!=null)
+            if(isset($value) and $value!="" and $value!=0)
             {
-                $row = BusinessEventSeat::where($search)->first();
-                $event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
-                if($row)
+                $seating_plan['total_seat_available'] = $value;
+                $seating_plan['per_ticket_price'] = $seating_plan_price[$key];
+                $seating_plan['seating_plan_alias'] = $request->input('seating_plan_alias')[$key];
+                if($value!="" and $value!=null)
                 {
-                    $event_seats = BusinessEventSeat::where('id',$row->id)->update($event_seats);
-                    
+                    $row = BusinessEventSeat::where($search)->first();
+                    $event_seats = array_intersect_key($seating_plan, BusinessEventSeat::$updatable);
+                    if($row)
+                    {
+                        $event_seats = BusinessEventSeat::where('id',$row->id)->update($event_seats);
+                        
+                    }else
+                    {
+                        $event_seats = BusinessEventSeat::create($event_seats);
+                        $event_seats->save();
+                    }
                 }else
                 {
-                    $event_seats = BusinessEventSeat::create($event_seats);
-                    $event_seats->save();
+                    $row = BusinessEventSeat::where($search)->first();
+                    if($row)
+                    {
+                        $row->delete();
+                    }
                 }
             }else
             {
-                $row = BusinessEventSeat::where($search)->first();
-                if($row)
-                {
-                    $row->delete();
-                }
+                BusinessEventSeat::where($search)->delete();
             }
         }
         return redirect('business-event')->with('success', 'Event updated successfully');
