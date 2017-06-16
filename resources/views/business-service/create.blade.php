@@ -3,6 +3,7 @@
 @section('content')
 <div class="container row_pad">
     <div class="col-md-12">
+    <div class="row">
         <h5 class="text-left">Add Service</h5>
         <hr>
         @include('notification')
@@ -41,13 +42,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-12 col-md-offset-2">
+                    <div class="col-md-8 text-right">
                         <button type="submit" class="btn btn-primary">
                         Submit
                         </button>
                     </div>
                 </div>
             </form>
+        </div>
         </div>
     </div>
 </div>
