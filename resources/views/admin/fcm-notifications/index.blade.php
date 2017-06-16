@@ -49,7 +49,7 @@
         </section>
         <p class="header">Type your message</p>
         <textarea cols="15" rows="5" value="txtarea"></textarea>
-        <button class="btn btn-success" onclick="sendMsg()">Send Message</button>
+        <button class="btn btn-success btn_fix" onclick="sendMsg()">Send Message</button>
     </div>
     <div class="col-md-12 serverresponse hidediv">
 
