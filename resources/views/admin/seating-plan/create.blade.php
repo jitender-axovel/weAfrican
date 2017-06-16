@@ -10,7 +10,7 @@
 				{{csrf_field()}}
 				<div class="form-group">
 					<label class="control-label col-md-2">Seating Plan Name</label>
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<input type="text" class="form-control" name="title" value="{{ old('title') }}" required>
 						@if($errors->has('title'))
 							<span class="help-block">
@@ -21,7 +21,7 @@
 				</div>	
 				<div class="form-group">
 					<label class="control-label col-md-2">Description</label>
-					<div class="col-md-10">
+					<div class="col-md-6">
 						<textarea required class="form-control" name="description" >{{ old('description') }}</textarea>
 						@if($errors->has('description'))
 							<span class="help-block">
@@ -31,8 +31,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-md-4 col-md-offset-1">
-						<button type="submit" class="btn btn-success" id="btn-login">Create Seating Plan</button>
+					<div class="col-md-8">
+						<button type="submit" class="btn btn-success btn_fix" id="btn-login">Create Seating Plan</button>
 					</div>
 				</div>
 			</form>
