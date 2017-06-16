@@ -3,8 +3,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datepicker.min.css') }}"/>
 @endsection
 @section('content')
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container row_pad">
+    <div class="col-md-12">
+    <div  class="row">
         <h5 class="text-left">Edit Event</h5>
         <hr>
         @include('notification')
@@ -205,10 +206,10 @@
                     @foreach($seatingplans as $seatingplan)
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{ $seatingplan->title}}</label>
-                            <div class="col-md-3" class="control-label">
+                            <div class="col-md-4 mg_botm" class="control-label">
                                 <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanAlias($event->id, $seatingplan->id) }}" placeholder="Seating Plan Alias">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 mg_botm">
                                 <div class="input-group input-group-sm">
                                     <input type="text" value="
                                     @if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
@@ -217,20 +218,21 @@
                                     " name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 mg_botm">
                                 <input type="text" class="form-control seatingplan_price" name="seating_plan_price[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanSeatsPrice($event->id, $seatingplan->id) }}">
                             </div>
                         </div>
                     @endforeach
                 @endif
                 <div class="form-group">
-                    <div class="col-md-12 col-md-offset-2">
+                    <div class="col-md-12 text-right">
                         <button type="submit" class="btn btn-primary">
                         Submit
                         </button>
                     </div>
                 </div>
             </form>
+        </div>
         </div>
     </div>
 </div>
