@@ -9,9 +9,11 @@
 	{{csrf_field()}}
 	<input type="hidden" name="page" value="user">
 	<div class="col-md-12" style="margin-bottom: 20px">
+	<div class="row">
 		<div class="col-md-9">
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-4 mg_botm">
+					
 					<select class="form-control" id="select_country" name="country">
 		                    <option value="" selected=""> Select Country </option>
 		                    @if(isset($countries))
@@ -20,8 +22,9 @@
 		                    	@endforeach
 		                    @endif
 		            </select>
+		           
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-4 mg_botm">
 					<select class="form-control" id="select_state" name="state">
 						<option value="" selected=""> Select State </option>
 						@if(isset($states))
@@ -31,7 +34,8 @@
 						@endif
 		            </select>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-4 mg_botm">
+				
 					<select class="form-control" id="select_city" name="city">
 		                    <option value="" selected=""> Select City </option>
 		                    @if(isset($cities))
@@ -40,13 +44,15 @@
 		                    	@endforeach
 		                    @endif
 		            </select>
+
 				</div>
 			</div>
 		</div>
 		<div class="col-md-3" style="vertical-align: center">
-			<button class="btn btn-info">Filter</button>
-			<button class="btn btn-info" onclick="javascript:setSubmit()">CSV</button>
-			<a href="{{ url('admin/users/') }}" class="btn btn-info">Reset</a>
+			<button class="btn btn-info user_btn">Filter</button>
+			<button class="btn btn-info user_btn" onclick="javascript:setSubmit()">CSV</button>
+			<a href="{{ url('admin/users/') }}" class="btn btn-info user_btn">Reset</a>
+		</div>
 		</div>
 	</div>
 	</form>
