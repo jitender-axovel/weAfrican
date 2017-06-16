@@ -1,4 +1,12 @@
+<div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" aria-expanded="true">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        </button>                     
+                    </div>
 <div id="sidebar-wrapper">
+
     <ul class="sidebar-nav">
         <li>
             <a href="{{url('admin/dashboard')}}" class="{{ Request::path() == 'admin/dashboard' ? 'active' : '' }}">Dashboard</a>
