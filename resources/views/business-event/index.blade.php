@@ -16,7 +16,7 @@
         </div>
     @endif
     <p class="text-right"><a href="{{url('business-event/create')}}"><button type="button" class="btn btn-info">Add Event</button></a>
-    <div class="panel panel-default ">
+    <div class="panel panel-default tab_wide ">
         <table class="table">
             <thead>
                 <tr>
@@ -59,28 +59,31 @@
                                           <h6 class="modal-title">Choose data to show in csv</h6>
                                         </div>
                                         <div class="modal-body">
+
                                          <form class="form-horizontal" action="{{ url('event/participants/download-csv/'.$event->id) }}" method="POST">
                                             {{csrf_field()}}
-                                            <div class="form-group form-inline col-md-3">
+                                            <div class="form-group form-inline col-md-4">
                                                 <label>First Name</label>
                                                 <input type="checkbox" class="form-control" name="first_name" value="first_name">
                                             </div>
-                                            <div class="form-group form-inline col-md-3">
+                                            <div class="form-group form-inline col-md-4">
                                                 <label>Middle Name</label>
                                                 <input type="checkbox" class="form-control" name="middle_name" value="middle_name">
                                             </div>
-                                            <div class="form-group form-inline col-md-3">
+                                            <div class="form-group form-inline col-md-4">
                                                 <label>Last Name</label>
                                                 <input type="checkbox" class="form-control" name="last_name" value="last_name">
                                             </div>
-                                            <div class="form-group form-inline col-md-3">
+                                            <div class="form-group form-inline col-md-4">
                                                 <label>Mobile Number</label>
                                                 <input type="checkbox" class="form-control" name="mobile_number" value="mobile_number">
                                             </div>
-                                            <div class="form-group form-inline col-md-2">
+                                            <div class="form-group form-inline col-md-4">
                                                 <label>Country Code</label>
                                                 <input type="checkbox" class="form-control" name="country_code" value="country_code">
                                             </div>
+                                            <div class="col-md-12">
+                                            <div class="row">
                                             <div class="form-group form-inline col-md-6">
                                                 <label>Index</label>
                                                     <input type="number" class="form-control " name="index">
@@ -89,14 +92,15 @@
                                                 <label>Limit</label>
                                                     <input type="number" class="form-control " name="limit">
                                             </div>
-                                            <button class="btn btn-success col-md-12" type="submit">Download</button>
+                                            </div>
+                                            </div>
                                         </form>
                                         </div>
                                         <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                         <button class="btn btn-success" type="submit">Download</button>
+                                          <button type="button " class="btn btn-default btn-danger" data-dismiss="modal">Cancel</button>
                                         </div>
                                       </div>
-                                      
                                     </div>
                                     </div>
                                 </li>
