@@ -20,8 +20,8 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-md-4 col-md-offset-1">
-						<button type="submit" class="btn btn-success" id="btn-login">Create Seating Plan</button>
+					<div class="col-md-12">
+						<button type="submit" class="btn btn-success btn_fix" id="btn-login">Create Seating Plan</button>
 					</div>
 				</div>
 			</form>
