@@ -5,11 +5,11 @@
     </head>
     <body id="app-layout">
         <div class="page-wrapper">
-            <div class="row">
+            
                 @if (Auth::check())
                     @include('admin.includes.header')
                 @endif
-            </div>
+            <div class="head_content">
             <div class="row">
                 <div class="main-content">
                 @if(Auth::check())
@@ -22,6 +22,7 @@
                     </div>
                     @yield('scripts')
                 </div>
+            </div>
             </div>
         </div>
     </body>
