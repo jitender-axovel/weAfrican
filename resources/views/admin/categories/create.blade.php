@@ -56,7 +56,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<fieldset class="col-md-10 col-md-offset-2">
+					<fieldset class="col-md-10 ">
 						<legend>Image Preview</legend>
 						<div class="caption">
 							<img src="#" alt=""  id="preview">
@@ -64,8 +64,8 @@
 					</fieldset>
 				</div>
 				<div class="form-group">
-					<div class="col-md-4 col-md-offset-1">
-						<button type="submit" class="btn btn-success" id="btn-login">Create Category</button>
+					<div class="col-md-12">
+						<button type="submit" class="btn btn-success btn_fix" id="btn-login">Create Category</button>
 					</div>
 				</div>
 			</form>
