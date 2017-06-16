@@ -294,7 +294,6 @@
 		  <div class="business-right col-md-12">
 		  <div class="row">
 				<div class="col-md-12">
-				<div class="row">
 				<div class="sep_id">
 					@if($business->business_proof)
 				        <div class="col-md-2 col-xs-6">Identity Proof</div>
@@ -336,10 +335,10 @@
 			        @endif
 			        </div>
 				</div>
-				</div>
 		    </div>
 
 		    <div class="comment-section col-md-12">
+		    	<div class="row">
 		    		<div class="icons_section">
 			    	<div class="col-md-2 like item">
 			        	<span class="label label-warning" title="Likes"><i class="fa fa-thumbs-o-up" aria-hidiven="true"></i></span>
@@ -369,9 +368,10 @@
 					</div>
 				</div>
 				</div>
-				</div> 
-				</div>
-		</div>
+			</div>
+		</div> 
+	</div>
+</div>
     @else
         <p>Could not find any profile</p>
     @endif	
