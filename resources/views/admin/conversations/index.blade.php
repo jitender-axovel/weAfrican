@@ -3,6 +3,7 @@
 @section('content')
 	<h2>User Conversations</h2>
 	<hr>
+	<div class="all_content">
 	@include('notification')
 	<table id="subscription_list" class="display">
 		<thead>
@@ -30,6 +31,7 @@
 		@endforeach
 		</tbody>
 	</table>
+	</div>
 @endsection
 @section('scripts')
 	<script type="text/javascript">
