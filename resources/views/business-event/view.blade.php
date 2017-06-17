@@ -3,8 +3,9 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datepicker.min.css') }}"/>
 @endsection
 @section('content')
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container">
+    <div class="col-md-12">
+    <div class="row">
         <h5 class="text-left">{{$event->name}} - Event Details</h5>
         <hr>
         @include('notification')
@@ -145,6 +146,7 @@
 	                </div>
                 @endif
         	</form>
+        </div>
         </div>
     </div>
 </div>

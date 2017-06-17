@@ -3,6 +3,7 @@
 @section('content')
 	<h2>Security Questions List</h2>
 	<hr>
+	<div class="all_content">
 	@include('notification')
 	<table id="categories_list" class="display table">
 		<thead>
@@ -34,6 +35,7 @@
 			@endforeach
 		</tbody>
 	</table>
+	</div>
 	<script type="text/javascript">
 		$(document).ready( function () {
 		    $('#categories_list').DataTable();

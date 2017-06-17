@@ -3,6 +3,7 @@
 @section('content')
 	<h2>Banners</h2>
 	<hr>
+	
 	@include('notification')
 	<ul class="nav nav-tabs">
 		<li class="active"><a data-toggle="tab" href="#home">Home Banners</a></li>
@@ -11,6 +12,7 @@
 	</ul>
   	<div class="tab-content">
     	<div id="home" class="tab-pane fade in active">
+    	<div class="all_content">
 	      	<table id="subscription_list" class="display">
 				<thead>
 					<tr>
@@ -56,8 +58,10 @@
 				@endforeach
 				</tbody>
 			</table>
+			</div>
     	</div>
 	    <div id="menu1" class="tab-pane fade">
+	    <div class="all_content">
 	      	<table id="business_list" class="display">
 				<thead>
 					<tr>
@@ -103,8 +107,10 @@
 				@endforeach
 				</tbody>
 			</table>
+			</div>
 	    </div>
 	    <div id="menu2" class="tab-pane fade">
+	    <div class="all_content">
 			<table id="event_list" class="display">
 				<thead>
 					<tr>
@@ -150,6 +156,7 @@
 				@endforeach
 				</tbody>
 			</table>
+			</div>
 	    </div>
 	</div>
 @endsection

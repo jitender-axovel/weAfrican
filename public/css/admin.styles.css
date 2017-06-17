@@ -15,6 +15,8 @@ header.admin-header {
     width: 100%;
     z-index: 999;
 }
+ul{margin:0px;padding: 0;}
+li{margin: 0;padding: 0;}
 
 .admin-header .left-side {
   text-align: left;
@@ -78,6 +80,7 @@ header.admin-header {
 .sidebar-nav li a:focus {
     text-decoration: none;
 }
+.collapse.in{padding-left: 15px;}
 
 @media(min-width:768px) {
     #wrapper {
@@ -95,8 +98,24 @@ header.admin-header {
     #wrapper.toggled #sidebar-wrapper {
         width: 0;
     }
+    
 }
-
+@media all and (max-width:767px){
+.list-inline {float: right;}
+    .list-inline>li{padding-right: 0px;padding-left: 5px;}
+    .top_btn{ padding: 5px 8px;font-size: 11px;}
+.navbar-header button{border: 1px solid #ffffff;
+    position: absolute;
+    right: 0;
+    top: -45px;}
+    .navbar-toggle .icon-bar {
+    background: #ffffff;}
+    .navbar-collapse {
+    background: #2d3e50;
+    position: relative;
+    top: 20px;}
+    .main-content > .col-md-10{padding-left: 40px !important;}
+}
 /* Admin Content */
 
 .main-content > .col-md-10 {
@@ -147,3 +166,8 @@ section.fcm_users {
   padding-bottom: 10px;
   padding-top: 10px;
 }
+.btn_fix{float: right;}
+.all_content{padding-top: 20px;}
+.user_btn{margin-left: 15px;}
+.mg_botm{margin-bottom: 10px}
+.dataTables_wrapper{width: 100%;overflow-x: auto;}

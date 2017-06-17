@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<div class="main-container row register-business">
+<div class="container row_pad">
     <h4>Edit Business Profile</h4>
     <hr>
+
     @include('notification')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -15,12 +16,13 @@
     @endif
 
     <div class="panel panel-default document"> 
+    <div class="col-md-12">
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/register-business/'.$business->id) }}" enctype='multipart/form-data'>
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <div class="form-group ">
                 <label for="title" class="col-md-2 required control-label">Name</label>
-                <div class="col-md-1">
+                <div class="col-md-1 mg_botm">
                     <select name="salutation" id="salutation" class="form-control selectpicker" required style="padding-right:0px;">
                         <option @if($business->user->salutation=="Mr") selected="selected" @endif value="Mr">Mr.</option>
                         <option @if($business->user->salutation=="Ms") selected="selected" @endif value="Ms">Ms.</option>
@@ -32,7 +34,7 @@
                         </span>
                     @endif
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 mg_botm">
                     <input required type="text" class="form-control" name="first_name" value="{{ $business->user->first_name }}" placeholder="First Name">
                     @if ($errors->has('title'))
                     <span class="help-block">
@@ -40,7 +42,7 @@
                     </span>
                     @endif
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 mg_botm">
                     <input type="text" class="form-control" name="middle_name" value="{{ $business->user->middle_name }}" placeholder="Middle Name">
                     @if ($errors->has('title'))
                     <span class="help-block">
@@ -48,7 +50,7 @@
                     </span>
                     @endif
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 mg_botm">
                     <input required type="text" class="form-control" name="last_name" value="{{ $business->user->last_name }}" placeholder="Last Name">
                     @if ($errors->has('title'))
                     <span class="help-block">
@@ -283,14 +285,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-12 col-md-offset-2">
+                <div class="col-md-12 text-right">
                     <button type="submit" class="btn btn-primary">
                     Submit
                     </button>
                 </div>
-            </div>
+            </div>  
         </form>
-    </div>
+        </div>
+        </div>   
 </div>
 @endsection
 @section('header-scripts')
