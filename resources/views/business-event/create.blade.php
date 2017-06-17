@@ -189,6 +189,7 @@
                 <fieldset>
                     <legend>Event Seating Plan</legend>
                 </fieldset></div>
+                <div class="col-md-12">
                 <div class="form-group touchspin_input">
                     <label class="col-md-2 control-label">Total Number Of Seats</label>
                     <div class="col-md-4">
@@ -197,6 +198,8 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                <div class="col-md-12">
                 @if(count($seatingplans)>0)
                     @foreach($seatingplans as $seatingplan)
                         <div class="form-group">
@@ -215,6 +218,7 @@
                         </div>
                     @endforeach
                 @endif
+                </div>
                 <div class="form-group">
                     <div class="col-md-12 text-right">
                         <button type="submit" class="btn btn-primary">
