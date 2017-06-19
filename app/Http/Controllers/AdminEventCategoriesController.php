@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\EventCategory;
 use App\Helper;
+use Image;
 use Validator;
 
 class AdminEventCategoriesController extends Controller
@@ -54,16 +55,21 @@ class AdminEventCategoriesController extends Controller
             $file = $key = md5(uniqid(rand(), true));
             $ext = $request->file('image')->getClientOriginalExtension();
             $image = $file.'.'.$ext;
-            $fileName=$request->file('image')->move(config('image.category_image_path'), $image);
+            $img = Image::make($request->file('image')->getRealPath());
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+            })->save(config('image.event_category_image_path').'/thumbnails/large/'.$image);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+            })->save(config('image.event_category_image_path').'/thumbnails/medium/'.$image);
+            
+            $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                 $constraint->aspectRatio();
+            })->save(config('image.event_category_image_path').'/thumbnails/small/'.$image);
+            $fileName = $request->file('image')->move(config('image.event_category_image_path'), $image);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
         } else {
             return back()->with('Error', 'Category image is not uploaded. Please try again');
         }
@@ -129,16 +135,23 @@ class AdminEventCategoriesController extends Controller
             $file = $key = md5(uniqid(rand(), true));
             $ext = $request->file('image')->getClientOriginalExtension();
             $image = $file.'.'.$ext;
-            $fileName = $request->file('image')->move(config('image.category_image_path'),$image );
+            $old_image = EventCategory::whereId($id)->first()->image;
             
-           $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+            $img = Image::make($request->file('image')->getRealPath());
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+            })->save(config('image.event_category_image_path').'/thumbnails/large/'.$image);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+            })->save(config('image.event_category_image_path').'/thumbnails/medium/'.$image);
+            
+            $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                 $constraint->aspectRatio();
+            })->save(config('image.event_category_image_path').'/thumbnails/small/'.$image);
+            $fileName = $request->file('image')->move(config('image.event_category_image_path'), $image);
+            $this->deleteImage(config('image.event_category_image_path'),$old_image);
             
         } else {
             return redirect('admin/category/event')->with('Error', 'Event Category image is not uploaded.Please try again');
@@ -202,6 +215,22 @@ class AdminEventCategoriesController extends Controller
             return redirect('admin/category/event')->with('success', 'Event Category has been blocked successfully');
         } else {
             return redirect('admin/category/event')->with('success', 'Event Category has been unblocked');
+        }
+    }
+
+    /**
+     * Remove the specified image and thumbnails from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteImage($image_path,$file_name)
+    {
+        if($file_name!=""){
+            unlink($image_path.$file_name);
+            unlink($image_path.'thumbnails/small/'.$file_name);
+            unlink($image_path.'thumbnails/medium/'.$file_name);
+            unlink($image_path.'thumbnails/large/'.$file_name);
         }
     }
 }
