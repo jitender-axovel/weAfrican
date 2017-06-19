@@ -16,7 +16,7 @@
         </div>
     @endif
     <p class="text-right"><a href="{{url('business-event/create')}}"><button type="button" class="btn btn-info">Add Event</button></a>
-    <div class="panel panel-default tab_wide ">
+    <div class="panel panel-default tab_wide table_set ">
         <table class="table">
             <thead>
                 <tr>
