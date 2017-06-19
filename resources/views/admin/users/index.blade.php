@@ -86,27 +86,27 @@
 					<ul class="list-inline">
 						@if($user->user_role_id == 4)
 						<li>
-							<a class="btn btn-info" href="{{url('admin/users/'.$user->id)}}" title="Add business"><i class="fa fa-user-plus" aria-hidden="true"></i>
+							<a class="btn btn-info btn_fixes" href="{{url('admin/users/'.$user->id)}}" title="Add business"><i class="fa fa-user-plus" aria-hidden="true"></i>
 							</a>
 						</li>
 						@endif
 						<li>
 							<a href="{{ url('admin/user/blocked/'.$user->id) }}">
 			                    @if($user->is_blocked)
-			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
+			                    	<button type="button" class="btn btn-danger btn_fixes" title="Unblock"><i class="fa fa-unlock"></i></button>
 			                	@else
-			                		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+			                		<button type="button" class="btn btn-success btn_fixes" title="Block"><i class="fa fa-ban"></i></button>
 			            		@endif
 			        		</a>
 						</li>
 						<li>
-							<a class="btn btn-warning" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
+							<a class="btn btn-warning btn_fixes" href="{{ url('admin/users/'.$user->id.'/edit') }}" title="Edit"><i class="fa fa-pencil"></i></a>
 						</li>
 						<li>
 							<form action="{{ url('admin/users/'.$user->id) }}" method="POST" onsubmit="deleteCategory('{{$user->id}}', '{{$user->full_name}}', event,this)">
 								{{csrf_field()}}
 								{{ method_field('DELETE') }}
-								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+								<button type="submit" class="btn btn-danger btn_fixes" title="Delete"><i class="fa fa-trash-o"></i></button>
 							</form>
 						</li>
 					</ul>
@@ -298,5 +298,8 @@
 		    $('#form1').attr('action',"{{ url('admin/getCSV/') }}")
 		    $('#form1').submit()
 		}
+		$(".sidebar_toggle").click(function () {
+    $(".left_bars").toggle();
+});
 	</script>
 @endsection
