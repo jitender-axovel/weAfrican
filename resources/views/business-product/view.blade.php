@@ -15,74 +15,39 @@
 	        </div>
         @endif
         <div class="panel panel-default document">
-        	<form class="form-horizontal">
-        		<div class="form-group ">
-        			<label for="category" class="col-md-2">Product Name</label>
-                    <div class="col-md-4">
-                    	{{ $product->title }}
+            <div class="container">
+                <div class="col-md-5">
+                    <div class="product col-md-12 service-image-left">
+                        <div class="owl-carousel owl-theme">
+                            @foreach($product->business_product_images as $product_image)
+                                @if($product_image->featured_image==1)
+                                    <img id="item-display" src="{{asset(config('image.product_image_url').''.$product_image->image)}}" alt="">
+                                @endif
+                            @endforeach
+                            @foreach($product->business_product_images as $product_image)
+                                @if($product_image->featured_image!=1)
+                                    <img id="item-display" src="{{asset(config('image.product_image_url').''.$product_image->image)}}" alt="">
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                    <label for="category" class="col-md-2">Product Price</label>
-                    <div class="col-md-4">
-                    	{{ $product->price }}
-                    </div>
-        		</div>
-        		<div class="form-group ">
-        			<label for="category" class="col-md-2">Product Description</label>
-                    <div class="col-md-10">
-                    	{{ $product->description }}
-                    </div>
-        		</div>
-        		<div class="form-group ">
-        			<label for="category" class="col-md-2">Product Image 1</label>
-                    <div class="col-md-4">
-                    	@if(explode('|',$product->image)[0]!="")
-	        				<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[0])}}"/>
-	        			@else
-	        				<img src="{{asset('images/no-image.jpg')}}"/>
-	        			@endif
-                    </div>
-                    <label for="category" class="col-md-2">Product Image 2</label>
-                    <div class="col-md-4">
-                    	@if(explode('|',$product->image)[0]!="")
-	        				<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[1])}}"/>
-	        			@else
-	        				<img src="{{asset('images/no-image.jpg')}}"/>
-	        			@endif
-                    </div>
-        		</div>
-        		<div class="form-group ">
-        			<label for="category" class="col-md-2">Product Image 3</label>
-                    <div class="col-md-4">
-                    	@if(explode('|',$product->image)[0]!="")
-	        				<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[2])}}"/>
-	        			@else
-	        				<img src="{{asset('images/no-image.jpg')}}"/>
-	        			@endif
-                    </div>
-                    <label for="category" class="col-md-2">Product Image 4</label>
-                    <div class="col-md-4">
-                    	@if(explode('|',$product->image)[0]!="")
-	        				<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[3])}}"/>
-	        			@else
-	        				<img src="{{asset('images/no-image.jpg')}}"/>
-	        			@endif
-                    </div>
-        		</div>
-        		<div class="form-group ">
-        			<label for="category" class="col-md-2">Product Image 5</label>
-                    <div class="col-md-4">
-                    	@if(explode('|',$product->image)[0]!="")
-	        				<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[4])}}"/>
-	        			@else
-	        				<img src="{{asset('images/no-image.jpg')}}"/>
-	        			@endif
-                    </div>
-        		</div>
-        	</form>
+                </div>
+                <div class="col-md-7">
+                    <div class="product-title"><label>Title:&nbsp;&nbsp;</label>{{$product->title}}</div>
+                    <div class="product-desc"><label>Description:&nbsp;&nbsp;</label>{{$product->description}}</div>
+                    <hr>
+                    <div class="product-price"><label>Price:&nbsp;&nbsp;</label>{{Auth::user()->currency}} {{$product->price}}</div>
+                </div>
+            </div>
             
         </div>
     </div>
 </div>
+@endsection
+@section('header-scripts')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/owl.carousel.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/owl.theme.default.min.css') }}">
+<script src="{{ asset('js/owl.carousel.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('scripts')
 <script type="text/javascript">
@@ -98,5 +63,29 @@
             reader.readAsDataURL(img.files[0]);
         }
     }
+    $('.owl-carousel').owlCarousel({
+        singleItem: true,
+        items:1,
+        loop:true,
+        margin:10,
+        autoplay:true,
+        autoplayHoverPause:true,
+
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+                nav:true
+            },
+            600:{
+                items:1,
+                nav:true
+            },
+            1000:{
+                items:1,
+                nav:true,
+            }
+        }
+    })
 </script>
 @endsection
