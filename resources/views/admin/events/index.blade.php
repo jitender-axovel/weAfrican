@@ -39,14 +39,14 @@
 			                    @if ($event->is_blocked)
 			                    	<button type="button" class="btn btn-danger" title="UnBlock"><i class="fa fa-unlock"></i></button>
 		                    	@else
-		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                    		<button type="button" class="btn btn-success btn_fixes" title="Block"><i class="fa fa-ban"></i></button>
 	                    		@endif
 			                </a>
 						</li>
 						<li>
 							<form action="{{ url('admin/event/'.$event->id) }}" method="POST" onsubmit="deleteEvent('{{$event->id}}', '{{$event->name}}', event,this)">
 								{{csrf_field()}}
-								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+								<button type="submit" class="btn btn-danger btn_fixes" title="Delete"><i class="fa fa-trash"></i></button>
 							</form>
 						</li>
 					</ul>
