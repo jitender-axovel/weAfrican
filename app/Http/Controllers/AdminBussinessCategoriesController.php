@@ -9,10 +9,17 @@ use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
 use App\BussinessCategory;
 use App\Helper;
+use Image;
 use Validator;
 
 class AdminBussinessCategoriesController extends Controller
 {
+
+    public function __construct()
+    {
+        $deleteImage = new BusinessProductsController();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -55,21 +62,27 @@ class AdminBussinessCategoriesController extends Controller
             $file = $key = md5(uniqid(rand(), true));
             $ext = $request->file('category_image')->getClientOriginalExtension();
             $image = $file.'.'.$ext;
-            $fileName=$request->file('category_image')->move(config('image.category_image_path'), $image);
+            $img = Image::make($request->file('category_image')->getRealPath());
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+            })->save(config('image.category_image_path').'/thumbnails/large/'.$image);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+            })->save(config('image.category_image_path').'/thumbnails/medium/'.$image);
+            
+            $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                 $constraint->aspectRatio();
+            })->save(config('image.category_image_path').'/thumbnails/small/'.$image);
+            $fileName = $request->file('category_image')->move(config('image.category_image_path'), $image);
 
-            $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-            shell_exec($command);
         } else {
             return redirect('admin/bussiness/category/create')->with('Error', 'Category image is not uploaded. Please try again');
         }
 
         $input = $request->input();
+        $input['image'] = $image;
         $category = array_intersect_key($input, BussinessCategory::$updatable);
         try{
 
@@ -134,20 +147,25 @@ class AdminBussinessCategoriesController extends Controller
 
         if ($request->hasFile('category_image') ){
             if ($request->file('category_image') && $request->file('category_image')->isValid()) {
+                $old_image = BussinessCategory::whereId($id)->first()->image;
                 $file = $key = md5(uniqid(rand(), true));
                 $ext = $request->file('category_image')->getClientOriginalExtension();
                 $image = $file.'.'.$ext;
-                $fileName = $request->file('category_image')->move(config('image.category_image_path'),$image );
-                
-               $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/small/'.$image;
-                shell_exec($command);
+                $img = Image::make($request->file('category_image')->getRealPath());
 
-                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/medium/'.$image;
-                shell_exec($command);
+                $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                             $constraint->aspectRatio();
+                })->save(config('image.category_image_path').'/thumbnails/large/'.$image);
 
-                $command = 'ffmpeg -i '.config('image.category_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.category_image_path').'thumbnails/large/'.$image;
-                shell_exec($command);
+                $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                             $constraint->aspectRatio();
+                })->save(config('image.category_image_path').'/thumbnails/medium/'.$image);
                 
+                $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                     $constraint->aspectRatio();
+                })->save(config('image.category_image_path').'/thumbnails/small/'.$image);
+                $fileName = $request->file('category_image')->move(config('image.category_image_path'), $image);
+                $this->deleteImage(config('image.category_image_path'),$old_image);
             } else {
                 return redirect('admin/bussiness/category')->with('Error', 'Business Category image is not uploaded.Please try again');
             }
@@ -160,7 +178,7 @@ class AdminBussinessCategoriesController extends Controller
            
            
             if(isset($fileName)) {
-               $category['image'] =  $file.'.'.$ext;
+               $category['image'] =  $image;
                  
                 $category = BussinessCategory::where('id',$id)->update($category);
             } else {
@@ -218,6 +236,22 @@ class AdminBussinessCategoriesController extends Controller
         }else
         {
             return redirect('admin/bussiness/category')->with('error', 'You cannot block/unblock this category');
+        }
+    }
+
+    /**
+     * Remove the specified image and thumbnails from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteImage($image_path,$file_name)
+    {
+        if($file_name!=""){
+            unlink($image_path.$file_name);
+            unlink($image_path.'thumbnails/small/'.$file_name);
+            unlink($image_path.'thumbnails/medium/'.$file_name);
+            unlink($image_path.'thumbnails/large/'.$file_name);
         }
     }
 }
