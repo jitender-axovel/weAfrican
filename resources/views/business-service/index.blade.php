@@ -16,7 +16,7 @@
         </div>
     @endif
     <p class="text-right"><a href="{{url('business-service/create')}}"><button type="button" class="btn btn-info">Add Service</button></a></p>
-    <div class="panel panel-default ">
+    <div class="panel panel-default table_set ">
         <table class="table">
             <thead>
                 <tr>
