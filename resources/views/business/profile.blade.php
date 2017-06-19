@@ -276,14 +276,18 @@
 							<label>Portfolio Images</label>
 						</div>
 					</div>
-					<div class="col-md-12 profile_right">
+					<div class="col-md-12 profile_right image_profile">
+					<div class="row">
 						@if(count($business->portfolio->portfolio_images)>0)
 							@foreach($business->portfolio->portfolio_images as $portfolio_image)
-								<div class="col-md-4">
+								<div class="col-md-2 profile_img">
+								<div class="row">
 			        				<img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image)}}" class="img" style="width: 100%">
+			        				</div>
 			        			</div>
 							@endforeach
 						@endif
+						</div>
 					</div>
 			    @endif    
 		    </div>
