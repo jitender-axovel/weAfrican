@@ -28,12 +28,12 @@
                 <td>{{ $subscription->validity_period }}</td>
 				<td>{{ date_format(date_create($subscription->created_at), 'd M,Y') }}</td>
 				<td>
-					<a class="btn btn-info" href="{{ url('admin/subscription/plan/'.$subscription->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil"></i></a>
+					<a class="btn btn-info btn_fixes" href="{{ url('admin/subscription/plan/'.$subscription->id.'/edit/') }}" title="Edit"><i class="fa fa-pencil"></i></a>
 					<a href="{{ URL::to('admin/subscription/plan/block/'.$subscription->id) }}">
 	                    @if($subscription->is_blocked)
 	                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
 	                	@else
-	                		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+	                		<button type="button" class="btn btn-success btn_fixes" title="Block"><i class="fa fa-ban"></i></button>
 	            		@endif
 	        		</a>
 				</td>
