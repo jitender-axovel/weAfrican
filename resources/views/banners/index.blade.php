@@ -5,13 +5,14 @@
 	<h5>Banners</h5>
 	<hr>
 	@include('notification')
-	<ul class="nav nav-tabs">
+	<ul class="nav nav-tabs ul_botm">
 		<li class="active"><a data-toggle="tab" href="#home">Home Banners</a></li>
 		<li><a data-toggle="tab" href="#menu1">Business Banners</a></li>
 		<li><a data-toggle="tab" href="#menu2">Event Banners</a></li>
 	</ul>
   	<div class="tab-content">
     	<div id="home" class="tab-pane fade in active">
+    	<div class="panel panel-default table_set">
     		<div class="all_content">
 		      	<table id="subscription_list" class="display">
 					<thead>
@@ -58,9 +59,11 @@
 					@endforeach
 					</tbody>
 				</table>
+				</div>
 			</div>
     	</div>
 	    <div id="menu1" class="tab-pane fade">
+	    <div class="panel panel-default table_set">
 	    	<div class="all_content">
 	      	<table id="business_list" class="display">
 				<thead>
@@ -108,8 +111,10 @@
 				</tbody>
 			</table>
 			</div>
+			</div>
 	    </div>
 	    <div id="menu2" class="tab-pane fade">
+	    <div class="panel panel-default table_set">
 	    <div class="all_content">
 			<table id="event_list" class="display">
 				<thead>
@@ -156,6 +161,7 @@
 				@endforeach
 				</tbody>
 			</table>
+			</div>
 			</div>
 	    </div>
 	</div>
