@@ -1,11 +1,11 @@
 <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" aria-expanded="true">
+                        <button type="button" class="sidebar_toggle" data-toggle="collapse" data-target=".menubar" aria-expanded="true">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         </button>                     
                     </div>
-<div id="sidebar-wrapper">
+<div id="sidebar-wrapper" class="menubar">
 
     <ul class="sidebar-nav left_bars">
         <li>
