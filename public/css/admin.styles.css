@@ -81,7 +81,8 @@ li{margin: 0;padding: 0;}
     text-decoration: none;
 }
 .left_bars{list-style: none;}
-.left_bars li a{padding-left: 15px;}
+.left_bars li li a{padding-left: 15px;}
+.btn_fixes{padding: 2px 5px;    margin-bottom: 5px;}
 
 @media(min-width:768px) {
     #wrapper {
@@ -107,8 +108,7 @@ li{margin: 0;padding: 0;}
     .top_btn{ padding: 5px 8px;font-size: 11px;}
 .navbar-header button{border: 1px solid #ffffff;
     position: absolute;
-    right: 0;
-    top: -45px;}
+    right: 0;background-color: #000;}
     .navbar-toggle .icon-bar {
     background: #ffffff;}
     .navbar-collapse {
