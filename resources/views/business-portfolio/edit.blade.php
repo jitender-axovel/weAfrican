@@ -24,7 +24,7 @@
                 {{ method_field('PUT') }}
                 <div class="col-md-12">
                 <div class="row">
-                    <label for="maritial_status" class="col-md-2 control-label required">Maritial Status:</label>
+                    <label for="maritial_status" class="col-md-2 control-label required">Marital Status:</label>
                     <div class="col-md-4 form-group">
                         <select name="maritial_status" id="maritial_status" class="form-control selectpicker">
                            <option value="">Select One</option>
@@ -211,147 +211,106 @@
                 <div>
                     <legend>Portfolio Image</legend>
                 </div>
-                <div class="col-md-12">
-                <div class="row mb-1">
-                    <label for="portfolio_image_1" class="col-md-2 required control-label">Image</label>
-                    <div class="col-md-3 form-group">
-                        <input name="portfolio_image_1" id="portfolio_image_1" value="{{ old('portfolio_image_1') }}" type="file" onchange="previewImg(this)" @if(!($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[0]!="")) required="required" @endif>
-                        @if ($errors->has('portfolio_image_1'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('portfolio_image_1') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <label for="logo_preview_1" class="col-md-1 control-label">
-                        Preview:
-                    </label>
-                    <div class="col-md-2">
-                        <div class="upload_img" >
-                        <div class="set_imgs">
-                            @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[0]!="")
-                                <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[0])}}" alt="" class="previewImg" id="preview_1">
-                            @else
-                                <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_1">
-                            @endif
-                          </div>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="radio" name="featured_image" value="1" @if($businessPorfolio->featured_image==1 or $businessPorfolio->featured_image==0) checked="checked" @endif >&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <label for="portfolio_image_2" class="col-md-2 control-label">Image</label>
-                    <div class="col-md-3">
-                        <input name="portfolio_image_2" id="portfolio_image_2" value="{{ old('portfolio_image_2') }}" onchange="previewImg(this)" type="file">
-                        @if ($errors->has('portfolio_image_2'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('portfolio_image_2') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <label for="logo_preview_2" class="col-md-1 control-label">
-                        Preview:
-                    </label>
-                    <div class="col-md-2">
-                         <div class="upload_img" >
-                        <div class="set_imgs">
-                        @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[1]!="")
-                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[1])}}" alt="" class="previewImg" id="preview_2">
-                        @else
-                            <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_2">
-                        @endif
+                @if(count($portfolio_images)>0)
+                @foreach($portfolio_images as $key => $portfolio_image)
+                    @if($key==0)
+                        <div class="form-group">
+                            <input type="hidden" class="portfolio_image_id" name="portfolio_image_id[]" value="{{$portfolio_image->id}}">
+                            <label class="col-xs-1 control-label">Image</label>
+                            <div class="col-xs-2">
+                                <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[{{$portfolio_image->id}}]" value="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" onchange="previewImg(this)" />
+                            </div>
+                            <div class="col-xs-2">
+                                <img src="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" alt="" id="preview">
+                            </div>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
+                            </div>
+                            <div class="col-xs-1">
+                                <div class="radio">
+                                  <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" /><br>Featured Image</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-1">
+                                <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                            </div>
                         </div>
+                    @else
+                        <div class="form-group">
+                            <input type="hidden" class="portfolio_image_id" name="portfolio_image_id[]" value="{{$portfolio_image->id}}">
+                            <div class="col-xs-2 col-xs-offset-1">
+                                <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[{{$portfolio_image->id}}]" value="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" onchange="previewImg(this)" />
+                            </div>
+                            <div class="col-xs-2">
+                                <img src="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" alt="" id="preview">
+                            </div>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
+                            </div>
+                            <div class="col-xs-1">
+                                <div class="radio">
+                                  <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" /><br>Featured Image</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-1">
+                                <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==2) checked="checked" @endif value="2">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <label for="portfolio_image_3" class="col-md-2 control-label">Image</label>
-                    <div class="col-md-3">
-                        <input name="portfolio_image_3" id="portfolio_image_3" value="{{ old('portfolio_image_3') }}" onchange="previewImg(this)" type="file">
-                        @if ($errors->has('portfolio_image_3'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('portfolio_image_3') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <label for="logo_preview_3" class="col-md-1 control-label">
-                        Preview:
-                    </label>
-                    <div class="col-md-2">
-                          <div class="upload_img" >
-                        <div class="set_imgs">
-                        @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[2]!="")
-                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[2])}}" alt="" class="previewImg" id="preview_3">
-                        @else
-                            <img src="{{asset('images/no-image.jpg')}}" alt="" class="previewImg" id="preview_3">
-                        @endif
+                    @endif
+                @endforeach
+                @else
+                    <div class="form-group">
+                        <label class="col-xs-1 control-label">Image</label>
+                        <div class="col-xs-2">
+                            <input type="file" class="form-control" accept="image/*" name="portfolio_image[]" onchange="previewImg(this)" />
                         </div>
+                        <div class="col-xs-2">
+                            <img src="{{asset('images/no-image.jpg')}}" alt="" id="preview">
+                        </div>
+                        <div class="col-xs-2">
+                            <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
+                        </div>
+                        <div class="col-xs-1">
+                            <div class="radio">
+                              <label><input type="radio" class="featured_image" name="featured_image" checked="checked" value="1" /><br>Featured Image</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==3) checked="checked" @endif value="3">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
+                @endif
+                <!-- The template for adding new field -->
+                <div class="form-group hide" id="bookTemplate">
+                    <div class="col-xs-2 col-xs-offset-1">
+                        <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[]" onchange="previewImg(this)" />
                     </div>
-                </div>
-                <div class="row mb-1">
-                    <label for="portfolio_image_4" class="col-md-2 control-label">Image</label>
-                    <div class="col-md-3">
-                        <input name="portfolio_image_4" id="portfolio_image_4" value="{{ old('portfolio_image_4') }}" onchange="previewImg(this)" type="file">
-                        @if ($errors->has('portfolio_image_4'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('portfolio_image_4') }}</strong>
-                            </span>
-                        @endif
+                    <div class="col-xs-2">
+                        <img src="{{asset('images/no-image.jpg')}}" alt="" id="preview">
                     </div>
-                    <label for="logo_preview_4" class="col-md-1 control-label">
-                        Preview:
-                    </label>
-                    <div class="col-md-2">
-                    <div class="upload_img">
-                        <div class="set_imgs">
-                        @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[3]!="")
-                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[3])}}" alt="" class="previewImg" id="preview_4">
-                        @else
-                            <img src="{{asset('images/no-image.jpg')}}" class="previewImg" alt=""  id="preview_4">
-                        @endif
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
                     </div>
+                    <div class="col-xs-3">
+                        <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
                     </div>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==4) checked="checked" @endif value="4">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
-                    </div>
-                </div>
-                <div class="row mb-1">
-                    <label for="portfolio_image_5" class="col-md-2 control-label">Image</label>
-                    <div class="col-md-3">
-                        <input name="portfolio_image_5" id="portfolio_image_5" value="{{ old('portfolio_image_5') }}" onchange="previewImg(this)" type="file">
-                        @if ($errors->has('portfolio_image_5'))
-                            <span class="help-block">
-                            <strong>{{ $errors->first('portfolio_image_5') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <label for="logo_preview_5" class="col-md-1 control-label">
-                        Preview:
-                    </label>
-                    <div class="col-md-2">
-                      <div class="upload_img" >
-                        <div class="set_imgs">
-                        @if($businessPorfolio->image!=NULL and explode('|',$businessPorfolio->image)[4]!="")
-                            <img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.explode('|',$businessPorfolio->image)[2])}}" class="previewImg" alt=""  id="preview_5">
-                        @else
-                            <img src="{{asset('images/no-image.jpg')}}" class="previewImg" alt=""  id="preview_5">
-                        @endif
-                        </div>
+                    <div class="col-xs-1">
+                        <div class="radio">
+                          <label><input type="radio" class="featured_image" name="featured_image" value="1" /><br>Featured Image</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <input type="radio" name="featured_image" @if($businessPorfolio->featured_image==5) checked="checked" @endif value="5">&nbsp;&nbsp;&nbsp;<label for="checkbox" class="control-label">Set Featured Image</label>
+                    <div class="col-xs-1">
+                        <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
                     </div>
-                </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-12 text-right">
@@ -370,224 +329,296 @@
 <style type="text/css">
     .mb-1 {margin-bottom: 20px;}
 </style>
-    <script type="text/javascript" src='https://maps.google.com/maps/api/js?key=AIzaSyDEOk91hx04o7INiXclhMwqQi54n2Zo0gU&libraries=places'></script>
-    <script src="{{ asset('js/dist/locationpicker.jquery.js') }}"></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        //Bootstarp validation on form
-        $(document).ready(function() {
-            $('#register-form')
-
-            .find('[name="maritial_status"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'maritial_status');
-            })
-            .end()
-
-            .find('[name="academic"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'academic');
-            })
-            .end()
-
-            .find('[name="experience_years"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'experience_years');
-            })
-            .end()
-
-            .find('[name="experience_months"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'experience_months');
-            })
-            .end()
-
-            .find('[name="height_feets"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'height_feets');
-            })
-            .end()
-
-            .find('[name="height_inches"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'height_inches');
-            })
-            .end()
-
-            .find('[name="hair_type"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'hair_type');
-            })
-            .end()
-
-            .find('[name="hair_color"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'hair_color');
-            })
-            .end()
-
-            .find('[name="skin_color"]')
-            .change(function(e) {
-                // revalidate the color when it is changed
-                $('#bootstrapSelectForm').bootstrapValidator('revalidateField', 'skin_color');
-            })
-            .end()
-
-            .bootstrapValidator({
-                // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-                feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    maritial_status: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select Maritial Status.'
-                            }
-                        }
-                    },acedimic_status: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select Academic.'
-                            }
-                        }
-                    },
-                    experience_years: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select Exp. Year.'
-                            }
-                        }
-                    },
-                    experience_months: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select Exp. months.'
-                            }
-                        }
-                    },
-                    height_feets: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select Your Height in feets.'
-                            }
-                        }
-                    },
-                    height_inches: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select Your Height in inches.'
-                            }
-                        }
-                    },
-                    hair_type: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select your hair type.'
-                            }
-                        }
-                    },
-                    hair_color: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select hair color'
-                            }
-                        }
-                    },
-                    skin_color: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select skin color.'
-                            }
-                        }
-                    },
-                    institute_name: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please Enter your Institute Name'
-                            }
-                        }
-                    },
-                    occupation: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please Enter your Occupation'
-                            }
-                        }
-                    },
-                    key_skills: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please Enter your Key Skills'
-                            }
-                        }
-                    },
-                }
-            })
-            .on('success.form.bv', function(e) {
-                $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
-                    $('#register-form').data('bootstrapValidator').resetForm();
-
-                // Prevent form submission
-                e.preventDefault();
-
-                // Get the form instance
-                var $form = $(e.target);
-
-                // Get the BootstrapValidator instance
-                var bv = $form.data('bootstrapValidator');
-
-                // Use Ajax to submit form data
-                $.post($form.attr('action'), $form.serialize(), function(result) {
-                    console.log(result);
-                }, 'json');
-            });
-        });
-    </script>
 @endsection
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datepicker.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/datepicker/moment.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/datepicker/bootstrap-datetimepicker.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/css/formValidation.min.css">
+<script src='https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/formValidation.min.js'></script>
+<script src='https://cdn.jsdelivr.net/jquery.formvalidation/0.6.1/js/framework/bootstrap.min.js'></script>
 <script type="text/javascript">
 
     function previewImg(img)
     {
         var id = img.id[img.id.length -1];
-        input = "#preview"+img.id[img.id.length -1];
         if (img.files && img.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#preview_'+id).attr('src', e.target.result);
+                $(img).closest('.form-group').find("img").attr('src', e.target.result);
             }
             reader.readAsDataURL(img.files[0]);
         }
     }
-    
-    $("#banner").change(function(){
-        readURL(this);
+
+    $(document).ready(function() {
+        // The maximum number of options
+        var MAX_OPTIONS = 5;
+        $('#register-form').formValidation({
+            framework: 'bootstrap',
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'portfolio_image[]': {
+                    row: '.col-xs-2',
+                    validators: {
+                        notEmpty: {
+                            message: 'Please choose a product image'
+                        },
+                        file: {
+                            extension: 'jpeg,jpg,png',
+                            type: 'image/jpg,image/png,image/x-png,image/x-jpg,image/jpeg',
+                            maxSize: 10 * 1024 * 1024, // 2048 * 1024
+                            message: 'Please choose a image file with a size less than 4M.',
+                        },
+                    }
+                },
+                'portfolio_title[]': {
+                    row: '.col-xs-2',
+                    validators: {
+                        notEmpty: {
+                            message: 'The title required and cannot be empty'
+                        }
+                    }
+                },
+                'portfolio_description[]': {
+                    row: '.col-xs-3',
+                    validators: {
+                        notEmpty: {
+                            message: 'The description required and cannot be empty'
+                        }
+                    }
+                },
+                featured_image: {
+                    validators:{
+                    notEmpty: {
+                            message: 'Please select a featured image'
+                        }
+                    }
+                },
+                @foreach($portfolio_images as $portfolio_image)
+                    'portfolio_image[{{$portfolio_image->id}}]':{
+                        row: '.col-xs-2',
+                        validators: {
+                            file: {
+                                extension: 'jpeg,jpg,png',
+                                type: 'image/jpg,image/png,image/x-png,image/x-jpg,image/jpeg',
+                                maxSize: 10 * 1024 * 1024, // 2048 * 1024
+                                message: 'Please choose a image file with a size less than 4M.',
+                            },
+                        }
+                    },'portfolio_title[{{$portfolio_image->id}}]':{
+                        row: '.col-xs-2',
+                        validators: {
+                            notEmpty: {
+                                message: 'The title required and cannot be empty'
+                            }
+                        }
+                    },'portfolio_description[{{$portfolio_image->id}}]':{
+                        row: '.col-xs-3',
+                        validators: {
+                            notEmpty: {
+                                message: 'The description required and cannot be empty'
+                            }
+                        }
+                    },
+                @endforeach
+                maritial_status: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Maritial Status.'
+                        }
+                    }
+                },acedimic_status: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Academic.'
+                        }
+                    }
+                },
+                experience_years: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Exp. Year.'
+                        }
+                    }
+                },
+                experience_months: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Exp. months.'
+                        }
+                    }
+                },
+                height_feets: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Your Height in feets.'
+                        }
+                    }
+                },
+                height_inches: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select Your Height in inches.'
+                        }
+                    }
+                },
+                hair_type: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select your hair type.'
+                        }
+                    }
+                },
+                hair_color: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select hair color'
+                        }
+                    }
+                },
+                skin_color: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select skin color.'
+                        }
+                    }
+                },
+                institute_name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter your Institute Name'
+                        }
+                    }
+                },
+                occupation: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter your Occupation'
+                        }
+                    }
+                },
+                key_skills: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter your Key Skills'
+                        }
+                    }
+                },
+            }
+        })
+
+        // Called after adding new field
+        .on('added.field.fv', function(e, data) {
+            // data.field   --> The field name
+            // data.element --> The new field element
+            // data.options --> The new field options
+
+            if (data.field === 'portfolio_title[]') {
+                if ($('#register-form').find(':visible[name^="portfolio_title["]').length >= MAX_OPTIONS) {
+                    $('#register-form').find('.addButton').attr('disabled', 'disabled');
+                }
+            }
+        })
+
+        // Called after removing the field
+        .on('removed.field.fv', function(e, data) {
+           if (data.field === 'portfolio_title[]') {
+                if ($('#register-form').find(':visible[name^="portfolio_title["]').length < MAX_OPTIONS) {
+                    $('#register-form').find('.addButton').removeAttr('disabled');
+                }
+            }
+        })
+
+        // Add button click handler
+        .on('click', '.addButton', function() {
+            var $template = $('#bookTemplate'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .insertBefore($template);
+
+            // Add new fields
+            // Note that we DO NOT need to pass the set of validators
+            // because the new field has the same name with the original one
+            // which its validators are already set
+            $("#featured_image option:not(:first)").remove();
+            for(var i=1; i<=$('#register-form').find(':visible[name^="portfolio_title["]').length; i++)
+            {
+                $('#featured_image').append('<option value="'+i+'">'+i+'</option>');
+            }
+            $('#register-form')
+                .formValidation('addField', $clone.find('[name="portfolio_image[]"]'))
+                .formValidation('addField', $clone.find('[name="portfolio_title[]"]'))
+                .formValidation('addField', $clone.find('[name="portfolio_description[]"]'))
+                .formValidation('revalidateField', 'featured_image');
+            var i=1;
+            $('.featured_image').each(function(){
+                if ($('#register-form').find(':visible[name=^"portfolio_title["]').length < MAX_OPTIONS) {
+                    var $row = $(this).closest('.form-group');
+                    $row.find('[name="featured_image"]').attr('value',i);
+                    i++;
+                }
+            });
+            $('#register-form').formValidation('revalidateField', 'featured_image');
+        })
+
+        // Remove button click handler
+        .on('click', '.removeButton', function() {
+            var $row = $(this).closest('.form-group');
+
+            // Remove fields
+            $('#register-form')
+                .formValidation('removeField', $row.find('[name="portfolio_image[]"]'))
+                .formValidation('removeField', $row.find('[name="portfolio_title[]"]'))
+                .formValidation('removeField', $row.find('[name="portfolio_description[]"]'))
+                .formValidation('revalidateField', 'featured_image');
+
+            // Remove element containing the fields
+            $row.remove();
+            var i=1;
+            $('.featured_image').each(function(){
+                if ($('#register-form').find(':visible[name^="portfolio_title["]').length < MAX_OPTIONS) {
+                    var $row = $(this).closest('.form-group');
+                    $row.find('[name="featured_image"]').attr('value',i);
+                    i++;
+                }
+            });
+            $('#register-form').formValidation('revalidateField', 'featured_image');
+        })
+        .on('success.field.fv', function(e, data) {
+            if (data.fv.getSubmitButton()) {
+                data.fv.disableSubmitButtons(false);
+            }
+        });
+
+        $('#institute')[$("#professional_training").is(':checked') ? "show" : "hide"]();
+        if ($("#professional_training").is(':checked')){
+            $('#register-form').formValidation('enableFieldValidators', 'institute_name', true);
+        }else
+        {
+            $('#register-form').formValidation('enableFieldValidators', 'institute_name', false);
+        }
+        
     });
-    var bootstrapValidator = $('#register-form').data('bootstrapValidator');
+
     $('#professional_training').click(function() {
       $('#institute')[this.checked ? "show" : "hide"]();
       if(this.checked)
       {
-        $("#register-form").bootstrapValidator('enableFieldValidators', institute_name, 'notEmpty', false)
+        $('#institute_name').val("");
+        $('#register-form').formValidation('enableFieldValidators', 'institute_name', true);
       }else
       {
-        $("#register-form").bootstrapValidator('enableFieldValidators', institute_name, 'notEmpty', true);
+        $('#institute_name').val("");
+        $('#register-form').formValidation('enableFieldValidators', 'institute_name', false);
       }
        
     });
