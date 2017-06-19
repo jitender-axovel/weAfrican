@@ -11,27 +11,30 @@ class BusinessProduct extends Model
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['user_id', 'business_id', 'title', 'slug', 'description', 'price', 'image'];
+    protected $fillable = ['user_id', 'business_id', 'title', 'slug', 'description', 'price'];
 
-    public static $updatable = ['id' => "", 'business_id' => "", 'user_id' => "", 'title' => "", 'slug' => "", 'description' => "", 'price' => "", 'image' => ""];
+    public static $updatable = ['id' => "", 'business_id' => "", 'user_id' => "", 'title' => "", 'slug' => "", 'description' => "", 'price' => ""];
 
     public static $validater = array(
     	'title' => 'required|unique:business_products|max:255',
     	'description' => 'required',
-        'price' => 'required|integer',
-        'product_image.*' => 'required|image|mimes:jpg,png,jpeg',
+        'price' => 'required|regex:/^\d*(\.\d{2})?$/',
     	);
 
     public static $updateValidater = array(
     	'title' => 'required',
     	'description' => 'required',
-        'price' => 'required|integer',
-        'product_image.*' => 'image|mimes:jpg,png,jpeg',
+        'price' => 'required|regex:/^\d*(\.\d{2})?$/',
     	);
 
     public function product_business()
     {
         return $this->hasOne('App\UserBusiness','user_id');
+    }
+
+    public function business_product_images()
+    {
+        return $this->hasMany('App\BusinessProductImage');
     }
 
     public function apiGetUserBusinessProducts($input)
