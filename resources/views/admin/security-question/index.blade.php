@@ -25,7 +25,7 @@
 			                    @if($securityquestion->is_blocked)
 			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
 		                    	@else
-		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                    		<button type="button" class="btn btn-success btn_fixes" title="Block"><i class="fa fa-ban"></i></button>
 		                		@endif
 		                    </a>
 						</li>
