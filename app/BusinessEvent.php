@@ -88,6 +88,11 @@ class BusinessEvent extends Model
         return $this->hasMany('App\EventParticipant','event_id');
     }
 
+    public function eventSeatingPlans()
+    {
+        return $this->hasMany('App\BusinessEventSeat','business_event_id');
+    }
+
     public function business()
     {
         return $this->belongsTo('App\UserBusiness','id','business_id');
