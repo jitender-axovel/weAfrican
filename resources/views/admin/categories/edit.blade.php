@@ -60,7 +60,7 @@
 					<fieldset class="col-md-10 col-md-offset-2">
 						<legend>Image Preview</legend>
 						<div class="caption">
-							<img id="preview" src="{{asset(config('image.category_image_url').'thumbnails/medium/'.$category->image)}}"/>
+							<img id="preview" src="{{asset(config('image.category_image_url').'thumbnails/small/'.$category->image)}}"/>
 						</div>
 					</fieldset>
 				</div>
