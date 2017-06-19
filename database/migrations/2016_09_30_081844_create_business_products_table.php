@@ -23,7 +23,6 @@ class CreateBusinessProductsTable extends Migration
             $table->string('slug')->nullable();
             $table->text('description');
             $table->integer('price');
-            $table->string('image')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();
