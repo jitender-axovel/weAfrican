@@ -145,6 +145,8 @@
 							        <th>Event Description</th>
 							        <th>Event Start Date</th>
 							        <th>Event End Date</th>
+							        <th>Total Seats</th>
+							        <th>Total Seats Left</th>
 							        <th>Event Banner</th>
 							      </tr>
 							    </thead>
@@ -154,6 +156,8 @@
 							    		<td>{{ $event->description }}</td>
 							    		<td>{{ date_format(date_create($event->start_date_time), 'd M,Y') }}</td>
 							    		<td>{{ date_format(date_create($event->end_date_time), 'd M,Y') }}</td>
+							    		<td>{{ $event->total_seats }}</td>
+							    		<td>{{ $event->total_seats- $event->soldEventTickets->sum('total_tickets_buyed') }}</td>
 							    		<td>
 								    		<a class="example-image-link" href="{{asset(config('image.banner_image_url').$event->banner)}}" data-lightbox="service_{{ $event->title }}">
 												<img class="example-image" src="{{asset(config('image.banner_image_url').'thumbnails/small/'.$event->banner)}}">
@@ -188,13 +192,12 @@
 							    		<td>{{ $product->description }}</td>
 							    		<td>{{ $product->price }} {{ $business->currency }}</td>
 							    		<td>
-							    			@if(count(explode('|',$product->image))>0)
-												@foreach(explode('|',$product->image) as $image)
-													@if($image!="")
-													<a class="example-image-link" href="{{asset(config('image.product_image_url').$image)}}" data-lightbox="{{ $product->title }}">
-													<img class="example-image col-md-2" src="{{asset(config('image.product_image_url').'thumbnails/small/'.$image)}}" alt="Golden Gate Bridge with San Francisco in distance"></a>
-													@endif
-												@endforeach
+							    			 @if(count($product->business_product_images)>0)
+					                            @foreach($product->business_product_images as $product_image)
+					                                @if($product_image->featured_image==1)
+					                                    <img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product_image->image)}}" class="event_img" />
+					                                @endif
+					                            @endforeach
 											@else
 												No Image found for this product
 											@endif
