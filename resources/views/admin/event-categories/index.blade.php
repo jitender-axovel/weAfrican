@@ -29,18 +29,18 @@
 			                    @if($category->is_blocked)
 			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
 		                    	@else
-		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                    		<button type="button" class="btn btn-success btn_fixes" title="Block"><i class="fa fa-ban"></i></button>
 		                		@endif
 		                    </a>
 						</li>
 						<li>
-							<a class="btn btn-warning" href="{{ url('admin/category/event/'.$category->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+							<a class="btn btn-warning btn_fixes" href="{{ url('admin/category/event/'.$category->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
 						</li>
 						<li>
 							<form action="{{ url('admin/category/event/'.$category->id) }}" method="POST" onsubmit="deleteCategory('{{$category->id}}', '{{$category->title}}', event,this)">
 								{{csrf_field()}}
 								{{ method_field('DELETE') }}
-								<button type="submit" class="btn btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+								<button type="submit" class="btn btn-danger btn_fixes" title="Delete"><i class="fa fa-trash-o"></i></button>
 							</form>
 						</li>
 					</ul>
