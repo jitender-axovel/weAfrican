@@ -32,8 +32,6 @@ class CreateUserPortfoliosTable extends Migration
             $table->string('hair_color')->nullable();
             $table->boolean('professional_training')->default(false);
             $table->string('institute_name')->nullable();
-            $table->string('image')->nullable();
-            $table->integer('featured_image')->unsigned()->default(0);
             $table->timestamps();
         });
     }
