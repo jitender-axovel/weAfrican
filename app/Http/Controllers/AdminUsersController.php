@@ -248,7 +248,7 @@ class AdminUsersController extends Controller
             $states = User::where('country',$input['country'])->distinct('state')->pluck('state');
             $cities = User::where('country',$input['country'])->where('state',$input['state'])->distinct('city')->pluck('city');
             $categories = BussinessCategory::where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
-            $subcategories = BussinessSubCategory::whereCategoryId($input['category'])->where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
+            $subcategories = BussinessCategory::where('parent_id',$input['category'])->where('is_blocked', 0)->orderBy('id','asc')->pluck('id', 'title');
             return view('admin.business.index', compact('pageTitle', 'businesses','countries','states','cities','input','categories','subcategories'));
         }
     }
