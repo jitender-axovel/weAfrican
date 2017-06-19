@@ -27,9 +27,13 @@
 				<td>{{ $product->description}}</td>
                 <td>{{ $product->price}}</td>
                 <td>
-                	@if(explode('|',$product->image)[0]!="")
-                		<img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|',$product->image)[0])}}"/>
-                	@else
+                	@if(count($product->business_product_images)>0)
+                        @foreach($product->business_product_images as $product_image)
+                            @if($product_image->featured_image==1)
+                                <img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product_image->image)}}" class="event_img" />
+                            @endif
+                        @endforeach
+                    @else
                 		<img src="{{asset('images/no-image.jpg')}}"/>
                 	@endif
                 </td>
