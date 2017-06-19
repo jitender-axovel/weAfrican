@@ -80,7 +80,8 @@ li{margin: 0;padding: 0;}
 .sidebar-nav li a:focus {
     text-decoration: none;
 }
-.collapse.in{padding-left: 15px;}
+.left_bars{list-style: none;}
+.left_bars li a{padding-left: 15px;}
 
 @media(min-width:768px) {
     #wrapper {

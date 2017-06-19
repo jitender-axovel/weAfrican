@@ -140,7 +140,8 @@ footer .available .list-inline > li {padding-right: 0;}
 .table_set{width: 100%;overflow-x: auto;}
 .ul_botm{margin-bottom: 20px;}
 .image_profile{margin-top: 50px;}
-.profile_img{margin-right: 10px;border: 2px solid #ccc;}
+.profile_img{margin-right: 10px;border: 2px solid #ccc;margin-bottom: 10px;}
+input[type=file]{border: none;box-shadow: none;}
 /* Responsive */
 @media all and (max-width:1200px){
 	.container {width: 90%;}

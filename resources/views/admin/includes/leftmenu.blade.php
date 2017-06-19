@@ -7,7 +7,7 @@
                     </div>
 <div id="sidebar-wrapper">
 
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav left_bars">
         <li>
             <a href="{{url('admin/dashboard')}}" class="{{ Request::path() == 'admin/dashboard' ? 'active' : '' }}">Dashboard</a>
         </li>   
