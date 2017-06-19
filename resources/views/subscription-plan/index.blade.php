@@ -15,7 +15,7 @@
             </ul>
         </div>
         @endif
-        <div class="panel panel-default">
+        <div class="panel panel-default table_set">
             
             <table class="table">
                 <thead>
