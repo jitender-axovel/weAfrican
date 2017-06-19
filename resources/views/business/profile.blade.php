@@ -275,19 +275,15 @@
 						<div class="col-md-4 col-sm-4 col-xs-4 profile_left">
 							<label>Portfolio Images</label>
 						</div>
-						<div class="col-md-8 col-sm-8 col-xs-8 profile_right">
-							@if($business->portfolio->image!="")
-				        		<div class="col-md-12">
-					        		@foreach(explode('|',$business->portfolio->image) as $image)
-					        			@if($image!="")
-					        			<div class="col-md-3">
-					        				<img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.$image)}}" class="img">
-					        			</div>
-					        			@endif
-					        		@endforeach
-				        		</div>
-				        	@endif
-						</div>
+					</div>
+					<div class="col-md-12 profile_right">
+						@if(count($business->portfolio->portfolio_images)>0)
+							@foreach($business->portfolio->portfolio_images as $portfolio_image)
+								<div class="col-md-4">
+			        				<img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image)}}" class="img" style="width: 100%">
+			        			</div>
+							@endforeach
+						@endif
 					</div>
 			    @endif    
 		    </div>
