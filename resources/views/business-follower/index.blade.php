@@ -5,14 +5,14 @@
     <h5 class="text-left">Business Follower List</h5>
     <hr>
     <p class="text-left">You can see list of users who had liked, disliked or followed your business.</p> 
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs tab_align">
         <li class="active"><a data-toggle="tab" href="#home">Business Follower List</a></li>
         <li><a data-toggle="tab" href="#like">Business Like List</a></li>
         <li><a data-toggle="tab" href="#dislike">Business Dislike List</a></li>
         <li><a data-toggle="tab" href="#rating">Business Rating List</a></li>
     </ul>
     <div class="tab-content">
-        <div id="home" class="tab-pane fade in active">
+        <div id="home" class="tab-pane fade in active ">
             <div class="all_content">
                 <div class="col-md-12" style="margin-bottom: 10px">
                 <div class="row">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="panel panel-default">
+                <div class="panel panel-default table_set">
                 <div class="all_content">
                     <table class="table" id="follower">
                         <thead>
@@ -51,7 +51,7 @@
         </div>
         <div id="like" class="tab-pane fade in">
             <div class="all_content">
-            <div class="panel panel-default">
+            <div class="panel panel-default table_set">
                 <div class="all_content">
                 <table class="table" id="likes">
                     <thead>
@@ -81,7 +81,7 @@
         </div>
         <div id="dislike" class="tab-pane fade in">
             <div class="all_content">
-            <div class="panel panel-default">
+            <div class="panel panel-default table_set">
             <div class="all_content">
                 <table class="table" id="dislikes">
                     <thead>
@@ -111,7 +111,7 @@
         </div>
         <div id="rating" class="tab-pane fade in">
             <div class="all_content">
-                <div class="panel panel-default">
+                <div class="panel panel-default table_set">
                 <div class="all_content">
                     <table class="table" id="ratings">
                         <thead>
