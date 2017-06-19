@@ -124,15 +124,15 @@
 			                    @if($business->is_blocked)
 			                    	<button type="button" class="btn btn-danger" title="Unblock"><i class="fa fa-unlock"></i></button>
 		                    	@else
-		                    		<button type="button" class="btn btn-success" title="Block"><i class="fa fa-ban"></i></button>
+		                    		<button type="button" class="btn btn-success btn_fixes" title="Block"><i class="fa fa-ban"></i></button>
 		                		@endif
 		                    </a>
 						</li>
 						<li>
-							<a class="btn btn-warning" href="{{ url('admin/business/'.$business->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+							<a class="btn btn-warning btn_fixes" href="{{ url('admin/business/'.$business->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
 						</li>
 						<li>
-							<a class="btn btn-default" href="{{ url('admin/business/'.$business->id) }}" title="View"><i class="fa fa-eye" aria-hidden="true"></i>
+							<a class="btn btn-default btn_fixes" href="{{ url('admin/business/'.$business->id) }}" title="View"><i class="fa fa-eye" aria-hidden="true"></i>
 </a>
 						</li>
 					</ul>
