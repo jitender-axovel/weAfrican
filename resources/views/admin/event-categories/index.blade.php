@@ -19,7 +19,7 @@
 			<tr>
 				<td>{{ $category->title}}</td>
 				<td>
-					<img src="{{ asset(config('image.category_image_url').'thumbnails/small/'.$category->image) }}" class="responsive">
+					<img src="{{ asset(config('image.event_category_image_url').'thumbnails/small/'.$category->image) }}" class="responsive">
 				</td>
 				<td>{{ date_format(date_create($category->created_at), 'd M,Y') }}</td>
 				<td>
