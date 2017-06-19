@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-<div class="main-container row">
-    <div class="col-md-10 col-md-offset-1">
+<div class="container row_pad">
+    <div class="col-md-12">
         <h5 class="text-left">Edit Service</h5>
         <hr>
         @include('notification')
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-12 col-md-offset-2">
+                    <div class="col-md-8 text-right">
                         <button type="submit" class="btn btn-primary">
                         Submit
                         </button>
