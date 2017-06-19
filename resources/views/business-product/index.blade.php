@@ -34,7 +34,17 @@
                         <td>{{$product->title}}</td>
                         <td>{{$product->description}}</td>
                         <td>{{$product->price}}</td>
-                        <td><img src="{{asset(config('image.product_image_url').'thumbnails/small/'.explode('|', $product->image)[0])}}"/></td>
+                        <td>
+                        @if(count($product->business_product_images)>0)
+                            @foreach($product->business_product_images as $product_image)
+                                @if($product_image->featured_image==1)
+                                    <img src="{{asset(config('image.product_image_url').'thumbnails/small/'.$product_image->image)}}" class="event_img" />
+                                @endif
+                            @endforeach
+                        @else
+                            No image uploaded yet
+                        @endif
+                        </td>
                         <td>
                             <ul class="list-inline">
                                 <li>
