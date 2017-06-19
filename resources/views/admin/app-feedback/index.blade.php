@@ -17,7 +17,10 @@
 		<tbody>
 			@foreach($feedbacks as $feedback)
 			<tr>
-				<td>{{ $feedback->full_name}}</td>
+				<td>{{ $feedback->first_name }} @if($feedback->middle_name!="")
+				{{$feedback->middle_name}} 
+				@endif 
+				{{$feedback->last_name}}</td>
 				<td>{{ '+' . $feedback->country_code . '-' . $feedback->mobile_number }}</td>
 				<td>{{ $feedback->feedback}}</td>
 				<td>{{ date_format(date_create($feedback->created_at), 'd M,Y') }}</td>
