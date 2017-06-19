@@ -15,7 +15,9 @@ use App\CountryList;
 use App\SecurityQuestion;
 use App\BussinessSubcategory;
 use App\UserPortfolio;
+use App\UserPortfolioImage;
 use Auth;
+use Image;
 use Validator;
 use App\Helper;
 use Session;
@@ -33,7 +35,8 @@ class UserBusinessPortfolioController extends Controller
         $pageTitle = "Business Profile";
         $business = UserBusiness::where('user_id',Auth::id())->first();
         $businessPorfolio = UserPortfolio::where('user_id',Auth::id())->where('business_id',$business->id)->first();
-        return view('business-portfolio.edit', compact('business', 'pageTitle', 'businessPorfolio'));
+        $portfolio_images = UserPortfolioImage::where('user_id',Auth::id())->where('business_id',$business->id)->get();
+        return view('business-portfolio.edit', compact('business', 'pageTitle', 'businessPorfolio', 'portfolio_images'));
     }
 
     /**
@@ -104,91 +107,127 @@ class UserBusinessPortfolioController extends Controller
             'skin_color' => 'required',
             'professional_training' => 'sometimes',
             'institute_name' => 'required_if:professional_training,on',
-            'portfolio_image_1' => 'required|image|mimes:jpg,png,jpeg',
-            'portfolio_image_2' => 'image|mimes:jpg,png,jpeg',
-            'portfolio_image_3' => 'image|mimes:jpg,png,jpeg',
-            'portfolio_image_4' => 'image|mimes:jpg,png,jpeg',
-            'portfolio_image_5' => 'image|mimes:jpg,png,jpeg',
             'featured_image' => 'required',
             );
-        if($portfolio->image!="" and $portfolio->image!=NULL)
-        {
-            $image = explode("|", $portfolio->image);
-            if($image[0]!="")
-            {
-                $rules['portfolio_image_1'] = 'image|mimes:jpg,png,jpeg';
-            }
-        }else
-        {
-            $image = array();
-        }
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $messages = $validator->messages();
             return back()->withErrors($validator)
                      ->withInput();
         }
-        for($i=0;$i<=5;$i++)
-        {
-            if($request->hasFile('portfolio_image_'.($i+1))){
-                if($request->file('portfolio_image_'.($i+1))->isValid())
+
+        $portfolio = array_intersect_key($input, UserPortfolio::$updatable);
+
+        $portfolio = UserPortfolio::where('id',$id)->update($portfolio);
+
+        $portfolio = UserPortfolio::where('id',$id)->first();
+
+        $list = UserPortfolioImage::where('user_portfolio_id',$id)->pluck('id')->toArray();
+
+        if(count($list)>0){
+            foreach (array_intersect($list, $input['portfolio_image_id']) as $key => $value) {
+                $portfolio_image = UserPortfolioImage::whereId($value)->first();
+                $old_image = $portfolio_image->image;
+                $portfolio_image->title = $input['portfolio_title'][$value];
+                $portfolio_image->description = $input['portfolio_description'][$value];
+                $portfolio_image->featured_image = 0;
+
+                if($request->hasFile('portfolio_image'))
                 {
-                    if(isset($image[$i]) and $image[$i]!="")
+                    $files = $request->file('portfolio_image');
+                    if(isset($files[$value]))
                     {
-                        unlink(config('image.portfolio_image_path').$image[$i]);
-                        unlink(config('image.portfolio_image_path').'thumbnails/small/'.$image[$i]);
-                        unlink(config('image.portfolio_image_path').'thumbnails/medium/'.$image[$i]);
-                        unlink(config('image.portfolio_image_path').'thumbnails/large/'.$image[$i]);
+                        if($files[$value]->isValid())
+                        {
+                            $file2 = md5(uniqid(rand(), true));
+                            $extension = $files[$value]->getClientOriginalExtension();
+                            $img_name = $file2.'.'.$extension;
+                            
+                            $img = Image::make($files[$value]->getRealPath());
+                            
+                            $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.portfolio_image_path').'/thumbnails/large/'.$file2.'.'.$extension);
+                            
+                            $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.portfolio_image_path').'/thumbnails/medium/'.$file2.'.'.$extension);
+                            
+                            $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.portfolio_image_path').'/thumbnails/small/'.$file2.'.'.$extension);
+                            
+                            $fileName = $files[$value]->move(config('image.portfolio_image_path'), $img_name);
+                            $this->deleteImage(config('image.portfolio_image_path'),$old_image);
+                            $portfolio_image->image = $img_name;
+                            
+                        }else
+                        {
+                            return back()->with('Error', 'Product image is not uploaded. Please try again');
+                        }
                     }
-                    $file = $key = md5(uniqid(rand(), true));
-                    $ext = $request->file('portfolio_image_'.($i+1))->
-                        getClientOriginalExtension();
-                    $image[$i] = $file.'.'.$ext; 
-
-                    $fileName = $request->file('portfolio_image_'.($i+1))->move(config('image.portfolio_image_path'), $image[$i]);
-
-                    $command = 'ffmpeg -i '.config('image.portfolio_image_path').$image[$i].' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.portfolio_image_path').'thumbnails/small/'.$image[$i];
-                    shell_exec($command);
-
-                    $command = 'ffmpeg -i '.config('image.portfolio_image_path').$image[$i].' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.portfolio_image_path').'thumbnails/medium/'.$image[$i];
-                    shell_exec($command);
-
-                    $command = 'ffmpeg -i '.config('image.portfolio_image_path').$image[$i].' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.portfolio_image_path').'thumbnails/large/'.$image[$i];
-                    shell_exec($command);
                 }
-            }else
-            {
-                if(!isset($image[$i]) or $image[$i]=="" or  $image[$i]==NULL)
-                {$image[$i] = "";}
+
+                $portfolio_image->save();
+            }
+            foreach (array_diff($list,$input['portfolio_image_id']) as $value) {
+                $portfolio_image = UserPortfolioImage::whereId($value)->first();
+                $this->deleteImage(config('image.portfolio_image_path'),$portfolio_image->image);
+                UserPortfolioImage::whereId($value)->delete();
             }
         }
-        $input['image'] = implode("|", $image);
-        $userPortfolio = array_intersect_key($input, UserPortfolio::$updatable);
-        if(UserPortfolio::where('user_id',Auth::id())->exists())
-        {
-            $userPortfolio = UserPortfolio::where('user_id',Auth::id())->update($userPortfolio);
-            if($userPortfolio)
-            {
-                $business = UserBusiness::where('user_id',Auth::id())->update(array('is_update'=>0));
-                return redirect('register-business/'.$portfolio->business_id)->with('success', 'Your Portfolio has been updated');
-            }else
-            {
-                return redirect('portfolio')->with('error', 'Error occured try again!');
-            }
-        }else
-        {
-            $userPortfolio = UserPortfolio::create($userPortfolio);
-            $userPortfolio->save();
-            if($userPortfolio)
-            {
-                $business = UserBusiness::where('user_id',Auth::id())->update(array('is_update'=>0));
-                return redirect('register-business/'.$portfolio->business_id)->with('success', 'Your Portfolio has been updated');
-            }else
-            {
-                return redirect('portfolio')->with('error', 'Error occured try again!');
+        if(count($request->file('portfolio_image'))>0){
+            foreach (array_keys($request->file('portfolio_image')) as $value) {
+                $business_portfolio_image['user_id'] = $portfolio->user_id;
+                $business_portfolio_image['business_id'] = $portfolio->business_id;
+                $business_portfolio_image['user_portfolio_id'] = $portfolio->id;
+                $business_portfolio_image['title'] = $input['portfolio_title'][$value];
+                $business_portfolio_image['description'] = $input['portfolio_description'][$value];
+                $business_portfolio_image['featured_image'] = 0;
+
+                if($request->hasFile('portfolio_image'))
+                {
+                    $files = $request->file('portfolio_image');
+                    if(isset($files[$value]))
+                    {
+                        if($files[$value]->isValid())
+                        {
+                            $file2 = md5(uniqid(rand(), true));
+                            $extension = $files[$value]->getClientOriginalExtension();
+                            $img_name = $file2.'.'.$extension;
+
+                            $img = Image::make($files[$value]->getRealPath());
+                        
+                            $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.portfolio_image_path').'/thumbnails/large/'.$file2.'.'.$extension);
+                            
+                            $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.portfolio_image_path').'/thumbnails/medium/'.$file2.'.'.$extension);
+                            
+                            $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.portfolio_image_path').'/thumbnails/small/'.$file2.'.'.$extension);
+                            
+                            $fileName = $files[$value]->move(config('image.portfolio_image_path'), $img_name);
+                            $business_portfolio_image['image'] = $img_name;
+
+                            $portfolio_image = array_intersect_key($business_portfolio_image, UserPortfolioImage::$updatable);
+                            $portfolio_image = UserPortfolioImage::create($portfolio_image);
+                            $portfolio_image->save();
+                        }else
+                        {
+                            return back()->with('Error', 'Portfolio image is not uploaded. Please try again');
+                        }
+                    }
+                }
             }
         }
-        
+
+        $portfolio_image = UserPortfolioImage::whereId(UserPortfolioImage::offset($request->input('featured_image')-1)->limit(1)->where('user_portfolio_id',$id)->pluck('id')->first())->update(array('featured_image'=>1));
+        $business = UserBusiness::where('user_id',Auth::id())->update(array('is_update'=>0));
+        return redirect('register-business/'.$portfolio->business_id)->with('success', 'Your Portfolio has been updated');        
     }
 
     /**
@@ -200,5 +239,21 @@ class UserBusinessPortfolioController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Remove the specified image and thumbnails from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteImage($image_path,$file_name)
+    {
+        if($file_name!=""){
+            unlink($image_path.$file_name);
+            unlink($image_path.'thumbnails/small/'.$file_name);
+            unlink($image_path.'thumbnails/medium/'.$file_name);
+            unlink($image_path.'thumbnails/large/'.$file_name);
+        }
     }
 }
