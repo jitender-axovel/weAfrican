@@ -55,7 +55,7 @@ class UserBusiness extends Model
     {
         return $this->hasMany('App\BusinessService','business_id');
     }
-
+    
     public function likes()
     {
         return $this->hasMany('App\BusinessLike','business_id');
