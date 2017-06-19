@@ -17,7 +17,7 @@ class AdminAppFeedbackController extends Controller
     public function index()
     {
         $pageTitle = 'Admin - Service';
-        $feedbacks = AppFeedback::select('app_feedbacks.*', 'users.full_name', 'users.mobile_number', 'users.country_code')->leftJoin('users','app_feedbacks.user_id' , '=', 'users.id')->get();
+        $feedbacks = AppFeedback::select('app_feedbacks.*', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.mobile_number', 'users.country_code')->leftJoin('users','app_feedbacks.user_id' , '=', 'users.id')->get();
         return view('admin.app-feedback.index', compact('pageTitle', 'feedbacks'));
     }
 
