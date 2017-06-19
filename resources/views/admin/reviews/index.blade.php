@@ -24,7 +24,7 @@
 					<ul class="list-inline">
 						<li>
 							<a href="{{ URL::to('admin/reviews/'.$business->id) }}">
-			                    <button type="button" class="btn btn-default" title="View Reviews"><i class="fa fa-eye"></i></button>
+			                    <button type="button" class="btn btn-default btn_fixes" title="View Reviews"><i class="fa fa-eye"></i></button>
 			                </a>
 						</li>
 					</ul>
