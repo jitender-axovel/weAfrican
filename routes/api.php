@@ -18,6 +18,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(['middleware' => ['api']], function (){ 
+	Route::post('signup', 'ApiController@signup');
 	Route::post('login', 'ApiController@login');
 	Route::post('get/user/business-products', 'ApiController@getUserBusinessProducts');
 	Route::post('get/user/business-events', 'ApiController@getUserBusinessEvents');
@@ -37,6 +38,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/service', 'ApiController@postUserService');
 	Route::post('post/user/delete/service', 'ApiController@postDeleteService');
 	Route::post('check/otp' ,'ApiController@checkOtp');
+	Route::post('resend/otp' ,'ApiController@resendOtp');
 	Route::post('get/business-events' ,'ApiController@getBusinessEvents');
 	Route::post('post/fcm/id' ,'ApiController@postFcmId');
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
