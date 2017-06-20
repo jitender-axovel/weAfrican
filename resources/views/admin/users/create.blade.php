@@ -115,7 +115,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-2">Pin Code: (format:110075)</label>
+					<label class="control-label col-md-2">Pin Code:</label>
 					<div class="col-md-4">
 						<input type="text" class="form-control" name="pin_code" value="{{ old('pin_code') }}" required>
 						@if($errors->has('pin_code'))
@@ -137,7 +137,11 @@
 				<div class="form-group">
 					<label class="control-label col-md-2">Mobile Number:</label>
 					<div class="col-md-4">
-						<input type="text" class="form-control" name="mobile_number" value="{{ $user->mobile_number}}">
+						<input type="text" class="form-control code" id="country_code" name="country_code" value="{{ old('country_code') }}" />
+						<input type="text" class="form-control mobile" maxlength="10" minlength="10" name="mobile_number" value="{{ $user->mobile_number}}">
+						<span class="help-block">
+                            <strong>Please enter mobile no. with country code</strong>
+                        </span>
 						@if($errors->has('mobile_number'))
 						<span class="help-block">
 							<strong>{{ $errors->first('mobile_number') }}</strong>
@@ -188,6 +192,7 @@
 	</div>
 @endsection
 @section('scripts')
+<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 <script type="text/javascript">
     function readURL(input) {
       if (input.files && input.files[0]) {
@@ -237,5 +242,79 @@
             $('#subcategory').hide();
         }
     });
+    $(document).ready(function() {
+    	$('#category-form').bootstrapValidator({
+    		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+            	title: {
+                    validators: {
+                            stringLength: {
+                            min: 2,
+                        },
+                            notEmpty: {
+                            message: 'Please supply your Business Title'
+                        }
+                    }
+                },
+                keywords: {
+                	validators: {
+                        notEmpty: {
+                            message: 'Please supply your Business keywords'
+                        }
+                    }
+                },
+                about_us: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please supply About us'
+                        }
+                    }
+                },
+                country_code: {
+                    validators: {
+                        numeric: {
+                            message: 'The country code can consist only numbers.'
+                        },
+                        notEmpty: {
+                            message: 'Please supply country code.'
+                        }
+                    }
+                },
+                mobile_number: {
+                    validators: {
+                        numeric: {
+                            message: 'The mobile number can consist only numbers.'
+                        },
+                        notEmpty: {
+                            message: 'Please supply mobile number.'
+                        }
+                    }
+                }, 
+                pin_code: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please supply your pin code'
+                        }
+                    }
+                },
+            }
+    	});
+    });
 </script>
+<style type="text/css">
+	.form-control.code {
+	    float: left;
+	    width: 15%;
+	    padding-right: 10px;
+	}
+	.form-control.mobile {
+	    float: right;
+	    width: 80%;
+	}
+	</style>
 @endsection

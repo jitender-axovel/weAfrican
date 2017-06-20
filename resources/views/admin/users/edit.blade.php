@@ -6,7 +6,7 @@
 	@include('notification')
 	<div class="panel panel-default">
 		<div class="panel-body">
-			<form action="{{ url('admin/users/'.$user->id) }}" method="POST" class="form-horizontal">
+			<form id="category-form" action="{{ url('admin/users/'.$user->id) }}" method="POST" class="form-horizontal">
 				{{csrf_field()}}
 				{{ method_field('PUT') }}
 				<div class="form-group">
@@ -44,4 +44,42 @@
 			</form>
 		</div>
 	</div>
+@endsection
+@section('scripts')
+<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+    	$('#category-form').bootstrapValidator({
+    		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+            	first_name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please supply your First Name'
+                        }
+                    }
+                },
+                middle_name: {
+                	validators: {
+                        notEmpty: {
+                            message: 'Please supply your Middle Name'
+                        }
+                    }
+                },
+                last_name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please supply your Last Name'
+                        }
+                    }
+                },
+            }
+    	});
+    });
+</script>
 @endsection
