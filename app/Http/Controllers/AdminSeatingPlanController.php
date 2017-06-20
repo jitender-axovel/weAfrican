@@ -124,7 +124,7 @@ class AdminSeatingPlanController extends Controller
      */
     public function destroy($id)
     {
-        $category = EventSeatingPlan::findOrFail($id);
+        /*$category = EventSeatingPlan::findOrFail($id);
 
         if($category->forceDelete()){
             $response = array(
@@ -138,7 +138,7 @@ class AdminSeatingPlanController extends Controller
             );
         }
 
-        return json_encode($response);
+        return json_encode($response);*/
     }
 
     /**
