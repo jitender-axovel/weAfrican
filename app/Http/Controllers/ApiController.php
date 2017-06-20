@@ -567,7 +567,7 @@ class ApiController extends Controller
         $input = $request->input();
         if($input == NULL)
         {
-            return response()->json(['status' => 'failure','response' => 'Input parameter is missing.']);
+            return response()->json(['status' => 'failure','response' => ['message' => 'All fields are required.']]);
         }
 
         $response = $this->user->apiCheckOtp($input);
@@ -587,20 +587,20 @@ class ApiController extends Controller
         $input = $request->input();
         if($input == NULL)
         {
-            return response()->json(['status' => 'failure','response' => 'Input parameter is missing.']);
+            return response()->json(['status' => 'failure','response' => ['message' => 'All fields are required.']]);
         }
 
         $response = $this->user->apiResendOtp($input);
         
         if($response == 1)
         {
-            return response()->json(['status' => 'success', 'response' => 'New OTP has been send to the registerd email address']);
+            return response()->json(['status' => 'success', 'response' => ['message' => 'New OTP has been send to the registerd email address']]);
         }else if($response == 2) {
-            return response()->json(['status' => 'failure', 'response' => 'Unable to generate new OTP. Please try again!']);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Unable to generate new OTP. Please try again!']]);
         }else if($response == 3){
-            return response()->json(['status' => 'failure', 'response' => 'Mail Cannot be sent! Please try again!!']);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Mail Cannot be sent! Please try again!!']]);
         }else{
-            return response()->json(['status' => 'failure', 'response' => 'Email does not exist.']);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Email does not exist.']]);
         }
     }
 
