@@ -83,6 +83,7 @@ Route::group(['prefix' => 'admin'], function() {
 		Route::resource('event', 'AdminBusinessEventsController');
 		Route::get('business/identity/proof/validate/{id}','AdminUserBusinessesController@identityProofVerfied');
 		Route::get('business/proof/validate/{id}','AdminUserBusinessesController@businessProofVerfied');
+		Route::get('business/user/validate/{id}','AdminUserBusinessesController@businessUserVerify');
 		Route::get('subscription/plan/block/{id}','AdminSubscriptionPlansController@block');
 		Route::resource('subscription/plan', 'AdminSubscriptionPlansController');
 		Route::get('product/block/{id}','AdminBusinessProductsController@block');
