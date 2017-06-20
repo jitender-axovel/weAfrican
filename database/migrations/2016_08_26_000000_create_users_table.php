@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('pin_code')->nullable();
             $table->string('currency')->nullable();
             $table->string('country_code')->nullable();
-            $table->unsignedBigInteger('mobile_number');
+            $table->unsignedBigInteger('mobile_number')->nullable();
             $table->unsignedInteger('otp')->default('1234')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
