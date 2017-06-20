@@ -179,7 +179,7 @@ class User extends Authenticatable
                     return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
                 }else
                 {
-                    return response()->json(['status' => 'success','response' => $user]);
+                    return response()->json(['status' => 'success','response' => ['message' => "You have been successfully registered. OTP has been send to your email. Please verify OTP to login"]]);
                 }
             } else {
                 return response()->json(['status' => 'failure','response' => ['message' => 'System Error:User could not be created .Please try later.']]);
