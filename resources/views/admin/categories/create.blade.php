@@ -59,7 +59,7 @@
 					<fieldset class="col-md-10 ">
 						<legend>Image Preview</legend>
 						<div class="caption">
-							<img src="#" alt=""  id="preview">
+							<img src="{{asset('images/no-image.jpg')}}" class="admin_image_preview" alt="" id="preview">
 						</div>
 					</fieldset>
 				</div>
@@ -73,6 +73,7 @@
 	</div>
 @endsection
 @section('scripts')
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 	<script type="text/javascript">
 
     function readURL(input) {
@@ -87,6 +88,48 @@
 
     $("#category_image").change(function(){
         readURL(this);
+    });
+    $(document).ready(function() {
+    	$('#category-form').bootstrapValidator({
+    		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+            	title: {
+                    validators: {
+                            stringLength: {
+                            min: 2,
+                        },
+                            notEmpty: {
+                            message: 'Please supply your Category Title'
+                        }
+                    }
+                },
+                description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please supply your Category Description'
+                        }
+                    }
+                },
+                category_image: {
+                	validators: {
+	                    file: {
+	                        extension: 'jpeg,png,jpg',
+	                        type: 'image/jpeg,image/png,image/jpg',
+	                        maxSize: 4096 * 1024,
+	                        message: 'The selected file is not valid'
+	                    },
+	                    notEmpty: {
+                            message: 'Please select your category image'
+                        }
+	                }
+                }
+            }
+    	});
     });
 	</script>
 @endsection
