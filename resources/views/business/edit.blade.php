@@ -69,7 +69,7 @@
                     @endif
                     value="male">&nbsp;<label>Male</label>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                     <input required type="radio" name="gender" 
                     @if(old('gender')=='female'  or $business->user->gender=="female")
                         checked="checked"
@@ -254,7 +254,9 @@
                 Logo Preview:
                 </label>
                 <div class="col-md-4">
+                <div class="profile_img">
                     <img src="{{asset('images/no-image.jpg')}}" alt=""  id="preview">
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -281,7 +283,9 @@
                Banner Preview:
                 </label>
                 <div class="col-md-4">
+                <div class="profile_img">
                     <img src="{{asset('images/no-image.jpg')}}" alt=""  id="bannerPreview">
+                    </div>
                 </div>
             </div>
             <div class="form-group">
