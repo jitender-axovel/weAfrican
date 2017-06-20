@@ -154,7 +154,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Send Messsage to all followers</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body mesg_container">
         <textarea name="message" id="message" class="form-control" rows="5" style="resize:none;" placeholder="Enter your message" maxlength="160"></textarea>
       </div>
       <div class="modal-footer">
