@@ -50,7 +50,7 @@
                                     <button type="button" class="btn btn-info btn_fix" data-toggle="modal" data-target="#myModal-{{$event->id}}" title="Download Participant List"><i class="fa fa-download" aria-hidden="true"></i></button>
                                   <!-- Modal -->
                                     <div class="modal fade" id="myModal-{{$event->id}}" role="dialog">
-                                    <div class="modal-dialog modal-lg">
+                                    <div class="modal-dialog modal-lg body_container">
 
                                       <!-- Modal content-->
                                       <div class="modal-content">
@@ -58,13 +58,12 @@
                                           <button type="button" class="close" data-dismiss="modal">&times;</button>
                                           <h6 class="modal-title">Choose data to show in csv</h6>
                                         </div>
-                                        <div class="modal-body">
-
+                                        <div class="modal-body csv_box">
                                          <form class="form-horizontal" action="{{ url('event/participants/download-csv/'.$event->id) }}" method="POST">
                                             {{csrf_field()}}
                                             <div class="form-group form-inline col-md-4">
                                                 <label>First Name</label>
-                                                <input type="checkbox" class="form-control" name="first_name" value="first_name">
+                                             <input type="checkbox" class="form-control" name="first_name" value="first_name">
                                             </div>
                                             <div class="form-group form-inline col-md-4">
                                                 <label>Middle Name</label>
