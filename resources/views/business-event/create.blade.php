@@ -202,7 +202,7 @@
                 <div class="col-md-12">
                 @if(count($seatingplans)>0)
                     @foreach($seatingplans as $seatingplan)
-                        <div class="form-group">
+                        <div class="form-group colm_margin">
                             <label class="col-md-2 control-label">{{ $seatingplan->title }}</label>
                             <div class="col-md-3" class="control-label">
                                 <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" readonly="readonly" value="{{ $seatingplan->title }}" placeholder="Seating Plan Alias">
