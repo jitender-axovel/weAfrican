@@ -9,6 +9,7 @@ use Auth;
 use Validator;
 use App\UserBusiness;
 use App\Helper;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewRegisterBusiness;
 use App\Mail\SendOtp;
@@ -58,22 +59,16 @@ class User extends Authenticatable
         }
 
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
-        var_dump(Hash::check($request->input('password'), $user->password));dd();
-        var_dump(Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0]));dd();
 
         if (!$user){
             return response()->json(['status' => 'failure', 'response' => ['message' => 'Email id not found. Please register to login!!']]);
         }else{
-            var_dump($user->is_verified);dd();
             if ($user->is_blocked) {
                 // Authentication passed...
-                echo "Test 1";dd();
                 return response()->json(['status' => 'exception','response' => ['message' => 'Your account is blocked by admin.']]);
                 
             }else if(!$user->is_verified){
-                echo "Test 2";dd();
                 $user->otp = rand(1000,9999);
-                var_dump($user);dd();
                 if($user->save())
                 {
                     Mail::to('madhav@gmail.com')->send(new SendOtp($user));
@@ -85,12 +80,10 @@ class User extends Authenticatable
                     }
                 }else
                 {
-                    echo "Test 3";dd();
                     return response()->json(['status' => 'failure', 'response' => ['message' => 'System Error:OTP not generated .Please try later.']]);
                 }
 
             }else if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0])) {
-                echo "Test 4";dd();
 
                 $checkBusiness = UserBusiness::whereUserId($user->id)->first();
                 
@@ -162,7 +155,7 @@ class User extends Authenticatable
             }
             $user['email'] = $request->input('email');
             /*$user['country_code'] = $request->input('countryCode');*/
-            $user['password'] = bcrypt($request->input('mobileNumber'));
+            $user['password'] = bcrypt($request->input('password'));
             $user['user_role_id'] = 4;
             $user['otp'] = rand(1000,9999);
             
@@ -185,13 +178,12 @@ class User extends Authenticatable
                 return response()->json(['status' => 'failure','response' => ['message' => 'System Error:User could not be created .Please try later.']]);
             }
         } else{
-            return response()->json(['status' => 'failure', 'response' => ['message' => 'Email is already registered. Please login to continue!!']]);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Email is already registered. Please sign-in to continue!!']]);
         }
     }
 
     public function apiCheckOtp($input)
     {
-        $input = $request->input();
         if($input == NULL)
         {
             return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
@@ -200,10 +192,17 @@ class User extends Authenticatable
         if($check)
         { 
             $otp = $this->where('email', $input['email'])->where('otp', $input['otp'])->first();
+
             if($otp)
             {
                 $otp->is_verified = 1;
                 $otp->save();
+
+                $checkBusiness = UserBusiness::whereUserId($otp->id)->first();
+                
+                if ($checkBusiness)
+                    $otp['businessId'] = $checkBusiness->id;
+                
                 return response()->json(['status' => 'success', 'response' => $otp]);
             }else
             {
