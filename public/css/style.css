@@ -123,7 +123,7 @@ footer .available .list-inline > li {padding-right: 0;}
 .set_imgs{display: table-cell;vertical-align: middle;text-align: center;}
 .set_imgs img{display: inline-block; max-height: 100px}
 .sep_id{margin-bottom: 10px;display: inline-block;width: 100%;}
-.btn_fix{padding: 2px 5px;}
+.btn_fix{padding: 2px 5px;    margin-bottom: 5px;}
 .row_pad{padding: 50px 0px;}
 .banner_image{width: 100%;display: block;}
 .container-fluid{padding-left: 0px;padding-right: 0px;}
@@ -140,7 +140,15 @@ footer .available .list-inline > li {padding-right: 0;}
 .table_set{width: 100%;overflow-x: auto;}
 .ul_botm{margin-bottom: 20px;}
 .image_profile{margin-top: 50px;}
-.profile_img{margin-right: 10px;border: 2px solid #ccc;margin-bottom: 10px;}
+.profile_img{margin-right: 10px;border: 2px solid #ccc;margin-bottom: 10px;display:inline-block;overflow: hidden;width: 100px; height: 100px;
+ position: relative;background: rgba(153, 153, 153, 0.15);}
+ .profile_img img{position: absolute;transform: translate(-50%, -50%);left: 50%;top: 50%; width: 100%;}
+ .upld_hide{display: none;}
+ .csv_box input{width:auto;display: inline-block;margin-left: 20px;}
+/* .colm_margin .col-md-2 .col-sm-2 .col-xs-12 .col-xs-6{margin-bottom: 10px}*/
+  .colm_margin [class*="col-"]{ margin-bottom: 10px; }
+  .form_pad [class*="col-"]{padding-left: 10px;padding-right: 10px;}
+  .mesg_container{display: block;width:100%;}
 input[type=file]{border: none;box-shadow: none;}
 /* Responsive */
 @media all and (max-width:1200px){
@@ -192,8 +200,8 @@ input[type=file]{border: none;box-shadow: none;}
 .sweet-alert .sa-icon{margin: 5px auto;}
 .sweet-alert h2{font-size: 14px; margin: 0px 0;padding: 10px 15px;}
 .sweet-alert button{font-size: 13px;padding: 10px 15px;    margin: 15px 5px 0 5px;}
-.sweet-alert p{font-size: 13px;}*/
-}
+.sweet-alert p{font-size: 13px;}
+}*/
 	
 }
 @media all and (max-width:479px){	
@@ -201,6 +209,7 @@ input[type=file]{border: none;box-shadow: none;}
 	.container {padding: 0;}
 	.download-section .list-inline > li {margin: 0 0 15px; width: 100%;}
 	.download-section .list-inline img {height: auto; width: 200px;}
+	
 }
 @media all and (min-width:320px) and (max-width:640px){
 .tab_align>li.active>a, .tab_align>li.active>a:focus, .tab_align>li.active>a:hover{display: inline-block;background-color: #5bc0de;color: #fff;display: inline-block;
@@ -208,6 +217,15 @@ input[type=file]{border: none;box-shadow: none;}
 .tab_align>li{width: 50%;text-align: center;}
 .tab_align{border-bottom: none;}
 .tab_align a{display: inline-block;padding: 8px 6px !important;margin: 0 auto;font-size: 13px;}
+
+}
+@media all and (min-width:320px) and (max-width:767px){
+.upld_hide{display:block;}
+.body_container{width:90%;margin: 0 auto;}
+}
+@media all and (min-width:990px) and (max-width:1240px){
+	.mg_botm{margin-bottom: 10px;padding: 0 10px;}
+	.mg_botm .form-control{padding: 6px 4px;    font-size: 12px;}
 }
 /*Map css*/
 #map {height: 300px;width:100%;}
