@@ -19,90 +19,91 @@
         </div>
         @endif
         <div class="panel panel-default document">
+        <div class="col-md-12">
         	<form class="form-horizontal">
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Category : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->category->title}}</label>
-	        		<label class="col-md-2 control-label">Name of Event : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->name}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Category : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->category->title}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Name of Event : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->name}}</label>
 	        	</div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Event Keywords : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->keywords}}</label>
-	        		<label class="col-md-2 control-label">Organizer Name : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->organizer_name}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Event Keywords : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->keywords}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Organizer Name : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->organizer_name}}</label>
 	        	</div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Description : </label>
-	        		<label class="col-md-10 control-label align-left">{{$event->description}}</label>
+	        		<label class="col-md-2 col-sm-2 control-label">Description : </label>
+	        		<label class="col-md-10 col-sm-10 control-label align-left">{{$event->description}}</label>
 	        	</div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Event Start Date &amp; Time:</label>
-	        		<label class="col-md-4 control-label align-left">{{date('m/d/Y h:i A', strtotime($event->start_date_time))}}</label>
-	        		<label class="col-md-2 control-label">Event End Date &amp; Time</label>
-	        		<label class="col-md-4 control-label align-left">{{date('m/d/Y h:i A', strtotime($event->end_date_time))}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Event Start Date &amp; Time:</label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{date('m/d/Y h:i A', strtotime($event->start_date_time))}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Event End Date &amp; Time</label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{date('m/d/Y h:i A', strtotime($event->end_date_time))}}</label>
 	        	</div>
 	        	<div class="form-group">
-	                <label class="col-md-2 control-label">Location : </label>
-	                <div class="col-md-10">
+	                <label class="col-md-2 col-sm-2 control-label">Location : </label>
+	                <div class="col-md-10 col-sm-10">
 	                    <div id="map"></div>
 	                </div>
 	            </div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Address : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->address}}</label>
-	        		<label class="col-md-2 control-label">City : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->city}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Address : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->address}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">City : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->city}}</label>
 	        	</div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">State : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->state}}</label>
-	        		<label class="col-md-2 control-label">Country : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->country}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">State : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->state}}</label>
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Country : </label>
+	        		<label class="col-md-4 col-sm-4 col-xs-6 control-label align-left">{{$event->country}}</label>
 	        	</div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Pincode : </label>
-	        		<label class="col-md-4 control-label align-left">{{$event->pin_code}}</label>
+	        		<label class="col-md-2 col-sm-2 control-label">Pincode : </label>
+	        		<label class="col-md-4 col-sm-4 control-label align-left">{{$event->pin_code}}</label>
 	        	</div>
 	        	<div class="form-group ">
-	        		<label class="col-md-2 control-label">Banner Image : </label>
-	        		<div class="col-md-4">
+	        		<label class="col-md-2 col-sm-2 col-xs-6 control-label">Banner Image : </label>
+	        		<div class="col-md-4 col-sm-4 col-xs-6">
                         <img src="{{asset(config('image.banner_image_url').'event/thumbnails/small/'.$event->banner)}}"/>
                     </div>
 	        	</div>
 	        	<fieldset>
                     <legend>Event Seating Plan</legend>
                 </fieldset>
-                <div class="form-group">
-                	<label class="col-md-2 control-label">Total Seats</label>
-                	<label class="col-md-2 control-label">{{ $event->total_seats }}</label>
-                	<label class="col-md-2 control-label">Total Seats Buyed</label>
-                	<label class="col-md-2 control-label">{{ $event->soldEventTickets->sum('total_tickets_buyed') }}</label>
-                	<label class="col-md-2 control-label">Total Seats Left</label>
-                	<label class="col-md-2 control-label">{{ $event->total_seats- $event->soldEventTickets->sum('total_tickets_buyed') }}</label>
+                <div class="form-group form_pad">
+                	<label class="col-md-2 col-sm-2 col-xs-6 control-label">Total Seats :</label>
+                	<label class="col-md-2 col-sm-2 col-xs-6 control-label align-left">{{ $event->total_seats }}</label>
+                	<label class="col-md-2 col-sm-2 col-xs-6 control-label">Total Seats Buyed :</label>
+                	<label class="col-md-2 col-sm-2 col-xs-6 control-label align-left">{{ $event->soldEventTickets->sum('total_tickets_buyed') }}</label>
+                	<label class="col-md-2 col-sm-2 col-xs-6 control-label">Total Seats Left :</label>
+                	<label class="col-md-2 col-sm-2 col-xs-6 control-label align-left">{{ $event->total_seats- $event->soldEventTickets->sum('total_tickets_buyed') }}</label>
                 </div>
                 @if(count($eventSeatingPlans)>0)
                     @foreach($eventSeatingPlans as $eventSeatingPlans)
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">
+                        <div class="form-group form_pad">
+                            <label class="col-md-2 col-sm-2 col-xs-6 control-label">
                             @if($eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!="" and $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!=NULL)
                             	{{ $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id) }} 
                             @else
                             	{{$eventSeatingPlans->title}}
-                            @endif Seats</label>
+                            @endif Seats :</label>
                             	@if($eventSeatingPlans->getEventPlanSeats($event->id, $eventSeatingPlans->id))
-                            		<label class="col-md-4 control-label align-left">{{$eventSeatingPlans->getEventPlanSeats($event->id, $eventSeatingPlans->id)}}</label>
+                            		<label class="col-md-2 col-sm-2 col-xs-6 control-label align-left">{{$eventSeatingPlans->getEventPlanSeats($event->id, $eventSeatingPlans->id)}}</label>
                             	@else
-                            		<label class="col-md-4 control-label align-left"></label>
+                            		<label class="col-md-2 col-sm-2 col-xs-6 control-label align-left"></label>
                             	@endif
-                            <label class="col-md-3 control-label">
+                            <label class="col-md-2 col-sm-2 col-xs-6 control-label">
                             @if($eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!="" and $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id)!=NULL)
                             	{{ $eventSeatingPlans->getEventPlanAlias($event->id, $eventSeatingPlans->id) }} 
                             @else
                             	{{$eventSeatingPlans->title}}
                             @endif
-                             Per Ticket Price</label>
-                            <label class="col-md-3 control-label align-left">{{ $eventSeatingPlans->getEventPlanSeatsPrice($event->id, $eventSeatingPlans->id) }}</label>
+                             Per Ticket Price :</label>
+                            <label class="col-md-2 col-sm-2 col-xs-6 control-label align-left">{{ $eventSeatingPlans->getEventPlanSeatsPrice($event->id, $eventSeatingPlans->id) }}</label>
                         </div>
                     @endforeach
                 @endif
@@ -146,6 +147,7 @@
 	                </div>
                 @endif
         	</form>
+            </div>
         </div>
         </div>
     </div>
