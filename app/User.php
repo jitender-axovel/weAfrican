@@ -9,6 +9,9 @@ use Auth;
 use Validator;
 use App\UserBusiness;
 use App\Helper;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewRegisterBusiness;
+use App\Mail\SendOtp;
 
 class User extends Authenticatable
 {
@@ -54,50 +57,40 @@ class User extends Authenticatable
             return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
         }
 
-        $user = $this->where('mobile_number', $request->input('mobileNumber'))->whereIn('user_role_id',[3,4])->first();
+        $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
+        var_dump(Hash::check($request->input('password'), $user->password));dd();
+        var_dump(Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0]));dd();
 
         if (!$user){
-
-            $validator = Validator::make($request->input(), [
-                'fullName' => 'required',
-                'mobileNumber' => 'required|numeric|unique:users,mobile_number',
-                'countryCode' => 'required',
-            ]);
-
-            if($validator->fails()){
-                if(count($validator->errors()) <= 1){
-                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
-                } else{
-                    return response()->json(['status' => 'exception','response' => 'All fields are required']);   
-                }
-            }
-           
-            $user['full_name'] = $request->input('fullName');
-            $user['mobile_number'] = $request->input('mobileNumber');
-            $user['country_code'] = $request->input('countryCode');
-            $user['password'] = bcrypt($request->input('mobileNumber'));
-            $user['user_role_id'] = 4;
-
-            $user = array_intersect_key($user, User::$updatable);
-
-            $user = $this->create($user);
-
-            $user['slug'] = Helper::slug($user->full_name, $user->id);
-
-            if($user->save()){
-                return response()->json(['status' => 'success','response' => $user]);
-            } else {
-                return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
-            }
-        } else{
-
-            $user->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
-
+            return response()->json(['status' => 'failure', 'response' => 'Email id not found. Please register to login!!']);
+        }else{
+            var_dump($user->is_verified);dd();
             if ($user->is_blocked) {
                 // Authentication passed...
+                echo "Test 1";dd();
                 return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
                 
-            } else if (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
+            }else if(!$user->is_verified){
+                echo "Test 2";dd();
+                $user->otp = rand(1000,9999);
+                var_dump($user);dd();
+                if($user->save())
+                {
+                    Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                    if( count(Mail::failures()) > 0 ) {
+                        return response()->json(['status' => 'failure','response' => "Mail Cannot be sent! Please try again!!"]);
+                    }else
+                    {
+                        return response()->json(['status' => 'failure','response' => "Email is not verified OTP has been send to your email. Please verify OTP to proceed!."]);
+                    }
+                }else
+                {
+                    echo "Test 3";dd();
+                    return response()->json(['status' => 'failure', 'response' => 'System Error:OTP not generated .Please try later.']);
+                }
+
+            }else if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0])) {
+                echo "Test 4";dd();
 
                 $checkBusiness = UserBusiness::whereUserId($user->id)->first();
                 
@@ -109,89 +102,131 @@ class User extends Authenticatable
 ;                return response()->json(['status' => 'success','response' => $response]);
             }
             else{
-                return response()->json(['status' => 'failure', 'response' => 'Can not login using this mobile number!!!']);
+                return response()->json(['status' => 'failure', 'response' => 'Can not login. Please try again later!!!']);
             }
         }
     }
 
-    public function signup(Request $request)
+    public function apiSignup(Request $request)
     {
         $input = $request->input();
         if($input == NULL)
         {
-            return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+            return json_encode(['status' =>'failure','response'=> 'Input parameters are missing']);  
         }
 
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
-
+        
         if (!$user){
-
-            $validator = Validator::make($request->input(), [
-                'fullName' => 'required',
+            $name = explode(' ', $input['name']);
+            if(count($name)>1 and count($name)==2)
+            {
+                $input['first_name'] = $name[0];
+                $input['last_name'] = $name[1];
+            }elseif(count($name)>1 and count($name)==3)
+            {
+                $input['first_name'] = $name[0];
+                $input['middle_name'] = $name[1];
+                $input['last_name'] = $name[2];
+            }elseif(count($name)>1 and count($name)>3)
+            {
+                $input['first_name'] = $name[0];
+                $input['middle_name'] = $name[1];
+                $input['last_name'] = $name[2].' '.$name[3];
+            }else
+            {
+                $input['first_name'] = $input['name'];
+            }
+            $validator = Validator::make($input, [
+                'first_name' => 'required',
                 'email' => 'required|email|max:255|unique:users',
                 'password' => 'required',
             ]);
-
+            
             if($validator->fails()){
                 if(count($validator->errors()) <= 1){
-                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+                        return response()->json(['status' => 'failure','response' => $validator->errors()]);   
                 } else{
-                    return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+                    return response()->json(['status' => 'failure','response' => 'All fields are required']);   
                 }
             }
-           
-            $user['full_name'] = $request->input('fullName');
-            $user['mobile_number'] = $request->input('mobileNumber');
-            $user['country_code'] = $request->input('countryCode');
+            
+            $user['first_name'] = $input['first_name'];
+            if(isset($input['middle_name']))
+            {
+                $user['middle_name'] = $input['middle_name'];
+            }
+            if(isset($input['last_name']))
+            {
+                $user['last_name'] = $input['last_name'];
+            }
+            $user['email'] = $request->input('email');
+            /*$user['country_code'] = $request->input('countryCode');*/
             $user['password'] = bcrypt($request->input('mobileNumber'));
             $user['user_role_id'] = 4;
-
+            $user['otp'] = rand(1000,9999);
+            
             $user = array_intersect_key($user, User::$updatable);
 
             $user = $this->create($user);
 
-            $user['slug'] = Helper::slug($user->full_name, $user->id);
+            $user['slug'] = Helper::slug($user->first_name, $user->id);
 
             if($user->save()){
-                return response()->json(['status' => 'success','response' => $user]);
+                Mail::to('madhav@gmail.com')->send(new NewRegisterBusiness($user));
+                Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                if( count(Mail::failures()) > 0 ) {
+                    return response()->json(['status' => 'failure','response' => "Mail Cannot be sent! Please try again!!"]);
+                }else
+                {
+                    return response()->json(['status' => 'success','response' => $user]);
+                }
             } else {
                 return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
             }
         } else{
-
-            $user->update(['full_name' => $request->input('fullName'), 'slug' => Helper::slug($request->input('fullName'),$user->id)]);
-
-            if ($user->is_blocked) {
-                // Authentication passed...
-                return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
-                
-            } else if (Auth::attempt(['mobile_number' => $user->mobile_number, 'password' => $user->mobile_number, 'is_blocked' => 0])) {
-
-                $checkBusiness = UserBusiness::whereUserId($user->id)->first();
-                
-                $response = Auth::user();
-
-                if ($checkBusiness)
-                    $response['businessId'] = $checkBusiness->id;
-                
-;                return response()->json(['status' => 'success','response' => $response]);
-            }
-            else{
-                return response()->json(['status' => 'failure', 'response' => 'Can not login using this mobile number!!!']);
-            }
+            return response()->json(['status' => 'failure', 'response' => 'Email is already registered!!!']);
         }
     }
 
     public function apiCheckOtp($input)
     {
-        $check = $this->where('mobile_number', $input['mobileNumber'])->first();
+        $check = $this->where('email', $input['email'])->first();
         if($check)
         { 
-            $otp = $this->where('mobile_number', $input['mobileNumber'])->where('otp', $input['otp'])->first();
+            $otp = $this->where('email', $input['email'])->where('otp', $input['otp'])->first();
             if($otp)
-                return 1;
+            {
+                $otp->is_verified = 1;
+                $otp->save();
+                return response()->json(['status' => 'success', 'response' => ['message'=>'Otp verified successfully','user'=>$otp]]);
+            }else
+            {
+                return response()->json(['status' => 'failure', 'response' => 'Incorrect Otp. Please enter the correct OTP!!']);
+            }
+        }else {
+            return response()->json(['status' => 'failure', 'response' => 'Email does not exist.']);
+        }
+    }
+
+    public function apiResendOtp($input)
+    {
+        $check = $this->where('email', $input['email'])->first();
+        if($check)
+        { 
+            $check->otp = rand(1000,9999);
+            if($check->save()){
+                Mail::to('madhav@gmail.com')->send(new SendOtp($check));
+                if( count(Mail::failures()) > 0 ) {
+                    return 3;
+                }else{
+                    return 1;
+                }
+            }
             else
+            {
                 return 2;
+            }
         }else {
             return 0;
         }
