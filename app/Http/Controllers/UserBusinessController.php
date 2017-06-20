@@ -193,16 +193,6 @@ class UserBusinessController extends Controller
                 } else {
                     return redirect('emailVerify')->with('success', 'You have been successfully registered. OTP has been sent to '.$input['email'].'.Please enter the OTP!');
                 }
-                /*$res = json_decode($this->sendVerificationCode($input['country_code'],$input['mobile_number']));*/
-                /*if($res->success==true)
-                {
-                    $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
-                    $words = explode(" ", $mobile);
-                    return redirect('otp')->with('success', 'You have been successfully registered. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'.Please enter the OTP!');
-                }else
-                {
-                    return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
-                }*/
             }else{
                 return back()->with('error', 'Business could not created successfully.Please try again'); 
             }    
@@ -226,8 +216,6 @@ class UserBusinessController extends Controller
         $is_login = Session::get('is_login');
         $password = Session::get('password');
         $user = User::whereEmail($email)->first();
-        /*$res = json_decode($this->verifyVerificationCode($user->country_code,$user->mobile_number,$request->input('otp')));*/
-        /*if($res->success==true){*/
         if($request->input('otp')==$otp){
             $user->is_verified = 1;
             $user->save();
@@ -277,15 +265,6 @@ class UserBusinessController extends Controller
             } else {
                 return redirect('emailVerify')->with('success', 'New OTP has been send to your registerd email address. OTP has been sent to '.$email.'.Please enter the OTP!');
             }
-            /*if($res->success==true)
-            {
-                $mobile = "+".substr($res->message, strpos($res->message, "+") + 1);
-                $words = explode(" ", $mobile);
-                return redirect('otp')->with('success', 'New OTP has been send to your registerd mobile number. OTP has been sent to '.$words[0]." ".preg_replace( "/[^-, ]/", 'X', str_replace(substr($words[1], strrpos($words[1], '-') + 1),"",$words[1])).substr($words[1], strrpos($words[1], '-') + 1).'');
-            }else
-            {
-                return redirect('otp')->with('warning', $res->message.'! Please try to resend the OTP!');
-            }*/
         } else {
             return redirect('login')->with('warning', 'Your login session has been expired, Please try to login again!');
         }
