@@ -65,7 +65,7 @@ class User extends Authenticatable
         }else{
             if ($user->is_blocked) {
                 // Authentication passed...
-                return response()->json(['status' => 'exception','response' => ['message' => 'Your account is blocked by admin.']]);
+                return response()->json(['status' => 'failure','response' => ['message' => 'Your account is blocked by admin.']]);
                 
             }else if(!$user->is_verified){
                 $user->otp = rand(1000,9999);
