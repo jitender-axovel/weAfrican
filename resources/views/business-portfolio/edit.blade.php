@@ -18,7 +18,7 @@
             </ul>
         </div>
         @endif
-        <div class="panel panel-default document">
+        <div class="panel panel-default document table_set">
             <form id="register-form" class="form-horizontal" action="{{ url('portfolio/'.$businessPorfolio->id) }}" method="POST" enctype='multipart/form-data'>
                 {{csrf_field()}}
                 {{ method_field('PUT') }}
@@ -214,101 +214,127 @@
                 @if(count($portfolio_images)>0)
                 @foreach($portfolio_images as $key => $portfolio_image)
                     @if($key==0)
-                        <div class="form-group">
+                        <div class="form-group colm_margin">
                             <input type="hidden" class="portfolio_image_id" name="portfolio_image_id[]" value="{{$portfolio_image->id}}">
-                            <label class="col-xs-1 control-label">Image</label>
-                            <div class="col-xs-2">
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                            <label class="control-label">Upload Image</label>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6 has-feedback">
                                 <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[{{$portfolio_image->id}}]" value="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" onchange="previewImg(this)" />
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-md-2 col-sm-2 col-xs-12 ">
+                            <div class="profile_img">
                                 <img src="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" alt="" id="preview">
-                            </div>
-                            <div class="col-xs-2">
-                                <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
-                            </div>
-                            <div class="col-xs-3">
-                                <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="radio">
-                                  <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" /><br>Featured Image</label>
                                 </div>
                             </div>
-                            <div class="col-xs-1">
+                            <div class="col-md-2 col-sm-2 col-xs-6 ">
+                                <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <div class="radio">
+                                  <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" />Featured Image</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
                                 <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                             </div>
                         </div>
                     @else
-                        <div class="form-group">
+                        <div class="form-group colm_margin">
+
                             <input type="hidden" class="portfolio_image_id" name="portfolio_image_id[]" value="{{$portfolio_image->id}}">
-                            <div class="col-xs-2 col-xs-offset-1">
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                            <div class="upld_hide">
+                            <label class="control-label">Upload Image</label>
+                            </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
                                 <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[{{$portfolio_image->id}}]" value="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" onchange="previewImg(this)" />
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <div class="profile_img">
                                 <img src="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" alt="" id="preview">
-                            </div>
-                            <div class="col-xs-2">
-                                <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
-                            </div>
-                            <div class="col-xs-3">
-                                <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="radio">
-                                  <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" /><br>Featured Image</label>
                                 </div>
                             </div>
-                            <div class="col-xs-1">
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-6">
+                                <div class="radio">
+                                  <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" />Featured Image</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
                                 <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
                             </div>
+
                         </div>
                     @endif
                 @endforeach
                 @else
-                    <div class="form-group">
-                        <label class="col-xs-1 control-label">Image</label>
-                        <div class="col-xs-2">
+                    <div class="form-group colm_margin">
+                    <div class="col-md-1 col-sm-1 col-xs-6">
+                        <div class="upld_hide">
+                        <label class="control-label">Upload Image</label>
+                        </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-6">
                             <input type="file" class="form-control" accept="image/*" name="portfolio_image[]" onchange="previewImg(this)" />
                         </div>
-                        <div class="col-xs-2">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                        <div class="profile_img">
                             <img src="{{asset('images/no-image.jpg')}}" alt="" id="preview">
+                            </div>
                         </div>
-                        <div class="col-xs-2">
+                        <div class="col-md-2 col-sm-2 col-xs-6">
                             <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-md-2 col-sm-2 col-xs-6">
                             <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
                         </div>
-                        <div class="col-xs-1">
+                        <div class="col-md-2 col-sm-2 col-xs-6">
                             <div class="radio">
                               <label><input type="radio" class="featured_image" name="featured_image" checked="checked" value="1" /><br>Featured Image</label>
                             </div>
                         </div>
-                        <div class="col-xs-1">
+                        <div class="col-md-1 col-sm-1 col-xs-6">
                             <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
                 @endif
                 <!-- The template for adding new field -->
-                <div class="form-group hide" id="bookTemplate">
-                    <div class="col-xs-2 col-xs-offset-1">
+                <div class="form-group hide colm_margin" id="bookTemplate">
+                <div class="col-md-1 col-sm-1 col-xs-6">
+                <div class="upld_hide">
+                        <label class="control-label">Upload Image</label>
+                        </div>
+                        </div>
+                    <div class="col-md-2 col-sm-2 col-xs-6">
                         <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[]" onchange="previewImg(this)" />
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                    <div class="profile_img">
                         <img src="{{asset('images/no-image.jpg')}}" alt="" id="preview">
-                    </div>
-                    <div class="col-xs-2">
-                        <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
-                    </div>
-                    <div class="col-xs-3">
-                        <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
-                    </div>
-                    <div class="col-xs-1">
-                        <div class="radio">
-                          <label><input type="radio" class="featured_image" name="featured_image" value="1" /><br>Featured Image</label>
                         </div>
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <div class="radio">
+                          <label><input type="radio" class="featured_image" name="featured_image" value="1" />Featured Image</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-6">
                         <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
                     </div>
                 </div>
