@@ -282,7 +282,7 @@
 							@foreach($business->portfolio->portfolio_images as $portfolio_image)
 								<div class="col-md-2 profile_img">
 								<div class="row">
-			        				<img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image)}}" class="img" style="width: 100%">
+			        				<img src="{{asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image)}}" class="img">
 			        				</div>
 			        			</div>
 							@endforeach
