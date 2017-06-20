@@ -158,4 +158,18 @@ class AdminUserBusinessesController extends Controller
             return redirect('admin/business/'.$id)->with('success', 'Business  Proof verfied successfully');
         }
     }
+
+    public function businessUserVerify($id)
+    {
+        $business = UserBusiness::find($id);
+        $business->is_business_proof_validate = ! $business->is_business_proof_validate;
+        $business->is_identity_proof_validate = ! $business->is_identity_proof_validate;
+        $business->save();
+
+        if ( $business->is_business_proof_validate and $business->is_identity_proof_validate) {
+            return redirect('admin/business/'.$id)->with('success', 'Business  User has been successfully verified');
+        } else {
+            return redirect('admin/business/'.$id)->with('success', 'Business  User has been successfully unverified');
+        }
+    }
 }
