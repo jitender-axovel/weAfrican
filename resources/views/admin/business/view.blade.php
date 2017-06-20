@@ -97,13 +97,13 @@
 							<i class="fa fa-file-text fa-2x" aria-hidden="true" title="see document"></i>
 						</a>
 						<div class="verified">
-							<a href="{{ URL::to('admin/business/identity/proof/validate/'.$business->id) }}">
+							<!-- <a href="{{ URL::to('admin/business/identity/proof/validate/'.$business->id) }}">
 							@if($business->is_identity_proof_validate)
 			                    <button type="button" class="btn btn-danger" title="Unverified">Unverified</button>
 	                    	@else
 	                    		<button type="button" class="btn btn-success" title="Verified">Verified</button>
 	                		@endif
-		                    </a>
+		                    </a> -->
 	                    </div>
 					</div>
 					<label class="control-label col-md-2">Business Proof</label>
@@ -112,14 +112,25 @@
 							<i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
 						</a>
 						<div class="verified">
-							<a href="{{ URL::to('admin/business/proof/validate/'.$business->id) }}">
+							<!-- <a href="{{ URL::to('admin/business/proof/validate/'.$business->id) }}">
 		                    @if($business->is_business_proof_validate)
 			                    <button type="button" class="btn btn-danger" title="Unverified">Unverified</button>
 	                    	@else
 	                    		<button type="button" class="btn btn-success" title="Verified">Verified</button>
 		                		@endif
-		                    </a>
+		                    </a> -->
 	                    </div>
+					</div>
+					<div class="col-md-4 col-md-offset-4 center">
+						@if($business->is_business_proof_validate and $business->is_identity_proof_validate)
+							<a href="{{ URL::to('admin/business/user/validate/'.$business->id) }}">
+								<button type="button" class="btn btn-danger btn-block" title="Unverified">Unverify User</button>
+							</a>
+						@else
+							<a href="{{ URL::to('admin/business/user/validate/'.$business->id) }}">
+								<button type="button" class="btn btn-success btn-block" title="Verify">Verify User</button>
+							</a>
+						@endif
 					</div>
 				</div>
 				@else
