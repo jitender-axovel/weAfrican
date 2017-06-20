@@ -54,7 +54,7 @@ class User extends Authenticatable
         $input = $request->input();
         if($input == NULL)
         {
-            return json_encode(['status' =>'error','response'=> 'Input parameters are missing']);  
+            return json_encode(['status' =>'error','response'=> 'All fields are required']);  
         }
 
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
@@ -62,13 +62,13 @@ class User extends Authenticatable
         var_dump(Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0]));dd();
 
         if (!$user){
-            return response()->json(['status' => 'failure', 'response' => 'Email id not found. Please register to login!!']);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Email id not found. Please register to login!!']]);
         }else{
             var_dump($user->is_verified);dd();
             if ($user->is_blocked) {
                 // Authentication passed...
                 echo "Test 1";dd();
-                return response()->json(['status' => 'exception','response' => 'Your account is blocked by admin.']);
+                return response()->json(['status' => 'exception','response' => ['message' => 'Your account is blocked by admin.']]);
                 
             }else if(!$user->is_verified){
                 echo "Test 2";dd();
@@ -78,15 +78,15 @@ class User extends Authenticatable
                 {
                     Mail::to('madhav@gmail.com')->send(new SendOtp($user));
                     if( count(Mail::failures()) > 0 ) {
-                        return response()->json(['status' => 'failure','response' => "Mail Cannot be sent! Please try again!!"]);
+                        return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
                     }else
                     {
-                        return response()->json(['status' => 'failure','response' => "Email is not verified OTP has been send to your email. Please verify OTP to proceed!."]);
+                        return response()->json(['status' => 'failure','response' => ['message' => "Email is not verified OTP has been send to your email. Please verify OTP to proceed!."]]);
                     }
                 }else
                 {
                     echo "Test 3";dd();
-                    return response()->json(['status' => 'failure', 'response' => 'System Error:OTP not generated .Please try later.']);
+                    return response()->json(['status' => 'failure', 'response' => ['message' => 'System Error:OTP not generated .Please try later.']]);
                 }
 
             }else if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0])) {
@@ -102,7 +102,7 @@ class User extends Authenticatable
 ;                return response()->json(['status' => 'success','response' => $response]);
             }
             else{
-                return response()->json(['status' => 'failure', 'response' => 'Can not login. Please try again later!!!']);
+                return response()->json(['status' => 'failure', 'response' => ['message' => 'Can not login. Please try again later!!!']]);
             }
         }
     }
@@ -112,7 +112,7 @@ class User extends Authenticatable
         $input = $request->input();
         if($input == NULL)
         {
-            return json_encode(['status' =>'failure','response'=> 'Input parameters are missing']);  
+            return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
         }
 
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
@@ -145,9 +145,9 @@ class User extends Authenticatable
             
             if($validator->fails()){
                 if(count($validator->errors()) <= 1){
-                        return response()->json(['status' => 'failure','response' => $validator->errors()]);   
+                        return response()->json(['status' => 'failure','response' => ['message' => $validator->errors()]]);   
                 } else{
-                    return response()->json(['status' => 'failure','response' => 'All fields are required']);   
+                    return response()->json(['status' => 'failure','response' => ['message' => 'All fields are required']]);   
                 }
             }
             
@@ -176,21 +176,26 @@ class User extends Authenticatable
                 Mail::to('madhav@gmail.com')->send(new NewRegisterBusiness($user));
                 Mail::to('madhav@gmail.com')->send(new SendOtp($user));
                 if( count(Mail::failures()) > 0 ) {
-                    return response()->json(['status' => 'failure','response' => "Mail Cannot be sent! Please try again!!"]);
+                    return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
                 }else
                 {
                     return response()->json(['status' => 'success','response' => $user]);
                 }
             } else {
-                return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
+                return response()->json(['status' => 'failure','response' => ['message' => 'System Error:User could not be created .Please try later.']]);
             }
         } else{
-            return response()->json(['status' => 'failure', 'response' => 'Email is already registered!!!']);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Email is already registered. Please login to continue!!']]);
         }
     }
 
     public function apiCheckOtp($input)
     {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
+        }
         $check = $this->where('email', $input['email'])->first();
         if($check)
         { 
@@ -199,18 +204,24 @@ class User extends Authenticatable
             {
                 $otp->is_verified = 1;
                 $otp->save();
-                return response()->json(['status' => 'success', 'response' => ['message'=>'Otp verified successfully','user'=>$otp]]);
+                return response()->json(['status' => 'success', 'response' => $otp]);
             }else
             {
-                return response()->json(['status' => 'failure', 'response' => 'Incorrect Otp. Please enter the correct OTP!!']);
+                return response()->json(['status' => 'failure', 'response' => ['message' => 'Incorrect Otp. Please enter the correct OTP!!']]);
             }
         }else {
-            return response()->json(['status' => 'failure', 'response' => 'Email does not exist.']);
+            return response()->json(['status' => 'failure', 'response' => ['message' => 'Email does not exist.']]);
         }
     }
 
     public function apiResendOtp($input)
     {
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
+        }
+
         $check = $this->where('email', $input['email'])->first();
         if($check)
         { 
