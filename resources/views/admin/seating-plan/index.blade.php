@@ -31,9 +31,9 @@
 		                		@endif
 		                    </a>
 						</li>
-						<!-- <li>
-							<a class="btn btn-warning" href="{{ url('admin/seating-plan/'.$seatingplan->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
-						</li> -->
+						<li>
+							<a class="btn btn-warning btn_fixes" href="{{ url('admin/seating-plan/'.$seatingplan->id.'/edit') }}" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+						</li>
 						<!-- <li>
 							<form action="{{ url('admin/seating-plan/'.$seatingplan->id) }}" method="POST" onsubmit="deleteCategory('{{$seatingplan->id}}', '{{$seatingplan->title}}', event,this)">
 								{{csrf_field()}}
