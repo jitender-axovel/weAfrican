@@ -58,6 +58,20 @@ class ApiController extends Controller
     }
 
     /**
+     * Function: Register User.
+     * Url: api/signup
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function signup(Request $request)
+    {
+        $response = $this->user->apiSignup($request);
+        return $response;
+    }
+
+    /**
      * Function: Get Business category.
      * Url: api/get/event-categories
      * Request type: Get
@@ -553,18 +567,40 @@ class ApiController extends Controller
         $input = $request->input();
         if($input == NULL)
         {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+            return response()->json(['status' => 'failure','response' => 'Input parameter is missing.']);
         }
 
         $response = $this->user->apiCheckOtp($input);
+        return $response;
+    }
+
+    /**
+     * Function: Resend Otp.
+     * Url: api/resend/otp
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resendOtp(Request $request)
+    {   
+        $input = $request->input();
+        if($input == NULL)
+        {
+            return response()->json(['status' => 'failure','response' => 'Input parameter is missing.']);
+        }
+
+        $response = $this->user->apiResendOtp($input);
         
         if($response == 1)
         {
-            return response()->json(['status' => 'success', 'response' => 'Otp Verified']);
-        } else if($response == 2) {
-            return response()->json(['status' => 'exception', 'response' => 'Incorrect Otp']);
+            return response()->json(['status' => 'success', 'response' => 'New OTP has been send to the registerd email address']);
+        }else if($response == 2) {
+            return response()->json(['status' => 'failure', 'response' => 'Unable to generate new OTP. Please try again!']);
+        }else if($response == 3){
+            return response()->json(['status' => 'failure', 'response' => 'Mail Cannot be sent! Please try again!!']);
         }else{
-            return response()->json(['status' => 'exception', 'response' => 'Mobile Number does not exist.']);
+            return response()->json(['status' => 'failure', 'response' => 'Email does not exist.']);
         }
     }
 
