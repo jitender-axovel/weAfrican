@@ -79,30 +79,37 @@ class User extends Authenticatable
             {
                 if(!$user->is_verified){
                     $user->otp = rand(1000,9999);
-                    Mail::to('madhav@gmail.com')->send(new SendOtp($user));
-                    if( count(Mail::failures()) > 0 ) {
-                        return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
+                    if($user->save())
+                    {
+                        Mail::to('madhav@gmail.com')->send(new SendOtp($user));
+                        dd(count(Mail::failures()));
+                        if( count(Mail::failures()) > 0 ) {
+                            return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
+                        }else
+                        {
+                            return response()->json(['status' => 'failure','response' => ['message' => "Email is not verified OTP has been send to your email. Please verify OTP to proceed!."]]);
+                        }
                     }else
                     {
-                        return response()->json(['status' => 'failure','response' => ['message' => "Email is not verified OTP has been send to your email. Please verify OTP to proceed!."]]);
+                        return response()->json(['status' => 'failure', 'response' => ['message' => 'System Error:OTP not generated .Please try later.']]);
                     }
-                }else
-                {
-                    return response()->json(['status' => 'failure', 'response' => ['message' => 'System Error:OTP not generated .Please try later.']]);
+                }elseif (Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0])) {
+                   
+                   $checkBusiness = UserBusiness::whereUserId($user->id)->first();
+
+                   $response = Auth::user();
+
+                    if ($checkBusiness)
+                        $response['businessId'] = $checkBusiness->id;
+
+                    return response()->json(['status' => 'success','response' => $response]);
+
+                }else{
+                    return response()->json(['status' => 'failure', 'response' => ['message' => 'Can not login. Please try again later!!!']]);
                 }
             }else if(!Hash::check($request->input('password'), $user->password))
             {
                 return response()->json(['status' => 'failure','response' => ['message' => "Please enter a valid password!"]]);
-            }else if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0])) {
-
-                $checkBusiness = UserBusiness::whereUserId($user->id)->first();
-                
-                $response = Auth::user();
-
-                if ($checkBusiness)
-                    $response['businessId'] = $checkBusiness->id;
-                
-;                return response()->json(['status' => 'success','response' => $response]);
             }
             else{
                 return response()->json(['status' => 'failure', 'response' => ['message' => 'Can not login. Please try again later!!!']]);
