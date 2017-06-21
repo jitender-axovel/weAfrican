@@ -73,19 +73,48 @@ class ApiController extends Controller
 
     /**
      * Function: Get Business category.
-     * Url: api/get/event-categories
+     * Url: api/get/business-categories
      * Request type: Get
      *
      * @param  Void
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCategories()
-    {
+    {    
+        $categoryData = array();
         $response = $this->category->apiGetCategory();
-        if ($response != NULL && $response->count())
-            return response()->json(['status' => 'success','response' =>$response]);
+        
+        foreach($response as $key => $category) 
+        {
+            $categoryData[$key]['id'] = $category->id;
+            $categoryData[$key]['title'] = $category->title;
+            $categoryData[$key]['description'] = $category->description;
+            $categoryData[$key]['image'] = $category->image;
+            $categoryData[$key]['subcategory'] = $category->parent_id;
+        }
+
+        if ($categoryData)
+            return response()->json(['status' => 'success','response' => $categoryData]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any category ']);
+    }
+
+    /**
+     * Function: Get Business sub category by id.
+     * Url: api/get/business-subCategories
+     * Request type: Get
+     *
+     * @param  Void
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSubCategories($id)
+    {    
+        $response = $this->category->apiGetSubCategory($id);
+
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' => $response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any sub-category ']);
     }
 
     /**
