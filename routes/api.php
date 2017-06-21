@@ -62,6 +62,7 @@ Route::group(['middleware' => ['api']], function (){
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');
+	Route::get('get/business-subCategories/{id}', 'ApiController@getSubCategories');
 	Route::get('get/subscription-plans', 'ApiController@getSubscriptionPlans');
 	Route::get('get/business/states' ,'ApiController@getBusinessStates');
 	Route::get('get/cmsPages/{slug}' ,'ApiController@getCmsPages');
