@@ -40,6 +40,12 @@ class BussinessCategory extends Model
        	return $categories;
     }
 
+    public function apiGetSubCategory($id)
+    {
+        $subCategories = $this->where('is_blocked',0)->where('parent_id',$id)->get();
+        return $subCategories;
+    }
+
     public function parent()
     {
         return $this->belongsTo('App\BussinessCategory','parent_id','id');
