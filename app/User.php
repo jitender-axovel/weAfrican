@@ -82,7 +82,6 @@ class User extends Authenticatable
                     if($user->save())
                     {
                         Mail::to('madhav@gmail.com')->send(new SendOtp($user));
-                        dd(count(Mail::failures()));
                         if( count(Mail::failures()) > 0 ) {
                             return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
                         }else
