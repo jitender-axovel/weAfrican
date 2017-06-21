@@ -56,6 +56,14 @@ class User extends Authenticatable
         if($input == NULL)
         {
             return json_encode(['status' =>'error','response'=> 'All fields are required']);  
+        }else
+        {
+            foreach ($input as $key => $value) {
+                if($value==NULL or $value=="")
+                {
+                    return json_encode(['status' =>'failure','response'=> ['message' => ucwords($key).' is mandetory']]);
+                }
+            }
         }
 
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
@@ -67,10 +75,10 @@ class User extends Authenticatable
                 // Authentication passed...
                 return response()->json(['status' => 'failure','response' => ['message' => 'Your account is blocked by admin.']]);
                 
-            }else if(!$user->is_verified){
-                $user->otp = rand(1000,9999);
-                if($user->save())
-                {
+            }else if($user && Hash::check($request->input('password'), $user->password))
+            {
+                if(!$user->is_verified){
+                    $user->otp = rand(1000,9999);
                     Mail::to('madhav@gmail.com')->send(new SendOtp($user));
                     if( count(Mail::failures()) > 0 ) {
                         return response()->json(['status' => 'failure','response' => ['message' => "Mail Cannot be sent! Please try again!!"]]);
@@ -82,7 +90,9 @@ class User extends Authenticatable
                 {
                     return response()->json(['status' => 'failure', 'response' => ['message' => 'System Error:OTP not generated .Please try later.']]);
                 }
-
+            }else if(!Hash::check($request->input('password'), $user->password))
+            {
+                return response()->json(['status' => 'failure','response' => ['message' => "Please enter a valid password!"]]);
             }else if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password'), 'is_blocked' => 0])) {
 
                 $checkBusiness = UserBusiness::whereUserId($user->id)->first();
@@ -106,6 +116,14 @@ class User extends Authenticatable
         if($input == NULL)
         {
             return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
+        }else
+        {
+            foreach ($input as $key => $value) {
+                if($value==NULL or $value=="")
+                {
+                    return json_encode(['status' =>'failure','response'=> ['message' => ucwords($key).' is mandetory']]);
+                }
+            }
         }
 
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
@@ -187,6 +205,14 @@ class User extends Authenticatable
         if($input == NULL)
         {
             return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
+        }else
+        {
+            foreach ($input as $key => $value) {
+                if($value==NULL or $value=="")
+                {
+                    return json_encode(['status' =>'failure','response'=> ['message' => ucwords($key).' is mandetory']]);
+                }
+            }
         }
         $check = $this->where('email', $input['email'])->first();
         if($check)
@@ -215,10 +241,18 @@ class User extends Authenticatable
 
     public function apiResendOtp($input)
     {
-        $input = $request->input();
+        /*$input = $request->input();*/
         if($input == NULL)
         {
             return json_encode(['status' =>'failure','response'=> ['message' => 'All fields are required']]);  
+        }else
+        {
+            foreach ($input as $key => $value) {
+                if($value==NULL or $value=="")
+                {
+                    return json_encode(['status' =>'failure','response'=> ['message' => ucwords($key).' is mandetory']]);
+                }
+            }
         }
 
         $check = $this->where('email', $input['email'])->first();
