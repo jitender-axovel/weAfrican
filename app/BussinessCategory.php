@@ -3,6 +3,7 @@
 namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 class BussinessCategory extends Model
 {
@@ -34,20 +35,20 @@ class BussinessCategory extends Model
         return $this->businesses()->where('is_blocked', 0)->orderBy('sort_order','asc')->get();
     }
 
+    public function parent()
+    {
+        return $this->belongsTo('App\BussinessCategory','parent_id','id');
+    }
+
     public function apiGetCategory()
     {
-    	$categories = $this->where('is_blocked',0)->get();
+        $categories = DB::select("SELECT *,(SELECT if(count(id) >= 1, 1, 0) FROM bussiness_categories as sub WHERE sub.parent_id = parent.id) as has_subcategory FROM `bussiness_categories` as parent where parent.parent_id = 0");
        	return $categories;
     }
 
     public function apiGetSubCategory($id)
     {
-        $subCategories = $this->where('is_blocked',0)->where('parent_id',$id)->get();
+        $subCategories = $this->where('is_blocked',0)->where('parent_id', $id)->get();
         return $subCategories;
-    }
-
-    public function parent()
-    {
-        return $this->belongsTo('App\BussinessCategory','parent_id','id');
-    }
+    }    
 }
