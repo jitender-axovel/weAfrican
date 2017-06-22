@@ -14,4 +14,11 @@ class UserPortfolio extends Model
     {
         return $this->hasMany('App\UserPortfolioImage','user_portfolio_id');
     }
+
+    public function apiGetUserPortfolio($input)
+    {
+    	$portfolio = $this->wherebusinessId($input['businessId'])->first();
+    	return $portfolio;
+
+    }
 }
