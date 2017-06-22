@@ -69,7 +69,7 @@ class User extends Authenticatable
         $user = $this->where('email', $request->input('email'))->whereIn('user_role_id',[3,4])->first();
 
         if (!$user){
-            return response()->json(['status' => 'failure', 'response' => 'Email id not found. Please register to login!!']);
+            return response()->json(['status' => 'exception', 'response' => 'Email id not found. Please register to login!!']);
         }else{
             if ($user->is_blocked) {
                 // Authentication passed...
