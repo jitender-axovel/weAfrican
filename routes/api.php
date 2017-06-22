@@ -60,9 +60,13 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/business/status', 'ApiController@getUserBusinessStatus');
 	Route::post('get/user/attending/event/status', 'ApiController@getUserEventAttendingStatus');
 
+	//New Apis
+	Route::get('get/user/portfolio', 'ApiController@getUserPortfolio');
+
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');
 	Route::get('get/business-subCategories/{id}', 'ApiController@getSubCategories');
+	Route::get('get/currency/{countryName}', 'ApiController@getCurrency');
 	Route::get('get/subscription-plans', 'ApiController@getSubscriptionPlans');
 	Route::get('get/business/states' ,'ApiController@getBusinessStates');
 	Route::get('get/cmsPages/{slug}' ,'ApiController@getCmsPages');
