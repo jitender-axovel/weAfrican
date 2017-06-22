@@ -19,6 +19,5 @@ class UserPortfolio extends Model
     {
     	$portfolio = $this->wherebusinessId($input['businessId'])->first();
     	return $portfolio;
-
     }
 }
