@@ -18,6 +18,8 @@ use App\UserConversation;
 use App\EventParticipant;
 use App\CmsPage;
 use App\EventCategory;
+use App\CountryList;
+use App\UserPortfolio;
 use Validator;
 use DB;
 
@@ -41,6 +43,8 @@ class ApiController extends Controller
         $this->businessReviews = new BusinessReview();
         $this->userConversation = new UserConversation();
         $this->cmsPages = new CmsPage();
+        $this->country = new CountryList();
+        $this->portfolio = new UserPortfolio();
     }
 
     /**
@@ -76,25 +80,16 @@ class ApiController extends Controller
      * Url: api/get/business-categories
      * Request type: Get
      *
-     * @param  Void
+     * @param  
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCategories()
     {    
         $categoryData = array();
         $response = $this->category->apiGetCategory();
-        
-        foreach($response as $key => $category) 
-        {
-            $categoryData[$key]['id'] = $category->id;
-            $categoryData[$key]['title'] = $category->title;
-            $categoryData[$key]['description'] = $category->description;
-            $categoryData[$key]['image'] = $category->image;
-            $categoryData[$key]['subcategory'] = $category->parent_id;
-        }
 
-        if ($categoryData)
-            return response()->json(['status' => 'success','response' => $categoryData]);
+        if ($response != NULL)
+            return response()->json(['status' => 'success','response' => $response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any category ']);
     }
@@ -104,7 +99,7 @@ class ApiController extends Controller
      * Url: api/get/business-subCategories
      * Request type: Get
      *
-     * @param  Void
+     * @param  int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSubCategories($id)
@@ -115,6 +110,43 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' => $response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any sub-category ']);
+    }
+
+    /**
+     * Function: Get currency according to country Name.
+     * Url: api/get/currency/{countryName}
+     * Request type: Get
+     *
+     * @param  string $countryName
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCurrency($countryName)
+    {    
+        $response = $this->country->apiGetCurrency($countryName);
+
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' => $response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any currency ']);
+    }
+
+    /**
+     * Function: Get user portfolio details according to businessID.
+     * Url: api/get/user/portfolio
+     * Request type: Get
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserPortfolio(Request $request)
+    {    
+        $input = $request->input();
+        $response = $this->portfolio->apiGetUserPortfolio($input);
+
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' => $response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find user portfolio details']);
     }
 
     /**
