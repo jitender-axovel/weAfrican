@@ -71,6 +71,20 @@ class User extends Authenticatable
         if (!$user){
             return response()->json(['status' => 'exception', 'response' => 'Email id not found. Please register to login!!']);
         }else{
+
+            $validator = Validator::make($input, [
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+            
+            if($validator->fails()){
+                if(count($validator->errors()) <= 1){
+                        return response()->json(['status' => 'exception', 'response' => $validator->errors()]);   
+                } else{
+                    return response()->json(['status' => 'exception', 'response' =>  'All fields are required']);   
+                }
+            }
+
             if ($user->is_blocked) {
                 // Authentication passed...
                 return response()->json(['status' => 'exception', 'response' => 'Your account is blocked by admin.']);
