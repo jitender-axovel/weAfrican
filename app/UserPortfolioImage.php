@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use App\UserBusiness;
+use Validator;
 
 class UserPortfolioImage extends Model
 {
@@ -15,4 +18,10 @@ class UserPortfolioImage extends Model
     	'description' => 'required',
         'image' => 'required|image|mimes:jpg,png,jpeg',
     	);
+
+    public function apiGetUserPortfolioImages($input)
+    {
+        $portfolioImages = $this->whereuserPortfolioId($input['portfolioId'])->wherebusinessId($input['businessId'])->whereuserId($input['userId'])->get();
+        return $portfolioImages;
+    }
 }
