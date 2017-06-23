@@ -358,14 +358,19 @@ class UserBusiness extends Model
 
             $success = file_put_contents($file, $data);
                 
-            $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/small/'.$image;
-            shell_exec($command);
+            $img = Image::make($file);
+                    
+            $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                 $constraint->aspectRatio();
+            })->save(config('image.banner_image_path').'/thumbnails/large/'.$image); 
 
-            $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/medium/'.$image;
-            shell_exec($command);
-
-            $command = 'ffmpeg -i '.config('image.banner_image_path').'business/'.$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.banner_image_path').'business/thumbnails/large/'.$image;
-            shell_exec($command);
+            $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                 $constraint->aspectRatio();
+            })->save(config('image.banner_image_path').'/thumbnails/medium/'.$image);
+                    
+            $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                 $constraint->aspectRatio();
+            })->save(config('image.banner_image_path').'/thumbnails/small/'.$image);
         }
           
         if ($this->where('id',$input['businessId'])->update(['banner' => $image]))
