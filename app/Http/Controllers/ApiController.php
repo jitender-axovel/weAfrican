@@ -20,6 +20,7 @@ use App\CmsPage;
 use App\EventCategory;
 use App\CountryList;
 use App\UserPortfolio;
+use App\UserPortfolioImage;
 use Validator;
 use DB;
 
@@ -45,6 +46,7 @@ class ApiController extends Controller
         $this->cmsPages = new CmsPage();
         $this->country = new CountryList();
         $this->portfolio = new UserPortfolio();
+        $this->portfolioImage = new UserPortfolioImage();
     }
 
     /**
@@ -272,6 +274,44 @@ class ApiController extends Controller
     public function postUserBusiness(Request $request)
     {   
         $response = $this->userBusiness->apiPostUserBusiness($request);
+        return $response;
+    }
+
+    /**
+     * Function: create and update User Business Portfolio Details.
+     * Url: api/post/user/portfolio
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postUserBusinessPortfolio(Request $request)
+    {   
+        $response = $this->portfolio->postUserBusinessPortfolio($request);
+        return $response;
+    }
+
+    /**
+     * Function: create and update User Business Details.
+     * Url: api/get/user/portfolioDetails
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserPortfolioImages(Request $request)
+    {   
+        
+        $input = $request->input();
+        if ($input == NULL) {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $response = $this->portfolioImage->apiGetUserPortfolioImages($input);
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Portfolio Images.']);
         return $response;
     }
 
