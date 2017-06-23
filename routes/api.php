@@ -37,8 +37,6 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/business-services', 'ApiController@getBusinessServices');
 	Route::post('post/user/service', 'ApiController@postUserService');
 	Route::post('post/user/delete/service', 'ApiController@postDeleteService');
-	Route::post('check/otp' ,'ApiController@checkOtp');
-	Route::post('resend/otp' ,'ApiController@resendOtp');
 	Route::post('get/business-events' ,'ApiController@getBusinessEvents');
 	Route::post('post/fcm/id' ,'ApiController@postFcmId');
 	Route::post('post/app/feedback' ,'ApiController@postAppFeedback');
@@ -61,7 +59,11 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/attending/event/status', 'ApiController@getUserEventAttendingStatus');
 
 	//New Apis
-	Route::get('get/user/portfolio', 'ApiController@getUserPortfolio');
+	Route::post('check/otp' ,'ApiController@checkOtp');
+	Route::post('resend/otp' ,'ApiController@resendOtp');
+	Route::post('get/user/portfolio', 'ApiController@getUserPortfolio');
+	Route::post('post/user/portfolio', 'ApiController@postUserBusinessPortfolio');
+	Route::post('get/user/portfolioDetails', 'ApiController@getUserPortfolioImages');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');
