@@ -9,6 +9,7 @@ use App\User;
 use Validator;
 use Auth;
 use DB;
+use Image;
 
 class UserBusiness extends Model
 {
@@ -144,6 +145,7 @@ class UserBusiness extends Model
             $validator = Validator::make($input, [
                     'userId' => 'required',
                     'categoryId' => 'required',
+                    'subcategoryId' => 'sometimes|required',
                     'title' => 'required',
                     'keywords' =>'required',
                     'email' => 'required|email|max:255',
@@ -151,10 +153,10 @@ class UserBusiness extends Model
                     'country' => 'string',
                     'state' => 'string',
                     'city' => 'string',
+                    'currency' => 'string',
                     'aboutUs' => 'string',
                     'address' => 'string',
                     'website' => 'string',
-                    'secondaryPhoneNumber' => 'numeric',
                     'workingHours' => 'required|string',
                     'mobileNumber' => 'required|numeric',
                     'latitude' => 'required',
@@ -187,40 +189,71 @@ class UserBusiness extends Model
                     $file = config('image.logo_image_path').$image;
 
                     $success = file_put_contents($file, $data);
-                        
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                    shell_exec($command);
 
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
-                    shell_exec($command);
+                    $img = Image::make($file);
+                    
+                    $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                                 $constraint->aspectRatio();
+                            })->save(config('image.logo_image_path').'/thumbnails/large/'.$image); 
 
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
-                    shell_exec($command);
+                    $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+                    })->save(config('image.logo_image_path').'/thumbnails/medium/'.$image);
+                            
+                    $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+                    })->save(config('image.logo_image_path').'/thumbnails/small/'.$image);
                 }
                 
-                $check = User::where('id',$input['userId'])->update(['user_role_id' => 3]);
+                $input['adderss'] = $input['address'];
+                $input['pin_code'] = $input['pinCode'];
+                $input['mobile_number'] = $input['mobileNumber'];
+                $input['currency'] = $input['currency'];
+
+                $user = array_intersect_key($input, User::$updatable);
+                $user['user_role_id'] = 3;
+                $check = User::where('id',$input['userId'])->update($user);
                 $user = User::where('id',$input['userId'])->first();
                 $business = array_intersect_key($input, UserBusiness::$updatable);
 
                 $business['user_id'] = $input['userId'];
-                $business['business_id']= substr($user->full_name,0,3).rand(0,999);
+                $business['business_id']= substr($user->first_name,0,3).rand(0,999);
                 $business['bussiness_category_id'] = $input['categoryId'];
+
+                if(isset($input['subcategoryId']))
+                {
+                    $business['bussiness_subcategory_id'] = $input['subcategoryId'];
+                }
+
                 $business['pin_code'] = $input['pinCode'];
                 $business['mobile_number'] = $input['mobileNumber'];
                 $business['working_hours'] = $input['workingHours'];
                 $business['is_agree_to_terms'] = 1;
                 $business['about_us'] = isset($input['aboutUs']) ? $input['aboutUs'] : '';
-                $business['secondary_phone_number'] = isset($input['secondaryPhoneNumber']) ? $input['secondaryPhoneNumber'] : '';
+
+                
 
                 if (isset($image)) {
                     $business['business_logo'] = $image;
                 }
+                try{
+                    $business = UserBusiness::create($business);
+                    $business->save(); 
 
-                $business = UserBusiness::create($business);
-                $business->save(); 
-                if ($business) {
+                }catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json(['status' => 'exception','response' => 'Query Exception occured. Plese Try again ']);
+                }catch (PDOException $e) {
+                    return response()->json(['status' => 'exception','response' => 'PDOException occur. Plese Try again ']);
+                }catch(Exception $e)
+                {
+                    return response()->json(['status' => 'exception','response' => 'Exception occured. Plese Try again ']);
+                }
+
+                if ($business and $check) {
                     return response()->json(['status' => 'success','response' => $business]);
-                } else {
+                }elseif(!$check){
+                    return response()->json(['status' => 'failure','response' => "User can not updated successfully.Please try again"]);
+                }else {
                     return response()->json(['status' => 'failure','response' => 'System Error:User could not be created .Please try later.']);
                 }
 
@@ -242,35 +275,62 @@ class UserBusiness extends Model
                     $file = config('image.logo_image_path').$image;
 
                     $success = file_put_contents($file, $data);
-                        
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.small_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/small/'.$image;
-                    shell_exec($command);
 
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.medium_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/medium/'.$image;
-                    shell_exec($command);
+                    $img = Image::make($file);
+                    
+                    $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+                    })->save(config('image.logo_image_path').'/thumbnails/large/'.$image); 
 
-                    $command = 'ffmpeg -i '.config('image.logo_image_path').$image.' -vf scale='.config('image.large_thumbnail_width').':-1 '.config('image.logo_image_path').'thumbnails/large/'.$image;
-                    shell_exec($command);
+                    $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+                    })->save(config('image.logo_image_path').'/thumbnails/medium/'.$image);
+                            
+                    $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
+                         $constraint->aspectRatio();
+                    })->save(config('image.logo_image_path').'/thumbnails/small/'.$image);
                 }
 
                 $input['user_id'] = $input['userId'];
                 $input['bussiness_category_id'] = $input['categoryId'];
+
+                if(isset($input['subcategoryId']))
+                {
+                    $input['bussiness_subcategory_id'] = $input['subcategoryId'];
+                }
+
                 $input['pin_code'] = $input['pinCode'];
                 $input['mobile_number'] = $input['mobileNumber'];
                 $input['working_hours'] = $input['workingHours'];
                 $input['about_us'] = $input['aboutUs'];
-                $input['secondary_phone_number'] = $input['secondaryPhoneNumber'];
+                $input['currency'] = $input['currency'];
 
                 if (isset($image)) {
                     $input['business_logo'] = $image;
                 }
-        
-                $business = array_intersect_key($input, UserBusiness::$updatable);
+                
+                try{
+                    $business = array_intersect_key($input, UserBusiness::$updatable);
 
-                $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
-              
-                if ($userbusiness)
+                    $userbusiness = $this->where('user_id',$input['user_id'])->update($business);
+
+                    $userDetail = array_intersect_key($input, User::$updatable);
+
+                    $userDetail = User::whereId($input['user_id'])->update($userDetail);
+
+                }catch (\Illuminate\Database\QueryException $e) {
+                    return response()->json(['status' => 'exception','response' => 'Query Exception occured. Plese Try again ']);
+                }catch (PDOException $e) {
+                    return response()->json(['status' => 'exception','response' => 'PDOException occur. Plese Try again ']);
+                }catch(Exception $e)
+                {
+                    return response()->json(['status' => 'exception','response' => 'Exception occured. Plese Try again ']);
+                } 
+
+                if ($userbusiness and $userDetail)
                     return response()->json(['status' => 'success','response' => "Business updated successfully."]);
+                elseif(!$userDetail)
+                    return response()->json(['status' => 'failure','response' => "User can not updated successfully.Please try again"]);
                 else
                     return response()->json(['status' => 'failure','response' => "Business can not updated successfully.Please try again"]);
             }
