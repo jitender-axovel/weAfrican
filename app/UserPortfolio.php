@@ -51,7 +51,8 @@ class UserPortfolio extends Model
 
             if ($validator->fails()) {
                 if (count($validator->errors()) <= 1) {
-                        return response()->json(['status' => 'exception','response' => $validator->errors()]);   
+                    var_dump();dd();
+                        return response()->json(['status' => 'exception','response' => $validator->errors()->all()]);   
                 } else {
                     return response()->json(['status' => 'exception','response' => 'All fields are required']);   
                 }
