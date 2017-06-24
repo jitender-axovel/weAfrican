@@ -79,7 +79,7 @@ class User extends Authenticatable
             
             if($validator->fails()){
                 if(count($validator->errors()) <= 1){
-                        return response()->json(['status' => 'exception', 'response' => $validator->errors()]);   
+                        return response()->json(['status' => 'exception', 'response' => $validator->errors()->first()]);   
                 } else{
                     return response()->json(['status' => 'exception', 'response' =>  'All fields are required']);   
                 }
@@ -176,7 +176,7 @@ class User extends Authenticatable
             
             if($validator->fails()){
                 if(count($validator->errors()) <= 1){
-                        return response()->json(['status' => 'exception', 'response' => $validator->errors()]);   
+                        return response()->json(['status' => 'exception', 'response' => $validator->errors()->first()]);   
                 } else{
                     return response()->json(['status' => 'exception', 'response' =>  'All fields are required']);   
                 }
@@ -225,15 +225,21 @@ class User extends Authenticatable
         if($input == NULL)
         {
             return json_encode(['status' => 'exception', 'response' => 'All fields are required']);  
-        }else
-        {
-            foreach ($input as $key => $value) {
-                if($value==NULL or $value=="")
-                {
-                    return json_encode(['status' => 'exception', 'response' => ucwords($key).' is mandetory']);
-                }
+        }
+
+        $validator = Validator::make($input, [
+            'email' => 'required|email|max:255',
+            'otp' => 'required',
+        ]);
+        
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception', 'response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception', 'response' =>  'All fields are required']);   
             }
         }
+
         $check = $this->where('email', $input['email'])->first();
         if($check)
         { 
@@ -261,17 +267,20 @@ class User extends Authenticatable
 
     public function apiResendOtp($input)
     {
-        /*$input = $request->input();*/
         if($input == NULL)
         {
             return json_encode(['status' => 'exception', 'response' => 'All fields are required']);  
-        }else
-        {
-            foreach ($input as $key => $value) {
-                if($value==NULL or $value=="")
-                {
-                    return json_encode(['status' => 'exception','response' => ucwords($key).' is mandetory']);
-                }
+        }
+
+        $validator = Validator::make($input, [
+            'email' => 'required|email|max:255',
+        ]);
+        
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception', 'response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception', 'response' =>  'All fields are required']);   
             }
         }
 
