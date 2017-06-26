@@ -22,6 +22,8 @@ use App\CountryList;
 use App\UserPortfolio;
 use App\UserPortfolioImage;
 use Validator;
+use Image;
+use File;
 use DB;
 
 class ApiController extends Controller
@@ -316,6 +318,26 @@ class ApiController extends Controller
     }
 
     /**
+     * Function: To remoce User portfolio Images and description
+     * Url: api/remove/user/portfolioDetails
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeUserPortfolioDetail(Request $request)
+    {   
+        
+        $input = $request->input();
+        if ($input == NULL) {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $response = $this->portfolioImage->apiRemoveUserPortfolioImages($input);
+        return $response;
+    }
+
+    /**
      * Function: create and update User Portfolio Details.
      * Url: api/post/user/portfolioDetails
      * Request type: Post
@@ -326,20 +348,6 @@ class ApiController extends Controller
     public function postUserPortfolioDetail(Request $request)
     {   
         $response = $this->portfolioImage->apiPostUserPortfolioDetail($request);
-        return $response;
-    }
-
-    /**
-     * Function: create and update User Product Details.
-     * Url: api/post/user/product
-     * Request type: Post
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function postUserProduct(Request $request)
-    {   
-        $response = $this->businessProduct->apiPostUserProduct($request);
         return $response;
     }
 
@@ -1232,5 +1240,67 @@ class ApiController extends Controller
             return response()->json(['status' => 'success', 'response' => $response]);
         else
             return response()->json(['status' => 'exception', 'response' => 0]);
+    }
+
+    /**
+     * Function: To save product image in a temp folder 
+     * Url: api/post/business/productImage
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postBusinessProductImage(Request $request)
+    {
+        $input = $request->input();
+
+        $validator = Validator::make($input, [
+            'image' => 'required|string',
+            'id' => 'sometimes|required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            if (count($validator->errors()) <= 1) {
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else {
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+        $data = $input['image'];
+
+        $img = str_replace('data:image/jpeg;base64,', '', $data);
+        $img = str_replace(' ', '+', $img);
+
+        $data = base64_decode($img);
+
+        $fileName = md5(uniqid(rand(), true));
+
+        $image = $fileName.'.'.'png';
+
+        $file = config('image.temp_image_path').$image;
+
+        $success = file_put_contents($file, $data);
+
+        if($success)
+        {
+            return response()->json(['status' => 'success','response' => $image]);
+        }else
+        {
+            return response()->json(['status' => 'failure','response' => 'System Error:Image cannot be saved .Please try later.']);
+        }
+    }
+
+    /**
+     * Function: create and update User Product Details.
+     * Url: api/post/user/product
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postUserProduct(Request $request)
+    {   
+        $response = $this->businessProduct->apiPostUserProduct($request);
+        return $response;
     }
 }
