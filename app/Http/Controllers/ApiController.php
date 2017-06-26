@@ -316,6 +316,20 @@ class ApiController extends Controller
     }
 
     /**
+     * Function: create and update User Portfolio Details.
+     * Url: api/post/user/portfolioDetails
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postUserPortfolioDetail(Request $request)
+    {   
+        $response = $this->portfolioImage->apiPostUserPortfolioDetail($request);
+        return $response;
+    }
+
+    /**
      * Function: create and update User Product Details.
      * Url: api/post/user/product
      * Request type: Post
