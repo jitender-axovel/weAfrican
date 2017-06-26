@@ -359,18 +359,18 @@ class UserBusiness extends Model
             $success = file_put_contents($file, $data);
                 
             $img = Image::make($file);
-                    
+
             $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
                  $constraint->aspectRatio();
-            })->save(config('image.banner_image_path').'/thumbnails/large/'.$image); 
+            })->save(config('image.banner_image_path').'thumbnails/large/'.$image); 
 
             $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
                  $constraint->aspectRatio();
-            })->save(config('image.banner_image_path').'/thumbnails/medium/'.$image);
+            })->save(config('image.banner_image_path').'thumbnails/medium/'.$image);
                     
             $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
                  $constraint->aspectRatio();
-            })->save(config('image.banner_image_path').'/thumbnails/small/'.$image);
+            })->save(config('image.banner_image_path').'thumbnails/small/'.$image);
         }
           
         if ($this->where('id',$input['businessId'])->update(['banner' => $image]))
