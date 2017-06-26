@@ -181,4 +181,56 @@ class UserPortfolioImage extends Model
             }
         }
     }
+
+    public function apiRemoveUserPortfolioImages($input)
+    {
+
+        $rule = array(
+            'user_id' => 'required',
+            'business_id' => 'required',
+            'user_portfolio_id' => 'required',
+            'id' => 'required',
+        );
+
+        $validator = Validator::make($input, $rule);
+        if($validator->fails()){
+            if(count($validator->errors()) <= 1){
+                    return response()->json(['status' => 'exception','response' => $validator->errors()->first()]);   
+            } else{
+                return response()->json(['status' => 'exception','response' => 'All fields are required']);   
+            }
+        }
+        $portfolioImage = $this->where(function($q) use ($input){
+            foreach($input as $key => $value){
+                $q->where($key, '=', $value);
+            }})
+        ->first();
+        if($portfolioImage)
+        {
+            if($portfolioImage->image!="")
+            {
+                if(File::exists(config('image.portfolio_image_path').$portfolioImage->image))
+                {
+                    File::delete(config('image.portfolio_image_path').$portfolioImage->image);
+
+                    File::delete(config('image.portfolio_image_path').'/thumbnails/small/'.$portfolioImage->image);
+
+                    File::delete(config('image.portfolio_image_path').'/thumbnails/medium/'.$portfolioImage->image);
+
+                    File::delete(config('image.portfolio_image_path').'/thumbnails/large/'.$portfolioImage->image);
+                }
+            }
+            if($this->find($portfolioImage->id)->forceDelete())
+            {
+                $portfolioImages = $this->whereuserPortfolioId($input['user_portfolio_id'])->wherebusinessId($input['business_id'])->whereuserId($input['user_id'])->get();
+                return response()->json(['status' => 'success','response' => $portfolioImages]);
+            }else
+            {
+                return response()->json(['status' => 'failure','response' => 'System Error:Portfolio Image could not be deleted .Please try later.']);
+            }
+        }else
+        {
+            return response()->json(['status' => 'exception','response' => 'User Portfolio Image dos\'nt exists']);
+        }
+    }
 }
