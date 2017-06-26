@@ -115,7 +115,7 @@ class User extends Authenticatable
                     if ($checkBusiness)
                     {
                         $response['business_id'] = $checkBusiness->id;
-                        $checkportfolio = UserBusiness::whereUserId($user->id)->whereBusinessId($checkBusiness->id)->first();
+                        $checkportfolio = UserPortfolio::whereUserId($user->id)->whereBusinessId($checkBusiness->id)->first();
                         if ($checkportfolio)
                             $response['portfolio_id'] = $checkportfolio->id;
                     }
