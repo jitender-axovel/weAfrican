@@ -113,7 +113,7 @@ class User extends Authenticatable
                    $response = Auth::user();
 
                     if ($checkBusiness)
-                        $response['businessId'] = $checkBusiness->id;
+                        $response['business_id'] = $checkBusiness->id;
 
                     return response()->json(['status' => 'success', 'response' => $response]);
 
