@@ -28,7 +28,7 @@ class UserPortfolio extends Model
     {
         $input = $request->input();
         $check = UserBusiness::where('id', $input['businessId'])->where('user_id',$input['userId'])->first();
-        if($check)
+        if($check->exists)
         {
             $portfolio = $this->where('user_id',$input['userId'])->where('business_id',$input['businessId'])->first();
             $validator = Validator::make($input, [
