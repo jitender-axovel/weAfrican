@@ -18,12 +18,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(['middleware' => ['api']], function (){ 
-	Route::post('login', 'ApiController@login');
 	Route::post('get/user/business-products', 'ApiController@getUserBusinessProducts');
 	Route::post('get/user/business-events', 'ApiController@getUserBusinessEvents');
 	Route::post('get/category/businesses', 'ApiController@getBusinessesByCategory');
 	Route::post('post/user/business', 'ApiController@postUserBusiness');
-	Route::post('post/user/product', 'ApiController@postUserProduct');
 	Route::post('post/user/event', 'ApiController@postUserEvent');
 	Route::post('post/user/delete/product', 'ApiController@postDeleteProduct');
 	Route::post('post/user/delete/event', 'ApiController@postDeleteEvent');
@@ -65,6 +63,12 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/portfolio', 'ApiController@postUserBusinessPortfolio');
 	Route::post('get/user/portfolioDetails', 'ApiController@getUserPortfolioImages');
 	Route::post('post/user/portfolioDetails', 'ApiController@postUserPortfolioDetail');
+	Route::post('remove/user/portfolioDetails', 'ApiController@removeUserPortfolioDetail');
+	Route::post('post/business/productImage', 'ApiController@postBusinessProductImage');
+
+	//Updated Apis
+	Route::post('login', 'ApiController@login');
+	Route::post('post/user/product', 'ApiController@postUserProduct');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');
