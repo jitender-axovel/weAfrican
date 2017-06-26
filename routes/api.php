@@ -18,7 +18,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(['middleware' => ['api']], function (){ 
-	Route::post('signup', 'ApiController@signup');
 	Route::post('login', 'ApiController@login');
 	Route::post('get/user/business-products', 'ApiController@getUserBusinessProducts');
 	Route::post('get/user/business-events', 'ApiController@getUserBusinessEvents');
@@ -59,11 +58,13 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('get/user/attending/event/status', 'ApiController@getUserEventAttendingStatus');
 
 	//New Apis
+	Route::post('signup', 'ApiController@signup');
 	Route::post('check/otp' ,'ApiController@checkOtp');
 	Route::post('resend/otp' ,'ApiController@resendOtp');
 	Route::post('get/user/portfolio', 'ApiController@getUserPortfolio');
 	Route::post('post/user/portfolio', 'ApiController@postUserBusinessPortfolio');
 	Route::post('get/user/portfolioDetails', 'ApiController@getUserPortfolioImages');
+	Route::post('post/user/portfolioDetails', 'ApiController@postUserPortfolioDetail');
 
 	//Get request api
 	Route::get('get/business-categories', 'ApiController@getCategories');
