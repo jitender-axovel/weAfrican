@@ -23,6 +23,7 @@ return array(
     'document_path' => str_replace('\\','/',public_path()). '/uploads/documents/',
     'user_image_path' => str_replace('\\','/',public_path()). '/uploads/images/user_images/',
     'portfolio_image_path' => str_replace('\\','/',public_path()). '/uploads/images/portfolio_images/',
+    'temp_image_path' => str_replace('\\','/',public_path()). '/uploads/temp/',
 
     /*
      |.....................................................................
