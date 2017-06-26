@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use File;
 
 class Helper extends Model
 {
@@ -42,5 +43,9 @@ class Helper extends Model
 
             return $name;
 
+    }
+
+    public static function removeImages($path, $file) {
+        File::delete($path.$file,$path.'/thumbnails/small/'.$file,$path.'/thumbnails/medium/'.$file,$path.'/thumbnails/large/'.$file);
     }
 }
