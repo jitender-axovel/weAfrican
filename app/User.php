@@ -253,7 +253,7 @@ class User extends Authenticatable
                 $checkBusiness = UserBusiness::whereUserId($otp->id)->first();
                 
                 if ($checkBusiness)
-                    $otp['businessId'] = $checkBusiness->id;
+                    $otp['business_id'] = $checkBusiness->id;
                 
                 return response()->json(['status' => 'success', 'response' => $otp]);
             }else
