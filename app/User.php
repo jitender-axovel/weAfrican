@@ -116,7 +116,8 @@ class User extends Authenticatable
                     {
                         $response['business_id'] = $checkBusiness->id;
                         $checkportfolio = UserBusiness::whereUserId($user->id)->whereBusinessId($checkBusiness->id)->first();
-                        $response['portfolio_id'] = $checkportfolio->id;
+                        if ($checkportfolio)
+                            $response['portfolio_id'] = $checkportfolio->id;
                     }
 
                     return response()->json(['status' => 'success', 'response' => $response]);
