@@ -371,15 +371,18 @@ SUN  :   Closed
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" id="pwd-container">
                         <label for="password" class="col-md-2 control-label required">Password:</label>
                         <div class="col-md-4 form-group">
-                            <input required type="password" class="form-control" name="password" value="">
+                            <input required type="password" class="form-control" id="password" name="password" value="">
                             @if ($errors->has('password'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('password') }}</strong>
                                 </span>
                             @endif
+                            <div class="" style="margin-top: 20px;width: 100%;">
+                                <div class="pwstrength_viewport_progress"></div>
+                            </div>
                         </div>
 
                         <label for="confirm_password" class="col-md-2 control-label required">Confirm Password:</label>
@@ -474,6 +477,7 @@ SUN  :   Closed
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/pwstrength.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         var lat;
         var long;
@@ -994,6 +998,25 @@ SUN  :   Closed
         }
     });
     $('#business_keywords').tooltip({'trigger':'focus', 'title': 'Please use as many of keywords , this will help user to find your business during search more visiblility in search result more customer.'});
+
+    jQuery(document).ready(function () {
+        "use strict";
+        var options = {};
+        options.ui = {
+            container: "#pwd-container",
+            showVerdictsInsideProgressBar: true,
+            viewports: {
+                progress: ".pwstrength_viewport_progress"
+            }
+        };
+        options.common = {
+            debug: true,
+            onLoad: function () {
+                $('#messages').text('Start typing password');
+            }
+        };
+        $('#password').pwstrength(options);
+    });
 </script>
 @endsection
 
