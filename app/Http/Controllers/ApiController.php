@@ -367,30 +367,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Function: delete product.
-     * Url: api/post/user/delete/product
-     * Request type: Post
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function postDeleteProduct(Request $request)
-    {   
-        $input = $request->input();
-        if ($input == NULL) {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
-        }
-
-        $product = BusinessProduct::where('user_id',$input['userId'])->where('id',$input['productId'])->first();
-
-        if ($product && $product->delete()) {
-            return response()->json(['status' => 'success', 'response' => 'Product deleted successfully.']);
-        } else {
-            return response()->json(['status' => 'exception', 'response' => 'Product could not be deleted.Please try again.']);
-        }
-    }
-
-    /**
      * Function: delete event.
      * Url: api/post/user/delete/event
      * Request type: Post
@@ -1302,5 +1278,29 @@ class ApiController extends Controller
     {   
         $response = $this->businessProduct->apiPostUserProduct($request);
         return $response;
+    }
+
+    /**
+     * Function: delete product.
+     * Url: api/post/user/delete/product
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postDeleteProduct(Request $request)
+    {   
+        $input = $request->input();
+        if ($input == NULL) {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $product = BusinessProduct::where('user_id',$input['userId'])->where('id',$input['productId'])->first();
+
+        if ($product && $product->delete()) {
+            return response()->json(['status' => 'success', 'response' => 'Product deleted successfully.']);
+        } else {
+            return response()->json(['status' => 'exception', 'response' => 'Product could not be deleted.Please try again.']);
+        }
     }
 }
