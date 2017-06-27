@@ -107,7 +107,7 @@ class UserBusinessPortfolioController extends Controller
             'skin_color' => 'required',
             'professional_training' => 'sometimes',
             'institute_name' => 'required_if:professional_training,on',
-            'featured_image' => 'required',
+            /*'featured_image' => 'required',*/
             );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
