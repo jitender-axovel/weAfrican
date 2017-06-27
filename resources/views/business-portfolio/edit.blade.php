@@ -219,7 +219,7 @@
                             <div class="col-md-1 col-sm-1 col-xs-6">
                             <label class="control-label">Upload Image</label>
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-6 has-feedback">
+                            <div class="col-md-3 col-sm-3 col-xs-6 has-feedback">
                                 <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[{{$portfolio_image->id}}]" value="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" onchange="previewImg(this)" />
                             </div>
                             <div class="col-md-2 col-sm-2 col-xs-12 ">
@@ -230,14 +230,14 @@
                             <div class="col-md-2 col-sm-2 col-xs-6 ">
                                 <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-6">
+                            <div class="col-md-3 col-sm-3 col-xs-6">
                                 <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-6">
+                            <!-- <div class="col-md-2 col-sm-2 col-xs-6">
                                 <div class="radio">
                                   <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" />Featured Image</label>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-1 col-sm-1 col-xs-6">
                                 <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                             </div>
@@ -251,7 +251,7 @@
                             <label class="control-label">Upload Image</label>
                             </div>
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-6">
+                            <div class="col-md-3 col-sm-3 col-xs-6">
                                 <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[{{$portfolio_image->id}}]" value="{{ asset(config('image.portfolio_image_url').'thumbnails/small/'.$portfolio_image->image) }}" onchange="previewImg(this)" />
                             </div>
                             <div class="col-md-2 col-sm-2 col-xs-12">
@@ -262,14 +262,14 @@
                             <div class="col-md-2 col-sm-2 col-xs-6">
                                 <input type="text" class="form-control" name="portfolio_title[{{$portfolio_image->id}}]" placeholder="Title" value="{{$portfolio_image->title}}" />
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-6">
+                            <div class="col-md-3 col-sm-3 col-xs-6">
                                 <input type="text" class="form-control" name="portfolio_description[{{$portfolio_image->id}}]" placeholder="Description" value="{{$portfolio_image->description}}" />
                             </div>
-                            <div class="col-md-2 col-sm-2 col-xs-6">
+                            <!-- <div class="col-md-2 col-sm-2 col-xs-6">
                                 <div class="radio">
                                   <label><input type="radio" class="featured_image" name="featured_image" @if($portfolio_image->featured_image==1) checked="checked" @endif value="{{$key+1}}" />Featured Image</label>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-1 col-sm-1 col-xs-6">
                                 <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
                             </div>
@@ -284,7 +284,7 @@
                         <label class="control-label">Upload Image</label>
                         </div>
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-6">
+                        <div class="col-md-3 col-sm-3 col-xs-6">
                             <input type="file" class="form-control" accept="image/*" name="portfolio_image[]" onchange="previewImg(this)" />
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-12">
@@ -295,14 +295,14 @@
                         <div class="col-md-2 col-sm-2 col-xs-6">
                             <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-6">
+                        <div class="col-md-3 col-sm-3 col-xs-6">
                             <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-6">
+                        <!-- <div class="col-md-2 col-sm-2 col-xs-6">
                             <div class="radio">
                               <label><input type="radio" class="featured_image" name="featured_image" checked="checked" value="1" /><br>Featured Image</label>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-1 col-sm-1 col-xs-6">
                             <button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                         </div>
@@ -315,7 +315,7 @@
                         <label class="control-label">Upload Image</label>
                         </div>
                         </div>
-                    <div class="col-md-2 col-sm-2 col-xs-6">
+                    <div class="col-md-3 col-sm-3 col-xs-6">
                         <input type="file" class="form-control portfolio_image" accept="image/*" name="portfolio_image[]" onchange="previewImg(this)" />
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-12">
@@ -326,14 +326,14 @@
                     <div class="col-md-2 col-sm-2 col-xs-6">
                         <input type="text" class="form-control" name="portfolio_title[]" placeholder="Title" />
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-6">
+                    <div class="col-md-3 col-sm-3 col-xs-6">
                         <input type="text" class="form-control" name="portfolio_description[]" placeholder="Description" />
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-6">
+                    <!-- <div class="col-md-2 col-sm-2 col-xs-6">
                         <div class="radio">
                           <label><input type="radio" class="featured_image" name="featured_image" value="1" />Featured Image</label>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-1 col-sm-1 col-xs-6">
                         <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
                     </div>
@@ -391,7 +391,7 @@
             },
             fields: {
                 'portfolio_image[]': {
-                    row: '.col-xs-2',
+                    row: '.col-xs-3',
                     validators: {
                         notEmpty: {
                             message: 'Please choose a product image'
@@ -400,7 +400,7 @@
                             extension: 'jpeg,jpg,png',
                             type: 'image/jpg,image/png,image/x-png,image/x-jpg,image/jpeg',
                             maxSize: 10 * 1024 * 1024, // 2048 * 1024
-                            message: 'Please choose a image file with a size less than 4M.',
+                            message: 'Please choose a image file with a size less than 10M.',
                         },
                     }
                 },
@@ -429,13 +429,13 @@
                 },
                 @foreach($portfolio_images as $portfolio_image)
                     'portfolio_image[{{$portfolio_image->id}}]':{
-                        row: '.col-xs-2',
+                        row: '.col-xs-3',
                         validators: {
                             file: {
                                 extension: 'jpeg,jpg,png',
                                 type: 'image/jpg,image/png,image/x-png,image/x-jpg,image/jpeg',
                                 maxSize: 10 * 1024 * 1024, // 2048 * 1024
-                                message: 'Please choose a image file with a size less than 4M.',
+                                message: 'Please choose a image file with a size less than 10M.',
                             },
                         }
                     },'portfolio_title[{{$portfolio_image->id}}]':{
@@ -586,14 +586,14 @@
                 .formValidation('addField', $clone.find('[name="portfolio_description[]"]'))
                 .formValidation('revalidateField', 'featured_image');
             var i=1;
-            $('.featured_image').each(function(){
+            /*$('.featured_image').each(function(){
                 if ($('#register-form').find(':visible[name=^"portfolio_title["]').length < MAX_OPTIONS) {
                     var $row = $(this).closest('.form-group');
                     $row.find('[name="featured_image"]').attr('value',i);
                     i++;
                 }
-            });
-            $('#register-form').formValidation('revalidateField', 'featured_image');
+            });*/
+            /*$('#register-form').formValidation('revalidateField', 'featured_image');*/
         })
 
         // Remove button click handler
@@ -610,14 +610,14 @@
             // Remove element containing the fields
             $row.remove();
             var i=1;
-            $('.featured_image').each(function(){
+            /*$('.featured_image').each(function(){
                 if ($('#register-form').find(':visible[name^="portfolio_title["]').length < MAX_OPTIONS) {
                     var $row = $(this).closest('.form-group');
                     $row.find('[name="featured_image"]').attr('value',i);
                     i++;
                 }
-            });
-            $('#register-form').formValidation('revalidateField', 'featured_image');
+            });*/
+            /*$('#register-form').formValidation('revalidateField', 'featured_image');*/
         })
         .on('success.field.fv', function(e, data) {
             if (data.fv.getSubmitButton()) {
