@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use App\User;
+use App\UserPortfolioImage;
 use Validator;
 use Auth;
 use DB;
@@ -419,8 +420,12 @@ class UserBusiness extends Model
     public function apiGetUserBusinessDetails($input)
     {
         $businessData = array();
-        $business = $this->where('id', $input['businessId'])->where('is_blocked', 0)->first();
+        $business = $this->where('user_businesses.id', $input['businessId'])
+            ->where('is_blocked', 0)
+            ->join('user_portfolios', 'user_businesses.id', '=', 'user_portfolios.business_id')
+            ->first();
         $businessData['businessDetails'] = $business;
+        $businessData['portfolio_images'] = UserPortfolioImage::where('business_id',$business->id)->get();
         $businessData['favourites'] = $business->getFavourites();
         $businessData['likes'] = $business->getLikes();
         $businessData['dislikes'] = $business->getDislikes();
