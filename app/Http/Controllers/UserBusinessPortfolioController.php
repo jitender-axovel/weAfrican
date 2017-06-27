@@ -224,8 +224,10 @@ class UserBusinessPortfolioController extends Controller
                 }
             }
         }
-
-        $portfolio_image = UserPortfolioImage::whereId(UserPortfolioImage::offset($request->input('featured_image')-1)->limit(1)->where('user_portfolio_id',$id)->pluck('id')->first())->update(array('featured_image'=>1));
+        if(isset($request->input('featured_image')) and !empty($request->input('featured_image')))
+        {
+            $portfolio_image = UserPortfolioImage::whereId(UserPortfolioImage::offset($request->input('featured_image')-1)->limit(1)->where('user_portfolio_id',$id)->pluck('id')->first())->update(array('featured_image'=>1));
+        }
         $business = UserBusiness::where('user_id',Auth::id())->update(array('is_update'=>0));
         return redirect('register-business/'.$portfolio->business_id)->with('success', 'Your Portfolio has been updated');        
     }
