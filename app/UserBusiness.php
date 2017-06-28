@@ -420,8 +420,10 @@ class UserBusiness extends Model
     public function apiGetUserBusinessDetails($input)
     {
         $businessData = array();
-        $business = $this->where('user_businesses.id', $input['businessId'])
-            ->where('is_blocked', 0)
+        $business = $this->select("user_businesses.*","user_portfolios.*","users.address","users.city","users.state","users.country","users.pin_code","users.currency","users.mobile_number","users.latitude","users.longitude")
+            ->where('user_businesses.id', $input['businessId'])
+            ->where('user_businesses.is_blocked', 0)
+            ->join('users', 'user_businesses.user_id', '=', 'users.id')
             ->join('user_portfolios', 'user_businesses.id', '=', 'user_portfolios.business_id')
             ->first();
         $businessData['businessDetails'] = $business;
