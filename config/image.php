@@ -41,6 +41,7 @@ return array(
     'document_url' => '/uploads/documents/',
     'user_image_url' => '/uploads/images/user_images/',
     'portfolio_image_url' => '/uploads/images/portfolio_images/',
+    'temp_image_url' => '/uploads/temp/',
 
     /*
      |.....................................................................
