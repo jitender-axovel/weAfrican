@@ -24,8 +24,17 @@
                             @if(!Auth::check())
                             <li><a href="{{ url('register-business/create') }}">Register Business </a>
                             </li>
-                            <li><a href="{{ url('login') }}">Login</a>
                             </li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Subscription Plans <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{url('event')}}">Event Subscription Plans</a></li>
+                                    <li><a href="{{url('banner')}}">Banner Subscription Plans</a></li>
+                                    <li><a href="{{url('sponsor')}}">Sponser Business Plans</a></li>
+                                    <li><a href="{{url('search')}}">Search Business Plans</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ url('login') }}">Login</a>
                             <li><a href="#" class="download-link">download</a></li>
                             @else
                             <li> <a href="{{url('cms/privacy-policy')}}">Privacy Policy</a> </li>
