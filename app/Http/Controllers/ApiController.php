@@ -1259,7 +1259,7 @@ class ApiController extends Controller
 
         if($success)
         {
-            return response()->json(['status' => 'success','response' => $image]);
+            return response()->json(['status' => 'success','response' => asset(config('image.temp_image_url')).'/'.$image]);
         }else
         {
             return response()->json(['status' => 'failure','response' => 'System Error:Image cannot be saved .Please try later.']);
