@@ -18,6 +18,11 @@ Route::group(['middleware' => ['before']], function(){
 	Route::get('logout', 'Auth\LoginController@logout');
 
 	Route::get('cms/{slug}', ['uses' => 'CmsController@index', 'as' => 'cms']);
+
+	Route::get('event', 'SubscriptionPlanPagesController@event');
+	Route::get('sponsor', 'SubscriptionPlanPagesController@sponsor');
+	Route::get('banner', 'SubscriptionPlanPagesController@banner');
+	Route::get('search', 'SubscriptionPlanPagesController@search');
 	
 	Route::get('{status}-page', function ($status) {
     	return view('errors.'.$status);
