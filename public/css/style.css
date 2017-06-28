@@ -290,3 +290,127 @@ input[type=file]{border: none;box-shadow: none;}
 #register-form .row .required.control-label:after{content: "*";color: red;}
 #register-form .form-group{margin-right: 0px;margin-left: 0px;}
 #register-form .has-feedback .form-control-feedback {right: 30px;}
+
+/*---------Event Plan Page Start-----------*/
+.qode-bg-adwords-color-odd {
+    background-color: #222222;
+    color: #ffffff;
+}
+.qode-bg-adwords-color-even {
+    background-color: #333333;
+    color: #ffffff;
+}
+.qode-adwords-price-title {
+    color: #05c2f9;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: "HelveticaNeue MediumCond" !important;
+}
+.qode-price-top-adwords {
+    font-family: "HelveticaNeue MediumCond";
+    font-weight: 500;
+}
+.qode-price-top-adwords sup {
+    font-size: 30px;
+    top: -28px;
+}
+.qode-price-adwords {
+    font-size: 30px;
+    line-height: 64px;
+}
+.qode-mo {
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 500;
+}
+.qode-minimum-time-adwords {
+    color: #ccc;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+}
+.bg-222 {
+    background-color: #000;
+}
+.adwords-column-content {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 23px;
+    margin: 0px;
+    padding: 10px 0px;
+    min-height: 40px;
+    letter-spacing: 0px;
+}
+.header-row-adwords {
+    color: #bebebe;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 40px;
+    margin: 0px;
+    padding-left: 40px;
+}
+
+.row.row-sub-heading > [class^="col-"], .row.row-sub-heading > [class*=" col-"] {
+    min-height: 50px;
+}
+.qode-seo-price-section .seo-section-adwords {
+    background-position: 0px 16px;
+}
+.row-sub-heading .seo-section-adwords {
+    background: none;
+    padding-left: 10px;
+    font-weight: 600;
+}
+.adwords-column-content {
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 23px;
+    margin: 0px;
+    padding: 10px 0px;
+    min-height: 40px;
+    letter-spacing: 0px;
+}
+
+.bg-f3f3f3 {
+    background-color: #f3f3f3;
+    border-top: 1px solid #f3f3f3; 
+    border-bottom: 1px solid #f3f3f3;
+}
+.bg-eee {
+    background-color: #eeeeee;
+    border-top: 1px solid #eeeeee; 
+    border-bottom: 1px solid #eeeeee;
+}
+.row.row-seo-plan-special > [class^="col-"], .row.row-seo-plan-special > [class*=" col-"] {
+    min-height: 80px;
+}
+.qode-seo-price-section .seo-section-adwords {
+    background-position: 0px 16px;
+}
+.seo-section-adwords {
+    background: url(../images/list-icon.png) 0px 14px;
+    background-repeat: no-repeat;
+    padding-left: 10px;
+}
+.row-adwords-price:hover div{
+	border-bottom: 1px solid #aaa;
+	border-top: 1px solid #aaa;
+}
+.adwords-column-content i.fa-check {
+	color: #05c2f9;
+}
+.adwords-column-content i{
+	font-size: 24px;
+}
+.adwords-column-content i.fa-times {
+	color: red;
+}
+.adwords-start-now a:hover {
+    text-decoration: none;
+}
+/*---------Event Plan Page End-----------*/
