@@ -289,8 +289,9 @@
 						@endif
 						</div>
 					</div>
-			    @endif    
-		    </div>
+			        
+		    	</div>
+		    @endif
 		  <div class="business-right col-md-12">
 		  <div class="row">
 				<div class="col-md-12">
@@ -327,7 +328,7 @@
 					        <div class="col-md-2 col-xs-6">Edit Document</div>
 					        <div class="col-md-10 col-xs-6"><a href="{{url('upload')}}"><button>Upload Document</button></a></div>
 					        <div class="col-md-2 col-xs-6">Document Status</div>
-					        <div class="col-md-10 col-xs-6"> <span class=" pending btn-danger label">Pending Verification</span></div>
+					        <div class="col-md-10 col-xs-6"> <span class=" btn-danger label">Pending Verification</span></div>
 			        	@endif
 			        @else
 		
