@@ -205,17 +205,28 @@
                 @if(count($seatingplans)>0)
                     @foreach($seatingplans as $seatingplan)
                         <div class="form-group">
-                            <label class="col-md-2 control-label">{{ $seatingplan->title}}</label>
+                            <div class="col-md-2">
+                                <div class="checkbox">
+                                  <label class="control-label"><input type="checkbox" id="seating_plan_id_{{$seatingplan->id}}" @if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id) and $event->total_seats)
+                                    checked="checked"
+                                    @elseif(!$event->total_seats) disabled="disabled" @endif value="">{{ $seatingplan->title }}</label>
+                                </div>
+                            </div>
                             <div class="col-md-4 mg_botm" class="control-label">
-                                <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" value="{{ $seatingplan->getEventPlanAlias($event->id, $seatingplan->id) }}" placeholder="Seating Plan Alias">
+                                <input type="text" class="form-control" name="seating_plan_alias[{{ $seatingplan->id }}]" @if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
+                                    checked="checked"
+                                    @else disabled="disabled" @endif
+                                    value="{{ $seatingplan->getEventPlanAlias($event->id, $seatingplan->id) }}" placeholder="Seating Plan Alias">
                             </div>
                             <div class="col-md-3 mg_botm">
                                 <div class="input-group input-group-sm">
-                                    <input type="text" value="
+                                    <input type="text"
                                     @if($seatingplan->getEventPlanSeats($event->id, $seatingplan->id))
-                                    {{$seatingplan->getEventPlanSeats($event->id, $seatingplan->id) }}
+                                     value="{{$seatingplan->getEventPlanSeats($event->id, $seatingplan->id) }}"
+                                    @else
+                                    disabled="disabled"
                                     @endif
-                                    " name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
+                                     name="seating_plan[{{ $seatingplan->id }}]" id="seating_plan[{{ $seatingplan->id }}]" class="form-control input-sm seatingplan_touchspin">
                                 </div>
                             </div>
                             <div class="col-md-3 mg_botm">
@@ -485,6 +496,13 @@
                                     }
                                 }
                             },
+                            'seating_plan_alias[{{$seatingplan->id}}]':{
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Please supply your Per Ticket Price'
+                                    }
+                                }
+                            },
                         @endforeach
                     @endif
                 }
@@ -529,6 +547,11 @@
             }).on('change touchspin.on.min touchspin.on.max',function(e){
                 if($(this).val()=="" || parseInt($(this).val())==0)
                 {
+                    $('input[id^="seating_plan_id_"]').each(function(i){
+                        $(this).removeAttr('checked');
+                        var input = $(this).attr("id");
+                        $('input[id="'+input+'"]').attr('disabled','disabled');
+                    });
                     $('input[name^="seating_plan"]').each(function(i){
                        var input = $(this).attr("name");
                        if(!(input.indexOf('seating_plan_alias[')>-1))
@@ -545,13 +568,20 @@
                     bootstrapValidator.enableFieldValidators('total_seats', false);
                 }else
                 {
-                    $('input[name^="seating_plan"]').each(function(i){
+                    $('input[id^="seating_plan_id_"]').each(function(i){
+                        var input = $(this).attr("id");
+                        if(!(input.indexOf('seating_plan_price[')>-1))
+                        {
+                            $('input[id="'+input+'"]').removeAttr('disabled');
+                        }
+                    });
+                    /*$('input[name^="seating_plan"]').each(function(i){
                        var input = $(this).attr("name");
                        if(!(input.indexOf('seating_plan_price[')>-1))
                        {
                             $('input[name="'+input+'"]').removeAttr('readonly');
                        }
-                    });
+                    });*/
                     bootstrapValidator.enableFieldValidators('total_seats', true);
                 }
                 $('#register-form').bootstrapValidator('validateField', 'total_seats');
@@ -566,12 +596,12 @@
                 var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
                 if($(this).val()!="" && parseInt($(this).val())!==0)
                 {
-                    $('input[name="'+name+'"]').removeAttr('readonly');
+                    $('input[name="'+name+'"]').removeAttr('disabled');
                     bootstrapValidator.enableFieldValidators(name, true);
                 }else
                 {
                     $('input[name="'+name+'"]').val("");
-                    $('input[name="'+name+'"]').attr('readonly','readonly');
+                    $('input[name="'+name+'"]').attr('disabled','disabled');
                     bootstrapValidator.enableFieldValidators(name, false);
                 }
                 bootstrapValidator.enableFieldValidators('total_seats', true);
@@ -585,7 +615,7 @@
                    {
                         $('input[name="'+input+'"]').val("");
                    }
-                   $('input[name="'+input+'"]').attr('readonly','readonly');
+                   $('input[name="'+input+'"]').attr('disabled','disabled');
                    $('i[data-bv-icon-for="'+input+'"]').css('display', 'none');
                    $('small[data-bv-validator-for="'+input+'"]').css('display', 'none');
                    $('input[name="'+input+'"]').closest( 'div[class^="form-group"]' ).removeClass('has-error');
@@ -595,13 +625,13 @@
                 bootstrapValidator.enableFieldValidators('total_seats', false);
             }else
             {
-                $('input[name^="seating_plan"]').each(function(i){
+                /*$('input[name^="seating_plan"]').each(function(i){
                    var input = $(this).attr("name");
                    if(!(input.indexOf('seating_plan_price[')>-1))
                    {
-                        $('input[name="'+input+'"]').removeAttr('readonly');
+                        $('input[name="'+input+'"]').removeAttr('disabled');
                    }
-                });
+                });*/
                 bootstrapValidator.enableFieldValidators('total_seats', true);
             }
             $('#register-form').bootstrapValidator('validateField', 'total_seats');
@@ -609,15 +639,44 @@
                 var name = $(this).parent().parent().parent().find('.seatingplan_price').attr('name');
                 if($(this).val()!="" && parseInt($(this).val())!==0)
                 {
-                    $('input[name="'+name+'"]').removeAttr('readonly');
+                    $('input[name="'+name+'"]').removeAttr('disabled');
                     bootstrapValidator.enableFieldValidators(name, true);
                 }else
                 {
                     $('input[name="'+name+'"]').val("");
-                    $('input[name="'+name+'"]').attr('readonly','readonly');
+                    $('input[name="'+name+'"]').attr('disabled','disabled');
                     bootstrapValidator.enableFieldValidators(name, false);
                 }
                 bootstrapValidator.enableFieldValidators('total_seats', true);
+            });
+
+            $('input[id^="seating_plan_id_"]').click(function(e){
+                if($(this).is(':checked'))
+                {
+                    $(this).closest('div[class^="form-group"]').find('input[name^="seating_plan_alias"]').removeAttr('disabled');
+                    $(this).closest('div[class^="form-group"]').find('input[name^="seating_plan["]').removeAttr('disabled');
+                    /*$('input[name^="seating_plan"]').each(function(i){
+                       var input = $(this).attr("name");
+                       if(!(input.indexOf('seating_plan_price[')>-1))
+                       {
+                            $('input[name="'+input+'"]').removeAttr('disabled');
+                       }
+                    });*/
+                    bootstrapValidator.enableFieldValidators('total_seats', true);
+                }else
+                {
+                    $(this).closest('div[class^="form-group"]').find('input[name^="seating_plan["]').val('');
+                    $(this).closest('div[class^="form-group"]').find('input[name^="seating_plan_price["]').val('');
+                    $(this).closest('div[class^="form-group"]').find('input[name^="seating_plan"]').attr('disabled','disabled');
+                    /*$(this).closest('i[data-bv-icon-for^="seating_plan_price["]').css('display', 'none');
+                    $(this).closest('small[data-bv-validator-for^="seating_plan_price["]').css('display', 'none');
+                    $(this).closest('input[name="seating_plan_price["]').closest( 'div[class^="form-group"]' ).removeClass('has-error');*/
+                    $(this).closest( 'div[class^="form-group"]' ).removeClass('has-success');
+                    $(this).closest( 'div[class^="form-group"]' ).removeClass('has-error');
+                    $(this).closest( 'div[class^="form-group"]' ).find('i[data-bv-icon-for^="seating_plan_price["]').css('display', 'none');
+                    $(this).closest( 'div[class^="form-group"]' ).find('small[data-bv-validator-for^="seating_plan_price["]').css('display', 'none');
+                    bootstrapValidator.enableFieldValidators('total_seats', true);
+                }
             });
         });
 </script>
