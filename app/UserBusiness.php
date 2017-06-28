@@ -40,7 +40,7 @@ class UserBusiness extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo('App\BussinessSubcategory','bussiness_subcategory_id');
+        return $this->belongsTo('App\BussinessCategory','bussiness_subcategory_id');
     }
 
     public function events()
@@ -121,6 +121,11 @@ class UserBusiness extends Model
     public function portfolio()
     {
         return $this->hasOne('App\UserPortfolio','business_id');
+    }
+
+    public function portfolioImages()
+    {
+        return $this->hasMany('App\UserPortfolioImage','business_id');
     }
 
     public function apiGetBusinessesByCategory($input)
@@ -434,7 +439,12 @@ class UserBusiness extends Model
         $businessData['rating'] = $business->getRatings();
         $businessData['reviews'] = $business->getReviews();
         $businessData['followers'] = $business->getFollowers();
-       
+        $businessData['category'] = (BussinessCategory::where('id',$business->bussiness_category_id)->first())->title;
+        $subcategory = BussinessCategory::where('id',$business->bussiness_subcategory_id)->first();
+        if($subcategory)
+        {
+            $businessData['subcategory'] = $subcategory->title;
+        }
         return $businessData;
     }
 
