@@ -23,6 +23,7 @@ use App\UserPortfolio;
 use App\UserPortfolioImage;
 use App\SecurityQuestion;
 use App\EventSeatingPlan;
+use App\Helper;
 use Validator;
 use Image;
 use File;
