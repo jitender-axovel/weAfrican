@@ -13,8 +13,9 @@
             <li role="presentation"><a href="{{ url('business-service') }}">Service</a></li>
             <li role="presentation"><a href="{{ url('business-event') }}">Event</a></li>
             <li role="presentation"><a href="{{ url('business-follower') }}">Followers</a></li>
-            <li role="presentation"><a href="{{ url('banners') }}">Banners</a></li>
-            <li role="presentation"><a href="{{ url('subscription-plans') }}">Subscription History</a></li>
+            <li role="presentation"><a href="{{ url('my-account') }}">My Account</a></li>
+            <!-- <li role="presentation"><a href="{{ url('banners') }}">Banners</a></li>
+            <li role="presentation"><a href="{{ url('subscription-plans') }}">Subscription History</a> --></li>
             <!-- <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 Dropdown <span class="caret"></span>
