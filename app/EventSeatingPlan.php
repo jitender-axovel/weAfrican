@@ -64,4 +64,10 @@ class EventSeatingPlan extends Model
         }
         
     }
+
+    public function apiGetEventSeatingPlans()
+    {
+        $response = $this->where('is_blocked',0)->get();
+        return $response;
+    }
 }
