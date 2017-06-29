@@ -1307,7 +1307,7 @@ class ApiController extends Controller
             }
         }elseif(isset($input['deleteImage']) and !empty($input['deleteImage']))
         {
-            foreach (explode('|', $input['addedImage']) as $value) {
+            foreach (explode('|', $input['deleteImage']) as $value) {
                 Helper::removeImages(config('image.temp_image_path'),$value);
             }
         }
