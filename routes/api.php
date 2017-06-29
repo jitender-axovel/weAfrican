@@ -67,6 +67,7 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/business/productImage', 'ApiController@postBusinessProductImage');
 	Route::get('get/business/securityQuestion', 'ApiController@getSecurityQuestion');
 	Route::get('get/business/eventSeatingPlans', 'ApiController@getEventSeatingPlans');
+	Route::post('remove/product/image', 'ApiController@removeBusinessProductImage');
 
 	//Updated Apis
 	Route::post('login', 'ApiController@login');
