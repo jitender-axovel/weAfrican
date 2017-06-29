@@ -49,6 +49,7 @@ class BusinessProduct extends Model
         ->groupBy('BPI.business_product_id')
         ->select("BP.*",DB::raw("GROUP_CONCAT(BPI.image SEPARATOR '|') as product_images"),DB::raw("GROUP_CONCAT(CASE WHEN BPI.featured_image=1 THEN BPI.image ELSE NULL END SEPARATOR '|') as featured_images"))
         ->where('BPI.user_id',$input['userId'])
+        ->where('BP.deleted_at',NULL)
         ->get();
         return $products;
     }
