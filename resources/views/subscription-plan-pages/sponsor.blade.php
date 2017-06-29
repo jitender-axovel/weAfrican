@@ -93,7 +93,7 @@
 							<span>6 month contract)</span>
 						</p>
 						<h5 class="adwords-start-now">
-							@if(!Auth::check())
+							@if(Auth::check())
 								<a href="#">BUY NOW</a>
 							@else
 								<a href="{{ url('login') }}">START NOW</a>
