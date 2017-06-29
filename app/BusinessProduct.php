@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use File;
 use Image;
+use DB;
 use App\BusinessProductImage;
 
 class BusinessProduct extends Model
@@ -42,7 +43,12 @@ class BusinessProduct extends Model
 
     public function apiGetUserBusinessProducts($input)
     {
-        $products = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();
+        /*$products = $this->where('user_id',$input['userId'])->where('is_blocked',0)->get();*/
+        $products = DB::table('business_product_images as BPI')
+        ->join('business_products as BP','BP.id','BPI.business_product_id')
+        ->groupBy('BPI.business_product_id')
+        ->select("BP.*",DB::raw("GROUP_CONCAT(BPI.image SEPARATOR '|') as product_images"),DB::raw("GROUP_CONCAT(CASE WHEN BPI.featured_image=1 THEN BPI.image ELSE NULL END SEPARATOR '|') as featured_images"))
+        ->get();
         return $products;
     }
 
@@ -140,7 +146,7 @@ class BusinessProduct extends Model
                                 $productImage->delete();
                             }else
                             {
-                                return response()->json(['status' => 'exception','response' => 'Product Image not found.Please try again!.']);
+                                Helper::removeImages(config('image.temp_image_path'),$value);
                             }
                         }
                     }
