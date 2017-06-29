@@ -40,6 +40,15 @@
                             <li> <a href="{{url('cms/privacy-policy')}}">Privacy Policy</a> </li>
                             <li> <a href="{{url('cms/terms-of-use')}}">Terms of Use</a> </li>
                             <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Subscription Plans <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{url('event')}}">Event Subscription Plans</a></li>
+                                    <li><a href="{{url('banner')}}">Banner Subscription Plans</a></li>
+                                    <li><a href="{{url('sponsor')}}">Sponser Business Plans</a></li>
+                                    <li><a href="{{url('search')}}">Search Business Plans</a></li>
+                                </ul>
+                            </li>
+                            <li>
                                 <div class="dropdown">
                                     <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">{{Auth::user()->first_name}}
                                     <span class="caret"></span></button>
