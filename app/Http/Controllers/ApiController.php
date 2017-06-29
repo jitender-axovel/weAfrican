@@ -1313,9 +1313,9 @@ class ApiController extends Controller
                 if($value!="")
                 {
                     $businessProductImage = BusinessProductImage::where('image',$value)->first();
-                    if($buusinessProductImage)
+                    if($businessProductImage)
                     {
-                        Helper::removeImages(config('image.product_image_path'),$buusinessProductImage->image);
+                        Helper::removeImages(config('image.product_image_path'),$businessProductImage->image);
                         $businessProductImage->delete();
                     }else
                     {
