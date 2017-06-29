@@ -21,6 +21,8 @@ use App\EventCategory;
 use App\CountryList;
 use App\UserPortfolio;
 use App\UserPortfolioImage;
+use App\SecurityQuestion;
+use App\EventSeatingPlan;
 use Validator;
 use Image;
 use File;
@@ -49,6 +51,8 @@ class ApiController extends Controller
         $this->country = new CountryList();
         $this->portfolio = new UserPortfolio();
         $this->portfolioImage = new UserPortfolioImage();
+        $this->securityQuestion = new SecurityQuestion();
+        $this->eventSeatingPlan = new EventSeatingPlan();
     }
 
     /**
@@ -1302,5 +1306,39 @@ class ApiController extends Controller
             return response()->json(['status' => 'success','response' =>$response]);
         else
             return response()->json(['status' => 'exception','response' => 'Could not find any Product.']);
+    }
+
+    /**
+     * Function: Get Security Question list.
+     * Url: api/get/business/securityQuestion
+     * Request type: GET
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSecurityQuestion(Request $request)
+    {
+        $response = $this->securityQuestion->apiGetSecurityQuestions();
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Security Questions.']);
+    }
+
+    /**
+     * Function: Get Seating Plans List.
+     * Url: api/get/business/eventSeatingPlans
+     * Request type: GET
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getEventSeatingPlans(Request $request)
+    {
+        $response = $this->eventSeatingPlan->apiGetEventSeatingPlans();
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Event Seating Plans.']);
     }
 }
