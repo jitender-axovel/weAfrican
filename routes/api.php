@@ -65,6 +65,8 @@ Route::group(['middleware' => ['api']], function (){
 	Route::post('post/user/portfolioDetails', 'ApiController@postUserPortfolioDetail');
 	Route::post('remove/user/portfolioDetails', 'ApiController@removeUserPortfolioDetail');
 	Route::post('post/business/productImage', 'ApiController@postBusinessProductImage');
+	Route::get('get/business/securityQuestion', 'ApiController@getSecurityQuestion');
+	Route::get('get/business/eventSeatingPlans', 'ApiController@getEventSeatingPlans');
 
 	//Updated Apis
 	Route::post('login', 'ApiController@login');
