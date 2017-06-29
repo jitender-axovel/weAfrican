@@ -1300,9 +1300,16 @@ class ApiController extends Controller
         if ($input == NULL) {
             return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
         }
-
-        foreach (explode('|', $input['addedImage']) as $value) {
-            Helper::removeImages(config('image.temp_image_path'),$value);
+        if(isset($input['addedImage']) and !empty($input['addedImage']))
+        {
+            foreach (explode('|', $input['addedImage']) as $value) {
+                Helper::removeImages(config('image.temp_image_path'),$value);
+            }
+        }elseif(isset($input['deleteImage']) and !empty($input['deleteImage']))
+        {
+            foreach (explode('|', $input['addedImage']) as $value) {
+                Helper::removeImages(config('image.temp_image_path'),$value);
+            }
         }
         return response()->json(['status' => 'success', 'response' => 'Product Images deleted successfully.']);
     }
