@@ -83,58 +83,6 @@ class BusinessProduct extends Model
             $product = BusinessProduct::whereId($input['productId'])->first();
         
             if($product){
-                if(isset($input['updatedImage']) and empty($input['updatedImage']))
-                {
-                    foreach ($input['updatedImage'] as $key => $value) {
-                        if($value!="")
-                        {
-                            $productImage = BusinessProductImage::whereId($key)->first();
-                            if($productImage)
-                            {
-                                if(File::exists(config('image.temp_image_path').$value))
-                                {
-                                    if(File::move(config('image.temp_image_path').$value, config('image.product_image_path').$value))
-                                    {
-                                        $file = config('image.product_image_path').$value;
-
-                                        $img = Image::make($file);
-                            
-                                        $img->resize(config('image.large_thumbnail_width'), null, function($constraint) {
-                                             $constraint->aspectRatio();
-                                        })->save(config('image.product_image_path').'/thumbnails/large/'.$value); 
-
-                                        $img->resize(config('image.medium_thumbnail_width'), null, function($constraint) {
-                                             $constraint->aspectRatio();
-                                        })->save(config('image.product_image_path').'/thumbnails/medium/'.$value);
-                                                
-                                        $img->resize(config('image.small_thumbnail_width'), null, function($constraint) {
-                                             $constraint->aspectRatio();
-                                        })->save(config('image.product_image_path').'/thumbnails/small/'.$value);
-
-                                        $oldImg = $product_image->image;
-                                        $product_image->image = $value;
-                                        if(!($product_image->save())){
-                                            $this->deleteProduct($product->id);
-                                            return response()->json(['status' => 'exception','response' => "Image Cannot be saved. Please try again!"]);
-                                        }
-                                        Helper::removeImages(config('image.product_image_path'),$oldImg);
-                                    }else
-                                    {
-                                        $this->deleteProduct($product->id);
-                                        return response()->json(['status' => 'exception','response' => "Image Cannot be added. Please try again!"]);
-                                    }
-                                }
-                            }else
-                            {
-                                return response()->json(['status' => 'exception','response' => 'Product Image not found.Please try again!']);
-                            }
-                        }else
-                        {
-                            return response()->json(['status' => 'exception','response' => 'Image name cannot be blank.']);
-                        }
-                    }
-                }
-
                 if(isset($input['deletedImage']) and !empty($input['deletedImage']))
                 {
                     foreach (explode("|", $input['deletedImage']) as $value) {
@@ -193,7 +141,6 @@ class BusinessProduct extends Model
                                     }
                                 }else
                                 {
-                                    $this->deleteProduct($product->id);
                                     return response()->json(['status' => 'exception','response' => "Image Cannot be added. Please try again!"]);
                                 }
                             }
@@ -246,6 +193,25 @@ class BusinessProduct extends Model
             $product->slug = Helper::slug($product->title, $product->id);
 
             if($product->save()){
+                
+                if(isset($input['deletedImage']) and !empty($input['deletedImage']))
+                {
+                    foreach (explode("|", $input['deletedImage']) as $value) {
+                        if($value!="")
+                        {
+                            $productImage = BusinessProductImage::whereId($value)->first();
+                            if($productImage)
+                            {
+                                Helper::removeImages(config('image.product_image_path'),$productImage->image);
+                                $productImage->delete();
+                            }else
+                            {
+                                Helper::removeImages(config('image.temp_image_path'),$value);
+                            }
+                        }
+                    }
+                }
+
                 if(isset($input['addedImage']) && !empty($input['addedImage']))
                 {
                     $data = $input['addedImage'];
