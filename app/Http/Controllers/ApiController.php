@@ -23,6 +23,7 @@ use App\UserPortfolio;
 use App\UserPortfolioImage;
 use App\SecurityQuestion;
 use App\EventSeatingPlan;
+use App\BusinessProductImage;
 use App\Helper;
 use Validator;
 use Image;
@@ -1309,7 +1310,18 @@ class ApiController extends Controller
         }elseif(isset($input['deleteImage']) and !empty($input['deleteImage']))
         {
             foreach (explode('|', $input['deleteImage']) as $value) {
-                Helper::removeImages(config('image.temp_image_path'),$value);
+                if($value!="")
+                {
+                    $businessProductImage = BusinessProductImage::where('image',$value)
+                    if($buusinessProductImage)
+                    {
+                        Helper::removeImages(config('image.product_image_path'),$buusinessProductImage->image);
+                        $businessProductImage->delete();
+                    }else
+                    {
+                        Helper::removeImages(config('image.temp_image_path'),$value);    
+                    }
+                }
             }
         }
         return response()->json(['status' => 'success', 'response' => 'Product Images deleted successfully.']);
