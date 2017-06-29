@@ -49,7 +49,6 @@ Route::group(['middleware' => ['before']], function(){
 		Route::post('send_message', 'BusinessFollowerListController@sendMessage');//Ajax function to send push Notification
 		Route::resource('business-event', 'BusinessEventsController');
 		Route::resource('business-follower', 'BusinessFollowerListController');
-		Route::resource('subscription-plans', 'UserSubscriptionPlansController');
 		Route::resource('business-service', 'BusinessServicesController');
 		Route::post('event/participants/download-csv/{eventId}', 'BusinessEventsController@exportToCsv');
 		Route::resource('banners', 'BannersController');
@@ -66,6 +65,11 @@ Route::group(['middleware' => ['before']], function(){
 		Route::post('update-mobile', 'UserBusinessController@updateMobile');
 		Route::post('check-mobile-otp', 'UserBusinessController@checkMobileOtp');
 		Route::resource('portfolio', 'UserBusinessPortfolioController');
+		Route::resource('my-account', 'MyAccountController');
+		Route::resource('business-banner', 'MyAccountController@businessBanners');
+		Route::resource('sponsor-banner', 'MyAccountController@sponsorBanners');
+		Route::resource('event-banner', 'MyAccountController@eventBanners');
+		Route::resource('subscription-plans', 'UserSubscriptionPlansController');
 	});
 });
 
