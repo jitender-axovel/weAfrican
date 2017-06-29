@@ -1287,6 +1287,27 @@ class ApiController extends Controller
     }
 
     /**
+     * Function: delete product Image.
+     * Url: api/remove/product/image
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeBusinessProductImage(Request $request)
+    {   
+        $input = $request->input();
+        if ($input == NULL) {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        foreach ('|', explode($input['addedImage']) $value) {
+            Helper::removeImages(config('image.temp_image_path'),$value)
+        }
+        return response()->json(['status' => 'success', 'response' => 'Product Images deleted successfully.']);
+    }
+
+    /**
      * Function: Get Business Products of user.
      * Url: api/get/user/business-products
      * Request type: Post
