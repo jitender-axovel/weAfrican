@@ -1312,7 +1312,7 @@ class ApiController extends Controller
             foreach (explode('|', $input['deleteImage']) as $value) {
                 if($value!="")
                 {
-                    $businessProductImage = BusinessProductImage::where('image',$value)
+                    $businessProductImage = BusinessProductImage::where('image',$value)->first();
                     if($buusinessProductImage)
                     {
                         Helper::removeImages(config('image.product_image_path'),$buusinessProductImage->image);
