@@ -439,7 +439,11 @@ class UserBusiness extends Model
         $businessData['rating'] = $business->getRatings();
         $businessData['reviews'] = $business->getReviews();
         $businessData['followers'] = $business->getFollowers();
-        $businessData['category'] = (BussinessCategory::where('id',$business->bussiness_category_id)->first())->title;
+        $category = BussinessCategory::where('id',$business->bussiness_category_id)->first();
+        if($category)
+        {
+            $businessData['category'] = $category->title;
+        }
         $subcategory = BussinessCategory::where('id',$business->bussiness_subcategory_id)->first();
         if($subcategory)
         {
