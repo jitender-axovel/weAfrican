@@ -92,7 +92,13 @@
 							<span>(No setup fee with</span>
 							<span>6 month contract)</span>
 						</p>
-						<h5 class="adwords-start-now"><a href="/#">START NOW</a></h5>
+						<h5 class="adwords-start-now">
+							@if(!Auth::check())
+								<a href="#">BUY NOW</a>
+							@else
+								<a href="{{ url('login') }}">START NOW</a>
+							@endif
+						</h5>
 						</div>
 						@php
 						$i++
