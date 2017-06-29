@@ -1302,7 +1302,7 @@ class ApiController extends Controller
         }
 
         foreach (explode('|', $input['addedImage']) as $value) {
-            Helper::removeImages(config('image.temp_image_path'),$value)
+            Helper::removeImages(config('image.temp_image_path'),$value);
         }
         return response()->json(['status' => 'success', 'response' => 'Product Images deleted successfully.']);
     }
