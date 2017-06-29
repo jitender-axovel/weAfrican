@@ -188,28 +188,6 @@ class ApiController extends Controller
     }
 
     /**
-     * Function: Get Business Products of user.
-     * Url: api/get/user/business-products
-     * Request type: Post
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getUserBusinessProducts(Request $request)
-    {   
-        $input = $request->input();
-        if ($input == NULL) {
-            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
-        }
-
-        $response = $this->businessProduct->apiGetUserBusinessProducts($input);
-        if ($response != NULL && $response->count())
-            return response()->json(['status' => 'success','response' =>$response]);
-        else
-            return response()->json(['status' => 'exception','response' => 'Could not find any Product.']);
-    }
-
-    /**
      * Function: Get Business Events of user.
      * Url: api/get/user/business-events
      * Request type: Post
@@ -1302,5 +1280,27 @@ class ApiController extends Controller
         } else {
             return response()->json(['status' => 'exception', 'response' => 'Product could not be deleted.Please try again.']);
         }
+    }
+
+    /**
+     * Function: Get Business Products of user.
+     * Url: api/get/user/business-products
+     * Request type: Post
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserBusinessProducts(Request $request)
+    {   
+        $input = $request->input();
+        if ($input == NULL) {
+            return response()->json(['status' => 'exception','response' => 'Input parameter is missing.']);
+        }
+
+        $response = $this->businessProduct->apiGetUserBusinessProducts($input);
+        if ($response != NULL && $response->count())
+            return response()->json(['status' => 'success','response' =>$response]);
+        else
+            return response()->json(['status' => 'exception','response' => 'Could not find any Product.']);
     }
 }
