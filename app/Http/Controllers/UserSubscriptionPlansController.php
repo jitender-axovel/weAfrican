@@ -20,7 +20,7 @@ class UserSubscriptionPlansController extends Controller
     {
         $pageTitle = "Subscription Plans";
         $plans = UserSubscriptionPlan::where('user_subscription_plans.user_id',Auth::id())->leftJoin('subscription_plans','subscription_plans.id', '=', 'user_subscription_plans.subscription_plan_id')->get();
-        return view('subscription-plan.index', compact('pageTitle', 'plans'));
+        return view('my-account.subscription', compact('pageTitle', 'plans'));
     }
 
     /**
