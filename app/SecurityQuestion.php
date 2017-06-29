@@ -21,4 +21,10 @@ class SecurityQuestion extends Model
     public static $updateValidater = array(
     	'question' => 'required',
     	);
+
+    public function apiGetSecurityQuestions()
+    {
+        $response = $this->where('is_blocked',0)->get();
+        return $response;
+    }
 }
